@@ -11,6 +11,7 @@ import ProfileScreen from '../screens/ProfileScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import PassDetailsScreen from '../screens/PassDetailsScreen';
 import AddCredentialsScreen from '../screens/AddCredentialsScreen';
+import CustomTabBar from '../components/CustomTabBar';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -18,7 +19,7 @@ const Drawer = createDrawerNavigator();
 
 function TabNavigator() {
     return (
-        <Tab.Navigator initialRouteName='Home'>
+        <Tab.Navigator initialRouteName='Home' tabBar={(props) => <CustomTabBar {...props} />}>
             <Tab.Screen
                 name='Home'
                 component={HomeScreen}

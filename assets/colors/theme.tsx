@@ -19,6 +19,9 @@ export const lightTheme = StyleSheet.create({
         backgroundColor: '#FFFFFF',
         borderColor: '#E9F1FF',
         borderWidth: 1,
+    },
+    text: {
+        color: '#002055'
     }
 });
 
@@ -27,7 +30,7 @@ export const darkTheme = StyleSheet.create({
         backgroundColor: '#0A0C16'
     },
     button: {
-        backgroundColor: '#3580FF'
+        backgroundColor: '#3580FF',
     },
     buttonText: {
         color: '#FFFFFF',
@@ -40,6 +43,9 @@ export const darkTheme = StyleSheet.create({
     iconBackgroundCircle: {
         backgroundColor: '#0A0C16',
         borderColor: '#191D30',
-        borderWidth: 1
+        borderWidth: 1,
+    },
+    text: {
+        color: '#FFFFFF'
     }
 })
