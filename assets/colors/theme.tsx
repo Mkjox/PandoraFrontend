@@ -5,7 +5,7 @@ export const lightTheme = StyleSheet.create({
         backgroundColor: '#FFFFFF',
     },
     button: {
-        backgroundColor: '#756EF3'
+        backgroundColor: '#AA00FF'
     },
     buttonText: {
         color: '#FFFFFF'
@@ -22,6 +22,12 @@ export const lightTheme = StyleSheet.create({
     },
     text: {
         color: '#002055'
+    },
+    card: {
+        backgroundColor: '#fff'
+    },
+    textGray: {
+        color: '#656565'
     }
 });
 
@@ -47,5 +53,11 @@ export const darkTheme = StyleSheet.create({
     },
     text: {
         color: '#FFFFFF'
+    },
+    card: {
+        backgroundColor: '#1F1B24'
+    },
+    textGray: {
+        color: '#656565'
     }
 })

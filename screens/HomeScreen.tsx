@@ -38,18 +38,18 @@ const HomeScreen = () => {
 
       <View style={styles.categoryWrapper}>
         <View style={{ elevation: 10 }}>
-          <TouchableOpacity style={[styles.categoryInnerWrapper]}>
-            <FontAwesome5 name='compress-arrows-alt' style={styles.categoryIcon} size={SIZE} />
-            <Text style={styles.categoryName}>CategoryName</Text>
+          <TouchableOpacity style={[themeStyles.button, styles.categoryInnerWrapper]}>
+            <FontAwesome5 name='compress-arrows-alt' style={[themeStyles.buttonText,styles.categoryIcon]} size={SIZE} />
+            <Text style={[themeStyles.buttonText,styles.categoryName]}>CategoryName</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.categoryInnerWrapper}>
-          <AntDesign name='lock' style={styles.categoryIcon} size={SIZE} />
-          <Text style={styles.categoryName}>CategoryName</Text>
+        <TouchableOpacity style={[themeStyles.button, styles.categoryInnerWrapper]}>
+          <AntDesign name='lock' style={[themeStyles.buttonText,styles.categoryIcon]} size={SIZE} />
+          <Text style={[themeStyles.buttonText,styles.categoryName]}>CategoryName</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.categoryInnerWrapper}>
-          <FontAwesome5 name='compress-arrows-alt' style={styles.categoryIcon} size={SIZE} />
-          <Text style={styles.categoryName}>CategoryName</Text>
+        <TouchableOpacity style={[themeStyles.button, styles.categoryInnerWrapper]}>
+          <FontAwesome5 name='compress-arrows-alt' style={[themeStyles.buttonText,styles.categoryIcon]} size={SIZE} />
+          <Text style={[themeStyles.buttonText,styles.categoryName]}>CategoryName</Text>
         </TouchableOpacity>
       </View>
 
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontFamily: 'Poppins_500Medium',
+    fontFamily: 'Poppins_600SemiBold',
     marginTop: height * 0.01
   },
   searchBar: {
@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
     height: height * 0.04,
     marginTop: height * 0.019,
     marginLeft: width * 0.035,
-    backgroundColor: 'orange',
     alignItems: 'center',
     borderRadius: 5
   },

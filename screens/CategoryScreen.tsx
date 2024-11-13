@@ -14,7 +14,7 @@ const CategoryScreen = () => {
   return (
     <View style={[themeStyles.container, styles.container]}>
       <View style={styles.topSection}>
-        <Text>CategoryScreen</Text>
+        <Text style={styles.title}>CategoryScreen</Text>
       </View>
     </View>
   )
@@ -25,7 +25,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   topSection: {
-    marginTop: StatusBar.currentHeight
+    marginTop: StatusBar.currentHeight,
+    marginVertical: height * 0.1,
+    marginHorizontal: width * 0.05
+  },
+  title: {
+    fontFamily: 'Poppins_600SemiBold',
+    fontSize: 20
   }
 })
 
