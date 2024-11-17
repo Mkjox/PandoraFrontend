@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     marginHorizontal: width * 0.05
   },
   title: {
-    fontFamily: 'Poppins_600SemiBold',
+    fontFamily: 'Poppins_700Bold',
     fontSize: 20
   }
 })

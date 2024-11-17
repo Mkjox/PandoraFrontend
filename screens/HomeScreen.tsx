@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: width * 0.08,
-    marginTop: height * 0.1,
+    marginTop: StatusBar.currentHeight
   },
   plusButton: {
     flexDirection: 'row',
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontFamily: 'Poppins_600SemiBold',
+    fontFamily: 'Poppins_700Bold',
     marginTop: height * 0.01
   },
   searchBar: {

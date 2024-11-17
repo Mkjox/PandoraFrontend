@@ -12,6 +12,7 @@ import EditProfileScreen from '../screens/EditProfileScreen';
 import PassDetailsScreen from '../screens/PassDetailsScreen';
 import AddCredentialsScreen from '../screens/AddCredentialsScreen';
 import CustomTabBar from '../components/CustomTabBar';
+import SettingsScreen from '../screens/SettingsScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -85,6 +86,14 @@ function StackNavigator() {
             <Stack.Screen
                 name='AddCredentials'
                 component={AddCredentialsScreen}
+                options={{
+                    headerShown: false
+                }}
+            />
+
+            <Stack.Screen
+                name='Settings'
+                component={SettingsScreen}
                 options={{
                     headerShown: false
                 }}

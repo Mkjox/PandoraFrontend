@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontFamily: 'Poppins_600SemiBold',
+    fontFamily: 'Poppins_700Bold',
   },
   cardInnerWrapper: {
     marginHorizontal: width * 0.05,

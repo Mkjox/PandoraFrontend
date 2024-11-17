@@ -118,10 +118,12 @@ const styles = StyleSheet.create({
     },
     tabLabel: {
         fontSize: 12,
-        color: '#a0a0a0'
+        color: '#a0a0a0',
+        fontFamily: 'Poppins_400Regular'
     },
     focusedLabel: {
-        color: '#6E7FEC'
+        color: '#6E7FEC',
+        fontFamily: 'Poppins_400Regular'
     }
 });
 
