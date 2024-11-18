@@ -13,6 +13,16 @@ import PassDetailsScreen from '../screens/PassDetailsScreen';
 import AddCredentialsScreen from '../screens/AddCredentialsScreen';
 import CustomTabBar from '../components/CustomTabBar';
 import SettingsScreen from '../screens/SettingsScreen';
+import SuggestScreen from '../screens/subScreens/SuggestScreen';
+import AccountScreen from '../screens/subScreens/AccountScreen';
+import SecurityScreen from '../screens/subScreens/SecurityScreen';
+import AutofillScreen from '../screens/subScreens/AutofillScreen';
+import SearchScreen from '../screens/subScreens/SearchScreen';
+import ActionsScreen from '../screens/subScreens/ActionsScreen';
+import HelpScreen from '../screens/subScreens/HelpScreen';
+import AdvancedScreen from '../screens/subScreens/AdvancedScreen';
+import AboutScreen from '../screens/subScreens/AboutScreen';
+import PrivacyScreen from '../screens/subScreens/PrivacyScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -94,6 +104,86 @@ function StackNavigator() {
             <Stack.Screen
                 name='Settings'
                 component={SettingsScreen}
+                options={{
+                    headerShown: false
+                }}
+            />
+
+            <Stack.Screen 
+                name='Suggest'
+                component={SuggestScreen}
+                options={{
+                    headerShown: false
+                }}
+            />
+
+            <Stack.Screen 
+                name='Account'
+                component={AccountScreen}
+                options={{
+                    headerShown: false
+                }}
+            />
+
+            <Stack.Screen 
+                name='Security'
+                component={SecurityScreen}
+                options={{
+                    headerShown: false
+                }}
+            />
+
+            <Stack.Screen 
+                name='Autofill'
+                component={AutofillScreen}
+                options={{
+                    headerShown: false
+                }}
+            />
+
+            <Stack.Screen 
+                name='Search'
+                component={SearchScreen}
+                options={{
+                    headerShown: false
+                }}
+            />
+
+            <Stack.Screen 
+                name='Actions'
+                component={ActionsScreen}
+                options={{
+                    headerShown: false
+                }}
+            />
+
+            <Stack.Screen 
+                name='Help'
+                component={HelpScreen}
+                options={{
+                    headerShown: false
+                }}
+            />
+
+            <Stack.Screen 
+                name='Advanced'
+                component={AdvancedScreen}
+                options={{
+                    headerShown: false
+                }}
+            />
+
+            <Stack.Screen 
+                name='About'
+                component={AboutScreen}
+                options={{
+                    headerShown: false
+                }}
+            />
+
+            <Stack.Screen 
+                name='Privacy'
+                component={PrivacyScreen}
                 options={{
                     headerShown: false
                 }}
