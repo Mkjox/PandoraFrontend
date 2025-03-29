@@ -19,6 +19,7 @@ const HomeScreen = () => {
 
   return (
     <View style={[themeStyles.container, styles.container]}>
+      <View style={styles.innerContainer}>
       <View style={styles.topSection}>
         <Text style={[themeStyles.text, styles.title]}>Vault</Text>
         <View>
@@ -60,6 +61,7 @@ const HomeScreen = () => {
       </ScrollView> */}
 
       {/* Bottom Section */}
+      </View>
     </View>
   )
 }
@@ -68,15 +70,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  innerContainer: {
+    margin: width * 0.07,
+  },
   topSection: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: width * 0.08,
     marginTop: StatusBar.currentHeight
   },
   plusButton: {
     flexDirection: 'row',
-    height: 45,
+    height: 40,
     width: 75,
     alignItems: 'center',
     justifyContent: 'center',
@@ -95,15 +99,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontFamily: 'Poppins_700Bold',
-    marginTop: height * 0.01
   },
   searchBar: {
-    marginHorizontal: width * 0.07,
     marginTop: height * 0.02,
     borderRadius: 10
   },
   categoryWrapper: {
-    marginLeft: width * 0.035,
     flexDirection: 'row',
   },
   categoryInnerWrapper: {
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
     width: StyleSheet.absoluteFill,
     height: height * 0.04,
     marginTop: height * 0.019,
-    marginLeft: width * 0.035,
+    marginRight: width * 0.03,
     alignItems: 'center',
     borderRadius: 5
   },
