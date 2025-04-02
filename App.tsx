@@ -1,5 +1,5 @@
-import { ThemeProvider } from './context/ThemeContext';
-import AppNavigator from './navigation/AppNavigator';
+import { ThemeProvider } from './src/context/ThemeContext';
+import AppNavigator from './src/navigation/AppNavigator';
 import * as SplashScreen from 'expo-splash-screen';
 import {
   useFonts,

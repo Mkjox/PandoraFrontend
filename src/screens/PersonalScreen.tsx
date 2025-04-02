@@ -7,14 +7,17 @@ const { width, height } = Dimensions.get('window')
 
 const data = [
   {
+    "id": 1,
     "title": "Sharing center",
     "content": "Manage your shared folders"
   },
   {
+    "id": 2,
     "title": "Password generator",
     "content": "Create strong, unique passwords"
   },
   {
+    "id": 3,
     "title": "Emergency access",
     "content": "Peace of mind in an emergency"
   }

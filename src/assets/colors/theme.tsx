@@ -5,7 +5,7 @@ export const lightTheme = StyleSheet.create({
         backgroundColor: '#FFFFFF',
     },
     button: {
-        backgroundColor: '#AA00FF'
+        backgroundColor: '#4C4DDC'
     },
     buttonText: {
         color: '#FFFFFF'
@@ -66,4 +66,4 @@ export const darkTheme = StyleSheet.create({
     iconColor: {
         color:'#E0E0E0'
     }
-})
+});
