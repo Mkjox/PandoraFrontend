@@ -1,20 +1,7 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { jwtDecode } from "jwt-decode";
-
-const API_URL = "https://pandora-api-production.up.railway.app/api";
-
-const api = axios.create({
-    baseURL: API_URL,
-});
-
-api.interceptors.request.use(async (config) => {
-    const token = await AsyncStorage.getItem("authToken");
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-});
+import api from "./api";
 
 const AuthService = {
     login: async (UsernameOrEmail: string, Password: string) => {

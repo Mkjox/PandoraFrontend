@@ -8,10 +8,14 @@ import { Searchbar } from 'react-native-paper';
 
 const { width, height } = Dimensions.get('window');
 
-const HomeScreen = () => {
+const HomeScreen: React.FC = () => {
   const navigation = useNavigation();
   const { isDark } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [categoryName, setCategoryName] = useState("");
+  const [categoryDescription, setCategoryDescription] = useState("");
 
   const themeStyles = isDark ? darkTheme : lightTheme;
 
@@ -20,47 +24,47 @@ const HomeScreen = () => {
   return (
     <View style={[themeStyles.container, styles.container]}>
       <View style={styles.innerContainer}>
-      <View style={styles.topSection}>
-        <Text style={[themeStyles.text, styles.title]}>Vault</Text>
-        <View>
-          <TouchableOpacity style={[styles.plusButton, themeStyles.button]}>
-            <AntDesign name='plus' size={20} style={styles.plusButtonIcon} color='white' />
-            <Text style={[themeStyles.text, styles.topSectionText]}>New</Text>
-          </TouchableOpacity>
+        <View style={styles.topSection}>
+          <Text style={[themeStyles.text, styles.title]}>Vault</Text>
+          <View>
+            <TouchableOpacity style={[styles.plusButton, themeStyles.button]}>
+              <AntDesign name='plus' size={20} style={styles.plusButtonIcon} color='white' />
+              <Text style={[themeStyles.text, styles.topSectionText]}>New</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
 
-      <Searchbar
-        placeholder='Search'
-        onChangeText={setSearchQuery}
-        value={searchQuery}
-        style={styles.searchBar}
-      />
+        <Searchbar
+          placeholder='Search'
+          onChangeText={setSearchQuery}
+          value={searchQuery}
+          style={styles.searchBar}
+        />
 
-      <View style={styles.categoryWrapper}>
-        <View style={{ elevation: 10 }}>
+        <View style={styles.categoryWrapper}>
+          <View style={{ elevation: 10 }}>
+            <TouchableOpacity style={[themeStyles.button, styles.categoryInnerWrapper]}>
+              <FontAwesome5 name='compress-arrows-alt' style={[themeStyles.buttonText, styles.categoryIcon]} size={SIZE} />
+              <Text style={[themeStyles.buttonText, styles.categoryName]}>CategoryName</Text>
+            </TouchableOpacity>
+          </View>
           <TouchableOpacity style={[themeStyles.button, styles.categoryInnerWrapper]}>
-            <FontAwesome5 name='compress-arrows-alt' style={[themeStyles.buttonText,styles.categoryIcon]} size={SIZE} />
-            <Text style={[themeStyles.buttonText,styles.categoryName]}>CategoryName</Text>
+            <AntDesign name='lock' style={[themeStyles.buttonText, styles.categoryIcon]} size={SIZE} />
+            <Text style={[themeStyles.buttonText, styles.categoryName]}>CategoryName</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[themeStyles.button, styles.categoryInnerWrapper]}>
+            <FontAwesome5 name='compress-arrows-alt' style={[themeStyles.buttonText, styles.categoryIcon]} size={SIZE} />
+            <Text style={[themeStyles.buttonText, styles.categoryName]}>CategoryName</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={[themeStyles.button, styles.categoryInnerWrapper]}>
-          <AntDesign name='lock' style={[themeStyles.buttonText,styles.categoryIcon]} size={SIZE} />
-          <Text style={[themeStyles.buttonText,styles.categoryName]}>CategoryName</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[themeStyles.button, styles.categoryInnerWrapper]}>
-          <FontAwesome5 name='compress-arrows-alt' style={[themeStyles.buttonText,styles.categoryIcon]} size={SIZE} />
-          <Text style={[themeStyles.buttonText,styles.categoryName]}>CategoryName</Text>
-        </TouchableOpacity>
-      </View>
 
 
-      {/* This is gonna be Card section below */}
-      {/* <ScrollView horizontal style={{height: height * 0.4}}>
+        {/* This is gonna be Card section below */}
+        {/* <ScrollView horizontal style={{height: height * 0.4}}>
 
       </ScrollView> */}
 
-      {/* Bottom Section */}
+        {/* Bottom Section */}
       </View>
     </View>
   )
