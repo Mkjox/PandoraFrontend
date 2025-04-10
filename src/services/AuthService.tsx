@@ -2,68 +2,92 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { jwtDecode } from "jwt-decode";
 
-const API_URL = "";
+const API_URL = "https://pandora-api-production.up.railway.app/api";
 
-const login = async (UsernameOrEmail: string, Password: string) => {
-    try {
-        const response = await axios.post(`${API_URL}/auth/login`, { UsernameOrEmail, Password });
+const api = axios.create({
+    baseURL: API_URL,
+});
 
-        if (response.data.token) {
-            await AsyncStorage.setItem("authToken", response.data.token);
-            console.log("Logged in successfully");
-            return { success: true, token: response.data.token };
-        } else {
+api.interceptors.request.use(async (config) => {
+    const token = await AsyncStorage.getItem("authToken");
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
+
+const AuthService = {
+    login: async (UsernameOrEmail: string, Password: string) => {
+        try {
+            const response = await api.post("/auth/login", { UsernameOrEmail, Password });
+
+            const token = response.data?.token;
+            if (token) {
+                await AsyncStorage.setItem("authToken", token);
+                return { success: true, token };
+            }
+
             return { success: false, message: "Invalid response from server" };
+        } catch (error: any) {
+            return {
+                success: false,
+                message: error.response?.data?.message || "Login failed",
+            };
         }
-    } catch (error) {
-        return { success: false, message: error.response?.data?.message || "Login failed" };
-    }
+    },
+
+    getToken: async () => {
+        return await AsyncStorage.getItem("authToken");
+    },
+
+    decodeToken: async () => {
+        const token = await AuthService.getToken();
+
+        if (!token) {
+            console.error("No token found.");
+            return null;
+        }
+
+        try {
+            const decoded: any = jwtDecode(token);
+            //   console.log("Decoded Token:", decoded);
+            return decoded;
+        } catch (error) {
+            console.error("Failed to decode token", error);
+            return null;
+        }
+    },
+
+    fetchUserProfile: async () => {
+        // console.log("Fetching user profile...");
+
+        const decoded = await AuthService.decodeToken();
+        if (!decoded?.nameid) {
+            return { success: false, message: "Invalid or missing token" };
+        }
+
+        try {
+            const response = await api.get(`/users/${decoded.nameid}`);
+            //   console.log("User Data:", response.data);
+
+            return { success: true, userData: response.data };
+        } catch (error: any) {
+            console.error("Error fetching user profile:", error);
+            return {
+                success: false,
+                message: error.response?.data?.message || "Failed to fetch user data",
+            };
+        }
+    },
+
+    logout: async () => {
+        try {
+            await AsyncStorage.removeItem("authToken");
+            console.log("Logged out successfully.");
+        } catch (error) {
+            console.error("Logout failed:", error);
+        }
+    },
 };
 
-const getToken = async () => {
-    return await AsyncStorage.getItem("authToken");
-};
-
-const decodeToken = async () => {
-    const token = await getToken();
-    if (!token) return null;
-
-    try {
-        const decoded: any = jwtDecode(token);
-        return decoded;
-    }
-    catch (error) {
-        console.error("Failed to decode token", error);
-        return null;
-    }
-};
-
-const fetchUserProfile = async () => {
-    console.log("Fetching user profile...");
-
-    const decoded = await decodeToken();
-    if (!decoded || !decoded.nameid)
-        return { success: false, message: 'Invalid token' };
-
-    try {
-        console.log(`Fetching data for user ID: ${decoded.nameid}`);
-        const response = await axios.get(`${API_URL}/users/${decoded.nameid}`);
-        console.log("API Response:", response.data);
-        return { success: true, userData: response.data };
-    }
-    catch (error) {
-        return { success: false, message: error.response?.data?.message || "Failed to fetch user data" };
-    }
-};
-
-const logout = async () => {
-    try {
-        await AsyncStorage.removeItem("authToken");
-        console.log("Logged out successfully")
-    }
-    catch (error) {
-        return console.log("Logout failed.")
-    }
-};
-
-export default { login, getToken, decodeToken, fetchUserProfile, logout };
+export default AuthService;

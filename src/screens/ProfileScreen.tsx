@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -15,7 +15,7 @@ import {
 import { Entypo, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
 import { darkTheme, lightTheme } from '../assets/colors/theme';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import AuthService from '../services/AuthService';
 
 const ProfileScreen: React.FC = () => {
@@ -36,7 +36,7 @@ const ProfileScreen: React.FC = () => {
 
     if (result.success) {
       setModalVisible(false);
-      console.log(result.token)
+      // console.log(result.token)
       setErrorMessage("");
     }
     else {
@@ -44,29 +44,36 @@ const ProfileScreen: React.FC = () => {
     }
   }
 
-  useEffect(() => {
-    const loadProfile = async () => {
+  const loadProfile = async () => {
+    try {
       const result = await AuthService.fetchUserProfile();
-      if (result.success) {
+      if (result?.success) {
+        // console.log("Proccess is successful", result)
         setProfileData(result.userData);
       }
-    };
+    }
+    catch (error) {
+      console.error("Proccess has failed", error)
+    }
+  };
 
-    loadProfile();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      loadProfile();
+    }, [])
+  );
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {/* User Information Section */}
       <View style={styles.header}>
         {profileData ? (
-          <>
+          <View style={styles.userInfoWrapper}>
             <FontAwesome name="user-circle" size={80} color="#6E7FEC" />
             <Text style={styles.name}>{profileData.username}</Text>
             <Text style={styles.email}>{profileData.email}</Text>
-          </>
+          </View>
         ) : (
-
           <Text>Loading profile...</Text>
         )
 
@@ -169,11 +176,15 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     marginTop: StatusBar.currentHeight
   },
+  userInfoWrapper: {
+    alignItems: 'center',
+  },
   name: {
     fontSize: 24,
     fontWeight: '700',
     color: '#333',
     marginTop: 10,
+    textTransform: 'capitalize'
   },
   email: {
     fontSize: 16,
