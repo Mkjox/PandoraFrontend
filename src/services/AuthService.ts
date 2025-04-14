@@ -2,9 +2,10 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { jwtDecode } from "jwt-decode";
 import api from "./api";
+import { LoginPayload, AuthResponse, DecodedToken, AuthResult, LogoutResult } from "../types/auth.types";
 
 const AuthService = {
-    login: async (UsernameOrEmail: string, Password: string) => {
+    login: async ({ UsernameOrEmail, Password }: LoginPayload): Promise<AuthResult> => {
         try {
             const response = await api.post("/auth/login", { UsernameOrEmail, Password });
 

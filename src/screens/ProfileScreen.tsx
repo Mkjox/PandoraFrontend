@@ -4,8 +4,6 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Switch,
-  Alert,
   ScrollView,
   StatusBar,
   Modal,
@@ -19,41 +17,36 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import AuthService from '../services/AuthService';
 
 const ProfileScreen: React.FC = () => {
-  // const [isTwoFactorEnabled, setIsTwoFactorEnabled] = React.useState(false);
-  const [isDarkMode, setIsDarkMode] = React.useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [UsernameOrEmail, setUsernameOrEmail] = useState('');
+  const [Password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [profileData, setProfileData] = useState<any>(null);
+
   const navigation: any = useNavigation();
   const { isDark } = useTheme();
   const themeStyles = isDark ? darkTheme : lightTheme;
 
-  const [modalVisible, setModalVisible] = useState(false);
-  const [UsernameOrEmail, setUsernameOrEmail] = useState("");
-  const [Password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [profileData, setProfileData] = useState<any>(null);
-
   const handleLogin = async () => {
-    const result = await AuthService.login(UsernameOrEmail, Password);
+    const result = await AuthService.login({ UsernameOrEmail, Password });
 
     if (result.success) {
       setModalVisible(false);
-      // console.log(result.token)
-      setErrorMessage("");
-    }
-    else {
+      setErrorMessage('');
+      await loadProfile(); // refresh user info after login
+    } else {
       setErrorMessage(result.message);
     }
-  }
+  };
 
   const loadProfile = async () => {
     try {
       const result = await AuthService.fetchUserProfile();
       if (result?.success) {
-        // console.log("Proccess is successful", result)
         setProfileData(result.userData);
       }
-    }
-    catch (error) {
-      console.error("Proccess has failed", error)
+    } catch (error: unknown) {
+      console.error("Profile loading failed:", error);
     }
   };
 
@@ -64,8 +57,7 @@ const ProfileScreen: React.FC = () => {
   );
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {/* User Information Section */}
+    <ScrollView contentContainerStyle={[styles.container, themeStyles.container]}>
       <View style={styles.header}>
         {profileData ? (
           <View style={styles.userInfoWrapper}>
@@ -75,55 +67,46 @@ const ProfileScreen: React.FC = () => {
           </View>
         ) : (
           <Text>Loading profile...</Text>
-        )
-
-        }
-
+        )}
       </View>
 
-      {/* Profile Actions */}
       <View style={styles.section}>
-        {/* <TouchableOpacity style={styles.option} onPress={handleEditProfile}> */}
         <TouchableOpacity style={styles.option}>
           <MaterialIcons name="edit" size={24} style={themeStyles.iconColor} />
           <Text style={styles.optionText}>Edit Profile</Text>
-          <Entypo name='chevron-right' size={24} />
+          <Entypo name="chevron-right" size={24} />
         </TouchableOpacity>
 
-        {/* <TouchableOpacity style={styles.option} onPress={handleChangePassword} >  */}
         <TouchableOpacity style={styles.option}>
           <MaterialIcons name="lock" size={24} style={themeStyles.iconColor} />
           <Text style={styles.optionText}>Change Password</Text>
-          <Entypo name='chevron-right' size={24} />
+          <Entypo name="chevron-right" size={24} />
         </TouchableOpacity>
 
-        {/* Security Settings */}
         <View style={styles.option}>
           <MaterialIcons name="shield" size={24} style={themeStyles.iconColor} />
           <Text style={styles.optionText}>Two-Factor Authentication</Text>
-          <Entypo name='chevron-right' size={24} />
+          <Entypo name="chevron-right" size={24} />
         </View>
 
         <View style={styles.option}>
           <MaterialIcons name="nightlight-round" size={24} style={themeStyles.iconColor} />
           <Text style={styles.optionText}>Dark Mode</Text>
-          <Entypo name='chevron-right' size={24} />
+          <Entypo name="chevron-right" size={24} />
         </View>
 
         <TouchableOpacity style={styles.option} onPress={() => navigation.navigate('Settings')}>
-          <FontAwesome name='gear' size={24} style={themeStyles.iconColor} />
+          <FontAwesome name="gear" size={24} style={themeStyles.iconColor} />
           <Text style={styles.optionText}>Settings</Text>
-          <Entypo name='chevron-right' size={24} />
+          <Entypo name="chevron-right" size={24} />
         </TouchableOpacity>
 
-        {/* LOGIN BUTTON */}
         <TouchableOpacity style={styles.option} onPress={() => setModalVisible(true)}>
-          <FontAwesome name='sign-in' size={24} style={themeStyles.iconColor} />
+          <FontAwesome name="sign-in" size={24} style={themeStyles.iconColor} />
           <Text style={styles.optionText}>Login</Text>
-          <Entypo name='chevron-right' size={24} />
+          <Entypo name="chevron-right" size={24} />
         </TouchableOpacity>
 
-        {/* LOGIN MODAL */}
         <Modal visible={modalVisible} animationType="slide" transparent={true}>
           <View style={styles.modalContainer}>
             <View style={styles.modalContent}>
@@ -131,50 +114,48 @@ const ProfileScreen: React.FC = () => {
 
               <TextInput
                 style={styles.input}
-                placeholder='Username'
+                placeholder="Username or Email"
                 value={UsernameOrEmail}
                 onChangeText={setUsernameOrEmail}
               />
 
               <TextInput
                 style={styles.input}
-                placeholder='Password'
-                value={Password}
+                placeholder="Password"
                 secureTextEntry
+                value={Password}
                 onChangeText={setPassword}
               />
+
               {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
 
-              <Button title='Submit' onPress={handleLogin} />
+              <Button title="Submit" onPress={handleLogin} />
               <View style={{ marginVertical: 5 }} />
-              <Button title='Close' onPress={() => setModalVisible(false)} />
+              <Button title="Close" onPress={() => setModalVisible(false)} />
             </View>
           </View>
         </Modal>
 
-        {/* LOGOUT BUTTON */}
         <TouchableOpacity style={styles.option} onPress={AuthService.logout}>
-          <FontAwesome name='sign-out' size={24} style={themeStyles.iconColor} />
+          <FontAwesome name="sign-out" size={24} style={themeStyles.iconColor} />
           <Text style={styles.optionText}>Logout</Text>
-          <Entypo name='chevron-right' size={24} />
+          <Entypo name="chevron-right" size={24} />
         </TouchableOpacity>
-
       </View>
-    </ScrollView >
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: '#FFFFFF',
     paddingHorizontal: 20,
     paddingVertical: 30,
   },
   header: {
     alignItems: 'center',
     marginBottom: 30,
-    marginTop: StatusBar.currentHeight
+    marginTop: StatusBar.currentHeight,
   },
   userInfoWrapper: {
     alignItems: 'center',
@@ -184,7 +165,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#333',
     marginTop: 10,
-    textTransform: 'capitalize'
+    textTransform: 'capitalize',
   },
   email: {
     fontSize: 16,
@@ -211,30 +192,30 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
   modalContent: {
     width: 300,
     padding: 20,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 10,
   },
   title: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 10,
   },
   input: {
-    width: "100%",
+    width: '100%',
     padding: 10,
     borderWidth: 1,
     marginBottom: 10,
     borderRadius: 5,
   },
   error: {
-    color: "red",
+    color: 'red',
     marginBottom: 10,
   },
 });
