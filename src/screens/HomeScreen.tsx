@@ -27,7 +27,7 @@ const HomeScreen: React.FC = () => {
         <View style={styles.topSection}>
           <Text style={[themeStyles.text, styles.title]}>Vault</Text>
           <View>
-            <TouchableOpacity style={[styles.plusButton, themeStyles.button]}>
+            <TouchableOpacity style={[styles.plusButton, themeStyles.button]} onPress={() => navigation.navigate("AddCredentials")}>
               <AntDesign name='plus' size={20} style={styles.plusButtonIcon} color='white' />
               <Text style={[themeStyles.text, styles.topSectionText]}>New</Text>
             </TouchableOpacity>
