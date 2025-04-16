@@ -10,7 +10,7 @@ const ActionsScreen = () => {
     return (
         <View style={[styles.container, themeStyles.container]}>
             <View style={styles.margin}>
-                <Text>This is SuggestScreen</Text>
+                <Text>This is ActionsScreen</Text>
             </View>
         </View>
     )

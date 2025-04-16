@@ -10,7 +10,7 @@ const PrivacyScreen = () => {
     return (
         <View style={[styles.container, themeStyles.container]}>
             <View style={styles.margin}>
-                <Text>This is SuggestScreen</Text>
+                <Text>This is PrivacyScreen</Text>
             </View>
         </View>
     )

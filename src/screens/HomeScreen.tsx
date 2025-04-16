@@ -13,10 +13,6 @@ const HomeScreen: React.FC = () => {
   const { isDark } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
 
-  const [modalVisible, setModalVisible] = useState(false);
-  const [categoryName, setCategoryName] = useState("");
-  const [categoryDescription, setCategoryDescription] = useState("");
-
   const themeStyles = isDark ? darkTheme : lightTheme;
 
   const SIZE = 18;
@@ -27,9 +23,11 @@ const HomeScreen: React.FC = () => {
         <View style={styles.topSection}>
           <Text style={[themeStyles.text, styles.title]}>Vault</Text>
           <View>
-            <TouchableOpacity style={[styles.plusButton, themeStyles.button]} onPress={() => navigation.navigate("AddCredentials")}>
-              <AntDesign name='plus' size={20} style={styles.plusButtonIcon} color='white' />
-              <Text style={[themeStyles.text, styles.topSectionText]}>New</Text>
+            <TouchableOpacity activeOpacity={0.7} style={[styles.plusButton, themeStyles.button]} onPress={() => navigation.navigate("AddCredentials")}>
+              <View style={styles.buttonContent}>
+                <AntDesign name='plus' size={20} color='white' />
+                <Text style={[themeStyles.buttonText, styles.topSectionText]}>New</Text>
+              </View>
             </TouchableOpacity>
           </View>
         </View>
@@ -90,15 +88,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 10,
   },
-  plusButtonIcon: {
-    marginLeft: 5
+  buttonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2
   },
   topSectionText: {
     textAlign: 'center',
-    marginRight: '15%',
-    flex: 1,
     fontSize: 18,
-    color: 'white'
   },
   title: {
     fontSize: 20,
