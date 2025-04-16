@@ -9,6 +9,9 @@ import {
   Poppins_700Bold
 } from '@expo-google-fonts/poppins';
 import { useEffect } from 'react';
+import { Provider } from 'react-redux';
+import { store } from './src/store';
+import { NavigationContainer } from '@react-navigation/native';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -31,9 +34,13 @@ function App(): React.JSX.Element {
   }
 
   return (
-    <ThemeProvider>
-      <AppNavigator />
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider>
+        <NavigationContainer>
+          <AppNavigator />
+        </NavigationContainer>
+      </ThemeProvider>
+    </Provider>
   )
 }
 

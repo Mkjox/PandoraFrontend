@@ -1,3 +1,13 @@
+export type RegisterPayload = {
+  Username: string;
+  Email: string;
+  PhoneNumber: string;
+  FirstName: string;
+  LastName: string;
+  Password: string;
+  ConfirmPassword: string;
+};
+
 export interface LoginPayload {
     UsernameOrEmail: string;
     Password: string;

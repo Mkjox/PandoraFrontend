@@ -2,9 +2,52 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { jwtDecode } from "jwt-decode";
 import api from "./api";
-import { LoginPayload, AuthResponse, DecodedToken, AuthResult, LogoutResult } from "../types/auth.types";
+import { LoginPayload, AuthResponse, DecodedToken, AuthResult, LogoutResult, RegisterPayload } from "../types/auth.types";
 
 const AuthService = {
+    register: async ({
+        Username,
+        Email,
+        PhoneNumber,
+        FirstName,
+        LastName,
+        Password,
+        ConfirmPassword
+    }: RegisterPayload): Promise<AuthResult> => {
+        try {
+            const response = await api.post("/auth/register", {
+                Username,
+                Email,
+                PhoneNumber,
+                FirstName,
+                LastName,
+                Password,
+                ConfirmPassword
+            });
+
+            const token = response.data?.token;
+            if (token) {
+                await AsyncStorage.setItem("authToken", token);
+                return {
+                    success: true,
+                    token
+                };
+            }
+
+            return {
+                success: false,
+                message: "Invalid response from server"
+            };
+        }
+        catch (error: any) {
+            return {
+                success: false,
+                message: error.response?.data?.message || "Registration failed",
+            };
+        }
+    },
+
+
     login: async ({ UsernameOrEmail, Password }: LoginPayload): Promise<AuthResult> => {
         try {
             const response = await api.post("/auth/login", { UsernameOrEmail, Password });

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   View,
   Text,
@@ -6,9 +6,6 @@ import {
   StyleSheet,
   ScrollView,
   StatusBar,
-  Modal,
-  TextInput,
-  Button,
 } from 'react-native';
 import { Entypo, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
@@ -17,27 +14,11 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import AuthService from '../services/AuthService';
 
 const ProfileScreen: React.FC = () => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [UsernameOrEmail, setUsernameOrEmail] = useState('');
-  const [Password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
   const [profileData, setProfileData] = useState<any>(null);
 
   const navigation: any = useNavigation();
   const { isDark } = useTheme();
   const themeStyles = isDark ? darkTheme : lightTheme;
-
-  const handleLogin = async () => {
-    const result = await AuthService.login({ UsernameOrEmail, Password });
-
-    if (result.success) {
-      setModalVisible(false);
-      setErrorMessage('');
-      await loadProfile(); // refresh user info after login
-    } else {
-      setErrorMessage(result.message);
-    }
-  };
 
   const loadProfile = async () => {
     try {
@@ -101,46 +82,6 @@ const ProfileScreen: React.FC = () => {
           <Entypo name="chevron-right" size={24} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.option} onPress={() => setModalVisible(true)}>
-          <FontAwesome name="sign-in" size={24} style={themeStyles.iconColor} />
-          <Text style={styles.optionText}>Login</Text>
-          <Entypo name="chevron-right" size={24} />
-        </TouchableOpacity>
-
-        <Modal visible={modalVisible} animationType="slide" transparent={true}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-              <Text style={styles.title}>Login</Text>
-
-              <TextInput
-                style={styles.input}
-                placeholder="Username or Email"
-                value={UsernameOrEmail}
-                onChangeText={setUsernameOrEmail}
-              />
-
-              <TextInput
-                style={styles.input}
-                placeholder="Password"
-                secureTextEntry
-                value={Password}
-                onChangeText={setPassword}
-              />
-
-              {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
-
-              <Button title="Submit" onPress={handleLogin} />
-              <View style={{ marginVertical: 5 }} />
-              <Button title="Close" onPress={() => setModalVisible(false)} />
-            </View>
-          </View>
-        </Modal>
-
-        <TouchableOpacity style={styles.option} onPress={AuthService.logout}>
-          <FontAwesome name="sign-out" size={24} style={themeStyles.iconColor} />
-          <Text style={styles.optionText}>Logout</Text>
-          <Entypo name="chevron-right" size={24} />
-        </TouchableOpacity>
       </View>
     </ScrollView>
   );
