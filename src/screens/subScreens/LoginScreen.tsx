@@ -4,6 +4,9 @@ import { useDispatch } from 'react-redux';
 import { login } from '../../store/slices/authSlice';
 import { useNavigation } from '@react-navigation/native';
 import AuthService from '../../services/AuthService';
+import LoginButton from '../../components/LoginButton';
+import { useTheme } from '../../context/ThemeContext';
+import { darkTheme, lightTheme } from '../../assets/colors/theme';
 
 export default function LoginScreen() {
     const [credentials, setCredentials] = useState({
@@ -13,6 +16,9 @@ export default function LoginScreen() {
 
     const dispatch = useDispatch();
     const navigation = useNavigation();
+    const { isDark } = useTheme();
+
+    const themeStyles = isDark ? darkTheme : lightTheme;
 
     const handleChange = (key: string, value: string) => {
         setCredentials({ ...credentials, [key]: value });
@@ -30,11 +36,11 @@ export default function LoginScreen() {
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Login</Text>
+        <View style={[styles.container, themeStyles.container]}>
+            <Text style={[styles.title, themeStyles.text]}>Login</Text>
 
             <TextInput
-                style={styles.input}
+                style={[styles.input, themeStyles.card]}
                 placeholder='Username or Email'
                 autoCapitalize='none'
                 value={credentials.UsernameOrEmail}
@@ -42,7 +48,7 @@ export default function LoginScreen() {
             />
 
             <TextInput
-                style={styles.input}
+                style={[styles.input, themeStyles.card]}
                 placeholder='Password'
                 secureTextEntry
                 autoCapitalize='none'
@@ -50,10 +56,10 @@ export default function LoginScreen() {
                 onChangeText={(text) => handleChange('Password', text)}
             />
 
-            <Button title='Login' onPress={handleLogin} />
+            <LoginButton onPress={handleLogin} />
 
             <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-                <Text style={styles.link}>Don't have an account? Register here</Text>
+                <Text style={[styles.link, themeStyles.textBlue]}>Don't have an account? Register here</Text>
             </TouchableOpacity>
         </View>
     );
@@ -68,18 +74,21 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 32,
         marginBottom: 32,
-        textAlign: 'center'
+        textAlign: 'center',
+        fontFamily: 'Poppins_600SemiBold'
     },
     input: {
         borderWidth: 1,
         borderColor: '#ccc',
         padding: 14,
         borderRadius: 8,
-        marginBottom: 16
+        marginBottom: 16,
+        elevation: 5
     },
     link: {
         marginTop: 24,
         textAlign: 'center',
-        color: '#007bff'
+        color: '#007bff',
+        fontFamily: 'Poppins_400Regular'
     }
 })
