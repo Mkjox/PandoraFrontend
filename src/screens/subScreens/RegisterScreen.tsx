@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, Button, Alert, ScrollView, StyleSheet, TextInput } from 'react-native';
+import { Text, Button, Alert, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { login } from '../../store/slices/authSlice';
 import AuthService from '../../services/AuthService';
@@ -52,9 +52,11 @@ export default function RegisterScreen() {
             ))}
 
             <Button title='Register' onPress={handleRegister} />
-            <Text style={styles.link} onPress={() => navigation.goBack()}>
-                Already have an account? Log in
-            </Text>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Text style={styles.link}>
+                    Already have an account? Log in
+                </Text>
+            </TouchableOpacity>
         </ScrollView>
     );
 }

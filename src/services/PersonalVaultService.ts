@@ -1,13 +1,6 @@
-import axios from "axios";
 import AuthService from "./AuthService";
 import { PersonalVaultPayload, PersonalVaultUpdatePayload } from "../types/personalVault.types";
-
-const API_URL = process.env.EXPO_PUBLIC_API_URL;
-
-const api = axios.create({
-  baseURL: API_URL,
-});
-
+import api from "./api";
 
 api.interceptors.request.use(async (config) => {
   const token = await AuthService.getToken();

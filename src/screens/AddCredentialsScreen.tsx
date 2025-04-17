@@ -106,7 +106,7 @@ const AddCredentialsScreen = () => {
       </View>
 
       <TouchableOpacity style={[styles.submitButton, themeStyles.button]}>
-        <Text style={[themeStyles.buttonText, { textAlign: 'center' }]}>Submit</Text>
+        <Text style={[themeStyles.buttonText, styles.buttonText]}>Submit</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -144,6 +144,11 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 8,
   },
+  buttonText: {
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: '500',
+  }
 });
 
 export default AddCredentialsScreen;

@@ -5,6 +5,7 @@ import { useTheme } from '../context/ThemeContext';
 import { darkTheme, lightTheme } from '../assets/colors/theme';
 import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import { Searchbar } from 'react-native-paper';
+import CustomAddButton from '../components/CustomAddButton';
 
 const { width, height } = Dimensions.get('window');
 
@@ -23,12 +24,7 @@ const HomeScreen: React.FC = () => {
         <View style={styles.topSection}>
           <Text style={[themeStyles.text, styles.title]}>Vault</Text>
           <View>
-            <TouchableOpacity activeOpacity={0.7} style={[styles.plusButton, themeStyles.button]} onPress={() => navigation.navigate("AddCredentials")}>
-              <View style={styles.buttonContent}>
-                <AntDesign name='plus' size={20} color='white' />
-                <Text style={[themeStyles.buttonText, styles.topSectionText]}>New</Text>
-              </View>
-            </TouchableOpacity>
+            <CustomAddButton />
           </View>
         </View>
 
@@ -87,6 +83,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
+    borderWidth: 1,
+    elevation: 5
   },
   buttonContent: {
     flexDirection: 'row',
@@ -116,13 +115,14 @@ const styles = StyleSheet.create({
     marginTop: height * 0.019,
     marginRight: width * 0.03,
     alignItems: 'center',
-    borderRadius: 5
+    borderRadius: 5,
+    elevation: 5,
+    gap: 4,
+    padding: 5
   },
   categoryIcon: {
-    marginHorizontal: 5
   },
   categoryName: {
-    marginRight: 5
   },
 })
 

@@ -5,10 +5,16 @@ export const lightTheme = StyleSheet.create({
         backgroundColor: '#FFFFFF',
     },
     button: {
-        backgroundColor: '#4C4DDC'
+        backgroundColor: '#4C4DDC',
     },
     buttonText: {
         color: '#FFFFFF'
+    },
+    buttonBorder: {
+        borderColor: '#4C4DDC',
+    },
+    customButtonText: {
+        color: '#4C4DDC'
     },
     iconBackgroundSquare: {
         backgroundColor: '#FFFFFF',
@@ -43,6 +49,12 @@ export const darkTheme = StyleSheet.create({
     },
     buttonText: {
         color: '#FFFFFF',
+    },
+    buttonBorder: {
+        borderColor: '#3580FF',
+    },
+    customButtonText: {
+        color: '#3580FF'
     },
     iconBackgroundSquare: {
         backgroundColor: '#0A0C16',
