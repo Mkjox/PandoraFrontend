@@ -4,7 +4,7 @@ import { useTheme } from '../context/ThemeContext';
 import { darkTheme, lightTheme } from '../assets/colors/theme';
 import { useNavigation } from '@react-navigation/native';
 
-export default function CustomAddButton() {
+export default function AddButton() {
   const navigation = useNavigation();
   const { isDark } = useTheme();
 

@@ -1,13 +1,14 @@
 import api from "./api";
 import { Category, CategoryPayload } from "../types/category.types";
+import { ServiceResult } from "../types/service.types";
 
 const CategoryService = {
-    createCategory: async (data: CategoryPayload) => {
+    createCategory: async (data: CategoryPayload): Promise<ServiceResult<Category>> => {
         try {
-            const response = await api.post("/categories", data);
+            const response = await api.post<Category>("/categories", data);
             return {
                 success: true,
-                category: response.data as Category
+                data: response.data
             };
         }
         catch (error: any) {
@@ -18,12 +19,12 @@ const CategoryService = {
         }
     },
 
-    updateCategory: async (id: string, data: Partial<CategoryPayload>) => {
+    updateCategory: async (id: string, data: Partial<CategoryPayload>): Promise<ServiceResult<Category>> => {
         try {
             const response = await api.put(`/categories/${id}`, data);
             return {
                 success: true,
-                category: response.data as Category
+                data: response.data
             };
         }
         catch (error: any) {
@@ -34,7 +35,7 @@ const CategoryService = {
         }
     },
 
-    deleteCategory: async (id: string) => {
+    deleteCategory: async (id: string): Promise<ServiceResult<null>> => {
         try {
             await api.delete(`/categories/${id}`);
             return {
@@ -49,12 +50,12 @@ const CategoryService = {
         }
     },
 
-    getCategoryById: async (id: string) => {
+    getCategoryById: async (id: string): Promise<ServiceResult<Category>> => {
         try {
-            const response = await api.get(`/categories/${id}`);
+            const response = await api.get<Category>(`/categories/${id}`);
             return {
                 success: true,
-                category: response.data as Category
+                data: response.data
             };
         }
         catch (error: any) {
@@ -65,11 +66,21 @@ const CategoryService = {
         }
     },
 
-    getCategoriesByUser: async () => {
-        return {
-            success: false,
-            message: "Not implemented yet."
-        };
+    // CHECK IF THE URL IS WRONG
+    getCategoriesByUser: async (): Promise<ServiceResult<Category[]>> => {
+        try {
+            const response = await api.get<Category[]>(`/categories/`);
+            return {
+                success: true,
+                data: response.data
+            };
+        }
+        catch (error: any) {
+            return {
+                success: false,
+                message: error.response?.data?.message || "Failed to fetch categories",
+            };
+        }
     },
 };
 

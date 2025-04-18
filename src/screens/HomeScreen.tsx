@@ -5,7 +5,7 @@ import { useTheme } from '../context/ThemeContext';
 import { darkTheme, lightTheme } from '../assets/colors/theme';
 import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import { Searchbar } from 'react-native-paper';
-import CustomAddButton from '../components/CustomAddButton';
+import AddButton from '../components/AddButton';
 
 const { width, height } = Dimensions.get('window');
 
@@ -24,7 +24,7 @@ const HomeScreen: React.FC = () => {
         <View style={styles.topSection}>
           <Text style={[themeStyles.text, styles.title]}>Vault</Text>
           <View>
-            <CustomAddButton />
+            <AddButton />
           </View>
         </View>
 

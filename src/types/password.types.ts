@@ -1,6 +1,6 @@
 {/* For Getting Passwords */ }
 export interface PasswordItem {
-    id: string;
+    // id: string;
     UserId: string;
     SiteName: string;
     UsernameOrEmail: string;

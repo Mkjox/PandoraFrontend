@@ -4,12 +4,7 @@ import {
     PasswordPayload,
     PasswordUpdatePayload
 } from "../types/password.types";
-
-interface ServiceResult<T> {
-    success: boolean;
-    data?: T;
-    message?: string;
-}
+import { ServiceResult } from "../types/service.types";
 
 const PasswordService = {
     getPasswordsByUser: async (): Promise<ServiceResult<PasswordItem[]>> => {

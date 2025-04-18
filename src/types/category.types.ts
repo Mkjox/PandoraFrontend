@@ -1,4 +1,5 @@
 export interface CategoryPayload {
+    UserId: string;
     name: string;
     description?: string;
 }
