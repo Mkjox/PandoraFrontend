@@ -61,7 +61,7 @@ export default function CategoryScreen() {
 
       <View style={styles.topSection}>
         <Text style={[styles.title, themeStyles.text]}>Categories</Text>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={[styles.newButton, themeStyles.button]}
           onPress={() =>
             navigation.navigate('AddCredentials', { tab: 'category' })
@@ -71,7 +71,7 @@ export default function CategoryScreen() {
           <Text style={[styles.newButtonText, themeStyles.buttonText]}>
             New
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       {loading ? (

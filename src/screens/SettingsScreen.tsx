@@ -1,9 +1,11 @@
 import React from "react";
-import { View, Text, StyleSheet, StatusBar, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Dimensions } from "react-native";
 import { useTheme } from "../context/ThemeContext";
 import { darkTheme, lightTheme } from "../assets/colors/theme";
 import { AntDesign, Entypo, FontAwesome, Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+
+const {width, height} = Dimensions.get("window");
 
 const SettingsScreen: React.FC = () => {
     const navigation = useNavigation();
@@ -66,20 +68,20 @@ const SettingsScreen: React.FC = () => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        paddingHorizontal: width * 0.05
     },
     topSection: {
-        marginTop: StatusBar.currentHeight
+        marginTop: StatusBar.currentHeight,
     },
     title: {
         fontSize: 22,
-        margin: 20,
+        marginVertical: 20,
         fontFamily: 'Poppins_700Bold',
     },
     options: {
         flexDirection: 'row',
-        marginHorizontal: 20,
-        marginVertical: 15
+        marginVertical: 15,
     },
     optionsText: {
         marginHorizontal: 10,

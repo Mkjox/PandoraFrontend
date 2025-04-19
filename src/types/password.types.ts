@@ -18,7 +18,7 @@ export interface PasswordPayload {
     Password: string;
     PasswordRepeat: string;
     Notes: string;
-    PasswordExpirationDate: string;
+    PasswordExpirationDate?: string;
     CategoryId: string;
 }
 

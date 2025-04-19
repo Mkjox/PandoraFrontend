@@ -7,9 +7,9 @@ export interface PersonalVaultPayload {
     Summary: string;
     Tags: string[];
     IsLocked: boolean;
-    UnlockDate: string; // ISO format
+    UnlockDate?: string; // ISO format
     CategoryId: string;
-    ExpirationDate: string;
+    ExpirationDate?: string;
     IsFavorite: boolean;
   }
   

@@ -59,7 +59,7 @@ const PersonalScreen = () => {
   return (
     <View style={[styles.container, themeStyles.container]}>
       <View style={styles.topSection}>
-        <Text style={styles.title}>Personal Vault</Text>
+        <Text style={[styles.title, themeStyles.text]}>Personal Vault</Text>
       </View>
 
       {loading ? (
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     marginBottom: height * 0.02,
   },
   title: {
-    fontSize: 24,
+    fontSize: 20,
     fontFamily: "Poppins_700Bold",
   },
   listContent: {

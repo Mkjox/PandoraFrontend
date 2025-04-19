@@ -17,7 +17,7 @@ import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 
 import AuthService from '../services/AuthService';
-import PasswordService from '../services/PasswordServices';
+import PasswordService from '../services/PasswordService';
 import CategoryService from '../services/CategoryService';
 import PersonalVaultService from '../services/PersonalVaultService';
 import { Category } from '../types/category.types';
@@ -104,9 +104,11 @@ const AddCredentialsScreen: React.FC = () => {
     try {
       if (selectedTab === 'password') {
         const { SiteName, UsernameOrEmail, Password, PasswordRepeat, CategoryId } = form;
+
         if (!SiteName || !UsernameOrEmail || !Password || Password !== PasswordRepeat || !CategoryId) {
           return Alert.alert('Password Error', 'Fill all fields and match passwords, select a category.');
         }
+
         const res = await PasswordService.createPassword({
           UserId: userId,
           SiteName,
@@ -114,7 +116,9 @@ const AddCredentialsScreen: React.FC = () => {
           Password,
           PasswordRepeat,
           Notes: form.Notes,
-          PasswordExpirationDate: form.PasswordExpirationDate,
+          PasswordExpirationDate: form.PasswordExpirationDate
+            ? new Date(form.PasswordExpirationDate).toISOString()
+            : undefined,
           CategoryId,
         });
         if (!res.success) return Alert.alert('Password Error', res.message!);
@@ -135,9 +139,13 @@ const AddCredentialsScreen: React.FC = () => {
           Summary: form.Summary,
           Tags: form.Tags.split(',').map((t: string) => t.trim()),
           IsLocked: form.IsLocked,
-          UnlockDate: form.UnlockDate,
+          UnlockDate: form.UnlockDate
+            ? new Date(form.UnlockDate).toISOString()
+            : undefined,
           CategoryId,
-          ExpirationDate: form.ExpirationDate,
+          ExpirationDate: form.ExpirationDate
+            ? new Date(form.ExpirationDate).toISOString()
+            : undefined,
           IsFavorite: form.IsFavorite,
         });
         if (!res.success) return Alert.alert('Vault Error', res.message!);

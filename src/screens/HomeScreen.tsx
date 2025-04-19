@@ -1,129 +1,249 @@
-import { View, Text, StyleSheet, StatusBar, ScrollView, Dimensions, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
-import { useNavigation } from '@react-navigation/native'
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  StatusBar,
+  Dimensions,
+  TouchableOpacity,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
+import { Searchbar } from 'react-native-paper';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useTheme } from '../context/ThemeContext';
 import { darkTheme, lightTheme } from '../assets/colors/theme';
-import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
-import { Searchbar } from 'react-native-paper';
 import AddButton from '../components/AddButton';
+import PasswordService from '../services/PasswordService';
+import CategoryService from '../services/CategoryService';
+import { PasswordItem } from '../types/password.types';
+import { Category } from '../types/category.types';
 
 const { width, height } = Dimensions.get('window');
 
-const HomeScreen: React.FC = () => {
+export default function HomeScreen() {
   const navigation = useNavigation();
   const { isDark } = useTheme();
-  const [searchQuery, setSearchQuery] = useState('');
-
   const themeStyles = isDark ? darkTheme : lightTheme;
 
-  const SIZE = 18;
+  const [searchQuery, setSearchQuery] = useState('');
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [passwords, setPasswords] = useState<PasswordItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetches data
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    try {
+      const [catRes, passRes] = await Promise.all([
+        CategoryService.getCategoriesByUser(),
+        PasswordService.getPasswordsByUser(),
+      ]);
+
+      if (catRes.success && catRes.data) {
+        setCategories(catRes.data);
+      } else {
+        throw new Error(catRes.message || 'Could not load categories');
+      }
+
+      if (passRes.success && passRes.data) {
+        // Sort newest-first
+        const sorted = [...passRes.data].sort((a, b) => {
+          const da = new Date(a.createdAt || '').getTime();
+          const db = new Date(b.createdAt || '').getTime();
+          return db - da;
+        });
+        setPasswords(sorted);
+      } else {
+        throw new Error(passRes.message || 'Could not load passwords');
+      }
+
+      setError(null);
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+    }, [fetchData])
+  );
+
+  // Filtered list based on search + category
+  const filteredPasswords = useMemo(() => {
+    return passwords.filter((p) => {
+      const site = (p.SiteName || '').toLowerCase();
+      const user = (p.UsernameOrEmail || '').toLowerCase();
+      const query = searchQuery.toLowerCase();
+
+      const matchSearch = site.includes(query) || user.includes(query);
+      const matchCategory = selectedCategory
+        ? p.CategoryId === selectedCategory
+        : true;
+
+      return matchSearch && matchCategory;
+    });
+  }, [passwords, searchQuery, selectedCategory]);
+
+
+  const renderCategory = ({ item }: { item: Category | { id: null; name: 'All' } }) => {
+    const isActive = item.id === selectedCategory;
+    return (
+      <TouchableOpacity
+        style={[
+          styles.categoryPill,
+          isActive ? themeStyles.button : themeStyles.card,
+        ]}
+        onPress={() =>
+          setSelectedCategory(item.id) /* null id = All */
+        }
+      >
+        <Text
+          style={[
+            styles.categoryText,
+            isActive ? themeStyles.buttonText : themeStyles.text,
+          ]}
+        >
+          {item.name}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
+  const renderPassword = ({ item }: { item: PasswordItem }) => (
+    <TouchableOpacity
+      style={[styles.card, themeStyles.card]}
+      onPress={() =>
+        navigation.navigate('PassDetails', { id: item.id })
+      }
+    >
+      <Text style={[styles.cardTitle, themeStyles.text]}>
+        {item.SiteName}
+      </Text>
+      <Text style={[styles.cardSubtitle, themeStyles.textGray]}>
+        {item.UsernameOrEmail}
+      </Text>
+    </TouchableOpacity>
+  );
+
+  if (loading) {
+    return (
+      <View style={[themeStyles.container, styles.center]}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={[themeStyles.container, styles.center]}>
+        <Text style={themeStyles.text}>Error: {error}</Text>
+      </View>
+    );
+  }
+
 
   return (
     <View style={[themeStyles.container, styles.container]}>
       <View style={styles.innerContainer}>
+        {/* Header + Add */}
         <View style={styles.topSection}>
-          <Text style={[themeStyles.text, styles.title]}>Vault</Text>
-          <View>
-            <AddButton />
-          </View>
+          <Text style={[styles.title, themeStyles.text]}>Vault</Text>
+          <AddButton />
         </View>
 
+        {/* Search */}
         <Searchbar
-          placeholder='Search'
+          placeholder="Search"
           onChangeText={setSearchQuery}
           value={searchQuery}
           style={styles.searchBar}
         />
 
-        <View style={styles.categoryWrapper}>
-          <View style={{ elevation: 10 }}>
-            <TouchableOpacity style={[themeStyles.button, styles.categoryInnerWrapper]}>
-              <FontAwesome5 name='compress-arrows-alt' style={[themeStyles.buttonText, styles.categoryIcon]} size={SIZE} />
-              <Text style={[themeStyles.buttonText, styles.categoryName]}>CategoryName</Text>
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity style={[themeStyles.button, styles.categoryInnerWrapper]}>
-            <AntDesign name='lock' style={[themeStyles.buttonText, styles.categoryIcon]} size={SIZE} />
-            <Text style={[themeStyles.buttonText, styles.categoryName]}>CategoryName</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[themeStyles.button, styles.categoryInnerWrapper]}>
-            <FontAwesome5 name='compress-arrows-alt' style={[themeStyles.buttonText, styles.categoryIcon]} size={SIZE} />
-            <Text style={[themeStyles.buttonText, styles.categoryName]}>CategoryName</Text>
-          </TouchableOpacity>
-        </View>
+        {/* Categories */}
+        <FlatList
+          data={[{ id: null, name: 'All' }, ...categories]}
+          horizontal
+          keyExtractor={(c) => String(c.id)}
+          renderItem={renderCategory}
+          showsHorizontalScrollIndicator={false}
+          style={styles.categoryList}
+        />
 
-
-        {/* This is gonna be Card section below */}
-        {/* <ScrollView horizontal style={{height: height * 0.4}}>
-
-      </ScrollView> */}
-
-        {/* Bottom Section */}
+        {/* Passwords */}
+        <FlatList
+          data={filteredPasswords}
+          keyExtractor={(p) => p.id}
+          renderItem={renderPassword}
+          contentContainerStyle={styles.passwordList}
+          showsVerticalScrollIndicator={false}
+        />
       </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1
+  },
+  center: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   innerContainer: {
-    margin: width * 0.07,
+    marginHorizontal: width * 0.06,
+    marginTop: StatusBar.currentHeight,
   },
   topSection: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: StatusBar.currentHeight
-  },
-  plusButton: {
-    flexDirection: 'row',
-    height: 40,
-    width: 75,
     alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 10,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
-    borderWidth: 1,
-    elevation: 5
-  },
-  buttonContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 2
-  },
-  topSectionText: {
-    textAlign: 'center',
-    fontSize: 18,
   },
   title: {
-    fontSize: 20,
-    fontFamily: 'Poppins_700Bold',
+    fontSize: 24,
+    fontFamily: 'Poppins_700Bold'
   },
   searchBar: {
     marginTop: height * 0.02,
-    borderRadius: 10
+    borderRadius: 8
   },
-  categoryWrapper: {
-    flexDirection: 'row',
+  categoryList: {
+    marginTop: height * 0.02
   },
-  categoryInnerWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    width: StyleSheet.absoluteFill,
-    height: height * 0.04,
-    marginTop: height * 0.019,
-    marginRight: width * 0.03,
-    alignItems: 'center',
-    borderRadius: 5,
-    elevation: 5,
-    gap: 4,
-    padding: 5
+  categoryPill: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+    marginRight: 10,
   },
-  categoryIcon: {
+  categoryText: {
+    fontSize: 14
   },
-  categoryName: {
+  passwordList: {
+    paddingBottom: 40,
+    marginTop: height * 0.02
   },
-})
+  card: {
+    padding: 16,
+    marginBottom: 12,
+    borderRadius: 8,
+    elevation: 1,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontFamily: 'Poppins_500Medium'
+  },
+  cardSubtitle: {
+    marginTop: 4,
+    fontSize: 14,
+    fontFamily: 'Poppins_400Regular'
+  },
+});
 
-export default HomeScreen
