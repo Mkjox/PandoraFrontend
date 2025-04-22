@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen from '../screens/HomeScreen';
 import CategoryScreen from '../screens/CategoryScreen';
-import PersonalScreen from '../screens/PersonalScreen';
+import PersonalVaultScreen from '../screens/PersonalVaultScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import PassDetailsScreen from '../screens/PassDetailsScreen';
@@ -30,7 +30,7 @@ function TabNavigator() {
         <Tab.Navigator initialRouteName='Home' tabBar={(props) => <CustomTabBar {...props} />}>
             <Tab.Screen name='Home' component={HomeScreen} options={{ headerShown: false }} />
             <Tab.Screen name='Category' component={CategoryScreen} options={{ headerShown: false }} />
-            <Tab.Screen name='Personal' component={PersonalScreen} options={{ headerShown: false }} />
+            <Tab.Screen name='Personal' component={PersonalVaultScreen} options={{ headerShown: false }} />
             <Tab.Screen name='Profile' component={ProfileScreen} options={{ headerShown: false }} />
         </Tab.Navigator>
     );

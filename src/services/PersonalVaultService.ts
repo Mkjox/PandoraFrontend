@@ -1,6 +1,23 @@
-import AuthService from "./AuthService";
-import { PersonalVaultPayload, PersonalVaultUpdatePayload } from "../types/personalVault.types";
+import { AppDispatch } from "../redux/store";
 import api from "./api";
+import AuthService from "./AuthService";
+import {
+  fetchVaultsStart,
+  fetchVaultsSuccess,
+  fetchVaultsFailure,
+  addVault,
+  deleteVault,
+  updateVault as updateVaultAction
+} from '../redux/store/slices/vaultSlice';
+
+import {
+  PersonalVaultPayload,
+  PersonalVaultUpdatePayload
+} from './../types/personalVault.types';
+
+interface VaultItem extends PersonalVaultPayload {
+  id: string;
+}
 
 api.interceptors.request.use(async (config) => {
   const token = await AuthService.getToken();
@@ -10,60 +27,54 @@ api.interceptors.request.use(async (config) => {
   return config;
 });
 
-// Get all vaults for logged-in user
-const getPersonalVaults = async () => {
+export const getPersonalVaults = () => async (dispatch: AppDispatch) => {
   try {
-    const response = await api.get("/vaults");
-    return { success: true, data: response.data };
-  } catch (error) {
-    return { success: false, message: error.response?.data?.message || "Failed to fetch vaults" };
+    dispatch(fetchVaultsStart());
+    const response = await api.get<VaultItem[]>('/vaults');
+    dispatch(fetchVaultsSuccess(response.data));
+  }
+  catch (error: any) {
+    dispatch(fetchVaultsFailure(error.response?.data?.message || 'Failed to fetch vaults'));
   }
 };
 
-// Get a specific vault by ID
-const getVaultById = async (vaultId: string) => {
+export const getVaultsById = async (vaultId: string): Promise<VaultItem | null> => {
   try {
-    const response = await api.get(`/vaults/${vaultId}`);
-    return { success: true, data: response.data };
-  } catch (error) {
-    return { success: false, message: error.response?.data?.message || "Failed to fetch vault" };
+    const response = await api.get<VaultItem>(`/vaults/${vaultId}`);
+    return response.data;
+  }
+  catch (error: any) {
+    console.error('Failed to fetch vault:', error);
+    return null;
   }
 };
 
-// 📝 Create new vault
-const createVault = async (payload: PersonalVaultPayload) => {
+export const createVault = (payload: PersonalVaultPayload) => async (dispatch: AppDispatch) => {
   try {
-    const response = await api.post("/vaults", payload);
-    return { success: true, data: response.data };
-  } catch (error) {
-    return { success: false, message: error.response?.data?.message || "Failed to create vault" };
+    const response = await api.post<VaultItem>('/vaults', payload);
+    dispatch(addVault(response.data));
+  }
+  catch (error: any) {
+    console.error('Failed to create vault:', error.response?.data?.message || error.message);
   }
 };
 
-// Update vault
-const updateVault = async (vaultId: string, payload: PersonalVaultUpdatePayload) => {
+export const updateVault = (vaultId: string, payload: PersonalVaultUpdatePayload) => async (dispatch: AppDispatch) => {
   try {
-    const response = await api.put(`/vaults/${vaultId}`, payload);
-    return { success: true, data: response.data };
-  } catch (error) {
-    return { success: false, message: error.response?.data?.message || "Failed to update vault" };
+    const response = await api.put<VaultItem>(`/vaults/${vaultId}`, payload);
+    dispatch(updateVaultAction(response.data));
+  }
+  catch (error: any) {
+    console.error('Failed to update vault:', error.response?.data?.message || error.message);
   }
 };
 
-// Delete vault
-const deleteVault = async (vaultId: string) => {
+export const removeVault = (vaultId: string) => async (dispatch: AppDispatch) => {
   try {
     await api.delete(`/vaults/${vaultId}`);
-    return { success: true };
-  } catch (error) {
-    return { success: false, message: error.response?.data?.message || "Failed to delete vault" };
+    dispatch(deleteVault(vaultId));
   }
-};
-
-export default {
-  getPersonalVaults,
-  getVaultById,
-  createVault,
-  updateVault,
-  deleteVault,
+  catch (error: any) {
+    console.error('Failed to delete vault:', error.response?.data?.message || error.message);
+  }
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useEffect, useMemo, useCallback, useState } from 'react';
 import {
   View,
   Text,
@@ -14,8 +14,10 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useTheme } from '../context/ThemeContext';
 import { darkTheme, lightTheme } from '../assets/colors/theme';
 import AddButton from '../components/AddButton';
-import PasswordService from '../services/PasswordService';
-import CategoryService from '../services/CategoryService';
+import { useAppSelector, useAppDispatch } from '../redux/hooks';
+import { fetchCategoriesByUser } from '../redux/store/slices/categorySlice';
+import { fetchPasswordsByUser } from '../redux/store/slices/passwordSlice';
+import ErrorDisplay from '../components/ErrorDisplay';
 import { PasswordItem } from '../types/password.types';
 import { Category } from '../types/category.types';
 
@@ -26,47 +28,33 @@ export default function HomeScreen() {
   const { isDark } = useTheme();
   const themeStyles = isDark ? darkTheme : lightTheme;
 
+  const dispatch = useAppDispatch();
+
+  const {
+    categories,
+    loading: categoriesLoading,
+    error: categoriesError
+  } = useAppSelector(state => state.category);
+
+  const {
+    passwords,
+    loading: passwordsLoading,
+    error: passwordsError
+  } = useAppSelector(state => state.passwords);
+
   const [searchQuery, setSearchQuery] = useState('');
-  const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [passwords, setPasswords] = useState<PasswordItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  // Fetches data
+  // Fetch data
   const fetchData = useCallback(async () => {
-    setLoading(true);
     try {
-      const [catRes, passRes] = await Promise.all([
-        CategoryService.getCategoriesByUser(),
-        PasswordService.getPasswordsByUser(),
-      ]);
-
-      if (catRes.success && catRes.data) {
-        setCategories(catRes.data);
-      } else {
-        throw new Error(catRes.message || 'Could not load categories');
-      }
-
-      if (passRes.success && passRes.data) {
-        // Sort newest-first
-        const sorted = [...passRes.data].sort((a, b) => {
-          const da = new Date(a.createdAt || '').getTime();
-          const db = new Date(b.createdAt || '').getTime();
-          return db - da;
-        });
-        setPasswords(sorted);
-      } else {
-        throw new Error(passRes.message || 'Could not load passwords');
-      }
-
-      setError(null);
-    } catch (e: any) {
-      setError(e.message);
-    } finally {
-      setLoading(false);
+      dispatch(fetchCategoriesByUser());
+      dispatch(fetchPasswordsByUser());
     }
-  }, []);
+    catch (e) {
+      console.error("Error fetching data", e);
+    }
+  }, [dispatch]);
 
   useFocusEffect(
     useCallback(() => {
@@ -74,7 +62,6 @@ export default function HomeScreen() {
     }, [fetchData])
   );
 
-  // Filtered list based on search + category
   const filteredPasswords = useMemo(() => {
     return passwords.filter((p) => {
       const site = (p.SiteName || '').toLowerCase();
@@ -82,33 +69,21 @@ export default function HomeScreen() {
       const query = searchQuery.toLowerCase();
 
       const matchSearch = site.includes(query) || user.includes(query);
-      const matchCategory = selectedCategory
-        ? p.CategoryId === selectedCategory
-        : true;
+      const matchCategory = selectedCategory ? p.CategoryId === selectedCategory : true;
 
       return matchSearch && matchCategory;
     });
   }, [passwords, searchQuery, selectedCategory]);
 
-
   const renderCategory = ({ item }: { item: Category | { id: null; name: 'All' } }) => {
     const isActive = item.id === selectedCategory;
+
     return (
       <TouchableOpacity
-        style={[
-          styles.categoryPill,
-          isActive ? themeStyles.button : themeStyles.card,
-        ]}
-        onPress={() =>
-          setSelectedCategory(item.id) /* null id = All */
-        }
+        style={[styles.categoryPill, isActive ? themeStyles.button : themeStyles.card]}
+        onPress={() => setSelectedCategory(item.id)}// null id = All
       >
-        <Text
-          style={[
-            styles.categoryText,
-            isActive ? themeStyles.buttonText : themeStyles.text,
-          ]}
-        >
+        <Text style={[styles.categoryText, isActive ? themeStyles.buttonText : themeStyles.text]}>
           {item.name}
         </Text>
       </TouchableOpacity>
@@ -118,9 +93,7 @@ export default function HomeScreen() {
   const renderPassword = ({ item }: { item: PasswordItem }) => (
     <TouchableOpacity
       style={[styles.card, themeStyles.card]}
-      onPress={() =>
-        navigation.navigate('PassDetails', { id: item.id })
-      }
+      onPress={() => navigation.navigate('PassDetails', { id: item.id })}
     >
       <Text style={[styles.cardTitle, themeStyles.text]}>
         {item.SiteName}
@@ -131,7 +104,7 @@ export default function HomeScreen() {
     </TouchableOpacity>
   );
 
-  if (loading) {
+  if (categoriesLoading || passwordsLoading) {
     return (
       <View style={[themeStyles.container, styles.center]}>
         <ActivityIndicator size="large" />
@@ -139,14 +112,13 @@ export default function HomeScreen() {
     );
   }
 
-  if (error) {
+  if (categoriesError || passwordsError) {
     return (
       <View style={[themeStyles.container, styles.center]}>
-        <Text style={themeStyles.text}>Error: {error}</Text>
+        <ErrorDisplay message={categoriesError || passwordsError || "An error occured"} />
       </View>
     );
   }
-
 
   return (
     <View style={[themeStyles.container, styles.container]}>

@@ -15,7 +15,7 @@ import { PersonalVaultPayload } from "../types/personalVault.types";
 
 const { width, height } = Dimensions.get("window");
 
-const PersonalScreen = () => {
+const PersonalVaultScreen = () => {
   const { isDark } = useTheme();
   const themeStyles = isDark ? darkTheme : lightTheme;
 
@@ -128,4 +128,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PersonalScreen;
+export default PersonalVaultScreen;

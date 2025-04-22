@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, Button, Alert, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { login } from '../../store/slices/authSlice';
+import { login } from '../../redux/store/slices/authSlice';
 import AuthService from '../../services/AuthService';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../../context/ThemeContext';
