@@ -15,11 +15,11 @@ import { useTheme } from '../context/ThemeContext';
 import { darkTheme, lightTheme } from '../assets/colors/theme';
 import AddButton from '../components/AddButton';
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
-import { fetchCategoriesByUser } from '../redux/store/slices/categorySlice';
-import { fetchPasswordsByUser } from '../redux/store/slices/passwordSlice';
 import ErrorDisplay from '../components/ErrorDisplay';
 import { PasswordItem } from '../types/password.types';
 import { Category } from '../types/category.types';
+import { getCategoriesByUser } from '../services/CategoryService';
+import { getPasswordsByUser } from '../services/PasswordService';
 
 const { width, height } = Dimensions.get('window');
 
@@ -48,8 +48,8 @@ export default function HomeScreen() {
   // Fetch data
   const fetchData = useCallback(async () => {
     try {
-      dispatch(fetchCategoriesByUser());
-      dispatch(fetchPasswordsByUser());
+      dispatch(getCategoriesByUser());
+      dispatch(getPasswordsByUser());
     }
     catch (e) {
       console.error("Error fetching data", e);

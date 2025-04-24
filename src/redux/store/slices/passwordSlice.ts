@@ -1,4 +1,3 @@
-import { getPasswordsByUser } from './../../../services/PasswordService';
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { PasswordItem } from "../../../types/password.types";
 
@@ -44,22 +43,6 @@ const passwordSlice = createSlice({
     }
   },
 });
-
-export const fetchPasswordsByUser = () => async (dispatch: any) => {
-  dispatch(fetchPasswordsStart());
-  try {
-    const response = await PasswordService.getPasswordsByUser();
-    if (response.success && response.data) {
-      dispatch(fetchPasswordsSuccess(response.data));
-    }
-    else {
-      throw new Error(response.message || 'Failed to load passwords');
-    }
-  }
-  catch (error: any) {
-    dispatch(fetchPasswordsFailure(error.message));
-  }
-};
 
 export const {
   fetchPasswordsStart,

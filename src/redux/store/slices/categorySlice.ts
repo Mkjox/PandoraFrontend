@@ -1,4 +1,3 @@
-import { getCategoriesByUser } from './../../../services/CategoryService';
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Category } from "../../../types/category.types";
 
@@ -35,22 +34,6 @@ const categorySlice = createSlice({
         },
     },
 });
-
-export const fetchCategoriesByUser = () => async (dispatch: any) => {
-    dispatch(fetchCategoriesStart());
-    try {
-        const response = await CategoryService.getCategoriesByUser();
-        if (response.success && response.data) {
-            dispatch(fetchCategoriesSuccess(response.data));
-        }
-        else {
-            throw new Error(response.message || 'Failed to load categories');
-        }
-    }
-    catch (error: any) {
-        dispatch(fetchCategoriesFailure(error.message));
-    }
-}
 
 export const {
     fetchCategoriesStart,
