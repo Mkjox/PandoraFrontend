@@ -21,6 +21,7 @@ import HelpScreen from '../screens/subScreens/HelpScreen';
 import AdvancedScreen from '../screens/subScreens/AdvancedScreen';
 import AboutScreen from '../screens/subScreens/AboutScreen';
 import PrivacyScreen from '../screens/subScreens/PrivacyScreen';
+import ThemeScreen from '../screens/subScreens/ThemeScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -54,6 +55,7 @@ export default function MainNavigator() {
             <Stack.Screen name='Advanced' component={AdvancedScreen} options={{ headerShown: false }} />
             <Stack.Screen name='About' component={AboutScreen} options={{ headerShown: false }} />
             <Stack.Screen name='Privacy' component={PrivacyScreen} options={{ headerShown: false }} />
+            <Stack.Screen name='ThemeScreen' component={ThemeScreen} options={{headerShown: false}} />
         </Stack.Navigator>
     );
 }

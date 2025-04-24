@@ -1,163 +1,195 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   Text,
-  TouchableOpacity,
   StyleSheet,
-  ScrollView,
   StatusBar,
+  ScrollView,
+  Dimensions,
+  TouchableOpacity,
+  Image,
 } from 'react-native';
-import { Entypo, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
-import { darkTheme, lightTheme } from '../assets/colors/theme';
+import { lightTheme, darkTheme } from '../assets/colors/theme';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import AuthService from '../services/AuthService';
+import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+
+const { width } = Dimensions.get('window');
 
 const ProfileScreen: React.FC = () => {
-  const [profileData, setProfileData] = useState<any>(null);
-
-  const navigation: any = useNavigation();
   const { isDark } = useTheme();
   const themeStyles = isDark ? darkTheme : lightTheme;
+  const navigation = useNavigation();
 
-  const loadProfile = async () => {
-    try {
-      const result = await AuthService.fetchUserProfile();
-      if (result?.success) {
-        setProfileData(result.userData);
-      }
-    } catch (error: unknown) {
-      console.error("Profile loading failed:", error);
+  const [profile, setProfile] = useState<any>(null);
+
+  const loadProfile = useCallback(async () => {
+    const res = await AuthService.fetchUserProfile();
+    if (res.success) {
+      setProfile(res.userData);
     }
-  };
+  }, []);
 
-  useFocusEffect(
-    useCallback(() => {
-      loadProfile();
-    }, [])
-  );
+  useFocusEffect(useCallback(() => { loadProfile(); }, [loadProfile]));
+
+  if (!profile) {
+    return (
+      <View style={[themeStyles.container, styles.center]}>
+        <Text style={themeStyles.text}>Loading profile…</Text>
+      </View>
+    );
+  }
 
   return (
-    <ScrollView contentContainerStyle={[styles.container, themeStyles.container]}>
-      <View style={styles.header}>
-        {profileData ? (
-          <View style={styles.userInfoWrapper}>
-            <FontAwesome name="user-circle" size={80} color="#6E7FEC" />
-            <Text style={styles.name}>{profileData.username}</Text>
-            <Text style={styles.email}>{profileData.email}</Text>
-          </View>
+    <ScrollView style={[styles.container, themeStyles.container]}>
+      <View style={styles.spacer} />
+
+      <Text style={[styles.title, themeStyles.text]}>My Profile</Text>
+
+      <View style={[styles.avatarGroup, themeStyles.card]}>
+        {profile.photoUrl ? (
+          <Image source={{ uri: profile.photoUrl }} style={styles.avatar} />
         ) : (
-          <Text>Loading profile...</Text>
+          <FontAwesome name="user-circle" size={96} color={themeStyles.iconColor.color} />
         )}
       </View>
 
-      <View style={styles.section}>
-        <TouchableOpacity style={styles.option}>
-          <MaterialIcons name="edit" size={24} style={themeStyles.iconColor} />
-          <Text style={styles.optionText}>Edit Profile</Text>
-          <Entypo name="chevron-right" size={24} />
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.option}>
-          <MaterialIcons name="lock" size={24} style={themeStyles.iconColor} />
-          <Text style={styles.optionText}>Change Password</Text>
-          <Entypo name="chevron-right" size={24} />
-        </TouchableOpacity>
-
-        <View style={styles.option}>
-          <MaterialIcons name="shield" size={24} style={themeStyles.iconColor} />
-          <Text style={styles.optionText}>Two-Factor Authentication</Text>
-          <Entypo name="chevron-right" size={24} />
-        </View>
-
-        <View style={styles.option}>
-          <MaterialIcons name="nightlight-round" size={24} style={themeStyles.iconColor} />
-          <Text style={styles.optionText}>Dark Mode</Text>
-          <Entypo name="chevron-right" size={24} />
-        </View>
-
-        <TouchableOpacity style={styles.option} onPress={() => navigation.navigate('Settings')}>
-          <FontAwesome name="gear" size={24} style={themeStyles.iconColor} />
-          <Text style={styles.optionText}>Settings</Text>
-          <Entypo name="chevron-right" size={24} />
-        </TouchableOpacity>
-
+      <View style={[styles.infoGroup, themeStyles.card]}>
+        <Text style={[styles.infoName, themeStyles.text]}>{profile.username}</Text>
+        <Text style={[styles.infoEmail, themeStyles.text]}>{profile.email}</Text>
+        {profile.lastLogin && (
+          <Text style={[styles.infoSub, themeStyles.text]}>
+            Last login: {new Date(profile.lastLogin).toLocaleString()}
+          </Text>
+        )}
       </View>
+
+      <View style={[styles.statsGroup, themeStyles.card]}>
+        <View style={styles.statItem}>
+          <Text style={[styles.statValue, themeStyles.text]}>{profile.passwordCount ?? 0}</Text>
+          <Text style={[styles.statLabel, themeStyles.text]}>Passwords</Text>
+        </View>
+        <View style={styles.statItem}>
+          <Text style={[styles.statValue, themeStyles.text]}>{profile.vaultCount ?? 0}</Text>
+          <Text style={[styles.statLabel, themeStyles.text]}>Vaults</Text>
+        </View>
+        <View style={styles.statItem}>
+          <Text style={[styles.statValue, themeStyles.text]}>{profile.categoryCount ?? 0}</Text>
+          <Text style={[styles.statLabel, themeStyles.text]}>Categories</Text>
+        </View>
+      </View>
+
+      <View style={[styles.linksGroup, themeStyles.card]}>
+        <TouchableOpacity onPress={() => navigation.navigate('EditProfile')} style={styles.linkRow}>
+          <MaterialIcons name="edit" size={20} style={themeStyles.iconColor} />
+          <Text style={[styles.linkText, themeStyles.text]}>Edit Profile</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('ThemeScreen')} style={styles.linkRow}>
+          <MaterialIcons name="dark-mode" size={20} style={themeStyles.iconColor} />
+          <Text style={[styles.linkText, themeStyles.text]}>Theme</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Settings')} style={styles.linkRow}>
+          <MaterialIcons name="settings" size={20} style={themeStyles.iconColor} />
+          <Text style={[styles.linkText, themeStyles.text]}>Settings</Text>
+        </TouchableOpacity>
+      </View>
+
+      <Text style={[styles.versionText, themeStyles.text]}>Version 1.0.0</Text>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    paddingHorizontal: 20,
-    paddingVertical: 30,
+    flex: 1
   },
-  header: {
-    alignItems: 'center',
-    marginBottom: 30,
-    marginTop: StatusBar.currentHeight,
-  },
-  userInfoWrapper: {
-    alignItems: 'center',
-  },
-  name: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#333',
-    marginTop: 10,
-    textTransform: 'capitalize',
-  },
-  email: {
-    fontSize: 16,
-    color: '#777',
-    marginBottom: 20,
-  },
-  section: {
-    marginBottom: 20,
-    borderRadius: 10,
-    paddingHorizontal: 15,
-  },
-  option: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-  },
-  optionText: {
-    flex: 1,
-    fontSize: 16,
-    marginLeft: 15,
-    color: '#4F4F4F',
-  },
-  modalContainer: {
+  center: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    alignItems: 'center'
   },
-  modalContent: {
-    width: 300,
-    padding: 20,
-    backgroundColor: 'white',
-    borderRadius: 10,
+  spacer: {
+    height: StatusBar.currentHeight || 20
   },
   title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    fontSize: 22,
+    fontFamily: 'Poppins_700Bold',
+    marginHorizontal: width * 0.05,
+    marginBottom: 16,
   },
-  input: {
-    width: '100%',
-    padding: 10,
-    borderWidth: 1,
-    marginBottom: 10,
-    borderRadius: 5,
+  avatarGroup: {
+    alignSelf: 'center',
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 16,
   },
-  error: {
-    color: 'red',
-    marginBottom: 10,
+  avatar: {
+    width: 96,
+    height: 96,
+    borderRadius: 48,
+  },
+  infoGroup: {
+    marginHorizontal: width * 0.05,
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 16,
+  },
+  infoName: {
+    fontSize: 18,
+    fontFamily: 'Poppins_600SemiBold',
+    marginBottom: 4,
+  },
+  infoEmail: {
+    fontSize: 16,
+    fontFamily: 'Poppins_400Regular',
+    marginBottom: 4,
+  },
+  infoSub: {
+    fontSize: 14,
+    fontFamily: 'Poppins_400Regular',
+    color: '#888',
+  },
+  statsGroup: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: width * 0.05,
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 16,
+  },
+  statItem: { alignItems: 'center', flex: 1 },
+  statValue: {
+    fontSize: 18,
+    fontFamily: 'Poppins_600SemiBold',
+  },
+  statLabel: {
+    fontSize: 14,
+    fontFamily: 'Poppins_400Regular',
+    color: '#888',
+  },
+  linksGroup: {
+    marginHorizontal: width * 0.05,
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 24,
+  },
+  linkRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+  },
+  linkText: {
+    fontSize: 16,
+    fontFamily: 'Poppins_500Medium',
+    marginLeft: 12,
+  },
+  versionText: {
+    textAlign: 'center',
+    fontSize: 12,
+    fontFamily: 'Poppins_400Regular',
+    color: '#888',
+    marginBottom: 20,
   },
 });
 

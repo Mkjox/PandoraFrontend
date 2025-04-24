@@ -26,6 +26,9 @@ export const lightTheme = StyleSheet.create({
         borderColor: '#E9F1FF',
         borderWidth: 1,
     },
+    icon: {
+        color: '#4F4F4F'
+    },
     text: {
         color: '#002055'
     },
@@ -69,6 +72,9 @@ export const darkTheme = StyleSheet.create({
         borderColor: '#191D30',
         borderWidth: 1,
     },
+    icon: {
+        color: '#E0E0E0'
+    },
     text: {
         color: '#FFFFFF'
     },
@@ -76,7 +82,7 @@ export const darkTheme = StyleSheet.create({
         color: '#0C7DAE'
     },
     card: {
-        backgroundColor: '#1F1B24'
+        backgroundColor: '#151720'
     },
     textGray: {
         color: '#656565'

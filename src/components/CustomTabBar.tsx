@@ -2,10 +2,15 @@ import React from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { useTheme } from "../context/ThemeContext";
+import { darkTheme, lightTheme } from "../assets/colors/theme";
 
 const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
+    const { isDark } = useTheme();
+    const themeStyles = isDark ? darkTheme : lightTheme;
+
     return (
-        <View style={styles.tabContainer}>
+        <View style={[styles.tabContainer, themeStyles.container]}>
             {state.routes.map((route, index) => {
                 const { options } = descriptors[route.key];
 
