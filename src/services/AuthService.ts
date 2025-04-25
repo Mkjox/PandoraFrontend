@@ -1,8 +1,15 @@
-import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { jwtDecode } from "jwt-decode";
 import api from "./api";
-import { LoginPayload, AuthResponse, DecodedToken, AuthResult, LogoutResult, RegisterPayload } from "../types/auth.types";
+import {
+    LoginPayload,
+    AuthResponse,
+    DecodedToken,
+    AuthResult,
+    LogoutResult,
+    RegisterPayload,
+    UserProfileResponse
+} from "../types/auth.types";
 
 const AuthService = {
     register: async ({
@@ -55,7 +62,10 @@ const AuthService = {
             const token = response.data?.token;
             if (token) {
                 await AsyncStorage.setItem("authToken", token);
-                return { success: true, token };
+                return {
+                    success: true,
+                    token
+                };
             }
 
             return { success: false, message: "Invalid response from server" };
@@ -67,11 +77,11 @@ const AuthService = {
         }
     },
 
-    getToken: async () => {
+    getToken: async (): Promise<string | null> => {
         return await AsyncStorage.getItem("authToken");
     },
 
-    decodeToken: async () => {
+    decodeToken: async (): Promise<DecodedToken | null> => {
         const token = await AuthService.getToken();
 
         if (!token) {
@@ -80,8 +90,7 @@ const AuthService = {
         }
 
         try {
-            const decoded: any = jwtDecode(token);
-            //   console.log("Decoded Token:", decoded);
+            const decoded: DecodedToken = jwtDecode(token);
             return decoded;
         } catch (error) {
             console.error("Failed to decode token", error);
@@ -89,19 +98,22 @@ const AuthService = {
         }
     },
 
-    fetchUserProfile: async () => {
-        // console.log("Fetching user profile...");
-
+    fetchUserProfile: async (): Promise<UserProfileResponse> => {
         const decoded = await AuthService.decodeToken();
         if (!decoded?.nameid) {
-            return { success: false, message: "Invalid or missing token" };
+            return {
+                success: false,
+                message: "Invalid or missing token"
+            };
         }
 
         try {
             const response = await api.get(`/users/${decoded.nameid}`);
-            //   console.log("User Data:", response.data);
 
-            return { success: true, userData: response.data };
+            return {
+                success: true,
+                userData: response.data
+            };
         } catch (error: any) {
             console.error("Error fetching user profile:", error);
             return {
@@ -111,12 +123,18 @@ const AuthService = {
         }
     },
 
-    logout: async () => {
+    logout: async (): Promise<LogoutResult> => {
         try {
             await AsyncStorage.removeItem("authToken");
-            console.log("Logged out successfully.");
+            return {
+                success: true
+            };
         } catch (error) {
             console.error("Logout failed:", error);
+            return {
+                success: false,
+                message: "Logout failed"
+            };
         }
     },
 };
