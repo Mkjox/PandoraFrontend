@@ -13,9 +13,9 @@ export interface LoginPayload {
   Password: string;
 }
 
-export interface AuthResponse {
-  token: string;
-}
+// export interface AuthResponse {
+//   token: string;
+// }
 
 export interface DecodedToken {
   nameid: string;
@@ -25,16 +25,16 @@ export interface DecodedToken {
   [key: string]: any;   
 }
 
-export interface AuthResult {
-  success: boolean;
-  token?: string;
-  message?: string;
-}
+// export interface AuthResult {
+//   success: boolean;
+//   token?: string;
+//   message?: string;
+// }
 
-export interface LogoutResult {
-  success: boolean;
-  message?: string;
-}
+// export interface LogoutResult {
+//   success: boolean;
+//   message?: string;
+// }
 
   export interface UserProfileResponse {
     success: boolean;

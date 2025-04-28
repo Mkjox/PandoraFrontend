@@ -8,56 +8,105 @@ import {
   updatePassword as updatePasswordAction,
   deletePassword as deletePasswordAction
 } from '../redux/store/slices/passwordSlice';
-
 import {
   PasswordItem,
   PasswordPayload,
   PasswordUpdatePayload
 } from '../types/password.types';
+import { ServiceResult } from '../types/service.types';
 
-export const getPasswordsByUser = () => async (dispatch: AppDispatch) => {
-  try {
+const PasswordService = {
+  getPasswordsByUser: () => async (dispatch: AppDispatch): Promise<ServiceResult<PasswordItem[]>> => {
     dispatch(fetchPasswordsStart());
-    const response = await api.get<PasswordItem[]>(`/passwordvaults`);
-    dispatch(fetchPasswordsSuccess(response.data));
-  } catch (error: any) {
-    dispatch(fetchPasswordsFailure(error.response?.data?.message || 'Failed to fetch passwords'));
-  }
-};
+    try {
+      const response = await api.get<PasswordItem[]>(`/passwordvaults`);
+      dispatch(fetchPasswordsSuccess(response.data));
+      return {
+        success: true,
+        data: response.data
+      };
+    } catch (err: any) {
+      const msg = err.response?.data?.message || 'Failed to fetch passwords';
+      dispatch(fetchPasswordsFailure(msg));
+      return {
+        success: false,
+        message: msg
+      };
+    }
+  },
 
-export const getPasswordById = async (id: string): Promise<PasswordItem | null> => {
-  try {
-    const response = await api.get<PasswordItem>(`/passwordvaults/${id}`);
-    return response.data;
-  } catch (error: any) {
-    console.error('Failed to fetch password:', error);
-    return null;
-  }
-};
+  getPasswordById: async (id: string): Promise<ServiceResult<PasswordItem>> => {
+    try {
+      const response = await api.get<PasswordItem>(`/passwordvaults/${id}`);
+      return {
+        success: true,
+        data: response.data
+      };
+    } catch (err: any) {
+      console.error('Failed to fetch password:', err);
+      return {
+        success: false,
+        message: err.response?.data?.message || 'Failed to fetch password'
+      };
+    }
+  },
 
-export const createPassword = (payload: PasswordPayload) => async (dispatch: AppDispatch) => {
-  try {
-    const response = await api.post<PasswordItem>(`/passwordvaults`, payload);
-    dispatch(addPassword(response.data));
-  } catch (error: any) {
-    console.error('Failed to create password:', error.response?.data?.message || error.message);
-  }
-};
+  createPassword: (payload: PasswordPayload) => async (dispatch: AppDispatch): Promise<ServiceResult<PasswordItem>> => {
+    try {
+      const response = await api.post<PasswordItem>(`/passwordvaults`, payload);
+      dispatch(addPassword(response.data));
 
-export const updatePassword = (id: string, payload: PasswordUpdatePayload) => async (dispatch: AppDispatch) => {
-  try {
-    const response = await api.put<PasswordItem>(`/passwordvaults/${id}`, payload);
-    dispatch(updatePasswordAction(response.data));
-  } catch (error: any) {
-    console.error('Failed to update password:', error.response?.data?.message || error.message);
-  }
-};
+      // re-fetching the list
+      dispatch<any>(PasswordService.getPasswordsByUser());
+      return {
+        success: true,
+        data: response.data
+      };
+    } catch (err: any) {
+      console.error('Failed to create password:', err.response?.data?.message || err.message);
+      return {
+        success: false,
+        message: err.response?.data?.message || 'Failed to create password'
+      };
+    }
+  },
 
-export const deletePassword = (id: string) => async (dispatch: AppDispatch) => {
-  try {
-    await api.delete(`/passwordvaults/${id}`);
-    dispatch(deletePasswordAction(id));
-  } catch (error: any) {
-    console.error('Failed to delete password:', error.response?.data?.message || error.message);
-  }
-};
+  updatePassword: (id: string, payload: PasswordUpdatePayload) => async (dispatch: AppDispatch): Promise<ServiceResult<PasswordItem>> => {
+    try {
+      const response = await api.put<PasswordItem>(`/passwordvaults/${id}`, payload);
+      dispatch(updatePasswordAction(response.data));
+
+      // re-fetching the list
+      dispatch<any>(PasswordService.getPasswordsByUser());
+
+      return {
+        success: true,
+        data: response.data
+      };
+    } catch (err: any) {
+      console.error('Failed to update password:', err.response?.data?.message || err.message);
+      return {
+        success: false,
+        message: err.response?.data?.message || 'Failed to update password'
+      };
+    }
+  },
+
+  deletePassword: (id: string) => async (dispatch: AppDispatch): Promise<ServiceResult<null>> => {
+    try {
+      await api.delete(`/passwordvaults/${id}`);
+      dispatch(deletePasswordAction(id));
+      return {
+        success: true
+      }
+    } catch (err: any) {
+      console.error('Failed to delete password:', err.response?.data?.message || err.message);
+      return {
+        success: false,
+        message: err.response?.data?.message || 'Failed to delete password'
+      }
+    }
+  },
+}
+
+export default PasswordService;

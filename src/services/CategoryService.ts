@@ -7,53 +7,83 @@ import {
     fetchCategoriesFailure,
     addCategory
 } from '../redux/store/slices/categorySlice';
-import AuthService from "./AuthService";
+import { ServiceResult } from "../types/service.types";
 
-api.interceptors.request.use(async (config) => {
-    const token = await AuthService.getToken();
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-});
+const CategoryService = {
+    createCategory: (data: CategoryPayload) => async (dispatch: AppDispatch): Promise<ServiceResult<Category>> => {
+        try {
+            const response = await api.post<Category>('/categories', data);
+            dispatch(addCategory(response.data));
+            return {
+                success: true,
+                data: response.data
+            };
+        }
+        catch (error: any) {
+            console.error('Failed to create category:', error.response?.data?.message || error.message);
+            return {
+                success: false,
+                message: error.response?.data?.message || error.message
+            };
+        }
+    },
 
-export const createCategory = (data: CategoryPayload) => async (dispatch: AppDispatch) => {
-    try {
-        const response = await api.post<Category>('/categories', data);
-        dispatch(addCategory(response.data));
-    }
-    catch (error: any) {
-        console.error('Failed to create category:', error.response?.data?.message || error.message);
-    }
-};
+    getCategoriesByUser: () => async (dispatch: AppDispatch): Promise<ServiceResult<Category[]>> => {
+        try {
+            dispatch(fetchCategoriesStart());
+            const response = await api.get<Category[]>('/categories');
+            dispatch(fetchCategoriesSuccess(response.data));
+            return {
+                success: true,
+                data: response.data
+            }
+        }
+        catch (error: any) {
+            dispatch(fetchCategoriesFailure(error.response?.data?.message || "Failed to fetch categories"));
+            return {
+                success: false,
+                message: error.response?.data?.message || "Failed to fetch categories"
+            };
+        }
+    },
 
-export const getCategoriesByUser = () => async (dispatch: AppDispatch) => {
-    try {
-        dispatch(fetchCategoriesStart());
-        const response = await api.get<Category[]>('/categories');
-        dispatch(fetchCategoriesSuccess(response.data));
-    }
-    catch (error: any) {
-        dispatch(fetchCategoriesFailure(error.response?.data?.message || "Failed to fetch categories"));
-    }
-};
+    updateCategory: (id: string, data: Partial<CategoryPayload>) => async (dispatch: AppDispatch): Promise<ServiceResult<Category>> => {
+        try {
+            const response = await api.put<Category>(`/categories/${id}`, data);
 
-export const updateCategory = (id: string, data: Partial<CategoryPayload>) => async (dispatch: AppDispatch) => {
-    try {
-        const response = await api.put<Category>(`/categories/${id}`, data);
+            // await dispatch(CategoryService.getCategoriesByUser() as any);
 
-    }
-    catch (error: any) {
-        console.error('Failed to update category:', error.response?.data?.message || error.message);
-    }
-};
+            // re-fetching the list
+            dispatch<any>(CategoryService.getCategoriesByUser());
 
-export const deleteCategory = (id: string) => async (dispatch: AppDispatch) => {
-    try {
-        await api.delete(`/categories/${id}`);
-        dispatch(getCategoriesByUser());
-    }
-    catch (error: any) {
-        console.error('Failed to delete category:', error.response?.data?.message || error.message);
-    }
-};
+            return {
+                success: true,
+                data: response.data
+            };
+        }
+        catch (error: any) {
+            console.error('Failed to update category:', error.response?.data?.message || error.message);
+            return {
+                success: false,
+                message: error.response?.data?.message || error.message
+            };
+        }
+    },
+
+    deleteCategory: (id: string) => async (dispatch: AppDispatch): Promise<ServiceResult<null>> => {
+        try {
+            await api.delete(`/categories/${id}`);
+            await dispatch(CategoryService.getCategoriesByUser() as any);
+            return { success: true };
+        }
+        catch (error: any) {
+            console.error('Failed to delete category:', error.response?.data?.message || error.message);
+            return {
+                success: false,
+                message: error.response?.data?.message || error.message
+            };
+        }
+    },
+}
+
+export default CategoryService;

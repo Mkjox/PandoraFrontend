@@ -39,7 +39,7 @@ const AutofillScreen: React.FC = () => {
                     <Switch value={autofillEnabled} onValueChange={toggleAutofill} />
                 </View>
                 <Text style={[styles.helperText, themeStyles.text]}>
-                    When enabled, VaultApp will offer to autofill your credentials in compatible apps.
+                    When enabled, Pandora will offer to autofill your credentials in compatible apps.
                 </Text>
             </View>
         </ScrollView>

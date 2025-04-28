@@ -39,7 +39,7 @@ const SuggestScreen: React.FC = () => {
             <View style={styles.section}>
                 <Text style={[styles.sectionHeader, themeStyles.text]}>We’re Listening</Text>
                 <Text style={[styles.sectionBody, themeStyles.text]}>
-                    Got an idea or feedback? Let us know how we can improve VaultApp. Your input helps shape future updates!
+                    Got an idea or feedback? Let us know how we can improve Pandora. Your input helps shape future updates!
                 </Text>
             </View>
 

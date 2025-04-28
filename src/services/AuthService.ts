@@ -1,84 +1,54 @@
+import { ServiceResult } from './../types/service.types';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { jwtDecode } from "jwt-decode";
 import api from "./api";
 import {
     LoginPayload,
-    AuthResponse,
     DecodedToken,
-    AuthResult,
-    LogoutResult,
     RegisterPayload,
     UserProfileResponse
 } from "../types/auth.types";
 
 const AuthService = {
-    register: async ({
-        Username,
-        Email,
-        PhoneNumber,
-        FirstName,
-        LastName,
-        Password,
-        ConfirmPassword
-    }: RegisterPayload): Promise<AuthResult> => {
+    register: async (payload: RegisterPayload): Promise<ServiceResult<string>> => {
         try {
-            const response = await api.post("/auth/register", {
-                Username,
-                Email,
-                PhoneNumber,
-                FirstName,
-                LastName,
-                Password,
-                ConfirmPassword
-            });
+            const response = await api.post<{ token: string }>("/auth/register", payload);
 
             const token = response.data?.token;
-            if (token) {
-                await AsyncStorage.setItem("authToken", token);
-                return {
-                    success: true,
-                    token
-                };
-            }
-
+            await AsyncStorage.setItem("authToken", token);
             return {
-                success: false,
-                message: "Invalid response from server"
+                success: true,
+                data: token
             };
         }
-        catch (error: any) {
+        catch (err: any) {
             return {
                 success: false,
-                message: error.response?.data?.message || "Registration failed",
+                message: err.response?.data?.message || "Registration failed",
             };
         }
     },
 
-
-    login: async ({ UsernameOrEmail, Password }: LoginPayload): Promise<AuthResult> => {
+    login: async (payload: LoginPayload): Promise<ServiceResult<string>> => {
         try {
-            const response = await api.post("/auth/login", { UsernameOrEmail, Password });
+            const response = await api.post<{ token: string }>("/auth/login", payload);
+            const token = response.data.token;
+            await AsyncStorage.setItem("authToken", token);
 
-            const token = response.data?.token;
-            if (token) {
-                await AsyncStorage.setItem("authToken", token);
-                return {
-                    success: true,
-                    token
-                };
-            }
-
-            return { success: false, message: "Invalid response from server" };
-        } catch (error: any) {
+            return {
+                success: true,
+                data: token
+            };
+        } catch (err: any) {
             return {
                 success: false,
-                message: error.response?.data?.message || "Login failed",
+                message: err.response?.data?.message || "Login failed",
             };
         }
     },
 
     getToken: async (): Promise<string | null> => {
-        return await AsyncStorage.getItem("authToken");
+        return AsyncStorage.getItem("authToken");
     },
 
     decodeToken: async (): Promise<DecodedToken | null> => {
@@ -90,16 +60,16 @@ const AuthService = {
         }
 
         try {
-            const decoded: DecodedToken = jwtDecode(token);
-            return decoded;
-        } catch (error) {
-            console.error("Failed to decode token", error);
+            return jwtDecode<DecodedToken>(token);
+        } catch (err) {
+            console.error("Failed to decode token", err);
             return null;
         }
     },
 
     fetchUserProfile: async (): Promise<UserProfileResponse> => {
         const decoded = await AuthService.decodeToken();
+
         if (!decoded?.nameid) {
             return {
                 success: false,
@@ -114,23 +84,23 @@ const AuthService = {
                 success: true,
                 userData: response.data
             };
-        } catch (error: any) {
-            console.error("Error fetching user profile:", error);
+        } catch (err: any) {
+            console.error("Error fetching user profile:", err);
             return {
                 success: false,
-                message: error.response?.data?.message || "Failed to fetch user data",
+                message: err.response?.data?.message || "Failed to fetch user data",
             };
         }
     },
 
-    logout: async (): Promise<LogoutResult> => {
+    logout: async (): Promise<ServiceResult<null>> => {
         try {
             await AsyncStorage.removeItem("authToken");
             return {
                 success: true
             };
-        } catch (error) {
-            console.error("Logout failed:", error);
+        } catch (err) {
+            console.error("Logout failed:", err);
             return {
                 success: false,
                 message: "Logout failed"

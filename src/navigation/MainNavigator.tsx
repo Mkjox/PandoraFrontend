@@ -7,7 +7,7 @@ import CategoryScreen from '../screens/CategoryScreen';
 import PersonalVaultScreen from '../screens/PersonalVaultScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
-import PassDetailsScreen from '../screens/PassDetailsScreen';
+import PassDetailsScreen from '../screens/subScreens/PassDetailsScreen';
 import AddCredentialsScreen from '../screens/AddCredentialsScreen';
 import CustomTabBar from '../components/CustomTabBar';
 import SettingsScreen from '../screens/SettingsScreen';
