@@ -18,8 +18,8 @@ import { useAppSelector, useAppDispatch } from '../redux/hooks';
 import ErrorDisplay from '../components/ErrorDisplay';
 import { PasswordItem } from '../types/password.types';
 import { Category } from '../types/category.types';
-import { getCategoriesByUser } from '../services/CategoryService';
-import { getPasswordsByUser } from '../services/PasswordService';
+import CategoryService from '../services/CategoryService';
+import PasswordService from '../services/PasswordService';
 
 const { width, height } = Dimensions.get('window');
 
@@ -45,21 +45,11 @@ export default function HomeScreen() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  // Fetch data
-  const fetchData = useCallback(async () => {
-    try {
-      dispatch(getCategoriesByUser());
-      dispatch(getPasswordsByUser());
-    }
-    catch (e) {
-      console.error("Error fetching data", e);
-    }
-  }, [dispatch]);
-
   useFocusEffect(
     useCallback(() => {
-      fetchData();
-    }, [fetchData])
+      dispatch(CategoryService.getCategoriesByUser());
+      dispatch(PasswordService.getPasswordsByUser());
+    }, [dispatch])
   );
 
   const filteredPasswords = useMemo(() => {

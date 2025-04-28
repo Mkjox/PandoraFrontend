@@ -22,4 +22,17 @@ export interface PasswordPayload {
     CategoryId: string;
 }
 
+{/* For Getting the Secured Passwords */ }
+export interface RawPassword {
+    id: string;
+    userId: string;
+    secureSiteName: string;
+    secureUsernameOrEmail: string;
+    secureNotes?: string;
+    password: string;
+    lastPasswordChangeDate?: string | null;
+    passwordExpirationDate?: string;
+    categoryId: string;
+}
+
 export type PasswordUpdatePayload = Partial<PasswordPayload>;
