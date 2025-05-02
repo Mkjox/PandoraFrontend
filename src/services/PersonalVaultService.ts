@@ -22,7 +22,7 @@ const PersonalVaultService = {
   getPersonalVaults: () => async (dispatch: AppDispatch): Promise<ServiceResult<VaultItem[]>> => {
     dispatch(fetchVaultsStart());
     try {
-      const response = await api.get<VaultItem[]>('/vaults');
+      const response = await api.get<VaultItem[]>('/personalvaults');
       dispatch(fetchVaultsSuccess(response.data));
       return {
         success: true,
@@ -41,7 +41,7 @@ const PersonalVaultService = {
 
   getVaultsById: async (vaultId: string): Promise<ServiceResult<VaultItem>> => {
     try {
-      const response = await api.get<VaultItem>(`/vaults/${vaultId}`);
+      const response = await api.get<VaultItem>(`/personalvaults/${vaultId}`);
       return {
         success: true,
         data: response.data
@@ -58,9 +58,9 @@ const PersonalVaultService = {
 
   createVault: (payload: PersonalVaultPayload) => async (dispatch: AppDispatch): Promise<ServiceResult<VaultItem>> => {
     try {
-      const response = await api.post<VaultItem>('/vaults', payload);
+      const response = await api.post<VaultItem>('/personalvaults', payload);
       dispatch(addVault(response.data));
-
+      
       // re-fetching the list
       dispatch<any>(PersonalVaultService.getPersonalVaults());
       return {
@@ -79,7 +79,7 @@ const PersonalVaultService = {
 
   updateVault: (vaultId: string, payload: PersonalVaultUpdatePayload) => async (dispatch: AppDispatch): Promise<ServiceResult<VaultItem>> => {
     try {
-      const response = await api.put<VaultItem>(`/vaults/${vaultId}`, payload);
+      const response = await api.put<VaultItem>(`/personalvaults/${vaultId}`, payload);
       dispatch(updateVaultAction(response.data));
 
       // re-fetching the list
@@ -100,7 +100,7 @@ const PersonalVaultService = {
 
   removeVault: (vaultId: string) => async (dispatch: AppDispatch): Promise<ServiceResult<null>> => {
     try {
-      await api.delete(`/vaults/${vaultId}`);
+      await api.delete(`/personalvaults/${vaultId}`);
       dispatch(deleteVault(vaultId));
 
       // re-fetching the list

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useCallback, useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import {
   View,
   Text,
@@ -17,33 +17,21 @@ import AddButton from '../components/AddButton';
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
 import ErrorDisplay from '../components/ErrorDisplay';
 import { PasswordItem } from '../types/password.types';
-import { Category } from '../types/category.types';
 import CategoryService from '../services/CategoryService';
 import PasswordService from '../services/PasswordService';
 
 const { width, height } = Dimensions.get('window');
 
+type FilterType = 'all' | 'password' | 'notes';
+
 export default function HomeScreen() {
   const navigation = useNavigation();
   const { isDark } = useTheme();
   const themeStyles = isDark ? darkTheme : lightTheme;
-
   const dispatch = useAppDispatch();
-
-  const {
-    categories,
-    loading: categoriesLoading,
-    error: categoriesError
-  } = useAppSelector(state => state.category);
-
-  const {
-    passwords,
-    loading: passwordsLoading,
-    error: passwordsError
-  } = useAppSelector(state => state.passwords);
-
+  const { passwords, loading: passwordsLoading, error: passwordsError } = useAppSelector(s => s.passwords);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [filterType, setFilterType] = useState<FilterType>('all');
 
   useFocusEffect(
     useCallback(() => {
@@ -52,29 +40,34 @@ export default function HomeScreen() {
     }, [dispatch])
   );
 
-  const filteredPasswords = useMemo(() => {
-    return passwords.filter((p) => {
-      const site = (p.SiteName || '').toLowerCase();
-      const user = (p.UsernameOrEmail || '').toLowerCase();
-      const query = searchQuery.toLowerCase();
-
-      const matchSearch = site.includes(query) || user.includes(query);
-      const matchCategory = selectedCategory ? p.CategoryId === selectedCategory : true;
-
-      return matchSearch && matchCategory;
+  const filtered = useMemo(() => {
+    return passwords.filter(p => {
+      const site = p.SiteName.toLowerCase();
+      const user = p.UsernameOrEmail.toLowerCase();
+      const q = searchQuery.toLowerCase();
+      const matchSearch = site.includes(q) || user.includes(q);
+      let matchType = true;
+      if (filterType === 'password') matchType = !p.Notes;
+      if (filterType === 'notes') matchType = !!p.Notes;
+      return matchSearch && matchType;
     });
-  }, [passwords, searchQuery, selectedCategory]);
+  }, [passwords, searchQuery, filterType]);
 
-  const renderCategory = ({ item }: { item: Category | { id: null; name: 'All' } }) => {
-    const isActive = item.id === selectedCategory;
+  const typeOptions: { key: FilterType; label: string }[] = [
+    { key: 'all', label: 'All' },
+    { key: 'password', label: 'Password' },
+    { key: 'notes', label: 'Secured Notes' },
+  ];
 
+  const renderType = ({ item }: { item: { key: FilterType; label: string } }) => {
+    const active = item.key === filterType;
     return (
       <TouchableOpacity
-        style={[styles.categoryPill, isActive ? themeStyles.button : themeStyles.card]}
-        onPress={() => setSelectedCategory(item.id)}// null id = All
+        style={[styles.typeButton, active && styles.activeTypeButton]}
+        onPress={() => setFilterType(item.key)}
       >
-        <Text style={[styles.categoryText, isActive ? themeStyles.buttonText : themeStyles.text]}>
-          {item.name}
+        <Text style={[styles.typeText, active ? themeStyles.customButtonText : themeStyles.text]}>
+          {item.label}
         </Text>
       </TouchableOpacity>
     );
@@ -83,18 +76,14 @@ export default function HomeScreen() {
   const renderPassword = ({ item }: { item: PasswordItem }) => (
     <TouchableOpacity
       style={[styles.card, themeStyles.card]}
-      onPress={() => navigation.navigate('PassDetails', { id: item.id })}
+      onPress={() => navigation.navigate('PassDetails' as any, { id: item.id })}
     >
-      <Text style={[styles.cardTitle, themeStyles.text]}>
-        {item.SiteName}
-      </Text>
-      <Text style={[styles.cardSubtitle, themeStyles.textGray]}>
-        {item.UsernameOrEmail}
-      </Text>
+      <Text style={[styles.cardTitle, themeStyles.text]}>{item.SiteName}</Text>
+      <Text style={[styles.cardSubtitle, themeStyles.textGray]}>{item.UsernameOrEmail}</Text>
     </TouchableOpacity>
   );
 
-  if (categoriesLoading || passwordsLoading) {
+  if (passwordsLoading) {
     return (
       <View style={[themeStyles.container, styles.center]}>
         <ActivityIndicator size="large" />
@@ -102,45 +91,38 @@ export default function HomeScreen() {
     );
   }
 
-  if (categoriesError || passwordsError) {
+  if (passwordsError) {
     return (
       <View style={[themeStyles.container, styles.center]}>
-        <ErrorDisplay message={categoriesError || passwordsError || "An error occured"} />
+        <ErrorDisplay message={passwordsError} />
       </View>
     );
   }
 
   return (
     <View style={[themeStyles.container, styles.container]}>
-      <View style={styles.innerContainer}>
-        {/* Header + Add */}
-        <View style={styles.topSection}>
+      <View style={styles.inner}>
+        <View style={styles.headerRow}>
           <Text style={[styles.title, themeStyles.text]}>Vault</Text>
           <AddButton />
         </View>
-
-        {/* Search */}
         <Searchbar
           placeholder="Search"
           onChangeText={setSearchQuery}
           value={searchQuery}
           style={styles.searchBar}
         />
-
-        {/* Categories */}
         <FlatList
-          data={[{ id: null, name: 'All' }, ...categories]}
+          data={typeOptions}
           horizontal
-          keyExtractor={(c) => String(c.id)}
-          renderItem={renderCategory}
+          keyExtractor={t => t.key}
+          renderItem={renderType}
           showsHorizontalScrollIndicator={false}
-          style={styles.categoryList}
+          style={styles.typeList}
         />
-
-        {/* Passwords */}
         <FlatList
-          data={filteredPasswords}
-          keyExtractor={(p) => p.id}
+          data={filtered}
+          keyExtractor={p => p.id}
           renderItem={renderPassword}
           contentContainerStyle={styles.passwordList}
           showsVerticalScrollIndicator={false}
@@ -159,14 +141,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  innerContainer: {
+  inner: {
     marginHorizontal: width * 0.06,
-    marginTop: StatusBar.currentHeight,
+    marginTop: StatusBar.currentHeight
   },
-  topSection: {
+  headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   title: {
     fontSize: 24,
@@ -176,16 +158,19 @@ const styles = StyleSheet.create({
     marginTop: height * 0.02,
     borderRadius: 8
   },
-  categoryList: {
+  typeList: {
     marginTop: height * 0.02
   },
-  categoryPill: {
+  typeButton: {
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 20,
-    marginRight: 10,
+    marginRight: 10
   },
-  categoryText: {
+  activeTypeButton: {
+    borderBottomWidth: 2,
+    borderBottomColor: '#6E7FEC'
+  },
+  typeText: {
     fontSize: 14
   },
   passwordList: {
@@ -196,7 +181,9 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 12,
     borderRadius: 8,
-    elevation: 1,
+    elevation: 2,
+    borderColor: '#ccc',
+    borderWidth: 0.7
   },
   cardTitle: {
     fontSize: 18,
@@ -206,6 +193,5 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontSize: 14,
     fontFamily: 'Poppins_400Regular'
-  },
+  }
 });
-
