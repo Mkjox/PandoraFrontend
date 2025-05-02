@@ -12,14 +12,13 @@ import {
 import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
 import { useTheme } from "../../context/ThemeContext";
 import { lightTheme, darkTheme } from "../../assets/colors/theme";
+import PasswordService from "../../services/PasswordService";
 import { PasswordItem } from "../../types/password.types";
-import { getPasswordById } from "../../services/PasswordService";
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
 
 type RootStackParamList = {
   PassDetails: { id: string };
 };
-
 type PassDetailsRouteProp = RouteProp<RootStackParamList, 'PassDetails'>;
 
 const { width } = Dimensions.get('window');
@@ -31,32 +30,23 @@ const PassDetailsScreen: React.FC = () => {
   const themeStyles = isDark ? darkTheme : lightTheme;
 
   const [item, setItem] = useState<PasswordItem | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const { id } = route.params;
 
   useEffect(() => {
     (async () => {
       setLoading(true);
-      try {
-        const data = await getPasswordById(id);
-
-        if (data) {
-          setItem(data);
-          setError(null);
-        }
-        else {
-          setError('Password not found');
-        }
+      const res = await PasswordService.getPasswordById(id);
+      if (res.success && res.data) {
+        setItem(res.data);
+        setError(null);
+      } else {
+        setError(res.message || 'Password not found');
       }
-      catch (e: any) {
-        setError('Failed to load details');
-      }
-      finally {
-        setLoading(false);
-      }
+      setLoading(false);
     })();
   }, [id]);
 
@@ -76,9 +66,8 @@ const PassDetailsScreen: React.FC = () => {
     );
   }
 
-
   return (
-    <ScrollView>
+    <ScrollView style={themeStyles.container}>
       <View style={styles.spacer} />
 
       <View style={[styles.header, themeStyles.card]}>
@@ -89,7 +78,7 @@ const PassDetailsScreen: React.FC = () => {
       <View style={[styles.section, themeStyles.card]}>
         <View style={styles.row}>
           <Text style={[styles.label, themeStyles.text]}>Password:</Text>
-          <TouchableOpacity onPress={() => setShowPassword((v) => !v)}>
+          <TouchableOpacity onPress={() => setShowPassword(v => !v)}>
             <Entypo
               name={showPassword ? 'eye' : 'eye-with-line'}
               size={20}
@@ -112,7 +101,9 @@ const PassDetailsScreen: React.FC = () => {
       {item.PasswordExpirationDate ? (
         <View style={[styles.section, themeStyles.card]}>
           <Text style={[styles.label, themeStyles.text]}>Expires:</Text>
-          <Text style={[styles.value, themeStyles.text]}>{new Date(item.PasswordExpirationDate).toLocaleDateString()}</Text>
+          <Text style={[styles.value, themeStyles.text]}>
+            {new Date(item.PasswordExpirationDate).toLocaleDateString()}
+          </Text>
         </View>
       ) : null}
 
@@ -125,27 +116,24 @@ const PassDetailsScreen: React.FC = () => {
 
       <TouchableOpacity
         style={[styles.editButton, themeStyles.button]}
-        onPress={() => navigation.navigate('AddCredentials', { id })}
+        onPress={() => navigation.navigate('AddCredentials' as any, { id })}
       >
         <MaterialIcons name="edit" size={20} color={themeStyles.buttonText.color} />
         <Text style={[styles.editText, themeStyles.buttonText]}>Edit</Text>
       </TouchableOpacity>
-
     </ScrollView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   spacer: {
-    height: StatusBar.currentHeight || 20,
+    height: StatusBar.currentHeight || 20
+
   },
   center: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   header: {
     marginHorizontal: width * 0.05,
@@ -156,7 +144,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontFamily: 'Poppins_700Bold',
+    fontFamily: 'Poppins_700Bold'
   },
   subtitle: {
     fontSize: 14,
@@ -168,11 +156,11 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     padding: 12,
     borderRadius: 8,
-    elevation: 1,
+    elevation: 2,
   },
   label: {
     fontSize: 14,
-    fontFamily: 'Poppins_600SemiBold',
+    fontFamily: 'Poppins_600SemiBold'
   },
   value: {
     fontSize: 16,
@@ -182,7 +170,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   editButton: {
     flexDirection: 'row',
