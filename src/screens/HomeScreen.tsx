@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo } from 'react'
 import {
   View,
   Text,
@@ -8,70 +8,81 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
-} from 'react-native';
-import { Searchbar } from 'react-native-paper';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { useTheme } from '../context/ThemeContext';
-import { darkTheme, lightTheme } from '../assets/colors/theme';
-import AddButton from '../components/AddButton';
-import { useAppSelector, useAppDispatch } from '../redux/hooks';
-import ErrorDisplay from '../components/ErrorDisplay';
-import { PasswordItem } from '../types/password.types';
-import CategoryService from '../services/CategoryService';
-import PasswordService from '../services/PasswordService';
+} from 'react-native'
+import { Searchbar } from 'react-native-paper'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
+import { useTheme } from '../context/ThemeContext'
+import { darkTheme, lightTheme } from '../assets/colors/theme'
+import AddButton from '../components/AddButton'
+import { useAppSelector, useAppDispatch } from '../redux/hooks'
+import ErrorDisplay from '../components/ErrorDisplay'
+import { PasswordItem } from '../types/password.types'
+import { PersonalVaultPayload } from '../types/personalVault.types'
+import CategoryService from '../services/CategoryService'
+import PasswordService from '../services/PasswordService'
+import PersonalVaultService from '../services/PersonalVaultService'
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window')
 
-type FilterType = 'all' | 'password' | 'notes';
+type FilterType = 'all' | 'password' | 'notes'
 
 export default function HomeScreen() {
-  const navigation = useNavigation();
-  const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
-  const dispatch = useAppDispatch();
-  const { passwords, loading: passwordsLoading, error: passwordsError } = useAppSelector(s => s.passwords);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filterType, setFilterType] = useState<FilterType>('all');
+  const navigation = useNavigation()
+  const { isDark } = useTheme()
+  const themeStyles = isDark ? darkTheme : lightTheme
+  const dispatch = useAppDispatch()
+
+  const { passwords, loading: pwLoading, error: pwError } = useAppSelector(s => s.passwords)
+  const { vaults, loading: vaultLoading, error: vaultError } = useAppSelector(s => s.vault)
+
+  const [searchQuery, setSearchQuery] = useState('')
+  const [filterType, setFilterType] = useState<FilterType>('all')
 
   useFocusEffect(
     useCallback(() => {
-      dispatch(CategoryService.getCategoriesByUser());
-      dispatch(PasswordService.getPasswordsByUser());
+      dispatch(CategoryService.getCategoriesByUser())
+      dispatch(PasswordService.getPasswordsByUser())
+      dispatch(PersonalVaultService.getPersonalVaults())
     }, [dispatch])
-  );
+  )
 
-  const filtered = useMemo(() => {
+  const filteredPasswords = useMemo(() => {
     return passwords.filter(p => {
-      const site = p.SiteName.toLowerCase();
-      const user = p.UsernameOrEmail.toLowerCase();
-      const q = searchQuery.toLowerCase();
-      const matchSearch = site.includes(q) || user.includes(q);
-      let matchType = true;
-      if (filterType === 'password') matchType = !p.Notes;
-      if (filterType === 'notes') matchType = !!p.Notes;
-      return matchSearch && matchType;
-    });
-  }, [passwords, searchQuery, filterType]);
+      const site = p.SiteName.toLowerCase()
+      const user = p.UsernameOrEmail.toLowerCase()
+      const q = searchQuery.toLowerCase()
+      return (site.includes(q) || user.includes(q))
+    })
+  }, [passwords, searchQuery])
+
+  const filteredVaults = useMemo(() => {
+    return vaults.filter(v => {
+      const title = v.Title.toLowerCase()
+      const content = v.Content.toLowerCase()
+      const q = searchQuery.toLowerCase()
+      return (title.includes(q) || content.includes(q))
+    })
+  }, [vaults, searchQuery])
 
   const typeOptions: { key: FilterType; label: string }[] = [
     { key: 'all', label: 'All' },
     { key: 'password', label: 'Password' },
     { key: 'notes', label: 'Secured Notes' },
-  ];
+  ]
 
   const renderType = ({ item }: { item: { key: FilterType; label: string } }) => {
-    const active = item.key === filterType;
+    const active = item.key === filterType
     return (
       <TouchableOpacity
         style={[styles.typeButton, active && styles.activeTypeButton]}
         onPress={() => setFilterType(item.key)}
       >
-        <Text style={[styles.typeText, active ? themeStyles.customButtonText : themeStyles.text]}>
+        <Text style={[styles.typeText, active ? themeStyles.text : themeStyles.textGray]}>
           {item.label}
         </Text>
       </TouchableOpacity>
-    );
-  };
+    )
+  }
 
   const renderPassword = ({ item }: { item: PasswordItem }) => (
     <TouchableOpacity
@@ -81,37 +92,56 @@ export default function HomeScreen() {
       <Text style={[styles.cardTitle, themeStyles.text]}>{item.SiteName}</Text>
       <Text style={[styles.cardSubtitle, themeStyles.textGray]}>{item.UsernameOrEmail}</Text>
     </TouchableOpacity>
-  );
+  )
 
-  if (passwordsLoading) {
+  const renderVault = ({ item }: { item: PersonalVaultPayload & { id: string } }) => (
+    <TouchableOpacity
+      style={[styles.card, themeStyles.card]}
+      onPress={() => navigation.navigate('PassDetails' as any, { id: item.id })}
+    >
+      <Text style={[styles.cardTitle, themeStyles.text]}>{item.Title}</Text>
+      <Text style={[styles.cardSubtitle, themeStyles.textGray]} numberOfLines={2}>
+        {item.Content}
+      </Text>
+    </TouchableOpacity>
+  )
+
+  const loading = (filterType === 'notes' ? vaultLoading : pwLoading)
+  const error = filterType === 'notes' ? vaultError : pwError
+  const data = filterType === 'notes' ? filteredVaults : filteredPasswords
+
+  if (loading) {
     return (
       <View style={[themeStyles.container, styles.center]}>
         <ActivityIndicator size="large" />
       </View>
-    );
+    )
   }
 
-  if (passwordsError) {
+  if (error) {
     return (
       <View style={[themeStyles.container, styles.center]}>
-        <ErrorDisplay message={passwordsError} />
+        <ErrorDisplay message={error} />
       </View>
-    );
+    )
   }
 
   return (
     <View style={[themeStyles.container, styles.container]}>
       <View style={styles.inner}>
+
         <View style={styles.headerRow}>
           <Text style={[styles.title, themeStyles.text]}>Vault</Text>
           <AddButton />
         </View>
+
         <Searchbar
           placeholder="Search"
           onChangeText={setSearchQuery}
           value={searchQuery}
           style={styles.searchBar}
         />
+
         <FlatList
           data={typeOptions}
           horizontal
@@ -120,16 +150,27 @@ export default function HomeScreen() {
           showsHorizontalScrollIndicator={false}
           style={styles.typeList}
         />
-        <FlatList
-          data={filtered}
-          keyExtractor={p => p.id}
-          renderItem={renderPassword}
-          contentContainerStyle={styles.passwordList}
-          showsVerticalScrollIndicator={false}
-        />
+
+        {filterType === 'notes' ? (
+          <FlatList
+            data={filteredVaults}
+            keyExtractor={item => item.id}
+            renderItem={renderVault}
+            contentContainerStyle={styles.passwordList}
+            showsVerticalScrollIndicator={false}
+          />
+        ) : (
+          <FlatList
+            data={filteredPasswords}
+            keyExtractor={item => item.id}
+            renderItem={renderPassword}
+            contentContainerStyle={styles.passwordList}
+            showsVerticalScrollIndicator={false}
+          />
+        )}
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -194,4 +235,4 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Poppins_400Regular'
   }
-});
+})
