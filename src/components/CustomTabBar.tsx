@@ -85,10 +85,10 @@ const getIconName = (routeName: string) => {
     switch (routeName) {
         case 'Home':
             return 'home';
-        case 'Category':
+        case 'Categories':
             return 'folder';
-        case 'Personal':
-            return 'lock';
+        case 'Security Tools':
+            return 'security';
         case 'Profile':
             return 'person';
         default:
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     },
     focusedLabel: {
         color: '#6E7FEC',
-        fontFamily: 'Poppins_400Regular'
+        fontFamily: 'Poppins_600SemiBold'
     }
 });
 

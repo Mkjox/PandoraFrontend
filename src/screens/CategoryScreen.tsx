@@ -37,7 +37,7 @@ export default function CategoryScreen() {
       style={[styles.card, themeStyles.card]}
       onPress={() =>
         navigation.navigate('AddCredentials' as any, {
-          tab: 'category',
+          tab: 'Category',
           categoryId: item.id
         })
       }

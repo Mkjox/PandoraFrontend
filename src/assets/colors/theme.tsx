@@ -16,15 +16,8 @@ export const lightTheme = StyleSheet.create({
     customButtonText: {
         color: '#4C4DDC'
     },
-    iconBackgroundSquare: {
-        backgroundColor: '#FFFFFF',
-        borderColor: '#E9F1FF',
-        borderWidth: 1
-    },
-    iconBackgroundCircle: {
-        backgroundColor: '#FFFFFF',
-        borderColor: '#E9F1FF',
-        borderWidth: 1,
+    iconBackground: {
+        backgroundColor: '#E5E5F7',
     },
     icon: {
         color: '#4F4F4F'
@@ -62,15 +55,8 @@ export const darkTheme = StyleSheet.create({
     customButtonText: {
         color: '#3580FF'
     },
-    iconBackgroundSquare: {
-        backgroundColor: '#0A0C16',
-        borderColor: '#191D30',
-        borderWidth: 1,
-    },
-    iconBackgroundCircle: {
-        backgroundColor: '#0A0C16',
-        borderColor: '#191D30',
-        borderWidth: 1,
+    iconBackground: {
+        backgroundColor: '#2A2432',
     },
     icon: {
         color: '#E0E0E0'
@@ -82,7 +68,8 @@ export const darkTheme = StyleSheet.create({
         color: '#0C7DAE'
     },
     card: {
-        backgroundColor: '#151720'
+        backgroundColor: '#151720',
+        // backgroundColor: '#1F1B24'               ALTERNATIVE
     },
     textGray: {
         color: '#656565'

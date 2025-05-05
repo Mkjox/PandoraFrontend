@@ -8,18 +8,22 @@ import {
   Dimensions,
   TouchableOpacity,
   Image,
+  Alert,
 } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
 import { lightTheme, darkTheme } from '../assets/colors/theme';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import AuthService from '../services/AuthService';
-import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { Entypo, FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { useAppDispatch } from '../redux/hooks';
+import { logout as logoutAction } from '../redux/store/slices/authSlice';
 
 const { width } = Dimensions.get('window');
 
 const ProfileScreen: React.FC = () => {
   const { isDark } = useTheme();
   const themeStyles = isDark ? darkTheme : lightTheme;
+  const dispatch = useAppDispatch();
   const navigation = useNavigation();
 
   const [profile, setProfile] = useState<any>(null);
@@ -39,6 +43,33 @@ const ProfileScreen: React.FC = () => {
         <Text style={themeStyles.text}>Loading profile…</Text>
       </View>
     );
+  }
+
+  const handleLogout = async () => {
+    Alert.alert(
+      'Logout',
+      'Are you sure you want to logout?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Logout',
+          style: 'destructive',
+          onPress: async () => {
+            // 1️⃣ clear stored token
+            await AuthService.logout()
+
+            // 2️⃣ update Redux state
+            dispatch(logoutAction())
+
+            // 3️⃣ send user back to login screen
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'Login' }],
+            });
+          }
+        }
+      ]
+    )
   }
 
   return (
@@ -81,18 +112,27 @@ const ProfileScreen: React.FC = () => {
       </View>
 
       <View style={[styles.linksGroup, themeStyles.card]}>
+
         <TouchableOpacity onPress={() => navigation.navigate('EditProfile')} style={styles.linkRow}>
           <MaterialIcons name="edit" size={20} style={themeStyles.iconColor} />
           <Text style={[styles.linkText, themeStyles.text]}>Edit Profile</Text>
         </TouchableOpacity>
+
         <TouchableOpacity onPress={() => navigation.navigate('ThemeScreen')} style={styles.linkRow}>
           <MaterialIcons name="dark-mode" size={20} style={themeStyles.iconColor} />
           <Text style={[styles.linkText, themeStyles.text]}>Theme</Text>
         </TouchableOpacity>
+
         <TouchableOpacity onPress={() => navigation.navigate('Settings')} style={styles.linkRow}>
           <MaterialIcons name="settings" size={20} style={themeStyles.iconColor} />
           <Text style={[styles.linkText, themeStyles.text]}>Settings</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity onPress={handleLogout} style={styles.linkRow}>
+          <Entypo name="log-out" size={20} style={themeStyles.iconColor} />
+          <Text style={[styles.linkText, themeStyles.text]}>Logout</Text>
+        </TouchableOpacity>
+
       </View>
 
       <Text style={[styles.versionText, themeStyles.text]}>Version 1.0.0</Text>
