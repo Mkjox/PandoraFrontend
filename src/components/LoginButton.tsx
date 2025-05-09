@@ -1,17 +1,29 @@
 import React from 'react';
-import { Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
 import { darkTheme, lightTheme } from '../assets/colors/theme';
 import { useNavigation } from '@react-navigation/native';
 
-export default function LoginButton({onPress}) {
+interface Props {
+  onPress: () => void;
+  loading?: boolean;
+}
+
+export default function LoginButton({ onPress, loading = false }: Props) {
   const { isDark } = useTheme();
 
   const themeStyles = isDark ? darkTheme : lightTheme;
 
   return (
-    <TouchableOpacity style={[styles.button, themeStyles.buttonBorder]} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.button, themeStyles.buttonBorder]}
+      onPress={onPress}
+      disabled={loading}>
+      {loading ? (
+        <ActivityIndicator color={themeStyles.customButtonText.color} />
+      ) : (
         <Text style={styles.text}>Login</Text>
+      )}
     </TouchableOpacity>
   );
 }
