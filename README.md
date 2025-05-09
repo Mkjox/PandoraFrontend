@@ -19,18 +19,18 @@ A cross‑platform (iOS & Android) React Native application for securely managin
 
 ## 📦 Tech Stack
 
-| Layer                | Technology                                 |
-|----------------------|--------------------------------------------|
-| Framework            | React Native (TypeScript)                  |
-| Navigation           | React Navigation (Stack & Bottom Tabs)     |
-| State Management     | Redux Toolkit                              |
-| API / HTTP client    | Axios                                      |
-| Storage              | @react-native-async-storage/async-storage  |
-| Authentication       | JWT (jwt-decode)                           |
-| UI Components        | react-native-paper, @expo/vector-icons      |
-| Picker               | @react-native-picker/picker                |
-| Theming              | Custom Context + StyleSheet                |
-| Platform             | Expo / React Native CLI                    |
+| Layer             | Technology                                |
+| ----------------- | ----------------------------------------- |
+| Framework         | React Native (TypeScript)                 |
+| Navigation        | React Navigation (Stack & Bottom Tabs)    |
+| State Management  | Redux Toolkit                             |
+| API / HTTP client | Axios                                     |
+| Storage           | @react-native-async-storage/async-storage |
+| Authentication    | JWT (jwt-decode)                          |
+| UI Components     | react-native-paper, @expo/vector-icons    |
+| Picker            | @react-native-picker/picker               |
+| Theming           | Custom Context + StyleSheet               |
+| Platform          | Expo / React Native CLI                   |
 
 ---
 
@@ -63,25 +63,26 @@ npm install
 
 3. **Configure Environment**
 
+```bash
    Create a file ./.env in the project root with:
 
 # Pandora API URL is not included in the project
 
 API_URL=https://api.yourdomain.com
+```
 
 4. **Run Metro bundler / Expo**
 
+```bash
 # with Expo
-
 expo start
 
 # or with React Native CLI (iOS)
-
 npx react-native run-ios
 
 # or (Android)
-
 npx react-native run-android
+```
 
 5. **Open on device / emulator**
 
