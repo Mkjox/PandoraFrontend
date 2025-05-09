@@ -1,4 +1,4 @@
-# Pandora Vault App
+# Pandora Vault App [WIP]
 
 A cross‑platform (iOS & Android) React Native application for securely managing passwords, personal vault entries, and categories. Built with TypeScript, Redux Toolkit, React Navigation, and a custom dark/light theme.
 
@@ -47,11 +47,10 @@ A cross‑platform (iOS & Android) React Native application for securely managin
 
 1. **Clone the repo**
 
-   ```bash
-   git clone https://github.com/your‑username/pandora‑vault.git
-   cd pandora‑vault
-
-   ```
+```bash
+git clone https://github.com/your‑username/pandora‑vault.git
+cd pandora‑vault
+```
 
 2. **Install Dependencies**
 
@@ -64,7 +63,7 @@ npm install
 3. **Configure Environment**
 
 ```bash
-   Create a file ./.env in the project root with:
+Create a file ./.env in the project root with:
 
 # Pandora API URL is not included in the project
 
