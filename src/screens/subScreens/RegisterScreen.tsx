@@ -10,11 +10,11 @@ import RegisterButton from '../../components/RegisterButton';
 
 export default function RegisterScreen() {
     const [form, setForm] = useState({
-        Username: '',
-        Email: '',
-        PhoneNumber: '',
         FirstName: '',
         LastName: '',
+        PhoneNumber: '',
+        Username: '',
+        Email: '',
         Password: '',
         ConfirmPassword: '',
     });
@@ -30,13 +30,32 @@ export default function RegisterScreen() {
     };
 
     const handleRegister = async () => {
+        for (const [k, v] of Object.entries(form)) {
+            if (!v.trim()) {
+                return Alert.alert('Missing field', `Please enter your ${k}.`)
+            }
+        }
+        if (form.Password !== form.ConfirmPassword) {
+            return Alert.alert('Password mismatch', 'Passwords do not match.')
+        }
+
         const result = await AuthService.register(form);
 
         if (result.success) {
-            dispatch(login());
+            Alert.alert(
+                'Registration Successful',
+                'You can now log in with your credentials.',
+                [
+                    {
+                        text: 'OK',
+                        onPress: () => navigation.navigate('Login' as never),
+                    },
+                ],
+                { cancelable: false }
+            )
         }
         else {
-            Alert.alert('Error', result.message || 'Registration failed');
+            Alert.alert('Registration Failed', result.message || 'Please try again.');
         }
     };
 
@@ -57,7 +76,7 @@ export default function RegisterScreen() {
                 />
             ))}
 
-            <RegisterButton onPress={handleRegister}/>
+            <RegisterButton onPress={handleRegister} />
 
             <TouchableOpacity onPress={() => navigation.goBack()}>
                 <Text style={[styles.link, themeStyles.textBlue]}>
@@ -78,7 +97,7 @@ const styles = StyleSheet.create({
         fontSize: 32,
         marginBottom: 32,
         textAlign: 'center',
-        fontFamily: 'Poppins_600SemiBold'
+        fontFamily: 'Poppins_700Bold'
     },
     input: {
         borderWidth: 1,

@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
         fontSize: 32,
         marginBottom: 32,
         textAlign: 'center',
-        fontFamily: 'Poppins_600SemiBold',
+        fontFamily: 'Poppins_700Bold',
     },
     input: {
         borderWidth: 1,

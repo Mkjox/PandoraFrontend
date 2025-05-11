@@ -11,23 +11,28 @@ import {
 
 const AuthService = {
     register: async (payload: RegisterPayload): Promise<ServiceResult<string>> => {
-        try {
-            const response = await api.post<{ token: string }>("/auth/register", payload);
+  try {
+    const reg = await api.post<{
+      success: boolean;
+      data: any;
+      message: string;
+    }>("/auth/register", payload);
 
-            const token = response.data?.token;
-            await AsyncStorage.setItem("authToken", token);
-            return {
-                success: true,
-                data: token
-            };
-        }
-        catch (err: any) {
-            return {
-                success: false,
-                message: err.response?.data?.message || "Registration failed",
-            };
-        }
-    },
+    if (!reg.data.success) {
+      return { success: false, message: reg.data.message };
+    }
+
+    return AuthService.login({
+      UsernameOrEmail: payload.Email,  // or payload.Username
+      Password: payload.Password
+    });
+  } catch (err: any) {
+    return {
+      success: false,
+      message: err.response?.data?.message || "Registration failed"
+    };
+  }
+},
 
     login: async (payload: LoginPayload): Promise<ServiceResult<string>> => {
         try {
