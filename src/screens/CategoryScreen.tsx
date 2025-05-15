@@ -55,15 +55,6 @@ export default function CategoryScreen() {
     <View style={[themeStyles.container, styles.container]}>
       <View style={styles.topSection}>
         <Text style={[styles.title, themeStyles.text]}>Categories</Text>
-        <TouchableOpacity
-          style={[styles.newButton, themeStyles.button]}
-          onPress={() =>
-            navigation.navigate('AddCredentials' as any, { tab: 'category' })
-          }
-        >
-          <AntDesign name="plus" size={16} color="#fff" />
-          <Text style={[styles.newButtonText, themeStyles.buttonText]}>New</Text>
-        </TouchableOpacity>
       </View>
 
       {loading ? (

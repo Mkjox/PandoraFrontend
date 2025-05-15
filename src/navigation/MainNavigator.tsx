@@ -22,6 +22,10 @@ import AdvancedScreen from '../screens/subScreens/AdvancedScreen';
 import AboutScreen from '../screens/subScreens/AboutScreen';
 import PrivacyScreen from '../screens/subScreens/PrivacyScreen';
 import ThemeScreen from '../screens/subScreens/ThemeScreen';
+import PasswordGeneratorScreen from '../screens/subScreens/PasswordGeneratorScreen';
+import EmergencyAccessScreen from '../screens/subScreens/EmergencyAccessScreen';
+import SecurityChallengeScreen from '../screens/subScreens/SecurityChallengeScreen';
+import SecurityDashboardScreen from '../screens/subScreens/SecurityDashboardScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -56,6 +60,10 @@ export default function MainNavigator() {
             <Stack.Screen name='About' component={AboutScreen} options={{ headerShown: false }} />
             <Stack.Screen name='Privacy' component={PrivacyScreen} options={{ headerShown: false }} />
             <Stack.Screen name='ThemeScreen' component={ThemeScreen} options={{headerShown: false}} />
+            <Stack.Screen name='PasswordGenerator' component={PasswordGeneratorScreen} options={{headerShown: false}} />
+            <Stack.Screen name='EmergencyAccess' component={EmergencyAccessScreen} options={{headerShown: false}} />
+            <Stack.Screen name='SecurityChallenge' component={SecurityChallengeScreen} options={{headerShown: false}} />
+            <Stack.Screen name='SecurityDashboard' component={SecurityDashboardScreen} options={{headerShown: false}} />
         </Stack.Navigator>
     );
 }

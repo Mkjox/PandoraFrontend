@@ -11,6 +11,7 @@ import {
 import { useTheme } from "../context/ThemeContext"
 import { darkTheme, lightTheme } from "../assets/colors/theme"
 import { MaterialIcons, FontAwesome5, Entypo } from "@expo/vector-icons"
+import { useNavigation } from "@react-navigation/native"
 
 const { width, height } = Dimensions.get("window")
 
@@ -25,6 +26,7 @@ type Tool = {
 const SecurityToolsScreen: React.FC = () => {
   const { isDark } = useTheme()
   const themeStyles = isDark ? darkTheme : lightTheme
+  const navigation = useNavigation();
 
   const tools: Tool[] = [
     {
@@ -32,28 +34,28 @@ const SecurityToolsScreen: React.FC = () => {
       title: "Password generator",
       subtitle: "Create strong, unique passwords",
       icon: <MaterialIcons name="vpn-key" size={24} color={themeStyles.icon.color} />,
-      onPress: () => {},
+      onPress: () => {navigation.navigate("PasswordGenerator")},
     },
     {
       id: "emergency",
       title: "Emergency access",
       subtitle: "Peace of mind in an emergency",
       icon: <FontAwesome5 name="ambulance" size={24} color={themeStyles.icon.color} />,
-      onPress: () => {},
+      onPress: () => {navigation.navigate("EmergencyAccess")},
     },
     {
       id: "challenge",
       title: "Security challenge (0.00%)",
       subtitle: "Put your passwords to the test",
       icon: <MaterialIcons name="security" size={24} color={themeStyles.icon.color} />,
-      onPress: () => {},
+      onPress: () => {navigation.navigate("SecurityChallenge")},
     },
     {
       id: "dashboard",
       title: "Security dashboard",
       subtitle: "Monitor your online security",
       icon: <MaterialIcons name="dashboard" size={24} color={themeStyles.icon.color} />,
-      onPress: () => {},
+      onPress: () => {navigation.navigate("SecurityDashboard")},
     },
     {
       id: "identities",
