@@ -13,11 +13,10 @@ import {
 } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
 import DateTimePicker from '@react-native-community/datetimepicker'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native'
 import { useTheme } from '../context/ThemeContext'
 import { darkTheme, lightTheme } from '../assets/colors/theme'
 import { useAppDispatch, useAppSelector } from '../redux/hooks'
-
 import AuthService from '../services/AuthService'
 import PasswordService from '../services/PasswordService'
 import CategoryService from '../services/CategoryService'
@@ -27,31 +26,39 @@ import { PasswordPayload } from '../types/password.types'
 import { PersonalVaultPayload } from '../types/personalVault.types'
 import { ServiceResult } from '../types/service.types'
 
-const AddCredentialsScreen: React.FC = () => {
+type AddCredParams = {
+  AddCredentials: {
+    tab: 'password' | 'vault' | 'category'
+    // optional for edit
+    categoryId?: string
+    name?: string
+    description?: string
+  }
+}
+
+type RouteProps = RouteProp<AddCredParams, 'AddCredentials'>
+
+export default function AddCredentialsScreen() {
+  const navigation = useNavigation()
+  const route = useRoute<RouteProps>()
+  const dispatch = useAppDispatch()
   const { isDark } = useTheme()
   const themeStyles = isDark ? darkTheme : lightTheme
-  const navigation = useNavigation()
-  const dispatch = useAppDispatch()
 
-  const [userId, setUserId] = useState<string | null>(null)
-  const [loadingUser, setLoadingUser] = useState(true)
+  // initial tab from params, default 'password'
+  const initialTab = route.params?.tab ?? 'password'
+  const [selectedTab, setSelectedTab] = useState(initialTab)
 
-  const { categories, loading: loadingCategories, error: categoriesError } =
-    useAppSelector((s) => s.category)
-
-  const [selectedTab, setSelectedTab] = useState<'password' | 'vault' | 'category'>('password')
-  const [submitting, setSubmitting] = useState(false)
-
+  // form state
   const [form, setForm] = useState<Record<string, any>>({
-    // password fields
+    // password
     SiteName: '',
     UsernameOrEmail: '',
     Password: '',
     PasswordRepeat: '',
     Notes: '',
     PasswordExpirationDate: '',
-
-    // vault fields
+    // vault
     Title: '',
     Content: '',
     Url: '',
@@ -62,20 +69,25 @@ const AddCredentialsScreen: React.FC = () => {
     UnlockDate: '',
     ExpirationDate: '',
     IsFavorite: false,
-
-    // category fields
+    // category
     Name: '',
     Description: '',
-
     // common
     CategoryId: '',
   })
 
-  // which date picker is open, and its current date
+  // date picker
   const [datePicker, setDatePicker] = useState<{
     field: 'PasswordExpirationDate' | 'UnlockDate' | 'ExpirationDate' | null
     date: Date
   }>({ field: null, date: new Date() })
+
+  const { categories, loading: loadingCategories, error: categoriesError } =
+    useAppSelector(s => s.category)
+
+  const [userId, setUserId] = useState<string | null>(null)
+  const [loadingUser, setLoadingUser] = useState(true)
+  const [submitting, setSubmitting] = useState(false)
 
   // decode token → userId
   useEffect(() => {
@@ -91,30 +103,39 @@ const AddCredentialsScreen: React.FC = () => {
     })()
   }, [navigation])
 
-  // fetch categories once userId known
+  // fetch categories once we know user
   useEffect(() => {
     if (!loadingUser && userId) {
       dispatch(CategoryService.getCategoriesByUser())
     }
   }, [dispatch, loadingUser, userId])
 
-  const handleChange = (key: string, value: any) =>
-    setForm((f) => ({ ...f, [key]: value }))
+  // prefill when editing a category
+  useEffect(() => {
+    const catId = route.params?.categoryId
+    if (initialTab === 'category' && catId) {
+      setSelectedTab('category')
+      setForm(f => ({
+        ...f,
+        CategoryId: catId,
+        Name: route.params?.name ?? '',
+        Description: route.params?.description ?? '',
+      }))
+    }
+  }, [initialTab, route.params])
+
+  const handleChange = (key: string, val: any) =>
+    setForm(prev => ({ ...prev, [key]: val }))
 
   const showPicker = (field: 'PasswordExpirationDate' | 'UnlockDate' | 'ExpirationDate') => {
-    setDatePicker({
-      field,
-      date: form[field] ? new Date(form[field]) : new Date(),
-    })
+    setDatePicker({ field, date: form[field] ? new Date(form[field]) : new Date() })
   }
-
-  const onDateSelected = (_: any, selected?: Date) => {
+  const onDateSelected = (_: any, sel?: Date) => {
     const { field, date } = datePicker
     setDatePicker({ field: null, date })
-    if (field && selected) {
-      // store as YYYY-MM-DD
-      const isoDate = selected.toISOString().split('T')[0]
-      handleChange(field, isoDate)
+    if (field && sel) {
+      const iso = sel.toISOString().split('T')[0]
+      handleChange(field, iso)
     }
   }
 
@@ -124,30 +145,24 @@ const AddCredentialsScreen: React.FC = () => {
 
     try {
       if (selectedTab === 'password') {
-        const base = {
+        const payload: PasswordPayload = {
           UserId: userId,
           SiteName: form.SiteName,
           UsernameOrEmail: form.UsernameOrEmail,
           Password: form.Password,
           PasswordRepeat: form.PasswordRepeat,
           Notes: form.Notes,
+          PasswordExpirationDate: form.PasswordExpirationDate
+            ? new Date(form.PasswordExpirationDate).toISOString()
+            : undefined,
           CategoryId: form.CategoryId,
         }
-        const payload: PasswordPayload = {
-          ...base,
-          ...(form.PasswordExpirationDate
-            ? { PasswordExpirationDate: new Date(form.PasswordExpirationDate).toISOString() }
-            : {}),
-        }
-        const res = (await dispatch(
-          PasswordService.createPassword(payload)
-        )) as ServiceResult<any>
-        if (!res.success) throw new Error(res.message)
-        Alert.alert('Success', 'Password added.')
+        await dispatch(PasswordService.createPassword(payload))
+        Alert.alert('Success', 'Password saved.')
       }
 
       if (selectedTab === 'vault') {
-        const base = {
+        const payload: PersonalVaultPayload = {
           UserId: userId,
           Title: form.Title,
           Content: form.Content,
@@ -156,23 +171,17 @@ const AddCredentialsScreen: React.FC = () => {
           Summary: form.Summary,
           Tags: form.Tags.split(',').map((t: string) => t.trim()),
           IsLocked: form.IsLocked,
+          UnlockDate: form.UnlockDate
+            ? new Date(form.UnlockDate).toISOString()
+            : undefined,
           CategoryId: form.CategoryId,
+          ExpirationDate: form.ExpirationDate
+            ? new Date(form.ExpirationDate).toISOString()
+            : undefined,
           IsFavorite: form.IsFavorite,
         }
-        const payload: PersonalVaultPayload = {
-          ...base,
-          ...(form.UnlockDate
-            ? { UnlockDate: new Date(form.UnlockDate).toISOString() }
-            : {}),
-          ...(form.ExpirationDate
-            ? { ExpirationDate: new Date(form.ExpirationDate).toISOString() }
-            : {}),
-        }
-        const res = (await dispatch(
-          PersonalVaultService.createVault(payload)
-        )) as ServiceResult<any>
-        if (!res.success) throw new Error(res.message)
-        Alert.alert('Success', 'Vault entry added.')
+        await dispatch(PersonalVaultService.createVault(payload))
+        Alert.alert('Success', 'Vault entry saved.')
       }
 
       if (selectedTab === 'category') {
@@ -181,23 +190,25 @@ const AddCredentialsScreen: React.FC = () => {
           name: form.Name,
           description: form.Description,
         }
-        const res = (await dispatch(
-          CategoryService.createCategory(payload)
-        )) as ServiceResult<any>
-        if (!res.success) throw new Error(res.message)
-        Alert.alert('Success', 'Category created.')
+        const catId = route.params?.categoryId
+        if (catId) {
+          await dispatch(CategoryService.updateCategory(catId, payload))
+          Alert.alert('Success', 'Category updated.')
+        } else {
+          await dispatch(CategoryService.createCategory(payload))
+          Alert.alert('Success', 'Category created.')
+        }
       }
 
       navigation.goBack()
     } catch (err: any) {
-      Alert.alert('Error', err.message || 'Submission failed')
+      Alert.alert('Error', err.message || 'Submit failed')
     } finally {
       setSubmitting(false)
     }
-  }, [dispatch, form, navigation, selectedTab, userId])
+  }, [dispatch, form, navigation, route.params, selectedTab, userId])
 
-  // show loading / error for categories
-  if (loadingUser || (loadingCategories && selectedTab !== 'category')) {
+  if (loadingUser || (loadingCategories && selectedTab === 'category')) {
     return (
       <View style={[styles.loader, themeStyles.container]}>
         <ActivityIndicator size="large" />
@@ -214,7 +225,6 @@ const AddCredentialsScreen: React.FC = () => {
 
   return (
     <ScrollView style={[themeStyles.container, styles.container]}>
-      {/* date picker overlay */}
       {datePicker.field && (
         <DateTimePicker
           value={datePicker.date}
@@ -226,20 +236,24 @@ const AddCredentialsScreen: React.FC = () => {
 
       {/* tabs */}
       <View style={styles.tabContainer}>
-        {(['password', 'vault', 'category'] as const).map((tab) => (
+        {(['password', 'vault', 'category'] as const).map(tab => (
           <TouchableOpacity
             key={tab}
             onPress={() => setSelectedTab(tab)}
             style={[styles.tab, selectedTab === tab && styles.activeTab]}
           >
             <Text style={styles.tabText}>
-              {tab === 'password' ? 'Password' : tab === 'vault' ? 'Vault' : 'Category'}
+              {tab === 'password'
+                ? 'Password'
+                : tab === 'vault'
+                  ? 'Vault'
+                  : 'Category'}
             </Text>
           </TouchableOpacity>
         ))}
       </View>
 
-      {/* form fields */}
+      {/* form */}
       <View style={styles.formContainer}>
         {selectedTab === 'password' && (
           <>
@@ -247,36 +261,34 @@ const AddCredentialsScreen: React.FC = () => {
               style={styles.input}
               placeholder="Site Name*"
               value={form.SiteName}
-              onChangeText={(v) => handleChange('SiteName', v)}
+              onChangeText={v => handleChange('SiteName', v)}
             />
             <TextInput
               style={styles.input}
               placeholder="Username or Email*"
               value={form.UsernameOrEmail}
-              onChangeText={(v) => handleChange('UsernameOrEmail', v)}
+              onChangeText={v => handleChange('UsernameOrEmail', v)}
             />
             <TextInput
               style={styles.input}
               placeholder="Password*"
               secureTextEntry
               value={form.Password}
-              onChangeText={(v) => handleChange('Password', v)}
+              onChangeText={v => handleChange('Password', v)}
             />
             <TextInput
               style={styles.input}
               placeholder="Repeat Password*"
               secureTextEntry
               value={form.PasswordRepeat}
-              onChangeText={(v) => handleChange('PasswordRepeat', v)}
+              onChangeText={v => handleChange('PasswordRepeat', v)}
             />
             <TextInput
               style={styles.input}
               placeholder="Notes"
               value={form.Notes}
-              onChangeText={(v) => handleChange('Notes', v)}
+              onChangeText={v => handleChange('Notes', v)}
             />
-
-            {/* press to open date picker */}
             <TouchableOpacity
               style={styles.input}
               onPress={() => showPicker('PasswordExpirationDate')}
@@ -285,15 +297,14 @@ const AddCredentialsScreen: React.FC = () => {
                 {form.PasswordExpirationDate || 'Select Expiration Date'}
               </Text>
             </TouchableOpacity>
-
             <Text style={styles.label}>Category*</Text>
             <View style={styles.pickerContainer}>
               <Picker
                 selectedValue={form.CategoryId}
-                onValueChange={(v) => handleChange('CategoryId', v)}
+                onValueChange={v => handleChange('CategoryId', v)}
               >
                 <Picker.Item label="Select category..." value="" />
-                {categories.map((c) => (
+                {categories.map(c => (
                   <Picker.Item key={c.id} label={c.name} value={c.id} />
                 ))}
               </Picker>
@@ -307,13 +318,13 @@ const AddCredentialsScreen: React.FC = () => {
               style={styles.input}
               placeholder="Title*"
               value={form.Title}
-              onChangeText={(v) => handleChange('Title', v)}
+              onChangeText={v => handleChange('Title', v)}
             />
             <TextInput
               style={styles.input}
               placeholder="Content*"
               value={form.Content}
-              onChangeText={(v) => handleChange('Content', v)}
+              onChangeText={v => handleChange('Content', v)}
             />
             <TextInput
               style={styles.input}
@@ -379,13 +390,13 @@ const AddCredentialsScreen: React.FC = () => {
               style={styles.input}
               placeholder="Name*"
               value={form.Name}
-              onChangeText={(v) => handleChange('Name', v)}
+              onChangeText={v => handleChange('Name', v)}
             />
             <TextInput
               style={styles.input}
               placeholder="Description"
               value={form.Description}
-              onChangeText={(v) => handleChange('Description', v)}
+              onChangeText={v => handleChange('Description', v)}
             />
           </>
         )}
@@ -396,19 +407,26 @@ const AddCredentialsScreen: React.FC = () => {
         onPress={handleSubmit}
         disabled={submitting}
       >
-        {submitting ? (
-          <ActivityIndicator color={isDark ? '#fff' : '#000'} />
-        ) : (
-          <Text style={[themeStyles.buttonText, styles.buttonText]}>Submit</Text>
-        )}
+        {submitting
+          ? <ActivityIndicator color={isDark ? '#fff' : '#000'} />
+          : <Text style={[themeStyles.buttonText, styles.buttonText]}>
+            {route.params?.categoryId ? 'Update' : 'Submit'}
+          </Text>
+        }
       </TouchableOpacity>
     </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 20 },
-  loader: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  container: {
+    padding: 20
+  },
+  loader: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   tabContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -421,9 +439,16 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderBottomColor: 'transparent',
   },
-  activeTab: { borderBottomColor: '#6E7FEC' },
-  tabText: { fontSize: 16, fontWeight: '600' },
-  formContainer: { marginBottom: 20 },
+  activeTab: {
+    borderBottomColor: '#6E7FEC'
+  },
+  tabText: {
+    fontSize: 16,
+    fontWeight: '600'
+  },
+  formContainer: {
+    marginBottom: 20
+  },
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
@@ -432,7 +457,10 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     justifyContent: 'center',
   },
-  label: { fontWeight: '600', marginBottom: 6 },
+  label: {
+    fontWeight: '600',
+    marginBottom: 6
+  },
   pickerContainer: {
     borderWidth: 1,
     borderColor: '#ccc',
@@ -440,8 +468,13 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     overflow: 'hidden',
   },
-  submitButton: { padding: 15, borderRadius: 8 },
-  buttonText: { textAlign: 'center', fontSize: 16, fontWeight: '500' },
+  submitButton: {
+    padding: 15,
+    borderRadius: 8
+  },
+  buttonText: {
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: '500'
+  },
 })
-
-export default AddCredentialsScreen
