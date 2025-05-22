@@ -97,11 +97,6 @@ const SettingsScreen: React.FC = () => {
                     icon: <FontAwesome name="info-circle" size={20} color={theme.icon.color} />,
                     onPress: () => navigation.navigate("About" as any),
                 },
-            ],
-        },
-        {
-            title: "",
-            data: [
                 {
                     key: "help",
                     title: "Help and support",
