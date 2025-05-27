@@ -1,14 +1,26 @@
-import React, { useState } from 'react';
-import { Text, Button, Alert, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { login } from '../../redux/store/slices/authSlice';
-import AuthService from '../../services/AuthService';
-import { useNavigation } from '@react-navigation/native';
-import { useTheme } from '../../context/ThemeContext';
-import { darkTheme, lightTheme } from '../../assets/colors/theme';
-import RegisterButton from '../../components/RegisterButton';
+import React, { useState } from 'react'
+import {
+    View,
+    Text,
+    ScrollView,
+    StyleSheet,
+    TextInput,
+    TouchableOpacity,
+    ActivityIndicator,
+    Alert
+} from 'react-native'
+import { useDispatch } from 'react-redux'
+import AuthService from '../../services/AuthService'
+import { useNavigation } from '@react-navigation/native'
+import { useTheme } from '../../context/ThemeContext'
+import { darkTheme, lightTheme } from '../../assets/colors/theme'
 
 export default function RegisterScreen() {
+    const { isDark } = useTheme()
+    const theme = isDark ? darkTheme : lightTheme
+    const dispatch = useDispatch()
+    const navigation = useNavigation()
+
     const [form, setForm] = useState({
         FirstName: '',
         LastName: '',
@@ -17,34 +29,46 @@ export default function RegisterScreen() {
         Email: '',
         Password: '',
         ConfirmPassword: '',
-    });
+    })
 
-    const dispatch = useDispatch();
-    const navigation = useNavigation();
-    const { isDark } = useTheme();
+    const [errors, setErrors] = useState<Partial<typeof form>>({})
+    const [serverError, setServerError] = useState<string | null>(null)
+    const [loading, setLoading] = useState(false)
 
-    const themeStyles = isDark ? darkTheme : lightTheme;
-
-    const handleChange = (key: string, value: string) => {
-        setForm({ ...form, [key]: value });
-    };
+    const handleChange = (field: keyof typeof form, value: string) => {
+        setForm(f => ({ ...f, [field]: value }))
+        setErrors(e => ({ ...e, [field]: undefined }))
+        setServerError(null)
+    }
 
     const handleRegister = async () => {
-        for (const [k, v] of Object.entries(form)) {
-            if (!v.trim()) {
-                return Alert.alert('Missing field', `Please enter your ${k}.`)
-            }
+        // clear previous
+        setErrors({})
+        setServerError(null)
+
+        // validate
+        const newErrors: Partial<typeof form> = {}
+            ; (Object.keys(form) as (keyof typeof form)[]).forEach(key => {
+                if (!form[key].trim()) {
+                    newErrors[key] = 'This field is required.'
+                }
+            })
+        if (!newErrors.Password && form.Password !== form.ConfirmPassword) {
+            newErrors.ConfirmPassword = 'Passwords do not match.'
         }
-        if (form.Password !== form.ConfirmPassword) {
-            return Alert.alert('Password mismatch', 'Passwords do not match.')
+        if (Object.keys(newErrors).length) {
+            setErrors(newErrors)
+            return
         }
 
-        const result = await AuthService.register(form);
+        setLoading(true)
+        const result = await AuthService.register(form)
+        setLoading(false)
 
         if (result.success) {
             Alert.alert(
-                'Registration Successful',
-                'You can now log in with your credentials.',
+                'Registration is Successful',
+                'You can now log in with your credentials',
                 [
                     {
                         text: 'OK',
@@ -53,64 +77,181 @@ export default function RegisterScreen() {
                 ],
                 { cancelable: false }
             )
+        } else {
+            setServerError(result.message || 'Registration failed.')
         }
-        else {
-            Alert.alert('Registration Failed', result.message || 'Please try again.');
-        }
-    };
+    }
 
     return (
-        <ScrollView contentContainerStyle={[styles.container, themeStyles.container]}>
-            <Text style={[styles.title, themeStyles.text]}>Register</Text>
+        <ScrollView contentContainerStyle={[styles.container, theme.container]}>
+            <Text style={[styles.title, theme.text]}>Register</Text>
 
-            {Object.entries(form).map(([key, value]) => (
-                <TextInput
-                    key={key}
-                    style={[styles.input, themeStyles.card]}
-                    placeholder={key}
-                    secureTextEntry={key.toLowerCase().includes('password')}
-                    autoCapitalize='none'
-                    keyboardType={key === 'PhoneNumber' ? 'phone-pad' : 'default'}
-                    value={value}
-                    onChangeText={(text) => handleChange(key, text)}
-                />
-            ))}
+            {/* FirstName */}
+            <TextInput
+                style={[styles.input, theme.card]}
+                placeholder="First Name"
+                placeholderTextColor={isDark ? '#888' : '#666'}
+                value={form.FirstName}
+                onChangeText={text => handleChange('FirstName', text)}
+            />
+            {errors.FirstName && <Text style={styles.errorText}>{errors.FirstName}</Text>}
 
-            <RegisterButton onPress={handleRegister} />
+            <View style={styles.space} />
+
+            {/* LastName */}
+            <TextInput
+                style={[styles.input, theme.card]}
+                placeholder="Last Name"
+                placeholderTextColor={isDark ? '#888' : '#666'}
+                value={form.LastName}
+                onChangeText={text => handleChange('LastName', text)}
+            />
+            {errors.LastName && <Text style={styles.errorText}>{errors.LastName}</Text>}
+
+            <View style={styles.space} />
+
+            {/* PhoneNumber */}
+            <TextInput
+                style={[styles.input, theme.card]}
+                placeholder="Phone Number"
+                placeholderTextColor={isDark ? '#888' : '#666'}
+                keyboardType="phone-pad"
+                value={form.PhoneNumber}
+                onChangeText={text => handleChange('PhoneNumber', text)}
+            />
+            {errors.PhoneNumber && <Text style={styles.errorText}>{errors.PhoneNumber}</Text>}
+
+            <View style={styles.space} />
+
+            {/* Username */}
+            <TextInput
+                style={[styles.input, theme.card]}
+                placeholder="Username"
+                placeholderTextColor={isDark ? '#888' : '#666'}
+                autoCapitalize="none"
+                value={form.Username}
+                onChangeText={text => handleChange('Username', text)}
+            />
+            {errors.Username && <Text style={styles.errorText}>{errors.Username}</Text>}
+
+            <View style={styles.space} />
+
+            {/* Email */}
+            <TextInput
+                style={[styles.input, theme.card]}
+                placeholder="Email"
+                placeholderTextColor={isDark ? '#888' : '#666'}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                value={form.Email}
+                onChangeText={text => handleChange('Email', text)}
+            />
+            {errors.Email && <Text style={styles.errorText}>{errors.Email}</Text>}
+
+            <View style={styles.space} />
+
+            {/* Password */}
+            <TextInput
+                style={[styles.input, theme.card]}
+                placeholder="Password"
+                placeholderTextColor={isDark ? '#888' : '#666'}
+                secureTextEntry
+                value={form.Password}
+                onChangeText={text => handleChange('Password', text)}
+            />
+            {errors.Password && <Text style={styles.errorText}>{errors.Password}</Text>}
+
+            <View style={styles.space} />
+
+            {/* ConfirmPassword */}
+            <TextInput
+                style={[styles.input, theme.card]}
+                placeholder="Confirm Password"
+                placeholderTextColor={isDark ? '#888' : '#666'}
+                secureTextEntry
+                value={form.ConfirmPassword}
+                onChangeText={text => handleChange('ConfirmPassword', text)}
+            />
+            {errors.ConfirmPassword && (
+                <Text style={styles.errorText}>{errors.ConfirmPassword}</Text>
+            )}
+
+            <View style={styles.space} />
+
+            {/* server error */}
+            {serverError && (
+                <Text style={[styles.errorText, { textAlign: 'center', marginBottom: 12 }]}>
+                    {serverError}
+                </Text>
+            )}
+
+            <TouchableOpacity
+                style={[styles.submitButton, theme.button]}
+                onPress={handleRegister}
+                disabled={loading}
+            >
+                {loading ? (
+                    <ActivityIndicator color={theme.buttonText.color} />
+                ) : (
+                    <Text style={[styles.submitText, theme.buttonText]}>Register</Text>
+                )}
+            </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.goBack()}>
-                <Text style={[styles.link, themeStyles.textBlue]}>
-                    Already have an account? Log in
+                <Text style={[styles.link, theme.textBlue]}>
+                    Already have an account? <Text style={styles.innerLink}>Log in</Text>
                 </Text>
             </TouchableOpacity>
         </ScrollView>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
         padding: 24,
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     title: {
         fontSize: 32,
         marginBottom: 32,
         textAlign: 'center',
-        fontFamily: 'Poppins_700Bold'
+        fontFamily: 'Poppins_700Bold',
     },
     input: {
         borderWidth: 1,
         borderColor: '#ccc',
         padding: 14,
         borderRadius: 8,
-        marginBottom: 16,
-        elevation: 5
+        marginBottom: 4,
+        elevation: 5,
+    },
+    errorText: {
+        color: '#D32F2F',
+        fontSize: 13,
+        // marginBottom: 10,
+        marginLeft: 4,
+        fontFamily: 'Poppins_400Regular',
+        fontWeight: '700'
+    },
+    submitButton: {
+        padding: 14,
+        borderRadius: 8,
+        alignItems: 'center',
+        marginVertical: 16,
+    },
+    submitText: {
+        fontSize: 16,
+        fontFamily: 'Poppins_500Medium',
     },
     link: {
-        marginTop: 24,
         textAlign: 'center',
-        color: '#007bff',
-        fontFamily: 'Poppins_400Regular'
+        fontFamily: 'Poppins_400Regular',
+    },
+    innerLink: {
+        fontWeight: '700',
+    },
+    space: {
+        marginBottom: 12
     }
 })
