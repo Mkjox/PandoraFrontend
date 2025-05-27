@@ -29,11 +29,13 @@ import { ServiceResult } from '../types/service.types'
 type AddCredParams = {
   AddCredentials: {
     tab: 'password' | 'vault' | 'category'
+    // optional for edit
     categoryId?: string
     name?: string
     description?: string
   }
 }
+
 type RouteProps = RouteProp<AddCredParams, 'AddCredentials'>
 
 export default function AddCredentialsScreen() {
@@ -43,16 +45,20 @@ export default function AddCredentialsScreen() {
   const { isDark } = useTheme()
   const themeStyles = isDark ? darkTheme : lightTheme
 
+  // initial tab from params, default 'password'
   const initialTab = route.params?.tab ?? 'password'
   const [selectedTab, setSelectedTab] = useState(initialTab)
 
+  // form state
   const [form, setForm] = useState<Record<string, any>>({
+    // password
     SiteName: '',
     UsernameOrEmail: '',
     Password: '',
     PasswordRepeat: '',
     Notes: '',
     PasswordExpirationDate: '',
+    // vault
     Title: '',
     Content: '',
     Url: '',
@@ -63,11 +69,14 @@ export default function AddCredentialsScreen() {
     UnlockDate: '',
     ExpirationDate: '',
     IsFavorite: false,
+    // category
     Name: '',
     Description: '',
+    // common
     CategoryId: '',
   })
 
+  // date picker
   const [datePicker, setDatePicker] = useState<{
     field: 'PasswordExpirationDate' | 'UnlockDate' | 'ExpirationDate' | null
     date: Date
@@ -80,6 +89,7 @@ export default function AddCredentialsScreen() {
   const [loadingUser, setLoadingUser] = useState(true)
   const [submitting, setSubmitting] = useState(false)
 
+  // decode token → userId
   useEffect(() => {
     ; (async () => {
       const decoded = await AuthService.decodeToken()
@@ -93,20 +103,23 @@ export default function AddCredentialsScreen() {
     })()
   }, [navigation])
 
+  // fetch categories once we know user
   useEffect(() => {
     if (!loadingUser && userId) {
       dispatch(CategoryService.getCategoriesByUser())
     }
   }, [dispatch, loadingUser, userId])
 
+  // prefill when editing a category
   useEffect(() => {
-    if (initialTab === 'category' && route.params.categoryId) {
+    const catId = route.params?.categoryId
+    if (initialTab === 'category' && catId) {
       setSelectedTab('category')
       setForm(f => ({
         ...f,
-        CategoryId: route.params.categoryId,
-        Name: route.params.name ?? '',
-        Description: route.params.description ?? '',
+        CategoryId: catId,
+        Name: route.params?.name ?? '',
+        Description: route.params?.description ?? '',
       }))
     }
   }, [initialTab, route.params])
@@ -114,9 +127,9 @@ export default function AddCredentialsScreen() {
   const handleChange = (key: string, val: any) =>
     setForm(prev => ({ ...prev, [key]: val }))
 
-  const showPicker = (field: 'PasswordExpirationDate' | 'UnlockDate' | 'ExpirationDate') =>
+  const showPicker = (field: 'PasswordExpirationDate' | 'UnlockDate' | 'ExpirationDate') => {
     setDatePicker({ field, date: form[field] ? new Date(form[field]) : new Date() })
-
+  }
   const onDateSelected = (_: any, sel?: Date) => {
     const { field, date } = datePicker
     setDatePicker({ field: null, date })
@@ -129,31 +142,14 @@ export default function AddCredentialsScreen() {
   const handleSubmit = useCallback(async () => {
     if (!userId) return
     setSubmitting(true)
+
     try {
       if (selectedTab === 'password') {
-        const pwd = form.Password as string
-        if (
-          !/[A-Z]/.test(pwd) ||
-          !/[a-z]/.test(pwd) ||
-          !/\d/.test(pwd) ||
-          !/[!@#$%^&*(),.?":{}|<>]/.test(pwd)
-        ) {
-          return Alert.alert(
-            'Weak password',
-            'Password should be at least 8 characters and must include at least one uppercase letter, one lowercase letter, one digit, and one special character.'
-          )
-        }
-        if (pwd !== form.PasswordRepeat) {
-          return Alert.alert('Error', 'Passwords do not match.')
-        }
-        if (!form.SiteName || !form.UsernameOrEmail || !form.CategoryId) {
-          return Alert.alert('Error', 'Please fill all required fields.')
-        }
         const payload: PasswordPayload = {
           UserId: userId,
           SiteName: form.SiteName,
           UsernameOrEmail: form.UsernameOrEmail,
-          Password: pwd,
+          Password: form.Password,
           PasswordRepeat: form.PasswordRepeat,
           Notes: form.Notes,
           PasswordExpirationDate: form.PasswordExpirationDate
@@ -161,8 +157,7 @@ export default function AddCredentialsScreen() {
             : undefined,
           CategoryId: form.CategoryId,
         }
-        const res = (await dispatch(PasswordService.createPassword(payload))) as ServiceResult<any>
-        if (!res.success) throw new Error(res.message)
+        await dispatch(PasswordService.createPassword(payload))
         Alert.alert('Success', 'Password saved.')
       }
 
@@ -185,8 +180,7 @@ export default function AddCredentialsScreen() {
             : undefined,
           IsFavorite: form.IsFavorite,
         }
-        const res = (await dispatch(PersonalVaultService.createVault(payload))) as ServiceResult<any>
-        if (!res.success) throw new Error(res.message)
+        await dispatch(PersonalVaultService.createVault(payload))
         Alert.alert('Success', 'Vault entry saved.')
       }
 
@@ -196,22 +190,19 @@ export default function AddCredentialsScreen() {
           name: form.Name,
           description: form.Description,
         }
-        if (route.params.categoryId) {
-          const res = (await dispatch(
-            CategoryService.updateCategory(route.params.categoryId, payload)
-          )) as ServiceResult<any>
-          if (!res.success) throw new Error(res.message)
-          Alert.alert('Updated', 'Category updated.')
+        const catId = route.params?.categoryId
+        if (catId) {
+          await dispatch(CategoryService.updateCategory(catId, payload))
+          Alert.alert('Success', 'Category updated.')
         } else {
-          const res = (await dispatch(CategoryService.createCategory(payload))) as ServiceResult<any>
-          if (!res.success) throw new Error(res.message)
-          Alert.alert('Created', 'Category created.')
+          await dispatch(CategoryService.createCategory(payload))
+          Alert.alert('Success', 'Category created.')
         }
       }
 
       navigation.goBack()
     } catch (err: any) {
-      Alert.alert('Error', err.message || 'Submission failed')
+      Alert.alert('Error', err.message || 'Submit failed')
     } finally {
       setSubmitting(false)
     }
@@ -242,6 +233,8 @@ export default function AddCredentialsScreen() {
           onChange={onDateSelected}
         />
       )}
+
+      {/* tabs */}
       <View style={styles.tabContainer}>
         {(['password', 'vault', 'category'] as const).map(tab => (
           <TouchableOpacity
@@ -250,11 +243,17 @@ export default function AddCredentialsScreen() {
             style={[styles.tab, selectedTab === tab && styles.activeTab]}
           >
             <Text style={styles.tabText}>
-              {tab === 'password' ? 'Password' : tab === 'vault' ? 'Vault' : 'Category'}
+              {tab === 'password'
+                ? 'Password'
+                : tab === 'vault'
+                  ? 'Vault'
+                  : 'Category'}
             </Text>
           </TouchableOpacity>
         ))}
       </View>
+
+      {/* form */}
       <View style={styles.formContainer}>
         {selectedTab === 'password' && (
           <>
@@ -312,6 +311,7 @@ export default function AddCredentialsScreen() {
             </View>
           </>
         )}
+
         {selectedTab === 'vault' && (
           <>
             <TextInput
@@ -330,26 +330,27 @@ export default function AddCredentialsScreen() {
               style={styles.input}
               placeholder="URL"
               value={form.Url}
-              onChangeText={v => handleChange('Url', v)}
+              onChangeText={(v) => handleChange('Url', v)}
             />
             <TextInput
               style={styles.input}
               placeholder="Media File"
               value={form.MediaFile}
-              onChangeText={v => handleChange('MediaFile', v)}
+              onChangeText={(v) => handleChange('MediaFile', v)}
             />
             <TextInput
               style={styles.input}
               placeholder="Summary"
               value={form.Summary}
-              onChangeText={v => handleChange('Summary', v)}
+              onChangeText={(v) => handleChange('Summary', v)}
             />
             <TextInput
               style={styles.input}
               placeholder="Tags (comma separated)"
               value={form.Tags}
-              onChangeText={v => handleChange('Tags', v)}
+              onChangeText={(v) => handleChange('Tags', v)}
             />
+
             <TouchableOpacity
               style={styles.input}
               onPress={() => showPicker('UnlockDate')}
@@ -358,6 +359,7 @@ export default function AddCredentialsScreen() {
                 {form.UnlockDate || 'Select Unlock Date'}
               </Text>
             </TouchableOpacity>
+
             <TouchableOpacity
               style={styles.input}
               onPress={() => showPicker('ExpirationDate')}
@@ -366,20 +368,22 @@ export default function AddCredentialsScreen() {
                 {form.ExpirationDate || 'Select Expiration Date'}
               </Text>
             </TouchableOpacity>
+
             <Text style={styles.label}>Category*</Text>
             <View style={styles.pickerContainer}>
               <Picker
                 selectedValue={form.CategoryId}
-                onValueChange={v => handleChange('CategoryId', v)}
+                onValueChange={(v) => handleChange('CategoryId', v)}
               >
                 <Picker.Item label="Select category..." value="" />
-                {categories.map(c => (
+                {categories.map((c) => (
                   <Picker.Item key={c.id} label={c.name} value={c.id} />
                 ))}
               </Picker>
             </View>
           </>
         )}
+
         {selectedTab === 'category' && (
           <>
             <TextInput
@@ -397,18 +401,18 @@ export default function AddCredentialsScreen() {
           </>
         )}
       </View>
+
       <TouchableOpacity
         style={[styles.submitButton, themeStyles.button]}
         onPress={handleSubmit}
         disabled={submitting}
       >
-        {submitting ? (
-          <ActivityIndicator color={isDark ? '#fff' : '#000'} />
-        ) : (
-          <Text style={[themeStyles.buttonText, styles.buttonText]}>
+        {submitting
+          ? <ActivityIndicator color={isDark ? '#fff' : '#000'} />
+          : <Text style={[themeStyles.buttonText, styles.buttonText]}>
             {route.params?.categoryId ? 'Update' : 'Submit'}
           </Text>
-        )}
+        }
       </TouchableOpacity>
     </ScrollView>
   )
@@ -473,4 +477,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500'
   },
-});
+})
