@@ -11,12 +11,14 @@ import {
 import { useTheme } from '../../context/ThemeContext';
 import { lightTheme, darkTheme } from '../../assets/colors/theme';
 import AuthService from '../../services/AuthService';
+import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
 const AccountScreen: React.FC = () => {
     const { isDark } = useTheme();
     const themeStyles = isDark ? darkTheme : lightTheme;
+    const navigation = useNavigation();
 
     // const handleLogout = async () => {
     //     await AuthService.logout();
@@ -45,7 +47,7 @@ const AccountScreen: React.FC = () => {
                 <TouchableOpacity style={[styles.option, themeStyles.card]}>
                     <Text style={[styles.optionText, themeStyles.text]}>Change Password</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.option, themeStyles.card]}>
+                <TouchableOpacity style={[styles.option, themeStyles.card]} onPress={() => navigation.navigate("TwoFactor" as never)}>
                     <Text style={[styles.optionText, themeStyles.text]}>Two-Factor Authentication</Text>
                 </TouchableOpacity>
             </View>

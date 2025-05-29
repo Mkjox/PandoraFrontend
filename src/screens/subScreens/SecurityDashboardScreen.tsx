@@ -21,7 +21,7 @@ import CategoryService from '../../services/CategoryService'
 import ErrorDisplay from '../../components/ErrorDisplay'
 import { PasswordItem } from '../../types/password.types'
 
-const { width } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
 
 // categorize strength
 function getStrength(pw: string): 'Weak' | 'Medium' | 'Strong' {
@@ -107,67 +107,69 @@ const SecurityDashboardScreen: React.FC = () => {
   }
 
   return (
-    <ScrollView contentContainerStyle={[styles.container, themeStyles.container]}>
-      <Text style={[styles.header, themeStyles.text]}>Security Dashboard</Text>
+    <View style={[styles.container, themeStyles.container]}>
+      <View style={styles.inner}>
+        <Text style={[styles.header, themeStyles.text]}>Security Dashboard</Text>
 
-      {/* Stats Row */}
-      <View style={styles.statsRow}>
-        <View style={[styles.statCard, themeStyles.card]}>
-          <Text style={[styles.statLabel, themeStyles.text]}>Passwords</Text>
-          <Text style={[styles.statValue, themeStyles.text]}>{passwords.length}</Text>
+        {/* Stats Row */}
+        <View style={styles.statsRow}>
+          <View style={[styles.statCard, themeStyles.card]}>
+            <Text style={[styles.statLabel, themeStyles.text]}>Passwords</Text>
+            <Text style={[styles.statValue, themeStyles.text]}>{passwords.length}</Text>
+          </View>
+          <View style={[styles.statCard, themeStyles.card]}>
+            <Text style={[styles.statLabel, themeStyles.text]}>Weak Pwd</Text>
+            <Text style={[styles.statValue, themeStyles.text]}>{strengthCounts.Weak}</Text>
+          </View>
+          <View style={[styles.statCard, themeStyles.card]}>
+            <Text style={[styles.statLabel, themeStyles.text]}>Vaults</Text>
+            <Text style={[styles.statValue, themeStyles.text]}>{vaults.length}</Text>
+          </View>
+          <View style={[styles.statCard, themeStyles.card]}>
+            <Text style={[styles.statLabel, themeStyles.text]}>Categories</Text>
+            <Text style={[styles.statValue, themeStyles.text]}>{categories.length}</Text>
+          </View>
         </View>
-        <View style={[styles.statCard, themeStyles.card]}>
-          <Text style={[styles.statLabel, themeStyles.text]}>Weak Pwd</Text>
-          <Text style={[styles.statValue, themeStyles.text]}>{strengthCounts.Weak}</Text>
-        </View>
-        <View style={[styles.statCard, themeStyles.card]}>
-          <Text style={[styles.statLabel, themeStyles.text]}>Vaults</Text>
-          <Text style={[styles.statValue, themeStyles.text]}>{vaults.length}</Text>
-        </View>
-        <View style={[styles.statCard, themeStyles.card]}>
-          <Text style={[styles.statLabel, themeStyles.text]}>Categories</Text>
-          <Text style={[styles.statValue, themeStyles.text]}>{categories.length}</Text>
-        </View>
-      </View>
 
-      {/* Two-Factor Toggle */}
-      <View style={[styles.section, themeStyles.card]}>
-        <Text style={[styles.sectionLabel, themeStyles.text]}>
-          Two-Factor Authentication
-        </Text>
-        <View style={styles.switchRow}>
-          <Switch
-            value={twoFAEnabled}
-            onValueChange={handleToggle2FA}
-            disabled={toggling2FA}
-          />
-          <Text
-            style={[styles.switchText, themeStyles.text]}
-          >{twoFAEnabled ? 'Enabled' : 'Disabled'}</Text>
-        </View>
-      </View>
-
-      {/* Quick Actions */}
-      <View style={[styles.section, themeStyles.card]}>
-        <Text style={[styles.sectionLabel, themeStyles.text]}>Quick Actions</Text>
-        <TouchableOpacity
-          style={[styles.actionButton, themeStyles.button]}
-          onPress={() => navigation.navigate('SecurityChallenge')}
-        >
-          <Text style={[styles.actionText, themeStyles.buttonText]}>
-            Review Weak Passwords
+        {/* Two-Factor Toggle */}
+        <View style={[styles.section, themeStyles.card]}>
+          <Text style={[styles.sectionLabel, themeStyles.text]}>
+            Two-Factor Authentication
           </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.actionButton, themeStyles.button]}
-          onPress={() => navigation.navigate('Settings')}
-        >
-          <Text style={[styles.actionText, themeStyles.buttonText]}>
-            App Settings
-          </Text>
-        </TouchableOpacity>
+          <View style={styles.switchRow}>
+            <Switch
+              value={twoFAEnabled}
+              onValueChange={handleToggle2FA}
+              disabled={toggling2FA}
+            />
+            <Text
+              style={[styles.switchText, themeStyles.text]}
+            >{twoFAEnabled ? 'Enabled' : 'Disabled'}</Text>
+          </View>
+        </View>
+
+        {/* Quick Actions */}
+        <View style={[styles.section, themeStyles.card]}>
+          <Text style={[styles.sectionLabel, themeStyles.text]}>Quick Actions</Text>
+          <TouchableOpacity
+            style={[styles.actionButton, themeStyles.button]}
+            onPress={() => navigation.navigate('SecurityChallenge' as never)}
+          >
+            <Text style={[styles.actionText, themeStyles.buttonText]}>
+              Review Weak Passwords
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.actionButton, themeStyles.button]}
+            onPress={() => navigation.navigate('Settings' as never)}
+          >
+            <Text style={[styles.actionText, themeStyles.buttonText]}>
+              App Settings
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </ScrollView>
+    </View>
   )
 }
 
@@ -175,7 +177,10 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: StatusBar.currentHeight,
     paddingHorizontal: width * 0.06,
-    paddingBottom: 20,
+    height: height
+  },
+  inner: {
+    marginTop: StatusBar.currentHeight
   },
   center: {
     flex: 1,

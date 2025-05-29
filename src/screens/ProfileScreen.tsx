@@ -113,17 +113,17 @@ const ProfileScreen: React.FC = () => {
 
       <View style={[styles.linksGroup, themeStyles.card]}>
 
-        <TouchableOpacity onPress={() => navigation.navigate('EditProfile')} style={styles.linkRow}>
+        <TouchableOpacity onPress={() => navigation.navigate('EditProfile' as never)} style={styles.linkRow}>
           <MaterialIcons name="edit" size={20} style={themeStyles.iconColor} />
           <Text style={[styles.linkText, themeStyles.text]}>Edit Profile</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate('ThemeScreen')} style={styles.linkRow}>
+        <TouchableOpacity onPress={() => navigation.navigate('ThemeScreen' as never)} style={styles.linkRow}>
           <MaterialIcons name="dark-mode" size={20} style={themeStyles.iconColor} />
           <Text style={[styles.linkText, themeStyles.text]}>Theme</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate('Settings')} style={styles.linkRow}>
+        <TouchableOpacity onPress={() => navigation.navigate('Settings' as never)} style={styles.linkRow}>
           <MaterialIcons name="settings" size={20} style={themeStyles.iconColor} />
           <Text style={[styles.linkText, themeStyles.text]}>Settings</Text>
         </TouchableOpacity>

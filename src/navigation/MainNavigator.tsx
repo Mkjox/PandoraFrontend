@@ -26,6 +26,7 @@ import PasswordGeneratorScreen from '../screens/subScreens/PasswordGeneratorScre
 import EmergencyAccessScreen from '../screens/subScreens/EmergencyAccessScreen';
 import SecurityChallengeScreen from '../screens/subScreens/SecurityChallengeScreen';
 import SecurityDashboardScreen from '../screens/subScreens/SecurityDashboardScreen';
+import TwoFactorScreen from '../screens/subScreens/TwoFactorScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -64,6 +65,7 @@ export default function MainNavigator() {
             <Stack.Screen name='EmergencyAccess' component={EmergencyAccessScreen} options={{headerShown: false}} />
             <Stack.Screen name='SecurityChallenge' component={SecurityChallengeScreen} options={{headerShown: false}} />
             <Stack.Screen name='SecurityDashboard' component={SecurityDashboardScreen} options={{headerShown: false}} />
+            <Stack.Screen name='TwoFactor' component={TwoFactorScreen} options={{headerShown: false}} />
         </Stack.Navigator>
     );
 }
