@@ -29,7 +29,7 @@ export default function LoginScreen() {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const { isDark } = useTheme()
-  const theme = isDark ? darkTheme : lightTheme
+  const themeStyles = isDark ? darkTheme : lightTheme
 
   const handleChange = (key: keyof typeof credentials, value: string) => {
     setCredentials(c => ({ ...c, [key]: value }))
@@ -63,11 +63,15 @@ export default function LoginScreen() {
   }
 
   return (
-    <View style={[styles.container, theme.container]}>
-      <Text style={[styles.title, theme.text]}>Login</Text>
+    <View style={[styles.container, themeStyles.container]}>
+      <Text style={[styles.title, themeStyles.text]}>Login</Text>
 
       <TextInput
-        style={[styles.input, theme.card]}
+        style={[
+          styles.input,
+          themeStyles.card,
+          usernameError ? styles.inputError : undefined,
+        ]}
         placeholder="Username or Email"
         placeholderTextColor={isDark ? '#888' : '#666'}
         autoCapitalize="none"
@@ -79,11 +83,19 @@ export default function LoginScreen() {
         <Text style={[styles.errorText]}>{usernameError}</Text>
       ) : null}
 
-      <View style={styles.space}/>
+      <View style={styles.space} />
 
-      <View style={[styles.input, theme.card, styles.passwordRow]}>
+      <View style={[
+        styles.input,
+        themeStyles.card,
+        styles.passwordRow,
+        passwordError ? styles.inputError : undefined,
+      ]}>
         <TextInput
-          style={[styles.passwordInput]}
+          style={[
+            styles.passwordInput,
+            themeStyles.card,
+          ]}
           placeholder="Password"
           placeholderTextColor={isDark ? '#888' : '#666'}
           secureTextEntry={!showPassword}
@@ -98,7 +110,7 @@ export default function LoginScreen() {
           <MaterialIcons
             name={showPassword ? 'visibility' : 'visibility-off'}
             size={24}
-            color={theme.icon.color}
+            color={themeStyles.icon.color}
           />
         </TouchableOpacity>
       </View>
@@ -106,7 +118,7 @@ export default function LoginScreen() {
         <Text style={[styles.errorText]}>{passwordError}</Text>
       ) : null}
 
-      <View style={styles.space}/>
+      <View style={styles.space} />
 
       {serverError ? (
         <Text style={[styles.errorText, { textAlign: 'center' }]}>
@@ -117,7 +129,7 @@ export default function LoginScreen() {
       <LoginButton onPress={handleLogin} loading={loading} />
 
       <TouchableOpacity onPress={() => navigation.navigate('Register' as never)}>
-        <Text style={[styles.link, theme.textBlue]}>
+        <Text style={[styles.link, themeStyles.textBlue]}>
           Don't have an account? <Text style={styles.innerLink}>Register here</Text>
         </Text>
       </TouchableOpacity>
@@ -143,10 +155,13 @@ const styles = StyleSheet.create({
     padding: 14,
     borderRadius: 8,
     marginBottom: 4,
-    elevation: 5,
+    elevation: 3,
     flexDirection: 'row',
     alignItems: 'center',
     paddingRight: 12,
+  },
+  inputError: {
+    borderColor: '#D32F2F',
   },
   passwordRow: {
     paddingHorizontal: 14,

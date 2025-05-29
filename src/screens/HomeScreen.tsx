@@ -197,7 +197,11 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     marginTop: height * 0.02,
-    borderRadius: 8
+    borderRadius: 8,
+    backgroundColor: '#FFFFFF',
+    borderColor: '#ccc',
+    borderWidth: 1,
+    elevation: 3
   },
   typeList: {
     marginTop: height * 0.02

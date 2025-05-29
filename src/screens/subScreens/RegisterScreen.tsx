@@ -17,7 +17,7 @@ import { darkTheme, lightTheme } from '../../assets/colors/theme'
 
 export default function RegisterScreen() {
     const { isDark } = useTheme()
-    const theme = isDark ? darkTheme : lightTheme
+    const themeStyles = isDark ? darkTheme : lightTheme
     const dispatch = useDispatch()
     const navigation = useNavigation()
 
@@ -83,12 +83,16 @@ export default function RegisterScreen() {
     }
 
     return (
-        <ScrollView contentContainerStyle={[styles.container, theme.container]}>
-            <Text style={[styles.title, theme.text]}>Register</Text>
+        <ScrollView contentContainerStyle={[styles.container, themeStyles.container]}>
+            <Text style={[styles.title, themeStyles.text]}>Register</Text>
 
             {/* FirstName */}
             <TextInput
-                style={[styles.input, theme.card]}
+                style={[
+                    styles.input,
+                    themeStyles.card,
+                    errors.FirstName ? styles.inputError : undefined,
+                ]}
                 placeholder="First Name"
                 placeholderTextColor={isDark ? '#888' : '#666'}
                 value={form.FirstName}
@@ -100,7 +104,11 @@ export default function RegisterScreen() {
 
             {/* LastName */}
             <TextInput
-                style={[styles.input, theme.card]}
+                style={[
+                    styles.input,
+                    themeStyles.card,
+                    errors.LastName ? styles.inputError : undefined
+                ]}
                 placeholder="Last Name"
                 placeholderTextColor={isDark ? '#888' : '#666'}
                 value={form.LastName}
@@ -112,7 +120,11 @@ export default function RegisterScreen() {
 
             {/* PhoneNumber */}
             <TextInput
-                style={[styles.input, theme.card]}
+                style={[
+                    styles.input,
+                    themeStyles.card,
+                    errors.PhoneNumber ? styles.inputError : undefined
+                ]}
                 placeholder="Phone Number"
                 placeholderTextColor={isDark ? '#888' : '#666'}
                 keyboardType="phone-pad"
@@ -125,7 +137,11 @@ export default function RegisterScreen() {
 
             {/* Username */}
             <TextInput
-                style={[styles.input, theme.card]}
+                style={[
+                    styles.input,
+                    themeStyles.card,
+                    errors.Username ? styles.inputError : undefined
+                ]}
                 placeholder="Username"
                 placeholderTextColor={isDark ? '#888' : '#666'}
                 autoCapitalize="none"
@@ -138,7 +154,11 @@ export default function RegisterScreen() {
 
             {/* Email */}
             <TextInput
-                style={[styles.input, theme.card]}
+                style={[
+                    styles.input,
+                    themeStyles.card,
+                    errors.Email ? styles.inputError : undefined
+                ]}
                 placeholder="Email"
                 placeholderTextColor={isDark ? '#888' : '#666'}
                 keyboardType="email-address"
@@ -152,12 +172,17 @@ export default function RegisterScreen() {
 
             {/* Password */}
             <TextInput
-                style={[styles.input, theme.card]}
+                style={[
+                    styles.input,
+                    themeStyles.card,
+                    errors.Password ? styles.inputError : undefined
+                ]}
                 placeholder="Password"
                 placeholderTextColor={isDark ? '#888' : '#666'}
                 secureTextEntry
                 value={form.Password}
                 onChangeText={text => handleChange('Password', text)}
+
             />
             {errors.Password && <Text style={styles.errorText}>{errors.Password}</Text>}
 
@@ -165,7 +190,11 @@ export default function RegisterScreen() {
 
             {/* ConfirmPassword */}
             <TextInput
-                style={[styles.input, theme.card]}
+                style={[
+                    styles.input,
+                    themeStyles.card,
+                    errors.ConfirmPassword ? styles.inputError : undefined
+                ]}
                 placeholder="Confirm Password"
                 placeholderTextColor={isDark ? '#888' : '#666'}
                 secureTextEntry
@@ -186,19 +215,19 @@ export default function RegisterScreen() {
             )}
 
             <TouchableOpacity
-                style={[styles.submitButton, theme.button]}
+                style={[styles.submitButton, themeStyles.button]}
                 onPress={handleRegister}
                 disabled={loading}
             >
                 {loading ? (
-                    <ActivityIndicator color={theme.buttonText.color} />
+                    <ActivityIndicator color={themeStyles.buttonText.color} />
                 ) : (
-                    <Text style={[styles.submitText, theme.buttonText]}>Register</Text>
+                    <Text style={[styles.submitText, themeStyles.buttonText]}>Register</Text>
                 )}
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.goBack()}>
-                <Text style={[styles.link, theme.textBlue]}>
+                <Text style={[styles.link, themeStyles.textBlue]}>
                     Already have an account? <Text style={styles.innerLink}>Log in</Text>
                 </Text>
             </TouchableOpacity>
@@ -224,7 +253,10 @@ const styles = StyleSheet.create({
         padding: 14,
         borderRadius: 8,
         marginBottom: 4,
-        elevation: 5,
+        elevation: 3,
+    },
+    inputError: {
+        borderColor: '#D32F2F',
     },
     errorText: {
         color: '#D32F2F',
