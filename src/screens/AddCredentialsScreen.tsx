@@ -25,6 +25,7 @@ import { CategoryPayload } from '../types/category.types'
 import { PasswordPayload } from '../types/password.types'
 import { PersonalVaultPayload } from '../types/personalVault.types'
 import { ServiceResult } from '../types/service.types'
+import ImagePickerButton from '../components/ImagePickerButton'
 
 type AddCredParams = {
   AddCredentials: {
@@ -332,12 +333,27 @@ export default function AddCredentialsScreen() {
               value={form.Url}
               onChangeText={(v) => handleChange('Url', v)}
             />
-            <TextInput
+
+            {/* <TextInput
               style={styles.input}
               placeholder="Media File"
               value={form.MediaFile}
               onChangeText={(v) => handleChange('MediaFile', v)}
+            /> */}
+
+            <ImagePickerButton
+              title={form.MediaFile ? 'Change Image' : 'Upload Image'}
+              onImagePicked={base64 => handleChange('MediaFile', base64)}
+              style={styles.uploadButton}
+              textStyle={styles.uploadButtonText}
             />
+
+            {form.MediaFile ? (
+              <Text style={[styles.helpText, themeStyles.textGray]}>
+                Image selected ({form.MediaFile.length.toLocaleString()} characters)
+              </Text>
+            ) : null}
+
             <TextInput
               style={styles.input}
               placeholder="Summary"
@@ -456,6 +472,19 @@ const styles = StyleSheet.create({
     padding: 12,
     marginBottom: 12,
     justifyContent: 'center',
+  },
+  uploadButton: {
+    marginBottom: 12,
+    backgroundColor: '#6E7FEC',
+  },
+  uploadButtonText: {
+    color: '#FFF',
+    fontWeight: '600',
+  },
+  helpText: {
+    marginBottom: 12,
+    fontSize: 12,
+    fontFamily: 'Poppins_400Regular'
   },
   label: {
     fontWeight: '600',
