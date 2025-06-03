@@ -27,6 +27,11 @@ import EmergencyAccessScreen from '../screens/subScreens/EmergencyAccessScreen';
 import SecurityChallengeScreen from '../screens/subScreens/SecurityChallengeScreen';
 import SecurityDashboardScreen from '../screens/subScreens/SecurityDashboardScreen';
 import TwoFactorScreen from '../screens/subScreens/TwoFactorScreen';
+import EditCategoriesScreen from '../screens/subScreens/EditCategoriesScreen';
+import EditPasswordsScreen from '../screens/subScreens/EditPasswordsScreen';
+import EditVaultScreen from '../screens/subScreens/EditVaultsScreen';
+import CategoryDetailsScreen from '../screens/subScreens/CategoryDetailsScreen';
+import VaultDetailsScreen from '../screens/subScreens/VaultDetailsScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -48,6 +53,8 @@ export default function MainNavigator() {
             <Stack.Screen name='Tabs' component={TabNavigator} options={{ headerShown: false }} />
             <Stack.Screen name='EditProfile' component={EditProfileScreen} options={{ headerShown: false }} />
             <Stack.Screen name='PassDetails' component={PassDetailsScreen} options={{ headerShown: false }} />
+            <Stack.Screen name='CategoryDetails' component={CategoryDetailsScreen} options={{ headerShown: false }} />
+            <Stack.Screen name='VaultDetails' component={VaultDetailsScreen} options={{ headerShown: false }} />
             <Stack.Screen name='AddCredentials' component={AddCredentialsScreen} options={{ headerShown: false }} />
             <Stack.Screen name='Settings' component={SettingsScreen} options={{ headerShown: false }} />
             <Stack.Screen name='Suggest' component={SuggestScreen} options={{ headerShown: false }} />
@@ -60,12 +67,15 @@ export default function MainNavigator() {
             <Stack.Screen name='Advanced' component={AdvancedScreen} options={{ headerShown: false }} />
             <Stack.Screen name='About' component={AboutScreen} options={{ headerShown: false }} />
             <Stack.Screen name='Privacy' component={PrivacyScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='ThemeScreen' component={ThemeScreen} options={{headerShown: false}} />
-            <Stack.Screen name='PasswordGenerator' component={PasswordGeneratorScreen} options={{headerShown: false}} />
-            <Stack.Screen name='EmergencyAccess' component={EmergencyAccessScreen} options={{headerShown: false}} />
-            <Stack.Screen name='SecurityChallenge' component={SecurityChallengeScreen} options={{headerShown: false}} />
-            <Stack.Screen name='SecurityDashboard' component={SecurityDashboardScreen} options={{headerShown: false}} />
-            <Stack.Screen name='TwoFactor' component={TwoFactorScreen} options={{headerShown: false}} />
+            <Stack.Screen name='ThemeScreen' component={ThemeScreen} options={{ headerShown: false }} />
+            <Stack.Screen name='PasswordGenerator' component={PasswordGeneratorScreen} options={{ headerShown: false }} />
+            <Stack.Screen name='EmergencyAccess' component={EmergencyAccessScreen} options={{ headerShown: false }} />
+            <Stack.Screen name='SecurityChallenge' component={SecurityChallengeScreen} options={{ headerShown: false }} />
+            <Stack.Screen name='SecurityDashboard' component={SecurityDashboardScreen} options={{ headerShown: false }} />
+            <Stack.Screen name='TwoFactor' component={TwoFactorScreen} options={{ headerShown: false }} />
+            <Stack.Screen name='EditCategories' component={EditCategoriesScreen} options={{ headerShown: false }} />
+            <Stack.Screen name='EditPassword' component={EditPasswordsScreen} options={{ headerShown: false }} />
+            <Stack.Screen name='EditVault' component={EditVaultScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
     );
 }

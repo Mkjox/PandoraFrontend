@@ -54,12 +54,14 @@ export default function CategoryScreen() {
   const renderItem = ({ item }: { item: { id: string; name: string; description?: string } }) => (
     <View style={[styles.card, themeStyles.card]}>
       <View style={styles.cardText}>
-        <Text style={[styles.cardTitle, themeStyles.text]}>{item.name}</Text>
-        {item.description ? (
-          <Text style={[styles.cardDescription, themeStyles.textGray]}>
-            {item.description}
-          </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('CategoryDetails' as any, { id: item.id })}>
+          <Text style={[styles.cardTitle, themeStyles.text]}>{item.name}</Text>
+          {item.description ? (
+            <Text style={[styles.cardDescription, themeStyles.textGray]}>
+              {item.description}
+            </Text>
         ) : null}
+        </TouchableOpacity>
       </View>
       <View style={styles.cardActions}>
         <TouchableOpacity

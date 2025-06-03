@@ -116,18 +116,17 @@ const PassDetailsScreen: React.FC = () => {
 
       <TouchableOpacity
         style={[styles.editButton, themeStyles.button]}
-        // onPress={() => navigation.navigate('AddCredentials' as any, { id })}
-        onPress={() => navigation.navigate('AddCredentials' as any, { 
-          tab: 'password',
-          passwordId: item.id,
-          userId: item.UserId,
-          siteName: item.SiteName,
-          usernameOrEmail: item.UsernameOrEmail,
-          password: item.Password,
-          notes: item.Notes ?? '',
-          passwordExpirationDate: item.PasswordExpirationDate ?? undefined,
-          categoryId: item.CategoryId,
-         })}
+        onPress={() => navigation.navigate('EditPassword', { passwordId: item.id })}
+        // onPress={() => navigation.navigate('EditPassword' as any, { 
+        //   passwordId: item.id,
+        //   userId: item.UserId,
+        //   siteName: item.SiteName,
+        //   usernameOrEmail: item.UsernameOrEmail,
+        //   password: item.Password,
+        //   notes: item.Notes ?? '',
+        //   passwordExpirationDate: item.PasswordExpirationDate ?? undefined,
+        //   categoryId: item.CategoryId,
+        //  })}
       >
         <MaterialIcons name="edit" size={20} color={themeStyles.buttonText.color} />
         <Text style={[styles.editText, themeStyles.buttonText]}>Edit</Text>
