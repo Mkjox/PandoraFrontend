@@ -9,13 +9,13 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native'
-import { useTheme } from '../../context/ThemeContext'
-import { darkTheme, lightTheme } from '../../assets/colors/theme'
+import { useTheme } from '../../../context/ThemeContext'
+import { darkTheme, lightTheme } from '../../../assets/colors/theme'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
-import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import PasswordService from '../../services/PasswordService'
-import ErrorDisplay from '../../components/ErrorDisplay'
-import { PasswordItem } from '../../types/password.types'
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
+import PasswordService from '../../../services/PasswordService'
+import ErrorDisplay from '../../../components/ErrorDisplay'
+import { PasswordItem } from '../../../types/password.types'
 
 const { width } = Dimensions.get('window')
 

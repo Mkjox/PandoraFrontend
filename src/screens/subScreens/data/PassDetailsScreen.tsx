@@ -10,10 +10,10 @@ import {
   StatusBar
 } from 'react-native';
 import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
-import { useTheme } from "../../context/ThemeContext";
-import { lightTheme, darkTheme } from "../../assets/colors/theme";
-import PasswordService from "../../services/PasswordService";
-import { PasswordItem } from "../../types/password.types";
+import { useTheme } from "../../../context/ThemeContext";
+import { lightTheme, darkTheme } from "../../../assets/colors/theme";
+import PasswordService from "../../../services/PasswordService";
+import { PasswordItem } from "../../../types/password.types";
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
 
 type RootStackParamList = {

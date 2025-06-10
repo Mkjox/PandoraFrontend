@@ -11,8 +11,8 @@ import {
     Platform,
     UIManager,
 } from 'react-native';
-import { useTheme } from '../../context/ThemeContext';
-import { lightTheme, darkTheme } from '../../assets/colors/theme';
+import { useTheme } from '../../../context/ThemeContext';
+import { lightTheme, darkTheme } from '../../../assets/colors/theme';
 
 if (Platform.OS === 'android') {
     UIManager.setLayoutAnimationEnabledExperimental?.(true);

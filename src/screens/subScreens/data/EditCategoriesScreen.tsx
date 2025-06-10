@@ -10,13 +10,13 @@ import {
   Alert,
 } from 'react-native'
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native'
-import { useTheme } from '../../context/ThemeContext'
-import { darkTheme, lightTheme } from '../../assets/colors/theme'
-import { Category } from '../../types/category.types'
-import api from '../../services/api'
-import AuthService from '../../services/AuthService'
-import { ServiceResult } from '../../types/service.types'
-import { CategoryPayload } from '../../types/category.types'
+import { useTheme } from '../../../context/ThemeContext'
+import { darkTheme, lightTheme } from '../../../assets/colors/theme'
+import { Category } from '../../../types/category.types'
+import api from '../../../services/api'
+import AuthService from '../../../services/AuthService'
+import { ServiceResult } from '../../../types/service.types'
+import { CategoryPayload } from '../../../types/category.types'
 
 type EditCatParams = {
   EditCategory: { categoryId: string }

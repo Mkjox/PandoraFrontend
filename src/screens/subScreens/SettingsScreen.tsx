@@ -8,8 +8,8 @@ import {
     Dimensions,
     TouchableOpacity,
 } from "react-native"
-import { useTheme } from "../context/ThemeContext"
-import { darkTheme, lightTheme } from "../assets/colors/theme"
+import { useTheme } from "../../context/ThemeContext"
+import { darkTheme, lightTheme } from "../../assets/colors/theme"
 import {
     AntDesign,
     Entypo,

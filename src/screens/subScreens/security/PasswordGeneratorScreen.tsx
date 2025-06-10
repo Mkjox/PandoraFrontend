@@ -11,8 +11,8 @@ import {
     Alert,
 } from 'react-native'
 import Slider from '@react-native-community/slider'
-import { useTheme } from '../../context/ThemeContext'
-import { darkTheme, lightTheme } from '../../assets/colors/theme'
+import { useTheme } from '../../../context/ThemeContext'
+import { darkTheme, lightTheme } from '../../../assets/colors/theme'
 
 const { width } = Dimensions.get('window')
 

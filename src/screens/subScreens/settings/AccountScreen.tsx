@@ -8,9 +8,9 @@ import {
     Dimensions,
     TouchableOpacity,
 } from 'react-native';
-import { useTheme } from '../../context/ThemeContext';
-import { lightTheme, darkTheme } from '../../assets/colors/theme';
-import AuthService from '../../services/AuthService';
+import { useTheme } from '../../../context/ThemeContext';
+import { lightTheme, darkTheme } from '../../../assets/colors/theme';
+import AuthService from '../../../services/AuthService';
 import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');

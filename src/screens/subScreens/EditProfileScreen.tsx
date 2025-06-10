@@ -11,9 +11,9 @@ import {
   Image,
   Alert,
 } from 'react-native';
-import { useTheme } from '../context/ThemeContext';
-import { lightTheme, darkTheme } from '../assets/colors/theme';
-import AuthService from '../services/AuthService';
+import { useTheme } from '../../context/ThemeContext';
+import { lightTheme, darkTheme } from '../../assets/colors/theme';
+import AuthService from '../../services/AuthService';
 
 const { width } = Dimensions.get('window');
 

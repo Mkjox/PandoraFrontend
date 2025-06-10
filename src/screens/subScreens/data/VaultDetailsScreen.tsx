@@ -10,12 +10,12 @@ import {
   StatusBar,
 } from "react-native";
 import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
-import { useTheme } from "../../context/ThemeContext";
-import { lightTheme, darkTheme } from "../../assets/colors/theme";
-import PersonalVaultService from "../../services/PersonalVaultService";
-import { PersonalVaultPayload } from "../../types/personalVault.types";
+import { useTheme } from "../../../context/ThemeContext";
+import { lightTheme, darkTheme } from "../../../assets/colors/theme";
+import PersonalVaultService from "../../../services/PersonalVaultService";
+import { PersonalVaultPayload } from "../../../types/personalVault.types";
 import { MaterialIcons } from "@expo/vector-icons";
-import { ServiceResult } from "../../types/service.types";
+import { ServiceResult } from "../../../types/service.types";
 
 type RootStackParamList = {
   VaultDetails: { id: string };

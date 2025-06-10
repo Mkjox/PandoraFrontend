@@ -10,8 +10,8 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import { Searchbar } from 'react-native-paper';
-import { useTheme } from '../../context/ThemeContext';
-import { lightTheme, darkTheme } from '../../assets/colors/theme';
+import { useTheme } from '../../../context/ThemeContext';
+import { lightTheme, darkTheme } from '../../../assets/colors/theme';
 
 const { width } = Dimensions.get('window');
 

@@ -11,9 +11,9 @@ import {
   Alert,
   ScrollView,
 } from 'react-native'
-import { useTheme } from '../../context/ThemeContext'
-import { darkTheme, lightTheme } from '../../assets/colors/theme'
-import AuthService from '../../services/AuthService'
+import { useTheme } from '../../../context/ThemeContext'
+import { darkTheme, lightTheme } from '../../../assets/colors/theme'
+import AuthService from '../../../services/AuthService'
 
 const TwoFactorScreen: React.FC = () => {
   const { isDark } = useTheme()
