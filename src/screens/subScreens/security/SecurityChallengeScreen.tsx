@@ -158,7 +158,9 @@ const styles = StyleSheet.create({
     padding: 12,
     marginBottom: 12,
     borderRadius: 8,
-    elevation: 2,
+    elevation: 3,
+    marginHorizontal: 5,
+    marginVertical: 5
   },
   itemTitle: {
     fontSize: 16,
