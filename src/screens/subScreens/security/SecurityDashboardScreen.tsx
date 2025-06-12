@@ -132,7 +132,7 @@ const SecurityDashboardScreen: React.FC = () => {
         </View>
 
         {/* Two-Factor Toggle */}
-        <View style={[styles.section, themeStyles.card]}>
+        {/* <View style={[styles.section, themeStyles.card]}>
           <Text style={[styles.sectionLabel, themeStyles.text]}>
             Two-Factor Authentication
           </Text>
@@ -146,7 +146,7 @@ const SecurityDashboardScreen: React.FC = () => {
               style={[styles.switchText, themeStyles.text]}
             >{twoFAEnabled ? 'Enabled' : 'Disabled'}</Text>
           </View>
-        </View>
+        </View> */}
 
         {/* Quick Actions */}
         <View style={[styles.section, themeStyles.card]}>
@@ -165,6 +165,14 @@ const SecurityDashboardScreen: React.FC = () => {
           >
             <Text style={[styles.actionText, themeStyles.buttonText]}>
               App Settings
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.actionButton, themeStyles.button]}
+            onPress={() => navigation.navigate('TwoFactor' as never)}
+          >
+            <Text style={[styles.actionText, themeStyles.buttonText]}>
+              Two Factor Settings
             </Text>
           </TouchableOpacity>
         </View>
@@ -205,7 +213,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 12,
     alignItems: 'center',
-    elevation: 1,
+    elevation: 3,
   },
   statLabel: {
     fontSize: 14,
@@ -220,7 +228,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 8,
     marginBottom: 24,
-    elevation: 1,
+    elevation: 3,
   },
   sectionLabel: {
     fontSize: 16,

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useMemo } from "react"
 import {
   View,
   Text,
@@ -12,6 +12,8 @@ import { useTheme } from "../context/ThemeContext"
 import { darkTheme, lightTheme } from "../assets/colors/theme"
 import { MaterialIcons, FontAwesome5, Entypo } from "@expo/vector-icons"
 import { useNavigation } from "@react-navigation/native"
+import { useAppSelector } from "../redux/hooks"
+import { isStrongPassword } from "../utils/password"
 
 const { width, height } = Dimensions.get("window")
 
@@ -27,6 +29,13 @@ const SecurityToolsScreen: React.FC = () => {
   const { isDark } = useTheme()
   const themeStyles = isDark ? darkTheme : lightTheme
   const navigation = useNavigation();
+
+  const {passwords} = useAppSelector(s => s.passwords);
+  const percentage = useMemo(() => {
+    if (!passwords.length) return '0.00';
+    const strongCount = passwords.filter(pw => isStrongPassword(pw.Password)).length;
+    return ((strongCount / passwords.length) * 100).toFixed(2);
+  }, [passwords]);
 
   const tools: Tool[] = [
     {
@@ -45,7 +54,7 @@ const SecurityToolsScreen: React.FC = () => {
     },
     {
       id: "challenge",
-      title: "Security challenge (0.00%)",
+      title: `Security challenge (${percentage}%)`,
       subtitle: "Put your passwords to the test",
       icon: <MaterialIcons name="security" size={24} color={themeStyles.icon.color} />,
       onPress: () => {navigation.navigate("SecurityChallenge" as never)},

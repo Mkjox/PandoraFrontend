@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react'
+import React, { useEffect, useState, useLayoutEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -7,200 +7,173 @@ import {
   Dimensions,
   FlatList,
   ActivityIndicator,
-  TouchableOpacity,
-} from 'react-native'
-import { useTheme } from '../../../context/ThemeContext'
-import { darkTheme, lightTheme } from '../../../assets/colors/theme'
-import { useFocusEffect, useNavigation } from '@react-navigation/native'
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
-import PasswordService from '../../../services/PasswordService'
-import ErrorDisplay from '../../../components/ErrorDisplay'
-import { PasswordItem } from '../../../types/password.types'
+} from 'react-native';
+import { useTheme } from '../../../context/ThemeContext';
+import { darkTheme, lightTheme } from '../../../assets/colors/theme';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import PasswordService from '../../../services/PasswordService';
+import { isStrongPassword } from '../../../utils/password';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
-const { width } = Dimensions.get('window')
-
-// simple password strength categorization
-function getStrength(pw: string): 'Weak' | 'Medium' | 'Strong' {
-  let score = 0
-  if (pw.length >= 8) score++
-  if (/[A-Z]/.test(pw)) score++
-  if (/[0-9]/.test(pw)) score++
-  if (/[^A-Za-z0-9]/.test(pw)) score++
-  if (score <= 1) return 'Weak'
-  if (score <= 3) return 'Medium'
-  return 'Strong'
-}
+const { width, height } = Dimensions.get('window');
 
 const SecurityChallengeScreen: React.FC = () => {
-  const { isDark } = useTheme()
-  const themeStyles = isDark ? darkTheme : lightTheme
-  const navigation = useNavigation()
-  const dispatch = useAppDispatch()
+  const { isDark } = useTheme();
+  const themeStyles = isDark ? darkTheme : lightTheme;
+  const dispatch = useAppDispatch();
+  const navigation = useNavigation();
 
-  const { passwords, loading, error } = useAppSelector(s => s.passwords)
+  const { passwords, loading: passwordsLoading, error: passwordsError } = useAppSelector(s => s.passwords);
 
-  // re-fetch on focus
+  const [percentage, setPercentage] = useState<string>('0.00');
+
+  // Fetch passwords when screen focuses
   useFocusEffect(
     useCallback(() => {
-      dispatch(PasswordService.getPasswordsByUser())
+      dispatch(PasswordService.getPasswordsByUser());
     }, [dispatch])
-  )
+  );
 
-  // summary counts
-  const { count, weakOnes } = useMemo(() => {
-    const strengths = passwords.map(p => getStrength(p.Password))
-    const cnt = {
-      Weak: strengths.filter(s => s === 'Weak').length,
-      Medium: strengths.filter(s => s === 'Medium').length,
-      Strong: strengths.filter(s => s === 'Strong').length,
+  // Whenever passwords list changes, compute the percentage
+  useEffect(() => {
+    if (!passwords) {
+      setPercentage('0.00');
+      return;
     }
-    const weakList = passwords
-      .filter(p => getStrength(p.Password) === 'Weak')
-      .slice(0, 5)
-    return { count: cnt, weakOnes: weakList }
-  }, [passwords])
+    const total = passwords.length;
+    if (total === 0) {
+      setPercentage('0.00');
+      return;
+    }
+    const strongCount = passwords.reduce((cnt, p) => {
+      // Assuming PasswordItem.Password holds the plaintext or decrypted password
+      // If it's encrypted on client or not directly accessible, adjust accordingly.
+      return cnt + (isStrongPassword(p.Password) ? 1 : 0);
+    }, 0);
+    const pct = (strongCount / total) * 100;
+    // Format to two decimals
+    const formatted = pct.toFixed(2);
+    setPercentage(formatted);
+  }, [passwords]);
 
-  if (loading) {
+  // Update header title (if using React Navigation header) to include percentage
+  useLayoutEffect(() => {
+    // Ensure navigation.setOptions is available
+    navigation.setOptions({
+      title: `Security Challenge (${percentage}%)`,
+    });
+  }, [navigation, percentage]);
+
+  // Optionally, also render percentage inside the screen body:
+  // <Text style={styles.headerText}>Security Challenge ({percentage}%)</Text>
+
+  if (passwordsLoading) {
     return (
-      <View style={[styles.center, themeStyles.container]}>
+      <View style={[themeStyles.container, styles.center]}>
         <ActivityIndicator size="large" />
       </View>
-    )
+    );
   }
-  if (error) {
+
+  if (passwordsError) {
     return (
-      <View style={[styles.center, themeStyles.container]}>
-        <ErrorDisplay message={error} />
+      <View style={[themeStyles.container, styles.center]}>
+        <Text style={themeStyles.text}>Error: {passwordsError}</Text>
       </View>
-    )
+    );
   }
+
+  // Now it can list weak passwords, strong passwords, or summary
+  // Example: list all weak passwords:
+  const weakPasswords = passwords.filter(pw => !isStrongPassword(pw.Password));
+
+  const renderItem = ({ item }: { item: typeof passwords[0] }) => (
+    <View style={[styles.itemCard, themeStyles.card]}>
+      <Text style={[styles.itemTitle, themeStyles.text]}>
+        {item.SiteName}
+      </Text>
+      <Text style={[styles.itemSubtitle, themeStyles.textGray]}>
+        {item.UsernameOrEmail}
+      </Text>
+      <Text style={[styles.itemNote, themeStyles.text]}>
+        {isStrongPassword(item.Password) ? 'Strong' : 'Weak'}
+      </Text>
+    </View>
+  );
 
   return (
-    <View style={[styles.container, themeStyles.container]}>
-      <Text style={[styles.title, themeStyles.text]}>
-        Password Security Overview
-      </Text>
-
-      <View style={styles.summaryRow}>
-        {(['Weak','Medium','Strong'] as const).map(level => (
-          <View key={level} style={[styles.summaryCard, themeStyles.card]}>
-            <Text style={[styles.summaryLabel, themeStyles.text]}>{level}</Text>
-            <Text style={[styles.summaryValue, themeStyles.text]}>
-              {count[level]}
-            </Text>
-          </View>
-        ))}
+    <View style={[themeStyles.container, styles.container]}>
+      <View style={styles.headerSection}>
+        <Text style={[styles.headerText, themeStyles.text]}>
+          Security Challenge ({percentage}%)
+        </Text>
+        <Text style={[styles.subHeaderText, themeStyles.textGray]}>
+          {weakPasswords.length} weak / {passwords.length} total
+        </Text>
       </View>
 
-      <Text style={[styles.subTitle, themeStyles.text]}>
-        Top Weak Passwords
-      </Text>
-      {weakOnes.length === 0 ? (
-        <Text style={themeStyles.text}>
-          🎉 No weak passwords found!
-        </Text>
+      {passwords.length === 0 ? (
+        <View style={styles.center}>
+          <Text style={themeStyles.text}>No passwords to evaluate.</Text>
+        </View>
       ) : (
         <FlatList
-          data={weakOnes}
+          data={passwords}
           keyExtractor={p => p.id}
-          renderItem={({ item }) => (
-            <View style={[styles.itemRow, themeStyles.card]}>
-              <View style={styles.itemText}>
-                <Text style={[styles.itemSite, themeStyles.text]}>
-                  {item.SiteName}
-                </Text>
-                <Text style={[styles.itemPwd, themeStyles.textGray]}>
-                  {item.Password}
-                </Text>
-              </View>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('PassDetails' as any, { id: item.id })}
-              >
-                <Text style={[styles.editLink, themeStyles.text]}>
-                  Edit
-                </Text>
-              </TouchableOpacity>
-            </View>
-          )}
+          renderItem={renderItem}
           contentContainerStyle={styles.listContent}
-          showsVerticalScrollIndicator={false}
         />
       )}
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: width * 0.05,
     paddingTop: StatusBar.currentHeight,
-    paddingHorizontal: width * 0.06,
   },
   center: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  title: {
-    fontSize: 22,
-    fontFamily: 'Poppins_700Bold',
-    marginBottom: 16,
+  headerSection: {
+    marginBottom: height * 0.02,
   },
-  summaryRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 24,
-  },
-  summaryCard: {
-    flex: 1,
-    padding: 16,
-    marginHorizontal: 4,
-    borderRadius: 8,
-    alignItems: 'center',
-    elevation: 1,
-  },
-  summaryLabel: {
-    fontSize: 14,
-    fontFamily: 'Poppins_500Medium',
-  },
-  summaryValue: {
+  headerText: {
     fontSize: 20,
     fontFamily: 'Poppins_700Bold',
+  },
+  subHeaderText: {
+    fontSize: 14,
+    fontFamily: 'Poppins_400Regular',
     marginTop: 4,
   },
-  subTitle: {
-    fontSize: 18,
-    fontFamily: 'Poppins_600SemiBold',
-    marginBottom: 8,
-  },
   listContent: {
-    paddingBottom: 20,
+    paddingBottom: 40,
   },
-  itemRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  itemCard: {
     padding: 12,
     marginBottom: 12,
     borderRadius: 8,
-    elevation: 1,
+    elevation: 2,
   },
-  itemText: {
-    flex: 1,
-  },
-  itemSite: {
+  itemTitle: {
     fontSize: 16,
     fontFamily: 'Poppins_500Medium',
   },
-  itemPwd: {
+  itemSubtitle: {
     fontSize: 14,
     fontFamily: 'Poppins_400Regular',
     marginTop: 2,
   },
-  editLink: {
-    fontSize: 14,
-    fontFamily: 'Poppins_500Medium',
-    textDecorationLine: 'underline',
+  itemNote: {
+    fontSize: 12,
+    fontFamily: 'Poppins_600SemiBold',
+    marginTop: 6,
   },
-})
+});
 
-export default SecurityChallengeScreen
+export default SecurityChallengeScreen;
