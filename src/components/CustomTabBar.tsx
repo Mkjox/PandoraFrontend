@@ -85,8 +85,8 @@ const getIconName = (routeName: string) => {
     switch (routeName) {
         case 'Home':
             return 'home';
-        case 'Categories':
-            return 'folder';
+        case 'Premium':
+            return 'diamond';
         case 'Security Tools':
             return 'security';
         case 'Profile':

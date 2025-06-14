@@ -32,6 +32,7 @@ import EditPasswordsScreen from '../screens/subScreens/data/EditPasswordsScreen'
 import EditVaultScreen from '../screens/subScreens/data/EditVaultsScreen';
 import CategoryDetailsScreen from '../screens/subScreens/data/CategoryDetailsScreen';
 import VaultDetailsScreen from '../screens/subScreens/data/VaultDetailsScreen';
+import PremiumScreen from '../screens/PremiumScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -40,7 +41,7 @@ function TabNavigator() {
     return (
         <Tab.Navigator initialRouteName='Home' tabBar={(props) => <CustomTabBar {...props} />}>
             <Tab.Screen name='Home' component={HomeScreen} options={{ headerShown: false }} />
-            <Tab.Screen name='Categories' component={CategoryScreen} options={{ headerShown: false }} />
+            <Tab.Screen name='Premium' component={PremiumScreen} options={{ headerShown: false }} />
             <Tab.Screen name='Security Tools' component={SecurityToolsScreen} options={{ headerShown: false }} />
             <Tab.Screen name='Profile' component={ProfileScreen} options={{ headerShown: false }} />
         </Tab.Navigator>
