@@ -11,28 +11,28 @@ import {
 
 const AuthService = {
     register: async (payload: RegisterPayload): Promise<ServiceResult<string>> => {
-  try {
-    const reg = await api.post<{
-      success: boolean;
-      data: any;
-      message: string;
-    }>("/auth/register", payload);
+        try {
+            const reg = await api.post<{
+                success: boolean;
+                data: any;
+                message: string;
+            }>("/auth/register", payload);
 
-    if (!reg.data.success) {
-      return { success: false, message: reg.data.message };
-    }
+            if (!reg.data.success) {
+                return { success: false, message: reg.data.message };
+            }
 
-    return AuthService.login({
-      UsernameOrEmail: payload.Email,  // or payload.Username
-      Password: payload.Password
-    });
-  } catch (err: any) {
-    return {
-      success: false,
-      message: err.response?.data?.message || "Registration failed"
-    };
-  }
-},
+            return AuthService.login({
+                UsernameOrEmail: payload.Email,  // or payload.Username
+                Password: payload.Password
+            });
+        } catch (err: any) {
+            return {
+                success: false,
+                message: err.response?.data?.message || "Registration failed"
+            };
+        }
+    },
 
     login: async (payload: LoginPayload): Promise<ServiceResult<string>> => {
         try {
@@ -112,6 +112,30 @@ const AuthService = {
             };
         }
     },
+
+    updateProfile: async (
+    payload: { username: string; email: string; photoBase64?: string }
+  ): Promise<ServiceResult<{ username: string; email: string; photoUrl?: string }>> => {
+    try {
+      const decoded = await AuthService.decodeToken();
+      const userId = decoded?.nameid;
+      if (!userId) {
+        return { success: false, message: 'No valid token / user ID.' };
+      }
+      // PUT to /users/{id}
+      const response = await api.put<{
+        username: string;
+        email: string;
+        photoUrl?: string;
+      }>(`/users/${userId}`, payload);
+      return { success: true, data: response.data };
+    } catch (err: any) {
+      return {
+        success: false,
+        message: err.response?.data?.message || 'Failed to update profile',
+      };
+    }
+  },
 };
 
 export default AuthService;
