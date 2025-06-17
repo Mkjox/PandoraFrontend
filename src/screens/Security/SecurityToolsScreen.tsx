@@ -30,7 +30,7 @@ const SecurityToolsScreen: React.FC = () => {
   const themeStyles = isDark ? darkTheme : lightTheme
   const navigation = useNavigation();
 
-  const {passwords} = useAppSelector(s => s.passwords);
+  const { passwords } = useAppSelector(s => s.passwords);
   const percentage = useMemo(() => {
     if (!passwords.length) return '0.00';
     const strongCount = passwords.filter(pw => isStrongPassword(pw.Password)).length;
@@ -43,35 +43,35 @@ const SecurityToolsScreen: React.FC = () => {
       title: "Password generator",
       subtitle: "Create strong, unique passwords",
       icon: <MaterialIcons name="vpn-key" size={24} color={themeStyles.icon.color} />,
-      onPress: () => {navigation.navigate("PasswordGenerator" as never)},
+      onPress: () => { navigation.navigate("PasswordGenerator" as never) },
     },
     {
       id: "emergency",
       title: "Emergency access",
       subtitle: "Peace of mind in an emergency",
       icon: <FontAwesome5 name="ambulance" size={24} color={themeStyles.icon.color} />,
-      onPress: () => {navigation.navigate("EmergencyAccess" as never)},
+      onPress: () => { navigation.navigate("EmergencyAccess" as never) },
     },
     {
       id: "challenge",
       title: `Security challenge (${percentage}%)`,
       subtitle: "Put your passwords to the test",
       icon: <MaterialIcons name="security" size={24} color={themeStyles.icon.color} />,
-      onPress: () => {navigation.navigate("SecurityChallenge" as never)},
+      onPress: () => { navigation.navigate("SecurityChallenge" as never) },
     },
     {
       id: "dashboard",
       title: "Security dashboard",
       subtitle: "Monitor your online security",
       icon: <MaterialIcons name="dashboard" size={24} color={themeStyles.icon.color} />,
-      onPress: () => {navigation.navigate("SecurityDashboard" as never)},
+      onPress: () => { navigation.navigate("SecurityDashboard" as never) },
     },
     {
       id: "identities",
       title: "Identities",
-      subtitle: "Quickly change vault types",
+      subtitle: "Manage your personal identities",
       icon: <MaterialIcons name="badge" size={24} color={themeStyles.icon.color} />,
-      onPress: () => {},
+      onPress: () => { navigation.navigate("Identities" as never); },
     },
   ]
 

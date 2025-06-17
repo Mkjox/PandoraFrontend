@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen from '../screens/Home/HomeScreen';
 import CategoryScreen from '../screens/Category/CategoryScreen';
-import SecurityToolsScreen from '../screens/Settings/SecurityToolsScreen';
+import SecurityToolsScreen from '../screens/Security/SecurityToolsScreen';
 import ProfileScreen from '../screens/Profile/ProfileScreen';
 import EditProfileScreen from '../screens/Profile/EditProfileScreen';
 import PassDetailsScreen from '../screens/Password/PassDetailsScreen';
@@ -23,9 +23,9 @@ import AboutScreen from '../screens/Settings/AboutScreen';
 import PrivacyScreen from '../screens/Settings/PrivacyScreen';
 import ThemeScreen from '../screens/Settings/ThemeScreen';
 import PasswordGeneratorScreen from '../screens/Settings/PasswordGeneratorScreen';
-import EmergencyAccessScreen from '../screens/Settings/EmergencyAccessScreen';
-import SecurityChallengeScreen from '../screens/Settings/SecurityChallengeScreen';
-import SecurityDashboardScreen from '../screens/Settings/SecurityDashboardScreen';
+import EmergencyAccessScreen from '../screens/Security/EmergencyAccessScreen';
+import SecurityChallengeScreen from '../screens/Security/SecurityChallengeScreen';
+import SecurityDashboardScreen from '../screens/Security/SecurityDashboardScreen';
 import TwoFactorScreen from '../screens/Auth/TwoFactorScreen';
 import EditCategoriesScreen from '../screens/Category/EditCategoriesScreen';
 import EditPasswordsScreen from '../screens/Password/EditPasswordsScreen';
@@ -33,6 +33,9 @@ import EditVaultScreen from '../screens/Vault/EditVaultsScreen';
 import CategoryDetailsScreen from '../screens/Category/CategoryDetailsScreen';
 import VaultDetailsScreen from '../screens/Vault/VaultDetailsScreen';
 import PremiumScreen from '../screens/Premium/PremiumScreen';
+import IdentitiesScreen from '../screens/Identity/IdentitiesScreen';
+import IdentityDetailsScreen from '../screens/Identity/IdentityDetailsScreen';
+import EditIdentityScreen from '../screens/Identity/EditIdentityScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -77,6 +80,9 @@ export default function MainNavigator() {
             <Stack.Screen name='EditCategories' component={EditCategoriesScreen} options={{ headerShown: false }} />
             <Stack.Screen name='EditPassword' component={EditPasswordsScreen} options={{ headerShown: false }} />
             <Stack.Screen name='EditVault' component={EditVaultScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="Identities" component={IdentitiesScreen} />
+            <Stack.Screen name="IdentityDetails" component={IdentityDetailsScreen} />
+            <Stack.Screen name="EditIdentity" component={EditIdentityScreen} />
         </Stack.Navigator>
     );
 }

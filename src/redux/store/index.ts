@@ -1,8 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from './slices/authSlice';
-import categoryReducer from './slices/categorySlice'
+import categoryReducer from './slices/categorySlice';
 import passwordReducer from './slices/passwordSlice';
-import vaultReducer from './slices/vaultSlice'
+import vaultReducer from './slices/vaultSlice';
+import identityReducer from './slices/identitySlice';
 
 export const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
         category: categoryReducer,
         passwords: passwordReducer,
         vault: vaultReducer,
+        identity: identityReducer,
     },
 });
 

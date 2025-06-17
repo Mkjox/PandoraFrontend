@@ -1,0 +1,228 @@
+import React, { useEffect, useState } from "react";
+import {
+    View,
+    Text,
+    StyleSheet,
+    Dimensions,
+    ActivityIndicator,
+    ScrollView,
+    TouchableOpacity,
+    StatusBar,
+    Alert,
+} from "react-native";
+import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
+import { useTheme } from "../../context/ThemeContext";
+import { darkTheme, lightTheme } from "../../assets/colors/theme";
+import IdentityService from "../../services/IdentityService";
+import { IdentityItem } from "../../types/identity.types";
+import { MaterialIcons, Entypo } from "@expo/vector-icons";
+
+type RootStackParamList = {
+    IdentityDetails: { id: string };
+};
+type IdentityDetailsRouteProp = RouteProp<RootStackParamList, "IdentityDetails">;
+
+const { width } = Dimensions.get("window");
+
+const IdentityDetailsScreen: React.FC = () => {
+    const route = useRoute<IdentityDetailsRouteProp>();
+    const navigation = useNavigation();
+    const { isDark } = useTheme();
+    const themeStyles = isDark ? darkTheme : lightTheme;
+    const [item, setItem] = useState<IdentityItem | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    const { id } = route.params;
+
+    useEffect(() => {
+        (async () => {
+            setLoading(true);
+            const res = await IdentityService.getIdentityById(id);
+            if (res.success && res.data) {
+                setItem(res.data);
+                setError(null);
+            } else {
+                setError(res.message || "Identity not found");
+            }
+            setLoading(false);
+        })();
+    }, [id]);
+
+    const handleDelete = async () => {
+  Alert.alert(
+    "Delete Identity",
+    "Are you sure you want to delete this identity?",
+    [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "Delete",
+        style: "destructive",
+        onPress: async () => {
+          try {
+            await IdentityService.deleteIdentity(id);
+            navigation.goBack();
+          } catch (error) {
+            console.error("Failed to delete identity:", error);
+            // Optionally show an error toast or alert here
+          }
+        },
+      },
+    ]
+  );
+};
+
+    if (loading) {
+        return (
+            <View style={[themeStyles.container, styles.center]}>
+                <ActivityIndicator size="large" />
+            </View>
+        );
+    }
+
+    if (error || !item) {
+        return (
+            <View style={[themeStyles.container, styles.center]}>
+                <Text style={themeStyles.text}>
+                    {error || "No details available"}
+                </Text>
+            </View>
+        )
+    }
+
+    return (
+        <ScrollView style={themeStyles.container}>
+            <View style={styles.spacer} />
+
+            <View style={[styles.header, themeStyles.card]}>
+                <Text style={[styles.title, themeStyles.text]}>{item.fullName}</Text>
+            </View>
+
+            <View style={[styles.section, themeStyles.card]}>
+                <Text style={[styles.label, themeStyles.text]}>Email:</Text>
+                <Text style={[styles.value, themeStyles.text]}>{item.email}</Text>
+            </View>
+
+            {item.phone ? (
+                <View style={[styles.section, themeStyles.card]}>
+                    <Text style={[styles.label, themeStyles.text]}>Phone:</Text>
+                    <Text style={[styles.value, themeStyles.text]}>{item.phone}</Text>
+                </View>
+            ) : null}
+
+            {item.address ? (
+                <View style={[styles.section, themeStyles.card]}>
+                    <Text style={[styles.label, themeStyles.text]}>Address:</Text>
+                    <Text style={[styles.value, themeStyles.text]}>{item.address}</Text>
+                </View>
+            ) : null}
+
+            {item.notes ? (
+                <View style={[styles.section, themeStyles.card]}>
+                    <Text style={[styles.label, themeStyles.text]}>Notes:</Text>
+                    <Text style={[styles.value, themeStyles.text]}>{item.notes}</Text>
+                </View>
+            ) : null}
+
+            <TouchableOpacity
+                style={[styles.editButton, themeStyles.button]}
+                onPress={() =>
+                    navigation.navigate("EditIdentity" as never, {
+                        mode: "edit",
+                        identityId: item.id,
+                        fullName: item.fullName,
+                        email: item.email,
+                        phone: item.phone,
+                        address: item.address,
+                        notes: item.notes,
+                    } as any)
+                }
+            >
+                <MaterialIcons name="edit" size={20} color={themeStyles.buttonText.color} />
+                <Text style={[styles.editText, themeStyles.buttonText]}>Edit</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                style={[styles.deleteButton, themeStyles.card]}
+                onPress={handleDelete}
+            >
+                <Entypo name="trash" size={20} color="red" />
+                <Text style={[styles.deleteText, { color: "red" }]}>Delete</Text>
+            </TouchableOpacity>
+        </ScrollView>
+    );
+}
+
+
+const styles = StyleSheet.create({
+    spacer: {
+        height: StatusBar.currentHeight || 20,
+    },
+    center: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    header: {
+        marginHorizontal: width * 0.05,
+        marginBottom: 16,
+        padding: 16,
+        borderRadius: 8,
+        elevation: 1,
+    },
+    title: {
+        fontSize: 20,
+        fontFamily: "Poppins_700Bold",
+    },
+    section: {
+        marginHorizontal: width * 0.05,
+        marginBottom: 12,
+        padding: 12,
+        borderRadius: 8,
+        elevation: 2,
+    },
+    label: {
+        fontSize: 14,
+        fontFamily: "Poppins_600SemiBold",
+    },
+    value: {
+        fontSize: 16,
+        fontFamily: "Poppins_400Regular",
+        marginTop: 4,
+    },
+    editButton: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginHorizontal: width * 0.05,
+        marginTop: 24,
+        padding: 12,
+        borderRadius: 8,
+        justifyContent: "center",
+    },
+    editText: {
+        fontSize: 16,
+        fontFamily: "Poppins_500Medium",
+        marginLeft: 8,
+    },
+    deleteButton: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginHorizontal: width * 0.05,
+        marginTop: 12,
+        padding: 12,
+        borderRadius: 8,
+        justifyContent: "center",
+        borderWidth: 1,
+        borderColor: "red",
+    },
+    deleteText: {
+        fontSize: 16,
+        fontFamily: "Poppins_500Medium",
+        marginLeft: 8,
+    },
+});
+
+export default IdentityDetailsScreen;
