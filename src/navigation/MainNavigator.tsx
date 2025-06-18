@@ -42,44 +42,44 @@ const Stack = createStackNavigator();
 
 function TabNavigator() {
     return (
-        <Tab.Navigator initialRouteName='Home' tabBar={(props) => <CustomTabBar {...props} />}>
-            <Tab.Screen name='Home' component={HomeScreen} options={{ headerShown: false }} />
-            <Tab.Screen name='Premium' component={PremiumScreen} options={{ headerShown: false }} />
-            <Tab.Screen name='Security Tools' component={SecurityToolsScreen} options={{ headerShown: false }} />
-            <Tab.Screen name='Profile' component={ProfileScreen} options={{ headerShown: false }} />
+        <Tab.Navigator initialRouteName='Home' tabBar={(props) => <CustomTabBar {...props} />} screenOptions={{ headerShown: false }}>
+            <Tab.Screen name='Home' component={HomeScreen} />
+            <Tab.Screen name='Premium' component={PremiumScreen} />
+            <Tab.Screen name='Security Tools' component={SecurityToolsScreen} />
+            <Tab.Screen name='Profile' component={ProfileScreen} />
         </Tab.Navigator>
     );
 }
 
 export default function MainNavigator() {
     return (
-        <Stack.Navigator>
-            <Stack.Screen name='Tabs' component={TabNavigator} options={{ headerShown: false }} />
-            <Stack.Screen name='EditProfile' component={EditProfileScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='PassDetails' component={PassDetailsScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='CategoryDetails' component={CategoryDetailsScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='VaultDetails' component={VaultDetailsScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='AddCredentials' component={AddCredentialsScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='Settings' component={SettingsScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='Suggest' component={SuggestScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='Account' component={AccountScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='Security' component={SecurityScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='Autofill' component={AutofillScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='Search' component={SearchScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='Actions' component={ActionsScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='Help' component={HelpScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='Advanced' component={AdvancedScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='About' component={AboutScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='Privacy' component={PrivacyScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='ThemeScreen' component={ThemeScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='PasswordGenerator' component={PasswordGeneratorScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='EmergencyAccess' component={EmergencyAccessScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='SecurityChallenge' component={SecurityChallengeScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='SecurityDashboard' component={SecurityDashboardScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='TwoFactor' component={TwoFactorScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='EditCategories' component={EditCategoriesScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='EditPassword' component={EditPasswordsScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='EditVault' component={EditVaultScreen} options={{ headerShown: false }} />
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name='Tabs' component={TabNavigator} />
+            <Stack.Screen name='EditProfile' component={EditProfileScreen} />
+            <Stack.Screen name='PassDetails' component={PassDetailsScreen} />
+            <Stack.Screen name='CategoryDetails' component={CategoryDetailsScreen} />
+            <Stack.Screen name='VaultDetails' component={VaultDetailsScreen} />
+            <Stack.Screen name='AddCredentials' component={AddCredentialsScreen} />
+            <Stack.Screen name='Settings' component={SettingsScreen} />
+            <Stack.Screen name='Suggest' component={SuggestScreen} />
+            <Stack.Screen name='Account' component={AccountScreen} />
+            <Stack.Screen name='Security' component={SecurityScreen} />
+            <Stack.Screen name='Autofill' component={AutofillScreen} />
+            <Stack.Screen name='Search' component={SearchScreen} />
+            <Stack.Screen name='Actions' component={ActionsScreen} />
+            <Stack.Screen name='Help' component={HelpScreen} />
+            <Stack.Screen name='Advanced' component={AdvancedScreen} />
+            <Stack.Screen name='About' component={AboutScreen} />
+            <Stack.Screen name='Privacy' component={PrivacyScreen} />
+            <Stack.Screen name='ThemeScreen' component={ThemeScreen} />
+            <Stack.Screen name='PasswordGenerator' component={PasswordGeneratorScreen} />
+            <Stack.Screen name='EmergencyAccess' component={EmergencyAccessScreen} />
+            <Stack.Screen name='SecurityChallenge' component={SecurityChallengeScreen} />
+            <Stack.Screen name='SecurityDashboard' component={SecurityDashboardScreen} />
+            <Stack.Screen name='TwoFactor' component={TwoFactorScreen} />
+            <Stack.Screen name='EditCategories' component={EditCategoriesScreen} />
+            <Stack.Screen name='EditPassword' component={EditPasswordsScreen} />
+            <Stack.Screen name='EditVault' component={EditVaultScreen} />
             <Stack.Screen name="Identities" component={IdentitiesScreen} />
             <Stack.Screen name="IdentityDetails" component={IdentityDetailsScreen} />
             <Stack.Screen name="EditIdentity" component={EditIdentityScreen} />

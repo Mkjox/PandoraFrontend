@@ -56,7 +56,7 @@ const IdentitiesScreen: React.FC = () => {
                 <Text style={[styles.title, themeStyles.text]}>Identities</Text>
                 <TouchableOpacity
                     style={[styles.addButton, themeStyles.button]}
-                    onPress={() => navigation.navigate("EditEntity" as never, {
+                    onPress={() => navigation.navigate("EditIdentity" as never, {
                         mode: "create",
                     } as any)
                     }
