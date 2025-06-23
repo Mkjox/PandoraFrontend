@@ -26,13 +26,13 @@ export const lightTheme = StyleSheet.create({
         color: '#002055'
     },
     textBlue: {
-        color: '#0C7DAE'
+        color: '#07638B'
     },
     card: {
-        backgroundColor: '#fff'
+        backgroundColor: '#FFFFFF'
     },
     textGray: {
-        color: '#656565'
+        color: '#505050'
     },
     iconColor: {
         color: '#4F4F4F'
@@ -41,7 +41,7 @@ export const lightTheme = StyleSheet.create({
 
 export const darkTheme = StyleSheet.create({
     container: {
-        backgroundColor: '#0A0C16'
+        backgroundColor: '#12141D'
     },
     button: {
         backgroundColor: '#3580FF',
@@ -72,7 +72,7 @@ export const darkTheme = StyleSheet.create({
         // backgroundColor: '#1F1B24'               ALTERNATIVE
     },
     textGray: {
-        color: '#656565'
+        color: '#B0B0B0'
     },
     iconColor: {
         color: '#E0E0E0'
