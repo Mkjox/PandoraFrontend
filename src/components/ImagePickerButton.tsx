@@ -8,6 +8,8 @@ import {
   TextStyle,
 } from 'react-native'
 import * as ImagePicker from 'expo-image-picker'
+import { useTheme } from '../context/ThemeContext'
+import { darkTheme, lightTheme } from '../assets/colors/theme'
 
 type Props = {
   /** Called with `base64` string when an image is picked */
@@ -27,6 +29,9 @@ export default function ImagePickerButton({
   textStyle,
 }: Props) {
   const [loading, setLoading] = useState(false)
+
+  const { isDark } = useTheme()
+  const themeStyles = isDark ? darkTheme : lightTheme
 
   const pickImage = async () => {
     // ask for camera-roll permission
@@ -57,13 +62,13 @@ export default function ImagePickerButton({
 
   return (
     <TouchableOpacity
-      style={[styles.button, style]}
+      style={[styles.button, style, themeStyles.buttonBorder]}
       onPress={pickImage}
       disabled={loading}
     >
       {loading
         ? <ActivityIndicator />
-        : <Text style={[styles.text, textStyle]}>{title}</Text>
+        : <Text style={[styles.text, textStyle, themeStyles.text]}>{title}</Text>
       }
     </TouchableOpacity>
   )
@@ -74,11 +79,10 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 8,
-    backgroundColor: '#6E7FEC',
     alignItems: 'center',
+    borderWidth: 1
   },
   text: {
-    color: 'white',
     fontWeight: '600',
   },
 })

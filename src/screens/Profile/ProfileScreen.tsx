@@ -218,6 +218,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 12,
+    marginVertical: 2,
+    paddingHorizontal: 10
   },
   linkText: {
     fontSize: 16,

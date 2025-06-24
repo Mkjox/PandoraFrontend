@@ -8,7 +8,7 @@ export const lightTheme = StyleSheet.create({
         backgroundColor: '#4C4DDC',
     },
     buttonText: {
-        color: '#FFFFFF'
+        color: '#002055'
     },
     buttonBorder: {
         borderColor: '#4C4DDC',
@@ -47,7 +47,7 @@ export const darkTheme = StyleSheet.create({
         backgroundColor: '#3580FF',
     },
     buttonText: {
-        color: '#FFFFFF',
+        color: '#002055',
     },
     buttonBorder: {
         borderColor: '#3580FF',

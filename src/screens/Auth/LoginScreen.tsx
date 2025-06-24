@@ -14,6 +14,7 @@ import LoginButton from '../../components/LoginButton'
 import { useTheme } from '../../context/ThemeContext'
 import { darkTheme, lightTheme } from '../../assets/colors/theme'
 import { MaterialIcons } from '@expo/vector-icons'
+import CustomButton from '../../components/CustomButton'
 
 export default function LoginScreen() {
   const [credentials, setCredentials] = useState({
@@ -126,7 +127,12 @@ export default function LoginScreen() {
         </Text>
       ) : null}
 
-      <LoginButton onPress={handleLogin} loading={loading} />
+      <CustomButton
+        onPress={handleLogin}
+        loading={loading}
+        title='Login'
+        style={[styles.button, themeStyles.buttonBorder]}
+      />
 
       <TouchableOpacity onPress={() => navigation.navigate('Register' as never)}>
         <Text style={[styles.link, themeStyles.textBlue]}>
@@ -191,5 +197,18 @@ const styles = StyleSheet.create({
   },
   space: {
     marginBottom: 16
-  }
+  },
+  button: {
+    height: 40,
+    borderRadius: 10,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+  },
 })

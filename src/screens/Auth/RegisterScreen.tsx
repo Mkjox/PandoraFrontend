@@ -215,7 +215,7 @@ export default function RegisterScreen() {
             )}
 
             <TouchableOpacity
-                style={[styles.submitButton, themeStyles.button]}
+                style={[styles.submitButton, themeStyles.buttonBorder]}
                 onPress={handleRegister}
                 disabled={loading}
             >
@@ -267,10 +267,18 @@ const styles = StyleSheet.create({
         fontWeight: '700'
     },
     submitButton: {
-        padding: 14,
-        borderRadius: 8,
+        padding: 10,
+        borderRadius: 10,
         alignItems: 'center',
         marginVertical: 16,
+        borderWidth: 1,
+        justifyContent: 'center',
+        backgroundColor: '#FFFFFF',
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 2 },
     },
     submitText: {
         fontSize: 16,

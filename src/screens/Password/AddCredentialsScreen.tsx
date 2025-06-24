@@ -419,7 +419,7 @@ export default function AddCredentialsScreen() {
       </View>
 
       <TouchableOpacity
-        style={[styles.submitButton, themeStyles.button]}
+        style={[styles.submitButton, themeStyles.buttonBorder]}
         onPress={handleSubmit}
         disabled={submitting}
       >
@@ -498,12 +498,14 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   submitButton: {
-    padding: 15,
-    borderRadius: 8
+    padding: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+
   },
   buttonText: {
     textAlign: 'center',
     fontSize: 16,
-    fontWeight: '500'
+    fontFamily: 'Poppins_500Medium',
   },
 })

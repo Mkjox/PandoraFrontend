@@ -16,6 +16,7 @@ import { lightTheme, darkTheme } from '../../assets/colors/theme';
 import AuthService from '../../services/AuthService';
 import ImagePickerButton from '../../components/ImagePickerButton';
 import { ServiceResult } from '../../types/service.types';
+import CustomButton from '../../components/CustomButton';
 
 const { width } = Dimensions.get('window');
 
@@ -205,17 +206,12 @@ export default function EditProfileScreen() {
         <Text style={[styles.errorText, { textAlign: 'center' }]}>{serverMessage}</Text>
       ) : null}
 
-      <TouchableOpacity
-        style={[styles.saveButton, themeStyles.button]}
+      <CustomButton
+        title='Save Changes'
         onPress={handleSave}
-        disabled={saving}
-      >
-        {saving ? (
-          <ActivityIndicator color={isDark ? '#fff' : '#000'} />
-        ) : (
-          <Text style={[styles.saveButtonText, themeStyles.buttonText]}>Save Changes</Text>
-        )}
-      </TouchableOpacity>
+        loading={saving}
+        style={[styles.saveButton, themeStyles.buttonBorder]}
+      />
       <View style={{ height: 40 }} />
     </ScrollView>
   );
@@ -267,15 +263,19 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   changePhotoButton: {
-    backgroundColor: '#6E7FEC',
     borderRadius: 6,
-    paddingHorizontal: 12,
     paddingVertical: 6,
     marginTop: 8,
+    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
   },
   changePhotoText: {
     fontSize: 14,
-    color: '#fff',
   },
   fieldCard: {
     marginBottom: 16,
@@ -313,13 +313,17 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins_500Medium',
   },
   saveButton: {
-    marginTop: 16,
-    paddingVertical: 14,
-    borderRadius: 8,
+    height: 40,
+    borderRadius: 10,
+    borderWidth: 1,
     alignItems: 'center',
-  },
-  saveButtonText: {
-    fontSize: 16,
-    fontFamily: 'Poppins_600SemiBold',
+    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+    marginHorizontal: width * 0.03
   },
 });
