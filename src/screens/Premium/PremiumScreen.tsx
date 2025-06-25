@@ -27,7 +27,7 @@ const PremiumScreen: React.FC = () => {
   const navigation = useNavigation();
 
   // Example static price; in real implementation, fetch from backend or store
-  const priceText = '$29.99/year'; 
+  const priceText = '$29.99/year';
 
   // Benefit items: icon, title, description
   const benefits: Array<{
@@ -36,55 +36,55 @@ const PremiumScreen: React.FC = () => {
     title: string;
     description: string;
   }> = [
-    {
-      id: 'devices',
-      icon: (
-        <MaterialCommunityIcons
-          name="devices"
-          size={24}
-          color={themeStyles.icon.color}
-        />
-      ),
-      title: 'Unlimited devices',
-      description: 'Use on all computers and mobile devices',
-    },
-    {
-      id: 'sharing',
-      icon: (
-        <MaterialCommunityIcons
-          name="share-variant"
-          size={24}
-          color={themeStyles.icon.color}
-        />
-      ),
-      title: 'Safe, easy sharing',
-      description: 'Share passwords, notes, and more with trusted people',
-    },
-    {
-      id: 'emergency',
-      icon: (
-        <FontAwesome5
-          name="ambulance"
-          size={24}
-          color={themeStyles.icon.color}
-        />
-      ),
-      title: 'Emergency access',
-      description: 'Ensure account access in emergencies',
-    },
-    {
-      id: 'support',
-      icon: (
-        <MaterialIcons
-          name="support-agent"
-          size={24}
-          color={themeStyles.icon.color}
-        />
-      ),
-      title: 'Priority tech support',
-      description: 'Get fast, personal responses to your questions',
-    },
-  ];
+      {
+        id: 'devices',
+        icon: (
+          <MaterialCommunityIcons
+            name="devices"
+            size={24}
+            color={themeStyles.icon.color}
+          />
+        ),
+        title: 'Unlimited devices',
+        description: 'Use on all computers and mobile devices',
+      },
+      {
+        id: 'sharing',
+        icon: (
+          <MaterialCommunityIcons
+            name="share-variant"
+            size={24}
+            color={themeStyles.icon.color}
+          />
+        ),
+        title: 'Safe, easy sharing',
+        description: 'Share passwords, notes, and more with trusted people',
+      },
+      {
+        id: 'emergency',
+        icon: (
+          <FontAwesome5
+            name="ambulance"
+            size={24}
+            color={themeStyles.icon.color}
+          />
+        ),
+        title: 'Emergency access',
+        description: 'Ensure account access in emergencies',
+      },
+      {
+        id: 'support',
+        icon: (
+          <MaterialIcons
+            name="support-agent"
+            size={24}
+            color={themeStyles.icon.color}
+          />
+        ),
+        title: 'Priority tech support',
+        description: 'Get fast, personal responses to your questions',
+      },
+    ];
 
   const onPressGoPremium = () => {
     // TODO: integrate actual purchase / subscription flow here.
@@ -108,13 +108,13 @@ const PremiumScreen: React.FC = () => {
             Premium Illustration
           </Text>
         </View>
-        <Text style={[styles.bannerTitle, themeStyles.buttonText]}>
+        <Text style={[styles.bannerTitle]}>
           Peace of mind.
         </Text>
-        <Text style={[styles.bannerSubtitle, themeStyles.buttonText]}>
+        <Text style={[styles.bannerSubtitle]}>
           Wherever you go.
         </Text>
-        <Text style={[styles.bannerCaption, themeStyles.text]}>
+        <Text style={[styles.bannerCaption]}>
           Explore Premium today.
         </Text>
       </View>
@@ -158,10 +158,10 @@ const PremiumScreen: React.FC = () => {
       {/* Go Premium button */}
       <View style={styles.footer}>
         <TouchableOpacity
-          style={[styles.premiumButton, themeStyles.button]}
+          style={[styles.premiumButton, themeStyles.buttonBorder]}
           onPress={onPressGoPremium}
         >
-          <Text style={styles.premiumButtonText}>Go Premium</Text>
+          <Text style={[styles.premiumButtonText, themeStyles.buttonText]}>Go Premium</Text>
         </TouchableOpacity>
         <Text style={[styles.priceText, themeStyles.textGray]}>
           Just {priceText}
@@ -180,6 +180,9 @@ const styles = StyleSheet.create({
     paddingTop: StatusBar.currentHeight,
     paddingBottom: 24,
     alignItems: 'center',
+    borderBottomRightRadius: 50,
+    borderBottomLeftRadius: 50,
+    height: height * 0.5
   },
   bannerPlaceholder: {
     width: width * 0.4,
@@ -214,9 +217,10 @@ const styles = StyleSheet.create({
   },
   benefitsCard: {
     marginHorizontal: width * 0.05,
-    marginTop: 20,
     borderRadius: 12,
     padding: 16,
+    elevation: 3,
+    marginTop: -(height * 0.09)
   },
   benefitRow: {
     flexDirection: 'row',
@@ -267,13 +271,21 @@ const styles = StyleSheet.create({
     marginHorizontal: width * 0.1,
   },
   premiumButton: {
-    paddingVertical: 14,
-    borderRadius: 8,
+    height: height * 0.07,
+    borderRadius: 10,
     width: '100%',
+    borderWidth: 1,
     alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+    marginBottom: 10
   },
   premiumButtonText: {
-    color: '#FFFFFF',
     fontSize: 16,
     fontFamily: 'Poppins_600SemiBold',
   },

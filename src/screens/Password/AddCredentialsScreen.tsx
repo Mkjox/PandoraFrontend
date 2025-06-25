@@ -10,6 +10,7 @@ import {
   Alert,
   ActivityIndicator,
   Platform,
+  Dimensions,
 } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
 import DateTimePicker from '@react-native-community/datetimepicker'
@@ -38,6 +39,8 @@ type AddCredParams = {
 }
 
 type RouteProps = RouteProp<AddCredParams, 'AddCredentials'>
+
+const {height, width} = Dimensions.get("window")
 
 export default function AddCredentialsScreen() {
   const navigation = useNavigation()
@@ -498,10 +501,17 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   submitButton: {
-    padding: 10,
-    borderRadius: 8,
+    height : height * 0.055,
+    borderRadius: 10,
     borderWidth: 1,
-
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
   },
   buttonText: {
     textAlign: 'center',

@@ -4,17 +4,19 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions
 } from 'react-native'
 import { useDispatch } from 'react-redux'
 import { login as loginAction } from '../../redux/store/slices/authSlice'
 import { useNavigation } from '@react-navigation/native'
 import AuthService from '../../services/AuthService'
-import LoginButton from '../../components/LoginButton'
 import { useTheme } from '../../context/ThemeContext'
 import { darkTheme, lightTheme } from '../../assets/colors/theme'
 import { MaterialIcons } from '@expo/vector-icons'
 import CustomButton from '../../components/CustomButton'
+
+const {height, width} = Dimensions.get("window")
 
 export default function LoginScreen() {
   const [credentials, setCredentials] = useState({
@@ -196,10 +198,10 @@ const styles = StyleSheet.create({
     fontWeight: '700'
   },
   space: {
-    marginBottom: 16
+    marginBottom: height * 0.02
   },
   button: {
-    height: 40,
+    height: height * 0.05,
     borderRadius: 10,
     borderWidth: 1,
     alignItems: 'center',

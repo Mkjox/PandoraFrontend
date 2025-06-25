@@ -7,13 +7,16 @@ import {
     TextInput,
     TouchableOpacity,
     ActivityIndicator,
-    Alert
+    Alert,
+    Dimensions
 } from 'react-native'
 import { useDispatch } from 'react-redux'
 import AuthService from '../../services/AuthService'
 import { useNavigation } from '@react-navigation/native'
 import { useTheme } from '../../context/ThemeContext'
 import { darkTheme, lightTheme } from '../../assets/colors/theme'
+
+const {height, width} = Dimensions.get("window")
 
 export default function RegisterScreen() {
     const { isDark } = useTheme()
@@ -267,7 +270,7 @@ const styles = StyleSheet.create({
         fontWeight: '700'
     },
     submitButton: {
-        padding: 10,
+        height: height * 0.05,
         borderRadius: 10,
         alignItems: 'center',
         marginVertical: 16,
@@ -292,6 +295,6 @@ const styles = StyleSheet.create({
         fontWeight: '700',
     },
     space: {
-        marginBottom: 12
+        marginBottom: height * 0.01
     }
 })

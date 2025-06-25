@@ -13,8 +13,9 @@ import {
 import Slider from '@react-native-community/slider'
 import { useTheme } from '../../context/ThemeContext'
 import { darkTheme, lightTheme } from '../../assets/colors/theme'
+import CustomButton from '../../components/CustomButton'
 
-const { width } = Dimensions.get('window')
+const { height, width } = Dimensions.get('window')
 
 // helper to build the charset
 const buildCharset = (
@@ -137,14 +138,12 @@ const PasswordGeneratorScreen: React.FC = () => {
                     />
                 </View>
 
-                <TouchableOpacity
-                    style={[styles.button, themeStyles.button]}
+                <CustomButton
                     onPress={onGenerate}
-                >
-                    <Text style={[styles.buttonText, themeStyles.buttonText]}>
-                        Generate
-                    </Text>
-                </TouchableOpacity>
+                    title='Generate'
+                    style={[styles.button, themeStyles.buttonBorder]}
+                />
+
             </View>
 
             {password ? (
@@ -152,14 +151,11 @@ const PasswordGeneratorScreen: React.FC = () => {
                     <Text style={[styles.passwordText, themeStyles.text]}>
                         {password}
                     </Text>
-                    <TouchableOpacity
-                        style={[styles.copyButton, themeStyles.button]}
+                    <CustomButton
                         onPress={onCopy}
-                    >
-                        <Text style={[styles.copyText, themeStyles.buttonText]}>
-                            Copy
-                        </Text>
-                    </TouchableOpacity>
+                        title='Copy'
+                        style={[styles.copyButton, themeStyles.buttonBorder]}
+                    />
                 </View>
             ) : null}
         </View>
@@ -199,9 +195,17 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: 12,
-        paddingVertical: 12,
+        height: height * 0.06,
         borderRadius: 8,
+        borderWidth: 1,
         alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#FFFFFF',
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 2 },
     },
     buttonText: {
         fontSize: 16,
@@ -217,9 +221,18 @@ const styles = StyleSheet.create({
         marginBottom: 12,
     },
     copyButton: {
-        paddingVertical: 10,
+        height: height * 0.06,
         borderRadius: 8,
+        borderWidth: 1,
         alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#FFFFFF',
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 2 },
+
     },
     copyText: {
         fontSize: 14,
