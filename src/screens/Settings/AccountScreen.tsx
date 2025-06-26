@@ -13,7 +13,7 @@ import { lightTheme, darkTheme } from '../../assets/colors/theme';
 import AuthService from '../../services/AuthService';
 import { useNavigation } from '@react-navigation/native';
 
-const { width } = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 
 const AccountScreen: React.FC = () => {
     const { isDark } = useTheme();
@@ -44,11 +44,11 @@ const AccountScreen: React.FC = () => {
 
             <View style={styles.section}>
                 <Text style={[styles.sectionHeader, themeStyles.text]}>Security</Text>
-                <TouchableOpacity style={[styles.option, themeStyles.card]}>
-                    <Text style={[styles.optionText, themeStyles.text]}>Change Password</Text>
+                <TouchableOpacity style={[styles.option, themeStyles.buttonBorder]}>
+                    <Text style={[styles.optionText, themeStyles.buttonText]}>Change Password</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.option, themeStyles.card]} onPress={() => navigation.navigate("TwoFactor" as never)}>
-                    <Text style={[styles.optionText, themeStyles.text]}>Two-Factor Authentication</Text>
+                <TouchableOpacity style={[styles.option, themeStyles.buttonBorder]} onPress={() => navigation.navigate("TwoFactor" as never)}>
+                    <Text style={[styles.optionText, themeStyles.buttonText]}>Two-Factor Authentication</Text>
                 </TouchableOpacity>
             </View>
 
@@ -97,10 +97,18 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins_600SemiBold',
     },
     option: {
-        paddingVertical: 12,
         paddingHorizontal: 10,
         borderRadius: 6,
         marginTop: 8,
+        height: height * 0.055,
+        borderWidth: 1,
+        justifyContent: 'center',
+        backgroundColor: '#FFFFFF',
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 2 },
     },
     optionText: {
         fontSize: 16,

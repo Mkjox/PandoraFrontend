@@ -16,7 +16,7 @@ import { useTheme } from '../../context/ThemeContext';
 import { lightTheme, darkTheme } from '../../assets/colors/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const { width } = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 
 const AUTO_FILL_KEY = 'autofillEnabled';
 
@@ -119,7 +119,7 @@ const AutofillScreen: React.FC = () => {
 
       {/* Optionally, a button to open system settings directly */}
       <TouchableOpacity
-        style={[styles.openSettingsButton, themeStyles.button]}
+        style={[styles.openSettingsButton, themeStyles.buttonBorder]}
         disabled
         onPress={() => {
           if (Platform.OS === 'android') {
@@ -180,10 +180,18 @@ const styles = StyleSheet.create({
   },
   openSettingsButton: {
     marginHorizontal: width * 0.05,
-    paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
     marginBottom: 24,
+    height: height * 0.055,
+    borderWidth: 1,
+    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
   },
   openSettingsText: {
     fontSize: 16,

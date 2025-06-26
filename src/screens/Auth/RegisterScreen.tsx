@@ -94,6 +94,7 @@ export default function RegisterScreen() {
                 style={[
                     styles.input,
                     themeStyles.card,
+                    themeStyles.inputText,
                     errors.FirstName ? styles.inputError : undefined,
                 ]}
                 placeholder="First Name"
@@ -110,7 +111,8 @@ export default function RegisterScreen() {
                 style={[
                     styles.input,
                     themeStyles.card,
-                    errors.LastName ? styles.inputError : undefined
+                    themeStyles.inputText,
+                    errors.LastName ? styles.inputError : undefined,
                 ]}
                 placeholder="Last Name"
                 placeholderTextColor={isDark ? '#888' : '#666'}
@@ -126,7 +128,8 @@ export default function RegisterScreen() {
                 style={[
                     styles.input,
                     themeStyles.card,
-                    errors.PhoneNumber ? styles.inputError : undefined
+                    themeStyles.inputText,
+                    errors.PhoneNumber ? styles.inputError : undefined,
                 ]}
                 placeholder="Phone Number"
                 placeholderTextColor={isDark ? '#888' : '#666'}
@@ -143,7 +146,8 @@ export default function RegisterScreen() {
                 style={[
                     styles.input,
                     themeStyles.card,
-                    errors.Username ? styles.inputError : undefined
+                    themeStyles.inputText,
+                    errors.Username ? styles.inputError : undefined,
                 ]}
                 placeholder="Username"
                 placeholderTextColor={isDark ? '#888' : '#666'}
@@ -160,7 +164,8 @@ export default function RegisterScreen() {
                 style={[
                     styles.input,
                     themeStyles.card,
-                    errors.Email ? styles.inputError : undefined
+                    themeStyles.inputText,
+                    errors.Email ? styles.inputError : undefined,
                 ]}
                 placeholder="Email"
                 placeholderTextColor={isDark ? '#888' : '#666'}
@@ -178,7 +183,8 @@ export default function RegisterScreen() {
                 style={[
                     styles.input,
                     themeStyles.card,
-                    errors.Password ? styles.inputError : undefined
+                    themeStyles.inputText,
+                    errors.Password ? styles.inputError : undefined,
                 ]}
                 placeholder="Password"
                 placeholderTextColor={isDark ? '#888' : '#666'}
@@ -196,7 +202,8 @@ export default function RegisterScreen() {
                 style={[
                     styles.input,
                     themeStyles.card,
-                    errors.ConfirmPassword ? styles.inputError : undefined
+                    themeStyles.inputText,
+                    errors.ConfirmPassword ? styles.inputError : undefined,
                 ]}
                 placeholder="Confirm Password"
                 placeholderTextColor={isDark ? '#888' : '#666'}

@@ -12,7 +12,7 @@ import {
 import { useTheme } from '../../context/ThemeContext';
 import { lightTheme, darkTheme } from '../../assets/colors/theme';
 
-const { width } = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 
 const ActionsScreen: React.FC = () => {
     const { isDark } = useTheme();
@@ -55,10 +55,10 @@ const ActionsScreen: React.FC = () => {
 
             <View style={styles.section}>
                 <Text style={[styles.sectionHeader, themeStyles.text]}>Manual Actions</Text>
-                <TouchableOpacity style={[styles.button, themeStyles.button]}>
+                <TouchableOpacity style={[styles.button, themeStyles.buttonBorder]}>
                     <Text style={[styles.buttonText, themeStyles.buttonText]}>Clear All Sessions</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.button, themeStyles.button]}>
+                <TouchableOpacity style={[styles.button, themeStyles.buttonBorder]}>
                     <Text style={[styles.buttonText, themeStyles.buttonText]}>Sync Now</Text>
                 </TouchableOpacity>
             </View>
@@ -108,9 +108,17 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: 8,
-        paddingVertical: 12,
+        height: height * 0.055,
         borderRadius: 6,
+        borderWidth: 1,
         alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#FFFFFF',
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 2 },
     },
     buttonText: {
         fontSize: 16,

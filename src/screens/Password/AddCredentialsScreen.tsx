@@ -40,7 +40,7 @@ type AddCredParams = {
 
 type RouteProps = RouteProp<AddCredParams, 'AddCredentials'>
 
-const {height, width} = Dimensions.get("window")
+const { height, width } = Dimensions.get("window")
 
 export default function AddCredentialsScreen() {
   const navigation = useNavigation()
@@ -246,7 +246,7 @@ export default function AddCredentialsScreen() {
             onPress={() => setSelectedTab(tab)}
             style={[styles.tab, selectedTab === tab && styles.activeTab]}
           >
-            <Text style={styles.tabText}>
+            <Text style={[styles.tabText, themeStyles.text]}>
               {tab === 'password'
                 ? 'Password'
                 : tab === 'vault'
@@ -262,52 +262,80 @@ export default function AddCredentialsScreen() {
         {selectedTab === 'password' && (
           <>
             <TextInput
-              style={styles.input}
+              style={[
+                styles.input,
+                themeStyles.card,
+                themeStyles.inputText
+              ]}
               placeholder="Site Name*"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               value={form.SiteName}
               onChangeText={v => handleChange('SiteName', v)}
             />
             <TextInput
-              style={styles.input}
+              style={[
+                styles.input,
+                themeStyles.card,
+                themeStyles.inputText
+              ]}
               placeholder="Username or Email*"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               value={form.UsernameOrEmail}
               onChangeText={v => handleChange('UsernameOrEmail', v)}
             />
             <TextInput
-              style={styles.input}
+              style={[
+                styles.input,
+                themeStyles.card,
+                themeStyles.inputText
+              ]}
               placeholder="Password*"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               secureTextEntry
               value={form.Password}
               onChangeText={v => handleChange('Password', v)}
             />
             <TextInput
-              style={styles.input}
+              style={[
+                styles.input,
+                themeStyles.card,
+                themeStyles.inputText
+              ]}
               placeholder="Repeat Password*"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               secureTextEntry
               value={form.PasswordRepeat}
               onChangeText={v => handleChange('PasswordRepeat', v)}
             />
             <TextInput
-              style={styles.input}
+              style={[
+                styles.input,
+                themeStyles.card,
+                themeStyles.inputText
+              ]}
               placeholder="Notes"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               value={form.Notes}
               onChangeText={v => handleChange('Notes', v)}
             />
             <TouchableOpacity
-              style={styles.input}
+              style={[
+                styles.input,
+                themeStyles.card,
+              ]}
               onPress={() => showPicker('PasswordExpirationDate')}
             >
-              <Text style={{ color: form.PasswordExpirationDate ? '#000' : '#888' }}>
+              <Text style={{ color: form.PasswordExpirationDate ? '#888' : '#666' }}>
                 {form.PasswordExpirationDate || 'Select Expiration Date'}
               </Text>
             </TouchableOpacity>
-            <Text style={styles.label}>Category*</Text>
-            <View style={styles.pickerContainer}>
+            <Text style={[styles.label, themeStyles.text]}>Category*</Text>
+            <View style={[styles.pickerContainer,themeStyles.card]}>
               <Picker
                 selectedValue={form.CategoryId}
                 onValueChange={v => handleChange('CategoryId', v)}
               >
-                <Picker.Item label="Select category..." value="" />
+                <Picker.Item label="Select category..." value="" color={isDark ? '#888' : '#666'} />
                 {categories.map(c => (
                   <Picker.Item key={c.id} label={c.name} value={c.id} />
                 ))}
@@ -319,20 +347,32 @@ export default function AddCredentialsScreen() {
         {selectedTab === 'vault' && (
           <>
             <TextInput
-              style={styles.input}
+              style={[
+                styles.input,
+                themeStyles.card
+              ]}
               placeholder="Title*"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               value={form.Title}
               onChangeText={v => handleChange('Title', v)}
             />
             <TextInput
-              style={styles.input}
+              style={[
+                styles.input,
+                themeStyles.card
+              ]}
               placeholder="Content*"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               value={form.Content}
               onChangeText={v => handleChange('Content', v)}
             />
             <TextInput
-              style={styles.input}
+              style={[
+                styles.input,
+                themeStyles.card
+              ]}
               placeholder="URL"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               value={form.Url}
               onChangeText={(v) => handleChange('Url', v)}
             />
@@ -340,6 +380,7 @@ export default function AddCredentialsScreen() {
             {/* <TextInput
               style={styles.input}
               placeholder="Media File"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               value={form.MediaFile}
               onChangeText={(v) => handleChange('MediaFile', v)}
             /> */}
@@ -358,20 +399,31 @@ export default function AddCredentialsScreen() {
             ) : null}
 
             <TextInput
-              style={styles.input}
+              style={[
+                styles.input,
+                themeStyles.card
+              ]}
               placeholder="Summary"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               value={form.Summary}
               onChangeText={(v) => handleChange('Summary', v)}
             />
             <TextInput
-              style={styles.input}
+              style={[
+                styles.input,
+                themeStyles.card
+              ]}
               placeholder="Tags (comma separated)"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               value={form.Tags}
               onChangeText={(v) => handleChange('Tags', v)}
             />
 
             <TouchableOpacity
-              style={styles.input}
+              style={[
+                styles.input,
+                themeStyles.card
+              ]}
               onPress={() => showPicker('UnlockDate')}
             >
               <Text style={{ color: form.UnlockDate ? '#000' : '#888' }}>
@@ -380,7 +432,10 @@ export default function AddCredentialsScreen() {
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={styles.input}
+              style={[
+                styles.input,
+                themeStyles.card
+              ]}
               onPress={() => showPicker('ExpirationDate')}
             >
               <Text style={{ color: form.ExpirationDate ? '#000' : '#888' }}>
@@ -388,13 +443,13 @@ export default function AddCredentialsScreen() {
               </Text>
             </TouchableOpacity>
 
-            <Text style={styles.label}>Category*</Text>
-            <View style={styles.pickerContainer}>
+            <Text style={[styles.label, themeStyles.text]}>Category*</Text>
+            <View style={[styles.pickerContainer,themeStyles.card]}>
               <Picker
                 selectedValue={form.CategoryId}
                 onValueChange={(v) => handleChange('CategoryId', v)}
               >
-                <Picker.Item label="Select category..." value="" />
+                <Picker.Item label="Select category..." value="" color={isDark ? '#888' : '#666'} />
                 {categories.map((c) => (
                   <Picker.Item key={c.id} label={c.name} value={c.id} />
                 ))}
@@ -406,14 +461,22 @@ export default function AddCredentialsScreen() {
         {selectedTab === 'category' && (
           <>
             <TextInput
-              style={styles.input}
+              style={[
+                styles.input,
+                themeStyles.card
+              ]}
               placeholder="Name*"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               value={form.Name}
               onChangeText={v => handleChange('Name', v)}
             />
             <TextInput
-              style={styles.input}
+              style={[
+                styles.input,
+                themeStyles.card
+              ]}
               placeholder="Description"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               value={form.Description}
               onChangeText={v => handleChange('Description', v)}
             />
@@ -501,7 +564,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   submitButton: {
-    height : height * 0.055,
+    height: height * 0.055,
     borderRadius: 10,
     borderWidth: 1,
     alignItems: 'center',

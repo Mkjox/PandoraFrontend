@@ -13,7 +13,7 @@ import {
 import { useTheme } from '../../context/ThemeContext';
 import { lightTheme, darkTheme } from '../../assets/colors/theme';
 
-const { width } = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 
 const SecurityScreen: React.FC = () => {
     const { isDark } = useTheme();
@@ -77,7 +77,7 @@ const SecurityScreen: React.FC = () => {
             </View>
 
             <TouchableOpacity
-                style={[styles.resetButton, themeStyles.button]}
+                style={[styles.resetButton, themeStyles.buttonBorder]}
                 onPress={() => Alert.alert('Reset Security', 'All security settings have been reset.')}
             >
                 <Text style={[styles.resetButtonText, themeStyles.buttonText]}>Reset All Security Settings</Text>
@@ -128,10 +128,18 @@ const styles = StyleSheet.create({
     },
     resetButton: {
         marginHorizontal: width * 0.05,
+        height: height * 0.055,
         marginTop: 10,
-        paddingVertical: 14,
-        borderRadius: 8,
+        borderRadius: 10,
         alignItems: 'center',
+        borderWidth: 1,
+        justifyContent: 'center',
+        backgroundColor: '#FFFFFF',
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 2 },
     },
     resetButtonText: {
         fontSize: 16,

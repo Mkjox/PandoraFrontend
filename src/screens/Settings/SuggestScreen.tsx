@@ -13,7 +13,7 @@ import {
 import { useTheme } from '../../context/ThemeContext';
 import { lightTheme, darkTheme } from '../../assets/colors/theme';
 
-const { width } = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 
 const SuggestScreen: React.FC = () => {
     const { isDark } = useTheme();
@@ -55,7 +55,7 @@ const SuggestScreen: React.FC = () => {
                 />
             </View>
 
-            <TouchableOpacity style={[styles.button, themeStyles.button]} onPress={handleSubmit}>
+            <TouchableOpacity style={[styles.button, themeStyles.buttonBorder]} onPress={handleSubmit}>
                 <Text style={[styles.buttonText, themeStyles.buttonText]}>Submit</Text>
             </TouchableOpacity>
         </ScrollView>
@@ -106,10 +106,18 @@ const styles = StyleSheet.create({
     },
     button: {
         marginHorizontal: width * 0.05,
-        marginTop: 10,
-        paddingVertical: 14,
-        borderRadius: 8,
+        marginTop: 8,
+        height: height * 0.055,
+        borderRadius: 6,
+        borderWidth: 1,
         alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#FFFFFF',
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 2 },
     },
     buttonText: {
         fontSize: 16,

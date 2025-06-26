@@ -27,7 +27,7 @@ type Item = { key: string; title: string; icon: React.ReactNode; onPress?: () =>
 const SettingsScreen: React.FC = () => {
     const navigation = useNavigation()
     const { isDark } = useTheme()
-    const theme = isDark ? darkTheme : lightTheme
+    const themeStyles = isDark ? darkTheme : lightTheme
 
     const sections: { title: string; data: Item[] }[] = [
         {
@@ -36,19 +36,19 @@ const SettingsScreen: React.FC = () => {
                 {
                     key: "suggest",
                     title: "Suggest an idea",
-                    icon: <MaterialIcons name="lightbulb" size={20} color={theme.icon.color} />,
+                    icon: <MaterialIcons name="lightbulb" size={20} color={themeStyles.icon.color} />,
                     onPress: () => navigation.navigate("Suggest" as never),
                 },
                 {
                     key: "account",
                     title: "Account",
-                    icon: <MaterialIcons name="person" size={20} color={theme.icon.color} />,
+                    icon: <MaterialIcons name="person" size={20} color={themeStyles.icon.color} />,
                     onPress: () => navigation.navigate("Account" as never),
                 },
                 {
                     key: "privacy",
                     title: "Privacy policy",
-                    icon: <MaterialCommunityIcons name="shield-search" size={20} color={theme.icon.color} />,
+                    icon: <MaterialCommunityIcons name="shield-search" size={20} color={themeStyles.icon.color} />,
                     onPress: () => navigation.navigate("Privacy" as never),
                 },
             ],
@@ -59,25 +59,25 @@ const SettingsScreen: React.FC = () => {
                 {
                     key: "security",
                     title: "Security",
-                    icon: <MaterialIcons name="shield" size={20} color={theme.icon.color} />,
+                    icon: <MaterialIcons name="shield" size={20} color={themeStyles.icon.color} />,
                     onPress: () => navigation.navigate("Security" as never),
                 },
                 {
                     key: "autofill",
                     title: "Autofill",
-                    icon: <FontAwesome name="magic" size={20} color={theme.icon.color} />,
+                    icon: <FontAwesome name="magic" size={20} color={themeStyles.icon.color} />,
                     onPress: () => navigation.navigate("Autofill" as never),
                 },
                 {
                     key: "search",
                     title: "Search",
-                    icon: <MaterialCommunityIcons name="magnify" size={20} color={theme.icon.color} />,
+                    icon: <MaterialCommunityIcons name="magnify" size={20} color={themeStyles.icon.color} />,
                     onPress: () => navigation.navigate("Search" as never),
                 },
                 {
                     key: "actions",
                     title: "Actions",
-                    icon: <MaterialCommunityIcons name="broom" size={20} color={theme.icon.color} />,
+                    icon: <MaterialCommunityIcons name="broom" size={20} color={themeStyles.icon.color} />,
                     onPress: () => navigation.navigate("Actions" as never),
                 },
             ],
@@ -88,19 +88,19 @@ const SettingsScreen: React.FC = () => {
                 {
                     key: "advanced",
                     title: "Advanced",
-                    icon: <Ionicons name="options" size={20} color={theme.icon.color} />,
+                    icon: <Ionicons name="options" size={20} color={themeStyles.icon.color} />,
                     onPress: () => navigation.navigate("Advanced" as never),
                 },
                 {
                     key: "about",
                     title: "About Pandora",
-                    icon: <FontAwesome name="info-circle" size={20} color={theme.icon.color} />,
+                    icon: <FontAwesome name="info-circle" size={20} color={themeStyles.icon.color} />,
                     onPress: () => navigation.navigate("About" as never),
                 },
                 {
                     key: "help",
                     title: "Help and support",
-                    icon: <AntDesign name="questioncircle" size={20} color={theme.icon.color} />,
+                    icon: <AntDesign name="questioncircle" size={20} color={themeStyles.icon.color} />,
                     onPress: () => navigation.navigate("Help" as never),
                 },
             ],
@@ -109,25 +109,25 @@ const SettingsScreen: React.FC = () => {
 
     const renderItem = ({ item }: { item: Item }) => (
         <TouchableOpacity
-            style={[styles.row, theme.card]}
+            style={[styles.row]}
             onPress={item.onPress}
             activeOpacity={0.7}
         >
             <View style={styles.iconWrapper}>
                 {item.icon}
             </View>
-            <Text style={[styles.rowText, theme.text]}>{item.title}</Text>
-            <Entypo name="chevron-right" size={18} color={theme.icon.color} />
+            <Text style={[styles.rowText, themeStyles.text]}>{item.title}</Text>
+            <Entypo name="chevron-right" size={18} color={themeStyles.icon.color} />
         </TouchableOpacity>
     )
 
     const renderSectionHeader = ({ section }: any) =>
         section.title ? (
-            <Text style={[styles.sectionHeader, theme.text]}>{section.title}</Text>
+            <Text style={[styles.sectionHeader, themeStyles.text]}>{section.title}</Text>
         ) : null
 
     return (
-        <View style={[styles.container, theme.container]}>
+        <View style={[styles.container, themeStyles.container]}>
             <SectionList
                 sections={sections}
                 keyExtractor={item => item.key}
@@ -136,6 +136,7 @@ const SettingsScreen: React.FC = () => {
                 contentContainerStyle={styles.list}
                 ItemSeparatorComponent={() => <View style={styles.separator} />}
                 showsVerticalScrollIndicator={false}
+                
             />
         </View>
     )

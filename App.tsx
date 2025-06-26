@@ -1,4 +1,4 @@
-import { ThemeProvider } from './src/context/ThemeContext';
+import { ThemeProvider, useTheme } from './src/context/ThemeContext';
 import AppNavigator from './src/navigation/AppNavigator';
 import * as SplashScreen from 'expo-splash-screen';
 import {
@@ -12,8 +12,22 @@ import { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { store } from './src/redux/store';
 import { NavigationContainer } from '@react-navigation/native';
+import { ActivityIndicator, View } from 'react-native';
 
 SplashScreen.preventAutoHideAsync();
+
+function AppContent() {
+  const { isLoadingTheme } = useTheme();
+
+  if (isLoadingTheme) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#00adf5" />
+      </View>
+    );
+  }
+  return <AppNavigator />;
+}
 
 function App(): React.JSX.Element {
   const [loaded, error] = useFonts({
@@ -37,7 +51,7 @@ function App(): React.JSX.Element {
     <Provider store={store}>
       <ThemeProvider>
         <NavigationContainer>
-          <AppNavigator />
+          <AppContent />
         </NavigationContainer>
       </ThemeProvider>
     </Provider>

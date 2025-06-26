@@ -13,7 +13,7 @@ import { Searchbar } from 'react-native-paper';
 import { useTheme } from '../../context/ThemeContext';
 import { lightTheme, darkTheme } from '../../assets/colors/theme';
 
-const { width } = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 
 const SearchScreen: React.FC = () => {
     const { isDark } = useTheme();
@@ -42,10 +42,11 @@ const SearchScreen: React.FC = () => {
             <View style={styles.section}>
                 <Searchbar
                     placeholder="Type to search..."
+                    placeholderTextColor={isDark ? '888' : '666'}
                     onChangeText={onChangeSearch}
                     value={searchQuery}
-                    style={[styles.searchBar, themeStyles.card]}
-                    inputStyle={themeStyles.text}
+                    style={[styles.searchBar, themeStyles.buttonBorder]}
+                    inputStyle={[themeStyles.text, { alignSelf: 'center' }]}
                 />
             </View>
 
@@ -97,7 +98,6 @@ const styles = StyleSheet.create({
     },
     searchBar: {
         borderRadius: 8,
-        height: 48,
     },
     sectionHeaderRow: {
         flexDirection: 'row',

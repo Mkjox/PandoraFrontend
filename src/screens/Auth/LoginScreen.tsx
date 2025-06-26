@@ -73,6 +73,7 @@ export default function LoginScreen() {
         style={[
           styles.input,
           themeStyles.card,
+          themeStyles.inputText,
           usernameError ? styles.inputError : undefined,
         ]}
         placeholder="Username or Email"
@@ -98,6 +99,7 @@ export default function LoginScreen() {
           style={[
             styles.passwordInput,
             themeStyles.card,
+            themeStyles.inputText,
           ]}
           placeholder="Password"
           placeholderTextColor={isDark ? '#888' : '#666'}
