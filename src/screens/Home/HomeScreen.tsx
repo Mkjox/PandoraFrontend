@@ -77,7 +77,7 @@ export default function HomeScreen() {
         style={[styles.typeButton, active && styles.activeTypeButton]}
         onPress={() => setFilterType(item.key)}
       >
-        <Text style={[styles.typeText, active ? themeStyles.text : themeStyles.textGray]}>
+        <Text style={[active ? themeStyles.text && styles.activeText : themeStyles.textGray && styles.passiveText]}>
           {item.label}
         </Text>
       </TouchableOpacity>
@@ -120,8 +120,13 @@ export default function HomeScreen() {
 
   if (error) {
     return (
-      <View style={[themeStyles.container, styles.center]}>
-        <ErrorDisplay message={error} />
+      <View style={[themeStyles.container, styles.container, { padding: 25 }]}>
+        <View style={styles.headerRow}>
+          <Text style={[styles.title, themeStyles.text]}>Vault</Text>
+        </View>
+        <View style={[themeStyles.container, styles.center]}>
+          <ErrorDisplay message={error} />
+        </View>
       </View>
     )
   }
@@ -201,7 +206,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderColor: '#ccc',
     borderWidth: 1,
-    elevation: 3
+    elevation: 3,
+    fontFamily: 'Poppins_500Medium'
   },
   typeList: {
     marginTop: height * 0.02
@@ -213,10 +219,15 @@ const styles = StyleSheet.create({
   },
   activeTypeButton: {
     borderBottomWidth: 2,
-    borderBottomColor: '#6E7FEC'
+    borderBottomColor: '#6E7FEC',
   },
-  typeText: {
-    fontSize: 14
+  activeText: {
+    fontSize: 14,
+    fontFamily: 'Poppins_600SemiBold'
+  },
+  passiveText: {
+    fontSize: 14,
+    fontFamily: 'Poppins_400Regular'
   },
   passwordList: {
     paddingBottom: 40,

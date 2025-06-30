@@ -40,28 +40,28 @@ const SecurityToolsScreen: React.FC = () => {
   const tools: Tool[] = [
     {
       id: "generator",
-      title: "Password generator",
+      title: "Password Generator",
       subtitle: "Create strong, unique passwords",
       icon: <MaterialIcons name="vpn-key" size={24} color={themeStyles.icon.color} />,
       onPress: () => { navigation.navigate("PasswordGenerator" as never) },
     },
     {
       id: "emergency",
-      title: "Emergency access",
+      title: "Emergency Access",
       subtitle: "Peace of mind in an emergency",
       icon: <FontAwesome5 name="ambulance" size={24} color={themeStyles.icon.color} />,
       onPress: () => { navigation.navigate("EmergencyAccess" as never) },
     },
     {
       id: "challenge",
-      title: `Security challenge (${percentage}%)`,
+      title: `Security Challenge (${percentage}%)`,
       subtitle: "Put your passwords to the test",
       icon: <MaterialIcons name="security" size={24} color={themeStyles.icon.color} />,
       onPress: () => { navigation.navigate("SecurityChallenge" as never) },
     },
     {
       id: "dashboard",
-      title: "Security dashboard",
+      title: "Security Dashboard",
       subtitle: "Monitor your online security",
       icon: <MaterialIcons name="dashboard" size={24} color={themeStyles.icon.color} />,
       onPress: () => { navigation.navigate("SecurityDashboard" as never) },

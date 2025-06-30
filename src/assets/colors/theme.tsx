@@ -16,9 +16,6 @@ export const lightTheme = StyleSheet.create({
     customButtonText: {
         color: '#4C4DDC'
     },
-    iconBackground: {
-        backgroundColor: '#E5E5F7',
-    },
     icon: {
         color: '#4F4F4F'
     },
@@ -57,9 +54,6 @@ export const darkTheme = StyleSheet.create({
     },
     customButtonText: {
         color: '#3580FF'
-    },
-    iconBackground: {
-        backgroundColor: '#2A2432',
     },
     icon: {
         color: '#E0E0E0'

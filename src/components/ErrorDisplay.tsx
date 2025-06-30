@@ -19,12 +19,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 16,
-        backgroundColor: 'rgba(0, 0, 0, 0.3)',
     },
     errorText: {
         color: 'red',
-        fontSize: 18,
+        fontSize: 16,
         textAlign: 'center',
+        fontFamily: 'Poppins_600SemiBold'
     },
 });
 

@@ -12,20 +12,31 @@ import {
 const AuthService = {
     register: async (payload: RegisterPayload): Promise<ServiceResult<string>> => {
         try {
-            const reg = await api.post<{
+            const res = await api.post<{
                 success: boolean;
-                data: any;
+                data: {
+                    accessToken: string;
+                    refreshToken: string,
+                };
+                resultStatus: number;
                 message: string;
             }>("/auth/register", payload);
 
-            if (!reg.data.success) {
-                return { success: false, message: reg.data.message };
+            if (res.data.resultStatus !== 0) {
+                return { success: false, message: res.data.message };
             }
 
-            return AuthService.login({
-                UsernameOrEmail: payload.Email,  // or payload.Username
-                Password: payload.Password
-            });
+            const token = res.data.data.accessToken;
+            await AsyncStorage.setItem("authToken", token);
+            return {
+                success: true,
+                data: token
+            };
+
+            // return AuthService.login({
+            //     UsernameOrEmail: payload.Email,  // or payload.Username
+            //     Password: payload.Password
+            // });
         } catch (err: any) {
             return {
                 success: false,
@@ -36,8 +47,23 @@ const AuthService = {
 
     login: async (payload: LoginPayload): Promise<ServiceResult<string>> => {
         try {
-            const response = await api.post<{ token: string }>("/auth/login", payload);
-            const token = response.data.token;
+            const response = await api.post<{
+                data: {
+                    accessToken: string;
+                    refreshToken: string;
+                };
+                resultStatus: number;
+                message: string;
+            }>("/auth/login", payload);
+
+            if (response.data.resultStatus !== 0) {
+                return {
+                    success: false,
+                    message: response.data.message
+                };
+            }
+
+            const token = response.data.data.accessToken;
             await AsyncStorage.setItem("authToken", token);
 
             return {
@@ -114,28 +140,28 @@ const AuthService = {
     },
 
     updateProfile: async (
-    payload: { username: string; email: string; photoBase64?: string }
-  ): Promise<ServiceResult<{ username: string; email: string; photoUrl?: string }>> => {
-    try {
-      const decoded = await AuthService.decodeToken();
-      const userId = decoded?.nameid;
-      if (!userId) {
-        return { success: false, message: 'No valid token / user ID.' };
-      }
-      // PUT to /users/{id}
-      const response = await api.put<{
-        username: string;
-        email: string;
-        photoUrl?: string;
-      }>(`/users/${userId}`, payload);
-      return { success: true, data: response.data };
-    } catch (err: any) {
-      return {
-        success: false,
-        message: err.response?.data?.message || 'Failed to update profile',
-      };
-    }
-  },
+        payload: { username: string; email: string; photoBase64?: string }
+    ): Promise<ServiceResult<{ username: string; email: string; photoUrl?: string }>> => {
+        try {
+            const decoded = await AuthService.decodeToken();
+            const userId = decoded?.nameid;
+            if (!userId) {
+                return { success: false, message: 'No valid token / user ID.' };
+            }
+            // PUT to /users/{id}
+            const response = await api.put<{
+                username: string;
+                email: string;
+                photoUrl?: string;
+            }>(`/users/${userId}`, payload);
+            return { success: true, data: response.data };
+        } catch (err: any) {
+            return {
+                success: false,
+                message: err.response?.data?.message || 'Failed to update profile',
+            };
+        }
+    },
 };
 
 export default AuthService;
