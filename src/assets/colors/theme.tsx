@@ -36,6 +36,14 @@ export const lightTheme = StyleSheet.create({
     },
     inputText: {
         color: '#000000'
+    },
+    border: {
+        borderColor: '#ccc',
+        borderWidth: 1
+    },
+    borderTop: {
+         borderColor: '#ccc',
+        borderWidth: 1
     }
 });
 
@@ -76,5 +84,13 @@ export const darkTheme = StyleSheet.create({
     },
     inputText: {
         color: '#FFFFFF'
+    },
+    border: {
+        borderColor: '#343434',
+        borderWidth: 1
+    },
+    borderTop: {
+        borderColor: '#343434',
+        borderWidth: 1
     }
 });

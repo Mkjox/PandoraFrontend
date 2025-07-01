@@ -330,7 +330,7 @@ export default function AddCredentialsScreen() {
               </Text>
             </TouchableOpacity>
             <Text style={[styles.label, themeStyles.text]}>Category*</Text>
-            <View style={[styles.pickerContainer,themeStyles.card]}>
+            <View style={[styles.pickerContainer, themeStyles.card]}>
               <Picker
                 selectedValue={form.CategoryId}
                 onValueChange={v => handleChange('CategoryId', v)}
@@ -349,6 +349,7 @@ export default function AddCredentialsScreen() {
             <TextInput
               style={[
                 styles.input,
+                themeStyles.inputText,
                 themeStyles.card
               ]}
               placeholder="Title*"
@@ -359,6 +360,7 @@ export default function AddCredentialsScreen() {
             <TextInput
               style={[
                 styles.input,
+                themeStyles.inputText,
                 themeStyles.card
               ]}
               placeholder="Content*"
@@ -369,6 +371,7 @@ export default function AddCredentialsScreen() {
             <TextInput
               style={[
                 styles.input,
+                themeStyles.inputText,
                 themeStyles.card
               ]}
               placeholder="URL"
@@ -401,6 +404,7 @@ export default function AddCredentialsScreen() {
             <TextInput
               style={[
                 styles.input,
+                themeStyles.inputText,
                 themeStyles.card
               ]}
               placeholder="Summary"
@@ -411,6 +415,7 @@ export default function AddCredentialsScreen() {
             <TextInput
               style={[
                 styles.input,
+                themeStyles.inputText,
                 themeStyles.card
               ]}
               placeholder="Tags (comma separated)"
@@ -422,6 +427,7 @@ export default function AddCredentialsScreen() {
             <TouchableOpacity
               style={[
                 styles.input,
+                themeStyles.inputText,
                 themeStyles.card
               ]}
               onPress={() => showPicker('UnlockDate')}
@@ -444,7 +450,7 @@ export default function AddCredentialsScreen() {
             </TouchableOpacity>
 
             <Text style={[styles.label, themeStyles.text]}>Category*</Text>
-            <View style={[styles.pickerContainer,themeStyles.card]}>
+            <View style={[styles.pickerContainer, themeStyles.card]}>
               <Picker
                 selectedValue={form.CategoryId}
                 onValueChange={(v) => handleChange('CategoryId', v)}
@@ -463,6 +469,7 @@ export default function AddCredentialsScreen() {
             <TextInput
               style={[
                 styles.input,
+                themeStyles.inputText,
                 themeStyles.card
               ]}
               placeholder="Name*"
@@ -473,6 +480,7 @@ export default function AddCredentialsScreen() {
             <TextInput
               style={[
                 styles.input,
+                themeStyles.inputText,
                 themeStyles.card
               ]}
               placeholder="Description"

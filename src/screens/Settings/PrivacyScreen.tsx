@@ -28,7 +28,7 @@ const PrivacyScreen: React.FC = () => {
 
             <Text style={[styles.title, themeStyles.text]}>Privacy Policy</Text>
 
-            <View style={[styles.group, themeStyles.card]}>
+            <View style={[styles.group, themeStyles.card, themeStyles.border]}>
                 <Text style={[styles.sectionHeader, themeStyles.text]}>Data Collection</Text>
                 <Text style={[styles.sectionBody, themeStyles.text]}>
                     We collect only the data necessary to provide the core functionality:
@@ -36,21 +36,21 @@ const PrivacyScreen: React.FC = () => {
                 </Text>
             </View>
 
-            <View style={[styles.group, themeStyles.card]}>
+            <View style={[styles.group, themeStyles.card, themeStyles.border]}>
                 <Text style={[styles.sectionHeader, themeStyles.text]}>Data Usage</Text>
                 <Text style={[styles.sectionBody, themeStyles.text]}>
                     All your vault data is encrypted on your device. We do NOT share it with third parties.
                 </Text>
             </View>
 
-            <View style={[styles.group, themeStyles.card]}>
+            <View style={[styles.group, themeStyles.card, themeStyles.border]}>
                 <Text style={[styles.sectionHeader, themeStyles.text]}>External Links</Text>
                 <TouchableOpacity onPress={() => openPolicyLink('https://pandora.com/full-policy')}>
                     <Text style={[styles.linkText, themeStyles.text]}>Read Full Policy Online</Text>
                 </TouchableOpacity>
             </View>
 
-            <View style={[styles.group, themeStyles.card]}>
+            <View style={[styles.group, themeStyles.card, themeStyles.border]}>
                 <Text style={[styles.sectionHeader, themeStyles.text]}>Contact</Text>
                 <TouchableOpacity onPress={() => openPolicyLink('mailto:privacy@pandora.com')}>
                     <Text style={[styles.linkText, themeStyles.text]}>Email Privacy Team</Text>
@@ -79,8 +79,6 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         padding: 12,
         elevation: 1,
-        borderWidth: 1,
-        borderColor: '#ccc'
     },
     sectionHeader: {
         fontSize: 18,

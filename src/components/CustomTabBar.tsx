@@ -10,7 +10,7 @@ const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => 
     const themeStyles = isDark ? darkTheme : lightTheme;
 
     return (
-        <View style={[styles.tabContainer, themeStyles.container]}>
+        <View style={[styles.tabContainer, themeStyles.container, themeStyles.borderTop]}>
             {state.routes.map((route, index) => {
                 const { options } = descriptors[route.key];
 
@@ -101,8 +101,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         height: 70,
         backgroundColor: '#FFFFFF',
-        borderTopWidth: 1,
-        borderTopColor: '#cccccc',
         justifyContent: 'space-around',
         alignItems: 'center',
     },

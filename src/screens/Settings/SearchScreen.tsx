@@ -68,7 +68,7 @@ const SearchScreen: React.FC = () => {
                         data={recent}
                         keyExtractor={(item) => item}
                         renderItem={({ item }) => (
-                            <TouchableOpacity style={[styles.recentItem, themeStyles.card]}>
+                            <TouchableOpacity style={[styles.recentItem, themeStyles.card, themeStyles.border]}>
                                 <Text style={[styles.recentText, themeStyles.text]}>{item}</Text>
                             </TouchableOpacity>
                         )}

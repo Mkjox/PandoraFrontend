@@ -110,6 +110,7 @@ const SettingsScreen: React.FC = () => {
     const renderItem = ({ item }: { item: Item }) => (
         <TouchableOpacity
             style={[styles.row]}
+            // style={[styles.row, themeStyles.border]}
             onPress={item.onPress}
             activeOpacity={0.7}
         >
@@ -136,7 +137,7 @@ const SettingsScreen: React.FC = () => {
                 contentContainerStyle={styles.list}
                 ItemSeparatorComponent={() => <View style={styles.separator} />}
                 showsVerticalScrollIndicator={false}
-                
+
             />
         </View>
     )

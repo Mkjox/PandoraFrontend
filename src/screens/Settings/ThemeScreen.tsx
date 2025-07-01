@@ -32,7 +32,7 @@ const ThemeScreen: React.FC = () => {
         </TouchableOpacity>
       </View>
 
-      <View style={[styles.listWrapper, themeStyles.card]}>
+      <View style={[styles.listWrapper, themeStyles.card, themeStyles.border]}>
         <List.Section>
           <List.Subheader style={[styles.subheader, themeStyles.text]}>Appearance</List.Subheader>
 

@@ -26,7 +26,7 @@ const AdvancedScreen: React.FC = () => {
 
             <Text style={[styles.title, themeStyles.text]}>Advanced Settings</Text>
 
-            <View style={[styles.group, themeStyles.card]}>
+            <View style={[styles.group, themeStyles.card, themeStyles.border]}>
                 <Text style={[styles.itemHeader, themeStyles.text]}>Data Backup</Text>
                 <View style={styles.itemRow}>
                     <Text style={[styles.itemLabel, themeStyles.text]}>Auto Backup</Text>
@@ -40,7 +40,7 @@ const AdvancedScreen: React.FC = () => {
                 </TouchableOpacity>
             </View>
 
-            <View style={[styles.group, themeStyles.card]}>
+            <View style={[styles.group, themeStyles.card, themeStyles.border]}>
                 <Text style={[styles.itemHeader, themeStyles.text]}>Data Import/Export</Text>
                 <TouchableOpacity style={styles.linkRow}>
                     <Text style={[styles.linkText, themeStyles.text]}>Export All Data</Text>
@@ -72,8 +72,6 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         padding: 12,
         elevation: 1,
-        borderWidth: 1,
-        borderColor: '#ccc'
     },
     itemHeader: {
         fontSize: 18,

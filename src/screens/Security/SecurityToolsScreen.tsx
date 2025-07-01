@@ -77,7 +77,7 @@ const SecurityToolsScreen: React.FC = () => {
 
   const renderItem = ({ item }: { item: Tool }) => (
     <TouchableOpacity
-      style={[styles.cardInnerWrapper, themeStyles.card]}
+      style={[styles.cardInnerWrapper, themeStyles.card, themeStyles.border]}
       onPress={item.onPress}
     >
       <View style={styles.cardIcon}>

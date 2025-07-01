@@ -77,7 +77,11 @@ export default function HomeScreen() {
         style={[styles.typeButton, active && styles.activeTypeButton]}
         onPress={() => setFilterType(item.key)}
       >
-        <Text style={[active ? themeStyles.text && styles.activeText : themeStyles.textGray && styles.passiveText]}>
+        <Text style={[
+          active ? themeStyles.text : themeStyles.textGray,
+          active ? styles.activeText : styles.passiveText
+
+        ]}>
           {item.label}
         </Text>
       </TouchableOpacity>

@@ -101,7 +101,7 @@ const PremiumScreen: React.FC = () => {
           Replace this with an actual image/illustration asset:
           e.g. <Image source={require('../assets/images/premium_banner.png')} style={styles.bannerImage} />
         */}
-        <View style={styles.bannerPlaceholder}>
+        <View style={[styles.bannerPlaceholder, themeStyles.container]}>
           <Text style={[styles.bannerPlaceholderText, themeStyles.text]}>
             {/* Placeholder: plane drawing + location pin */}
             {/* You can overlay an Image here */}
@@ -120,7 +120,7 @@ const PremiumScreen: React.FC = () => {
       </View>
 
       {/* Benefits card */}
-      <View style={[styles.benefitsCard, themeStyles.card]}>
+      <View style={[styles.benefitsCard, themeStyles.card, themeStyles.border]}>
         {benefits.map(item => (
           <View key={item.id} style={styles.benefitRow}>
             <View style={[styles.benefitIconCircle, themeStyles.card]}>

@@ -86,7 +86,7 @@ const ProfileScreen: React.FC = () => {
         )}
       </View>
 
-      <View style={[styles.infoGroup, themeStyles.card]}>
+      <View style={[styles.infoGroup, themeStyles.card, themeStyles.border]}>
         <Text style={[styles.infoName, themeStyles.text]}>{profile.username}</Text>
         <Text style={[styles.infoEmail, themeStyles.text]}>{profile.email}</Text>
         {profile.lastLogin && (
@@ -96,7 +96,7 @@ const ProfileScreen: React.FC = () => {
         )}
       </View>
 
-      <View style={[styles.statsGroup, themeStyles.card]}>
+      <View style={[styles.statsGroup, themeStyles.card, themeStyles.border]}>
         <View style={styles.statItem}>
           <Text style={[styles.statValue, themeStyles.text]}>{profile.passwordCount ?? 0}</Text>
           <Text style={[styles.statLabel, themeStyles.text]}>Passwords</Text>
@@ -111,7 +111,7 @@ const ProfileScreen: React.FC = () => {
         </View>
       </View>
 
-      <View style={[styles.linksGroup, themeStyles.card]}>
+      <View style={[styles.linksGroup, themeStyles.card, themeStyles.border]}>
 
         <TouchableOpacity onPress={() => navigation.navigate('EditProfile' as never)} style={styles.linkRow}>
           <MaterialIcons name="edit" size={20} style={themeStyles.iconColor} />

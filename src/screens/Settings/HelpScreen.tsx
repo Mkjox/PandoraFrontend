@@ -59,7 +59,7 @@ const HelpScreen: React.FC = () => {
                 {faqs.map((faq, i) => {
                     const isOpen = openIndex === i;
                     return (
-                        <View key={i} style={[styles.item, themeStyles.card]}>
+                        <View key={i} style={[styles.item, themeStyles.card, themeStyles.border]}>
                             <TouchableOpacity onPress={() => toggle(i)} style={styles.questionRow}>
                                 <Text style={[styles.question, themeStyles.text]}>{faq.question}</Text>
                                 <Text style={[styles.chevron, themeStyles.text]}>
@@ -76,7 +76,7 @@ const HelpScreen: React.FC = () => {
                 })}
             </View>
 
-            <TouchableOpacity style={[styles.emailButton, themeStyles.card]} onPress={() => { }}>
+            <TouchableOpacity style={[styles.emailButton, themeStyles.card, themeStyles.border]} onPress={() => { }}>
                 <Text style={[styles.emailButtonText, themeStyles.text]}>✉️ Email Support</Text>
             </TouchableOpacity>
         </ScrollView>
@@ -130,8 +130,6 @@ const styles = StyleSheet.create({
         marginTop: 24,
         paddingVertical: 14,
         borderRadius: 8,
-        borderWidth: 1,
-        borderColor: '#888',
         alignItems: 'center',
     },
     emailButtonText: {
