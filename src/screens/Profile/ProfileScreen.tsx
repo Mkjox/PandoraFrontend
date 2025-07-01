@@ -17,6 +17,7 @@ import AuthService from '../../services/AuthService';
 import { Entypo, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { useAppDispatch } from '../../redux/hooks';
 import { logout as logoutAction } from '../../redux/store/slices/authSlice';
+import LogoutButton from '../../components/LogoutButton';
 
 const { width } = Dimensions.get('window');
 
@@ -128,10 +129,7 @@ const ProfileScreen: React.FC = () => {
           <Text style={[styles.linkText, themeStyles.text]}>Settings</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={handleLogout} style={styles.linkRow}>
-          <Entypo name="log-out" size={20} style={themeStyles.iconColor} />
-          <Text style={[styles.linkText, themeStyles.text]}>Logout</Text>
-        </TouchableOpacity>
+        <LogoutButton />
 
       </View>
 
@@ -198,7 +196,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: 16,
   },
-  statItem: { alignItems: 'center', flex: 1 },
+  statItem: {
+    alignItems: 'center',
+    flex: 1
+  },
   statValue: {
     fontSize: 18,
     fontFamily: 'Poppins_600SemiBold',

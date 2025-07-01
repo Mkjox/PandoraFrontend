@@ -15,7 +15,7 @@ import {
   MaterialCommunityIcons,
   FontAwesome5,
   MaterialIcons,
-  FontAwesome,
+  Ionicons,
 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -105,7 +105,7 @@ const PremiumScreen: React.FC = () => {
           <Text style={[styles.bannerPlaceholderText, themeStyles.text]}>
             {/* Placeholder: plane drawing + location pin */}
             {/* You can overlay an Image here */}
-            Premium Illustration
+            <Ionicons name='diamond-outline' size={64} />
           </Text>
         </View>
         <Text style={[styles.bannerTitle]}>
