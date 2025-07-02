@@ -8,6 +8,7 @@ import {
     RegisterPayload,
     UserProfileResponse
 } from "../types/auth.types";
+import { isEnabled } from 'react-native/Libraries/Performance/Systrace';
 
 const AuthService = {
     register: async (payload: RegisterPayload): Promise<ServiceResult<string>> => {
@@ -162,6 +163,123 @@ const AuthService = {
             };
         }
     },
+
+    getTwoFactorStatus: async (): Promise<{
+        success: boolean;
+        data?: {
+            isEnabled: boolean;
+            enabledAt: string | null;
+            backupCodesRemaining: number
+        };
+        message?: string;
+    }> => {
+        try {
+            const res = await api.get<{
+                data: {
+                    isEnabled: boolean;
+                    enabledAt: string | null;
+                    backupCodesRemaining: number
+                };
+                resultStatus: number;
+                message: string;
+            }>("/TwoFactor/status");
+
+            if (res.data.resultStatus == 0) throw new Error(res.data.message);
+            return {
+                success: true,
+                data: res.data.data
+            };
+        }
+        catch (err: any) {
+            return {
+                success: false,
+                message: err.message
+            };
+        }
+    },
+
+    setupTwoFactor: async (): Promise<{
+        success: boolean;
+        data?: {
+            secretKey: string;
+            qrCodeUri: string;
+            manualEntryKey: string;
+            backupCodes: string[];
+        };
+        message?: string;
+    }> => {
+        try {
+            const res = await api.post<{
+                data: {
+                    secretKey: string;
+                    qrCodeUri: string;
+                    manualEntryKey: string;
+                    backupCodes: string[];
+                };
+                resultStatus: number;
+                message: string;
+            }>("/TwoFactor/setup", {});
+
+            if (res.data.resultStatus !== 0) throw new Error(res.data.message);
+            return {
+                success: true,
+                data: res.data.data
+            };
+        }
+        catch (err: any) {
+            return {
+                success: false,
+                message: err.message
+            };
+        }
+    },
+
+    verifyTwoFactor: async (code: string): Promise<{
+        success: boolean;
+        message?: string;
+    }> => {
+        try {
+            const res = await api.post<{
+                resultStatus: number;
+                message: string;
+            }>("/TwoFactor/verify", { code });
+
+            if (res.data.resultStatus !== 0) throw new Error(res.data.message);
+            return {
+                success: true
+            };
+        }
+        catch (err: any) {
+            return {
+                success: false,
+                message: err.message
+            };
+        }
+    },
+
+    disableTwoFactor: async (): Promise<{
+        success: boolean;
+        message?: string
+    }> => {
+        try {
+            const res = await api.post<{
+                resultStatus: number;
+                message: string;
+            }>("/TwoFactor/disable", {});
+
+            if (res.data.resultStatus !== 0) throw new Error(res.data.message);
+            return {
+                success: true
+            };
+        }
+        catch (err: any) {
+            return {
+                success: false,
+                message: err.message
+            };
+        }
+    },
+
 };
 
 export default AuthService;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -8,153 +8,145 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
-  Alert,
   ScrollView,
-} from 'react-native'
-import { useTheme } from '../../context/ThemeContext'
-import { darkTheme, lightTheme } from '../../assets/colors/theme'
-import AuthService from '../../services/AuthService'
+  Image,
+} from 'react-native';
+import { useTheme } from '../../context/ThemeContext';
+import { darkTheme, lightTheme } from '../../assets/colors/theme';
+import AuthService from '../../services/AuthService';
 
 const TwoFactorScreen: React.FC = () => {
-  const { isDark } = useTheme()
-  const themeStyles = isDark ? darkTheme : lightTheme
+  const { isDark } = useTheme();
+  const themeStyles = isDark ? darkTheme : lightTheme;
 
-  const [loading, setLoading] = useState(true)
-  const [isEnabled, setIsEnabled] = useState(false)
-  const [showSetup, setShowSetup] = useState(false)
-  const [secret, setSecret] = useState<string | null>(null)
-  const [code, setCode] = useState('')
-  const [verifying, setVerifying] = useState(false)
+  const [loading, setLoading] = useState(true);
+  const [isEnabled, setIsEnabled] = useState(false);
 
-  // On mount, fetch current 2FA status
+  const [setupData, setSetupData] = useState<{
+    secretKey: string;
+    qrCodeUri: string;
+    manualEntryKey: string;
+    backupCodes: string[];
+  } | null>(null);
+
+  const [code, setCode] = useState('');
+  const [verifying, setVerifying] = useState(false);
+
+  // load current 2FA status
   useEffect(() => {
     (async () => {
-      try {
-        const res = await AuthService.getTwoFactorStatus()
-        setIsEnabled(res.enabled)
-      } catch (err) {
-        Alert.alert('Error', 'Could not load 2FA status.')
-      } finally {
-        setLoading(false)
+      const res = await AuthService.getTwoFactorStatus();
+      if (res.success && res.data) {
+        setIsEnabled(res.data.isEnabled);
       }
-    })()
-  }, [])
+      setLoading(false);
+    })();
+  }, []);
 
-  const handleToggle = async (value: boolean) => {
+  const onToggle = async (value: boolean) => {
     if (value) {
-      // enabling: fetch secret & show setup
-      setLoading(true)
-      try {
-        const res = await AuthService.setupTwoFactor()  // returns { secret, qrCodeUrl? }
-        setSecret(res.secret)
-        setShowSetup(true)
-      } catch {
-        Alert.alert('Error', 'Failed to start 2FA setup.')
-      } finally {
-        setLoading(false)
+      // start setup
+      setLoading(true);
+      const res = await AuthService.setupTwoFactor();
+      setLoading(false);
+      if (res.success && res.data) {
+        setSetupData(res.data);
       }
     } else {
-      // disabling
-      Alert.alert(
-        'Disable 2FA',
-        'Are you sure you want to turn off two-factor authentication?',
-        [
-          { text: 'Cancel', style: 'cancel' },
-          {
-            text: 'Disable',
-            style: 'destructive',
-            onPress: async () => {
-              setLoading(true)
-              try {
-                await AuthService.disableTwoFactor()
-                setIsEnabled(false)
-              } catch {
-                Alert.alert('Error', 'Could not disable 2FA.')
-              } finally {
-                setLoading(false)
-              }
-            },
-          },
-        ]
-      )
+      // disable
+      setLoading(true);
+      const res = await AuthService.disableTwoFactor();
+      setLoading(false);
+      if (res.success) {
+        setIsEnabled(false);
+        setSetupData(null);
+      }
     }
-  }
+  };
 
-  const handleVerify = async () => {
-    if (!code.trim()) {
-      return Alert.alert('Validation', 'Please enter the code from your authenticator app.')
+  const onVerify = async () => {
+    if (!code.trim()) return;
+    setVerifying(true);
+    const res = await AuthService.verifyTwoFactor(code.trim());
+    setVerifying(false);
+    if (res.success) {
+      setIsEnabled(true);
+      setSetupData(null);
+      setCode('');
     }
-    setVerifying(true)
-    try {
-      await AuthService.verifyTwoFactor(code.trim())
-      setIsEnabled(true)
-      setShowSetup(false)
-      setCode('')
-      Alert.alert('Success', 'Two-factor authentication enabled.')
-    } catch {
-      Alert.alert('Error', 'Verification failed. Please try again.')
-    } finally {
-      setVerifying(false)
-    }
-  }
+  };
 
   if (loading) {
     return (
       <View style={[styles.center, themeStyles.container]}>
         <ActivityIndicator size="large" />
       </View>
-    )
+    );
   }
 
+  // if we have setupData, show the QR and code entry
+  if (setupData) {
+    return (
+      <ScrollView contentContainerStyle={[styles.container, themeStyles.container]}>
+        <Text style={[styles.title, themeStyles.text]}>Enable Two-Factor</Text>
+        <Text style={[styles.helpText, themeStyles.text]}>
+          Scan the QR code or enter the key manually into your authenticator app.
+        </Text>
+        <Image
+          source={{ uri: setupData.qrCodeUri }}
+          style={styles.qrImage}
+        />
+        <Text selectable style={[styles.manualKey, themeStyles.text]}>
+          {setupData.manualEntryKey}
+        </Text>
+        <TextInput
+          style={[styles.input, themeStyles.card]}
+          placeholder="Enter code"
+          placeholderTextColor={isDark ? '#888' : '#666'}
+          keyboardType="number-pad"
+          value={code}
+          onChangeText={setCode}
+        />
+        <TouchableOpacity
+          style={[styles.button, themeStyles.button]}
+          onPress={onVerify}
+          disabled={verifying}
+        >
+          {verifying
+            ? <ActivityIndicator color={themeStyles.buttonText.color} />
+            : <Text style={[styles.buttonText, themeStyles.buttonText]}>Verify & Enable</Text>}
+        </TouchableOpacity>
+        <Text style={[styles.backupHeader, themeStyles.text]}>
+          Backup codes remaining:
+        </Text>
+        {setupData.backupCodes.map(code => (
+          <Text key={code} style={[styles.backupCode, themeStyles.text]}>
+            {code}
+          </Text>
+        ))}
+      </ScrollView>
+    );
+  }
+
+  // normal status + toggle
   return (
     <ScrollView contentContainerStyle={[styles.container, themeStyles.container]}>
-      <View style={styles.header}>
-        <Text style={[styles.title, themeStyles.text]}>Two-Factor Authentication</Text>
-      </View>
-
-      {!showSetup ? (
-        <View style={[styles.section, themeStyles.card]}>
-          <View style={styles.row}>
-            <Text style={[styles.label, themeStyles.text]}>Enabled</Text>
-            <Switch
-              value={isEnabled}
-              onValueChange={handleToggle}
-            />
-          </View>
-          <Text style={[styles.helpText, themeStyles.text]}>
-            Two-factor authentication adds an extra layer of security by requiring a code from your authenticator app.
-          </Text>
-        </View>
-      ) : (
-        <View style={[styles.section, themeStyles.card]}>
-          <Text style={[styles.label, themeStyles.text]}>Setup</Text>
-          <Text style={[styles.helpText, themeStyles.text]}>
-            Scan this secret into your authenticator and enter the generated code below.
-          </Text>
-          <Text selectable style={[styles.secretText, themeStyles.text]}>
-            {secret}
-          </Text>
-          <TextInput
-            style={[styles.input, themeStyles.card]}
-            placeholder="123 456"
-            keyboardType="numeric"
-            value={code}
-            onChangeText={setCode}
+      <Text style={[styles.title, themeStyles.text]}>Two-Factor Authentication</Text>
+      <View style={[styles.section, themeStyles.card]}>
+        <View style={styles.row}>
+          <Text style={[styles.label, themeStyles.text]}>Enabled</Text>
+          <Switch
+            value={isEnabled}
+            onValueChange={onToggle}
           />
-          <TouchableOpacity
-            style={[styles.button, themeStyles.button]}
-            onPress={handleVerify}
-            disabled={verifying}
-          >
-            {verifying
-              ? <ActivityIndicator color={themeStyles.buttonText.color} />
-              : <Text style={[styles.buttonText, themeStyles.buttonText]}>Verify & Enable</Text>}
-          </TouchableOpacity>
         </View>
-      )}
+        <Text style={[styles.helpText, themeStyles.text]}>
+          Add an extra layer of security by using a time‑based code from your authenticator app.
+        </Text>
+      </View>
     </ScrollView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -166,13 +158,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  header: {
-    marginTop: StatusBar.currentHeight,
-    marginBottom: 20,
-  },
   title: {
     fontSize: 22,
     fontFamily: 'Poppins_700Bold',
+    marginBottom: 16,
   },
   section: {
     padding: 16,
@@ -193,21 +182,26 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Poppins_400Regular',
   },
-  secretText: {
-    marginTop: 12,
+  qrImage: {
+    alignSelf: 'center',
+    width: 200,
+    height: 200,
+    marginVertical: 16,
+  },
+  manualKey: {
+    textAlign: 'center',
     fontSize: 16,
     fontFamily: 'Poppins_500Medium',
-    textAlign: 'center',
+    marginBottom: 16,
   },
   input: {
-    marginTop: 12,
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 8,
     padding: 12,
+    marginBottom: 12,
   },
   button: {
-    marginTop: 16,
     padding: 14,
     borderRadius: 8,
     alignItems: 'center',
@@ -216,6 +210,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Poppins_500Medium',
   },
-})
+  backupHeader: {
+    marginTop: 20,
+    fontSize: 14,
+    fontFamily: 'Poppins_600SemiBold',
+  },
+  backupCode: {
+    fontSize: 14,
+    fontFamily: 'Poppins_400Regular',
+  },
+});
 
-export default TwoFactorScreen
+export default TwoFactorScreen;
