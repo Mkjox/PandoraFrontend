@@ -22,7 +22,7 @@ import AdvancedScreen from '../screens/Settings/AdvancedScreen';
 import AboutScreen from '../screens/Settings/AboutScreen';
 import PrivacyScreen from '../screens/Settings/PrivacyScreen';
 import ThemeScreen from '../screens/Settings/ThemeScreen';
-import PasswordGeneratorScreen from '../screens/Settings/PasswordGeneratorScreen';
+import PasswordGeneratorScreen from '../screens/Security/PasswordGeneratorScreen';
 import EmergencyAccessScreen from '../screens/Security/EmergencyAccessScreen';
 import SecurityChallengeScreen from '../screens/Security/SecurityChallengeScreen';
 import SecurityDashboardScreen from '../screens/Security/SecurityDashboardScreen';

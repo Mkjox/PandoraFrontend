@@ -68,14 +68,19 @@ const PassDetailsScreen: React.FC = () => {
 
   return (
     <ScrollView style={themeStyles.container}>
+      <View style={styles.topSection}>
+        <Text style={[styles.topText, themeStyles.text]}>
+          Password Details
+        </Text>
+      </View>
       <View style={styles.spacer} />
 
-      <View style={[styles.header, themeStyles.card]}>
+      <View style={[styles.header, themeStyles.card, themeStyles.border]}>
         <Text style={[styles.title, themeStyles.text]}>{item.SiteName}</Text>
         <Text style={[styles.subtitle, themeStyles.textGray]}>{item.UsernameOrEmail}</Text>
       </View>
 
-      <View style={[styles.section, themeStyles.card]}>
+      <View style={[styles.section, themeStyles.card, themeStyles.border]}>
         <View style={styles.row}>
           <Text style={[styles.label, themeStyles.text]}>Password:</Text>
           <TouchableOpacity onPress={() => setShowPassword(v => !v)}>
@@ -92,14 +97,14 @@ const PassDetailsScreen: React.FC = () => {
       </View>
 
       {item.Notes ? (
-        <View style={[styles.section, themeStyles.card]}>
+        <View style={[styles.section, themeStyles.card, themeStyles.border]}>
           <Text style={[styles.label, themeStyles.text]}>Notes:</Text>
           <Text style={[styles.value, themeStyles.text]}>{item.Notes}</Text>
         </View>
       ) : null}
 
       {item.PasswordExpirationDate ? (
-        <View style={[styles.section, themeStyles.card]}>
+        <View style={[styles.section, themeStyles.card, themeStyles.border]}>
           <Text style={[styles.label, themeStyles.text]}>Expires:</Text>
           <Text style={[styles.value, themeStyles.text]}>
             {new Date(item.PasswordExpirationDate).toLocaleDateString()}
@@ -108,25 +113,25 @@ const PassDetailsScreen: React.FC = () => {
       ) : null}
 
       {item.CategoryId ? (
-        <View style={[styles.section, themeStyles.card]}>
+        <View style={[styles.section, themeStyles.card, themeStyles.border]}>
           <Text style={[styles.label, themeStyles.text]}>Category ID:</Text>
           <Text style={[styles.value, themeStyles.text]}>{item.CategoryId}</Text>
         </View>
       ) : null}
 
       <TouchableOpacity
-        style={[styles.editButton, themeStyles.button]}
+        style={[styles.editButton, themeStyles.buttonBorder]}
         onPress={() => navigation.navigate('EditPassword', { passwordId: item.id })}
-        // onPress={() => navigation.navigate('EditPassword' as any, { 
-        //   passwordId: item.id,
-        //   userId: item.UserId,
-        //   siteName: item.SiteName,
-        //   usernameOrEmail: item.UsernameOrEmail,
-        //   password: item.Password,
-        //   notes: item.Notes ?? '',
-        //   passwordExpirationDate: item.PasswordExpirationDate ?? undefined,
-        //   categoryId: item.CategoryId,
-        //  })}
+      // onPress={() => navigation.navigate('EditPassword' as any, { 
+      //   passwordId: item.id,
+      //   userId: item.UserId,
+      //   siteName: item.SiteName,
+      //   usernameOrEmail: item.UsernameOrEmail,
+      //   password: item.Password,
+      //   notes: item.Notes ?? '',
+      //   passwordExpirationDate: item.PasswordExpirationDate ?? undefined,
+      //   categoryId: item.CategoryId,
+      //  })}
       >
         <MaterialIcons name="edit" size={20} color={themeStyles.buttonText.color} />
         <Text style={[styles.editText, themeStyles.buttonText]}>Edit</Text>
@@ -151,6 +156,14 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 8,
     elevation: 1,
+  },
+  topSection: {
+    paddingHorizontal: width * 0.05,
+    paddingTop: StatusBar.currentHeight,
+  },
+  topText: {
+    fontSize: 20,
+    fontFamily: 'Poppins_700Bold',
   },
   title: {
     fontSize: 20,
@@ -185,16 +198,17 @@ const styles = StyleSheet.create({
   editButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: width * 0.05,
     marginTop: 24,
     padding: 12,
+    marginHorizontal: width * 0.05,
     borderRadius: 8,
     justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1
   },
   editText: {
     fontSize: 16,
     fontFamily: 'Poppins_500Medium',
-    marginLeft: 8
   },
 });
 

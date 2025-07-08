@@ -151,7 +151,7 @@ const SecurityDashboardScreen: React.FC = () => {
   // Render a single weak password item
   const renderWeakItem = ({ item }: { item: PasswordItem }) => (
     <TouchableOpacity
-      style={[styles.listItem, themeStyles.card]}
+      style={[styles.listItem, themeStyles.card, themeStyles.card]}
       onPress={() =>
         navigation.navigate('PassDetails' as never, { id: item.id } as any)
       }
@@ -261,7 +261,7 @@ const SecurityDashboardScreen: React.FC = () => {
 
       {/* Two-Factor Toggle */}
       {/* <View style={[styles.section, themeStyles.card]}> */}
-        {/* <Text style={[styles.sectionTitle, themeStyles.text]}>
+      {/* <Text style={[styles.sectionTitle, themeStyles.text]}>
           Two-Factor Authentication
         </Text>
         <View style={styles.switchRow}>
@@ -286,10 +286,10 @@ const SecurityDashboardScreen: React.FC = () => {
             renderItem={renderWeakItem}
             horizontal={false}
             scrollEnabled={false}
-            contentContainerStyle={styles.listContainer}
+            contentContainerStyle={[styles.listContainer, themeStyles.card]}
           />
           <TouchableOpacity
-            style={[styles.actionButton, themeStyles.button]}
+            style={[styles.actionButton, themeStyles.buttonBorder]}
             onPress={() => navigation.navigate('SecurityChallenge' as never)}
           >
             <Text style={[styles.actionText, themeStyles.buttonText]}>
@@ -415,7 +415,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   listContainer: {
-    // if scrollEnabled false, contentContainerStyle helps layout
+    // if scrollEnabled false, contentContainerStyle helps layout,
+    padding: 5
   },
   listItem: {
     flexDirection: 'row',
@@ -423,7 +424,7 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 8,
     marginBottom: 8,
-    elevation: 1,
+    elevation: 3,
   },
   listIcon: {
     width: 32,
@@ -447,6 +448,13 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
+    borderWidth: 1,
+    backgroundColor: '#FFFFFF',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
   },
   actionText: {
     fontSize: 16,
