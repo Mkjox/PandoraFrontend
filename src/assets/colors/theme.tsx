@@ -42,9 +42,9 @@ export const lightTheme = StyleSheet.create({
         borderWidth: 1
     },
     borderTop: {
-         borderColor: '#ccc',
+        borderColor: '#ccc',
         borderWidth: 1
-    }
+    },
 });
 
 export const darkTheme = StyleSheet.create({
@@ -61,7 +61,7 @@ export const darkTheme = StyleSheet.create({
         borderColor: '#3580FF',
     },
     customButtonText: {
-        color: '#3580FF'
+        color: '#FFFFFF'
     },
     icon: {
         color: '#E0E0E0'
@@ -92,5 +92,5 @@ export const darkTheme = StyleSheet.create({
     borderTop: {
         borderColor: '#343434',
         borderWidth: 1
-    }
+    },
 });

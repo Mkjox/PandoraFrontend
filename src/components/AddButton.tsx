@@ -11,8 +11,8 @@ export default function AddButton() {
   const themeStyles = isDark ? darkTheme : lightTheme;
 
   return (
-    <TouchableOpacity style={[styles.button, themeStyles.buttonBorder]} onPress={() => navigation.navigate("AddCredentials")}>
-      <Text style={[styles.text, themeStyles.customButtonText]}>+ New</Text>
+    <TouchableOpacity style={[styles.button, themeStyles.border]} onPress={() => navigation.navigate("AddCredentials")}>
+      <Text style={[styles.text, themeStyles.buttonText]}>+ New</Text>
     </TouchableOpacity>
   );
 }
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FFFFFF',
-    elevation: 10,
+    elevation: 2,
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 4,

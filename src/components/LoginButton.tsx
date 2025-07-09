@@ -20,7 +20,7 @@ export default function LoginButton({ onPress, loading = false }: Props) {
       onPress={onPress}
       disabled={loading}>
       {loading ? (
-        <ActivityIndicator color={themeStyles.customButtonText.color} />
+        <ActivityIndicator color={themeStyles.buttonText.color} />
       ) : (
         <Text style={styles.text}>Login</Text>
       )}

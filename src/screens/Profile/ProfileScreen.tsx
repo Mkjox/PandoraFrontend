@@ -172,6 +172,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 12,
     marginBottom: 16,
+    elevation: 2
   },
   infoName: {
     fontSize: 18,
@@ -195,6 +196,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 12,
     marginBottom: 16,
+    elevation: 2
   },
   statItem: {
     alignItems: 'center',
@@ -214,6 +216,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 12,
     marginBottom: 24,
+    elevation: 2
   },
   linkRow: {
     flexDirection: 'row',

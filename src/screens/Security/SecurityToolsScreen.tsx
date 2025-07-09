@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     flexDirection: "row",
     alignItems: "center",
-    elevation: 3,
+    elevation: 2,
     paddingHorizontal: 12,
     paddingVertical: 14
   },
