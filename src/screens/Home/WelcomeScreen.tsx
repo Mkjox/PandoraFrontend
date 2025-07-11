@@ -12,6 +12,8 @@ import {
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import SvgUri from 'react-native-svg-uri'
+import { darkTheme, lightTheme } from '../../assets/colors/theme'
+import { useTheme } from '../../context/ThemeContext'
 
 const { width, height } = Dimensions.get('window')
 
@@ -23,6 +25,8 @@ export default function WelcomeScreen({
   const navigation = useNavigation()
   const scrollRef = useRef<ScrollView>(null)
   const [page, setPage] = useState(0)
+    const { isDark } = useTheme()
+  const themeStyles = isDark ? darkTheme : lightTheme
 
   const pages = [
     {
@@ -59,16 +63,16 @@ export default function WelcomeScreen({
       {/* background SVGs */}
       <View style={styles.topLeftSvg}>
         <SvgUri
-          width="150"
-          height="150"
-          source={require('../../assets/images/vector1.svg')}
+          // width="150"
+          // height="150"
+          source={require('../../assets/images/topLeft.svg')}
         />
       </View>
       <View style={styles.bottomRightSvg}>
         <SvgUri
-          width="150"
-          height="150"
-          source={require('../../assets/images/vector2.svg')}
+          // width="150"
+          // height="150"
+          source={require('../../assets/images/bottomRight.svg')}
         />
       </View>
 
@@ -118,8 +122,8 @@ export default function WelcomeScreen({
 
       {/* “Let’s Start” on last page */}
       {page === pages.length - 1 && (
-        <TouchableOpacity style={styles.startButton} onPress={handleDone}>
-          <Text style={styles.startText}>Let’s Start</Text>
+        <TouchableOpacity style={[styles.startButton, themeStyles.buttonBorder]} onPress={handleDone}>
+          <Text style={[styles.startText, themeStyles.buttonText]}>Let’s Start</Text>
         </TouchableOpacity>
       )}
     </View>
@@ -133,22 +137,27 @@ const styles = StyleSheet.create({
   },
   topLeftSvg: {
     position: 'absolute',
-    top: -5,
+    top: -(height * 0.03),
     left: 0
   },
   bottomRightSvg: {
     position: 'absolute',
-    bottom: -5,
+    bottom: -(height * 0.03),
     right: 0
   },
   skipButton: {
     position: 'absolute',
-    top: StatusBar.currentHeight! + 10,
+    top: height * 0.05,
     right: 20,
     padding: 8,
     zIndex: 10,
   },
-  skipText: { fontSize: 16, color: '#4C4DDC', fontWeight: '500' },
+  skipText: {
+    fontSize: 16,
+    color: '#4C4DDC',
+    // fontWeight: '500',
+    fontFamily: 'Poppins_600SemiBold'
+  },
   page: {
     width,
     paddingHorizontal: 30,
@@ -161,6 +170,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 16,
     color: '#002055',
+    marginTop: height * 0.1
   },
   text: {
     fontSize: 16,
@@ -171,7 +181,7 @@ const styles = StyleSheet.create({
   dots: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom: height * 0.05,
+    marginBottom: height * 0.1,
   },
   dot: {
     width: 8,
@@ -180,18 +190,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#ccc',
     marginHorizontal: 4,
   },
-  dotActive: { backgroundColor: '#4C4DDC' },
+  dotActive: {
+    backgroundColor: '#4C4DDC'
+  },
   startButton: {
     position: 'absolute',
     bottom: height * 0.3,
     left: width * 0.1,
     right: width * 0.1,
     height: 50,
-    backgroundColor: '#4C4DDC',
+    backgroundColor: '#FFFFFF',
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 3,
+    borderWidth: 1,
+    elevation: 3
   },
   startText: {
     color: '#fff',
