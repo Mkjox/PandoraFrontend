@@ -66,13 +66,13 @@ const SecurityToolsScreen: React.FC = () => {
       icon: <MaterialIcons name="dashboard" size={24} color={themeStyles.icon.color} />,
       onPress: () => { navigation.navigate("SecurityDashboard" as never) },
     },
-    {
-      id: "identities",
-      title: "Identities",
-      subtitle: "Manage your personal identities",
-      icon: <MaterialIcons name="badge" size={24} color={themeStyles.icon.color} />,
-      onPress: () => { navigation.navigate("Identities" as never); },
-    },
+    // {
+    //   id: "identities",
+    //   title: "Identities",
+    //   subtitle: "Manage your personal identities",
+    //   icon: <MaterialIcons name="badge" size={24} color={themeStyles.icon.color} />,
+    //   onPress: () => { navigation.navigate("Identities" as never); },
+    // },
   ]
 
   const renderItem = ({ item }: { item: Tool }) => (

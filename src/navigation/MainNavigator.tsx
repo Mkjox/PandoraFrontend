@@ -36,6 +36,7 @@ import PremiumScreen from '../screens/Premium/PremiumScreen';
 import IdentitiesScreen from '../screens/Identity/IdentitiesScreen';
 import IdentityDetailsScreen from '../screens/Identity/IdentityDetailsScreen';
 import EditIdentityScreen from '../screens/Identity/EditIdentityScreen';
+import ThemeColorScreen from '../screens/Settings/ThemeColorScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -83,6 +84,7 @@ export default function MainNavigator() {
             <Stack.Screen name="Identities" component={IdentitiesScreen} />
             <Stack.Screen name="IdentityDetails" component={IdentityDetailsScreen} />
             <Stack.Screen name="EditIdentity" component={EditIdentityScreen} />
+            <Stack.Screen name="ThemeColor" component={ThemeColorScreen} />
         </Stack.Navigator>
     );
 }
