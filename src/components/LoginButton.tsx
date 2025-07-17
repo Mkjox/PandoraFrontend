@@ -10,9 +10,7 @@ interface Props {
 }
 
 export default function LoginButton({ onPress, loading = false }: Props) {
-  const { isDark } = useTheme();
-
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const { themeStyles } = useTheme();
 
   return (
     <TouchableOpacity

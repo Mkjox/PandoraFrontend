@@ -6,8 +6,7 @@ import { useTheme } from "../context/ThemeContext";
 import { darkTheme, lightTheme } from "../assets/colors/theme";
 
 const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
-    const { isDark } = useTheme();
-    const themeStyles = isDark ? darkTheme : lightTheme;
+    const { themeStyles } = useTheme();
 
     return (
         <View style={[styles.tabContainer, themeStyles.container, themeStyles.borderTop]}>

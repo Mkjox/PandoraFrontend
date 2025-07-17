@@ -43,8 +43,7 @@ export default function AddCredentialsScreen() {
   const navigation = useNavigation();
   const route = useRoute<RouteProps>();
   const dispatch = useAppDispatch();
-  const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const { themeStyles, isDark } = useTheme();
 
   // initial tab
   const initialTab = route.params?.tab ?? 'password';

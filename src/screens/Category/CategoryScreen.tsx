@@ -21,8 +21,7 @@ const { width, height } = Dimensions.get('window')
 
 export default function CategoryScreen() {
   const navigation = useNavigation()
-  const { isDark } = useTheme()
-  const themeStyles = isDark ? darkTheme : lightTheme
+  const { themeStyles } = useTheme()
   const dispatch = useAppDispatch()
 
   const { categories, loading, error } = useAppSelector(s => s.category)

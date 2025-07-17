@@ -15,8 +15,7 @@ import { lightTheme, darkTheme } from '../../assets/colors/theme';
 const { height, width } = Dimensions.get('window');
 
 const ActionsScreen: React.FC = () => {
-    const { isDark } = useTheme();
-    const themeStyles = isDark ? darkTheme : lightTheme;
+    const { themeStyles } = useTheme();
 
     const [autoLock, setAutoLock] = useState(true);
     const [clearClipboard, setClearClipboard] = useState(false);

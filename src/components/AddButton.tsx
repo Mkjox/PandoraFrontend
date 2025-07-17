@@ -6,9 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function AddButton() {
   const navigation = useNavigation();
-  const { isDark } = useTheme();
+  const { themeStyles } = useTheme();
 
-  const themeStyles = isDark ? darkTheme : lightTheme;
 
   return (
     <TouchableOpacity style={[styles.button, themeStyles.border]} onPress={() => navigation.navigate("AddCredentials")}>

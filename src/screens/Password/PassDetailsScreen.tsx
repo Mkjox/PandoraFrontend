@@ -26,8 +26,7 @@ const { width } = Dimensions.get('window');
 const PassDetailsScreen: React.FC = () => {
   const route = useRoute<PassDetailsRouteProp>();
   const navigation = useNavigation();
-  const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const { themeStyles } = useTheme();
 
   const [item, setItem] = useState<PasswordItem | null>(null);
   const [loading, setLoading] = useState(true);

@@ -20,8 +20,7 @@ import { AntDesign } from "@expo/vector-icons";
 const { width, height } = Dimensions.get("window");
 
 const IdentitiesScreen: React.FC = () => {
-    const { isDark } = useTheme();
-    const themeStyles = isDark ? darkTheme : lightTheme;
+    const { themeStyles } = useTheme();
     const navigation = useNavigation();
     const dispatch = useAppDispatch();
 

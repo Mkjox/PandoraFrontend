@@ -12,7 +12,6 @@ import {
 import { Searchbar } from 'react-native-paper'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { useTheme } from '../../context/ThemeContext'
-import { darkTheme, lightTheme } from '../../assets/colors/theme'
 import AddButton from '../../components/AddButton'
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 import ErrorDisplay from '../../components/ErrorDisplay'
@@ -28,8 +27,7 @@ type FilterType = 'all' | 'password' | 'notes'
 
 export default function HomeScreen() {
   const navigation = useNavigation()
-  const { isDark } = useTheme()
-  const themeStyles = isDark ? darkTheme : lightTheme
+  const { themeStyles } = useTheme()
   const dispatch = useAppDispatch()
 
   const { passwords, loading: pwLoading, error: pwError } = useAppSelector(s => s.passwords)

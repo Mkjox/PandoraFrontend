@@ -35,8 +35,7 @@ type EditIdentityRouteProp = RouteProp<RouteParams, "EditIdentity">;
 const EditIdentityScreen: React.FC = () => {
   const navigation = useNavigation();
   const route = useRoute<EditIdentityRouteProp>();
-  const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const { themeStyles } = useTheme();
   const dispatch = useAppDispatch();
 
   const mode = route.params.mode;

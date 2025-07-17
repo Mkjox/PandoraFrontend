@@ -16,8 +16,7 @@ import { darkTheme, lightTheme } from '../../assets/colors/theme';
 import AuthService from '../../services/AuthService';
 
 const TwoFactorScreen: React.FC = () => {
-  const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const { themeStyles } = useTheme();
 
   const [loading, setLoading] = useState(true);
   const [isEnabled, setIsEnabled] = useState(false);

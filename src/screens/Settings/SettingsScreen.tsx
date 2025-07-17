@@ -26,8 +26,7 @@ type Item = { key: string; title: string; icon: React.ReactNode; onPress?: () =>
 
 const SettingsScreen: React.FC = () => {
     const navigation = useNavigation()
-    const { isDark } = useTheme()
-    const themeStyles = isDark ? darkTheme : lightTheme
+    const { themeStyles } = useTheme()
 
     const sections: { title: string; data: Item[] }[] = [
         {

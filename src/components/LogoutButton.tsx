@@ -12,8 +12,7 @@ const { width } = Dimensions.get('window');
 
 const LogoutButton: React.FC = () => {
   const [visible, setVisible] = useState(false);
-  const { isDark } = useTheme();
-  const themeStyles = isDark ? require('../assets/colors/theme').darkTheme : require('../assets/colors/theme').lightTheme;
+  const { themeStyles } = useTheme();
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
 

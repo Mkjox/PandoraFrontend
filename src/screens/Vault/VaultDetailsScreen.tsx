@@ -28,8 +28,7 @@ const { width } = Dimensions.get("window");
 export default function VaultDetailsScreen() {
   const route = useRoute<VaultDetailsRouteProp>();
   const navigation = useNavigation();
-  const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const { themeStyles } = useTheme();
 
   const [vault, setVault] = useState<PersonalVaultPayload & { id: string } | null>(null);
   const [loading, setLoading] = useState<boolean>(true);

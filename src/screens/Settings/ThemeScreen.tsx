@@ -19,8 +19,7 @@ import { Ionicons } from '@expo/vector-icons';
 const { width } = Dimensions.get('window');
 
 const ThemeScreen: React.FC = () => {
-  const { isDark, toggleTheme } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const { themeStyles, isDark, toggleTheme } = useTheme();
   const navigation = useNavigation();
 
   return (

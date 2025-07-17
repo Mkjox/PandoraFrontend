@@ -29,8 +29,7 @@ interface EmergencyContact {
 }
 
 const EmergencyAccessScreen: React.FC = () => {
-  const { isDark } = useTheme()
-  const themeStyles = isDark ? darkTheme : lightTheme
+  const { themeStyles } = useTheme()
 
   const [contacts, setContacts] = useState<EmergencyContact[]>([])
   const [loading, setLoading] = useState(true)

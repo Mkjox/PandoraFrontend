@@ -16,8 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 const { height, width } = Dimensions.get('window');
 
 const AccountScreen: React.FC = () => {
-    const { isDark } = useTheme();
-    const themeStyles = isDark ? darkTheme : lightTheme;
+    const { themeStyles } = useTheme();
     const navigation = useNavigation();
 
     // const handleLogout = async () => {

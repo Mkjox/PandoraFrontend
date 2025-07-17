@@ -26,8 +26,7 @@ type Tool = {
 }
 
 const SecurityToolsScreen: React.FC = () => {
-  const { isDark } = useTheme()
-  const themeStyles = isDark ? darkTheme : lightTheme
+  const { themeStyles } = useTheme()
   const navigation = useNavigation();
 
   const { passwords } = useAppSelector(s => s.passwords);

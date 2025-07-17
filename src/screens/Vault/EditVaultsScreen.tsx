@@ -32,8 +32,7 @@ type RouteProps = RouteProp<EditVaultParams, 'EditVault'>
 export default function EditVaultScreen() {
   const navigation = useNavigation()
   const route = useRoute<RouteProps>()
-  const { isDark } = useTheme()
-  const themeStyles = isDark ? darkTheme : lightTheme
+  const { themeStyles } = useTheme()
 
   const vaultId = route.params.vaultId
 

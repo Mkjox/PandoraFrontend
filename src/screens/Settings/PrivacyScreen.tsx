@@ -15,8 +15,7 @@ import { lightTheme, darkTheme } from '../../assets/colors/theme';
 const { width } = Dimensions.get('window');
 
 const PrivacyScreen: React.FC = () => {
-    const { isDark } = useTheme();
-    const themeStyles = isDark ? darkTheme : lightTheme;
+    const { themeStyles } = useTheme();
 
     const openPolicyLink = (url: string) => {
         Linking.openURL(url).catch(() => { });

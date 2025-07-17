@@ -1,103 +1,135 @@
 import React from 'react'
 import {
-    View,
-    Text,
-    TouchableOpacity,
-    StyleSheet,
-    FlatList,
-    Dimensions,
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Dimensions,
 } from 'react-native'
 import { useTheme } from '../../context/ThemeContext'
+
 const { width } = Dimensions.get('window')
 
-const PRESET_COLORS = [
-    '#4C4DDC', // blue
-    '#E91E63', // pink
-    '#FF9800', // orange
-    '#4CAF50', // green
-    '#9C27B0', // purple
-    '#00BCD4', // cyan
+type Preset = {
+  id: string
+  label: string
+  mode: 'light' | 'dark'
+  accent: string
+}
+
+const PRESETS: Preset[] = [
+  { id: 'lightDefault', label: 'Light (Default)', mode: 'light', accent: '#4C4DDC' },
+  { id: 'lightSoft', label: 'Light (Soft)', mode: 'light', accent: '#9E9E9E' },
+  { id: 'darkDefault', label: 'Dark (Default)', mode: 'dark', accent: '#3580FF' },
+  { id: 'darkAurora', label: 'Dark (Aurora)', mode: 'dark', accent: '#FFB400' },
 ]
 
 export default function ThemeColorScreen() {
-    const { accent, setAccent, themeStyles } = useTheme()
+  const { isDark, toggleTheme, accent, setAccent, themeStyles } = useTheme()
 
-    const renderSwatch = ({ item }: { item: string }) => {
-        const selected = item === accent
-        return (
-            <TouchableOpacity
-                onPress={() => setAccent(item)}
-                style={[
-                    styles.swatch,
-                    { backgroundColor: item },
-                    selected && styles.swatchSelected
-                ]}
-            />
-        )
+  const applyPreset = (preset: Preset) => {
+    // 1) switch mode if needed
+    if ((preset.mode === 'dark') !== isDark) {
+      toggleTheme()
     }
+    // 2) update accent
+    setAccent(preset.accent)
+  }
 
+  const renderItem = ({ item }: { item: Preset }) => {
+    const selected = item.mode === (isDark ? 'dark' : 'light') && item.accent === accent
     return (
-        <View style={[styles.container, themeStyles.container]}>
-            <Text style={[styles.title, themeStyles.text]}>
-                Choose your accent color
-            </Text>
-            <FlatList
-                data={PRESET_COLORS}
-                keyExtractor={c => c}
-                renderItem={renderSwatch}
-                horizontal
-                contentContainerStyle={styles.list}
-                showsHorizontalScrollIndicator={false}
-            />
-            <View style={styles.preview}>
-                <TouchableOpacity
-                    style={[styles.buttonSample, themeStyles.button]}
-                >
-                    <Text style={[styles.buttonText, themeStyles.buttonText]}>
-                        Primary Button
-                    </Text>
-                </TouchableOpacity>
-            </View>
+      <TouchableOpacity
+        style={[
+          styles.card,
+          themeStyles.card,
+          selected && { borderColor: accent, borderWidth: 2 },
+        ]}
+        activeOpacity={0.7}
+        onPress={() => applyPreset(item)}
+      >
+        <View style={styles.swatchRow}>
+          <View
+            style={[
+              styles.modeCircle,
+              { backgroundColor: item.mode === 'dark' ? '#333' : '#EEE' },
+            ]}
+          />
+          <View style={[styles.accentSwatch, { backgroundColor: item.accent }]} />
         </View>
+        <Text style={[styles.label, themeStyles.text]}>{item.label}</Text>
+        {selected && <Text style={[styles.selected, { color: accent }]}>✓ Selected</Text>}
+      </TouchableOpacity>
     )
+  }
+
+  return (
+    <View style={[styles.container, themeStyles.container]}>
+      <Text style={[styles.header, themeStyles.text]}>
+        Choose your theme preset
+      </Text>
+      <FlatList
+        data={PRESETS}
+        keyExtractor={p => p.id}
+        renderItem={renderItem}
+        contentContainerStyle={styles.list}
+      />
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 20,
-        justifyContent: 'flex-start'
-    },
-    title: {
-        fontSize: 20,
-        fontFamily: 'Poppins_600SemiBold',
-        marginBottom: 16
-    },
-    list: {
-        paddingVertical: 20
-    },
-    swatch: {
-        width: 48,
-        height: 48,
-        borderRadius: 24,
-        marginHorizontal: 8,
-        borderWidth: 2,
-        borderColor: 'transparent',
-    },
-    swatchSelected: {
-        borderColor: '#FFF',
-        elevation: 4,
-    },
-    preview: {
-        marginTop: 40,
-        alignItems: 'center',
-    },
-    buttonSample: {
-        paddingVertical: 12,
-        paddingHorizontal: 32,
-        borderRadius: 8,
-    },
-    buttonText: {
-        fontFamily: 'Poppins_600SemiBold',
-    },
+  container: {
+    flex: 1,
+    paddingTop: 16,
+    paddingHorizontal: 20,
+  },
+  header: {
+    fontSize: 20,
+    fontFamily: 'Poppins_600SemiBold',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  list: {
+    paddingBottom: 20,
+  },
+  card: {
+    borderRadius: 8,
+    padding: 16,
+    marginVertical: 8,
+    elevation: 2,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  swatchRow: {
+    width: width * 0.2,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 16,
+  },
+  modeCircle: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#999',
+    marginRight: 8,
+  },
+  accentSwatch: {
+    width: 24,
+    height: 24,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#999',
+  },
+  label: {
+    flex: 1,
+    fontSize: 16,
+    fontFamily: 'Poppins_500Medium',
+  },
+  selected: {
+    fontSize: 14,
+    fontFamily: 'Poppins_500Medium',
+  },
 })
