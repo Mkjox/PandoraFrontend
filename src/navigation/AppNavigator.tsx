@@ -11,6 +11,8 @@ import MainNavigator from "./MainNavigator";
 
 export default function AppNavigator() {
     const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+
+    // ALL COMMENTED BELOW
 //    const firstLaunch = useFirstLaunch()
 
 
@@ -28,7 +30,11 @@ export default function AppNavigator() {
     // }
 
     return (
+
+        // Supposedly only working way of this below 1 line of code
         isAuthenticated ? <MainNavigator /> : <AuthNavigator />
+
+
         // <NavigationContainer>
             //{/* {firstLaunch */}
                 // ? <WelcomeScreen />

@@ -68,7 +68,7 @@ const PremiumScreen: React.FC = () => {
         </View>
 
         {features.map((f) => (
-          <View key={f.key} style={[styles.card, themeStyles.card]}>
+          <View key={f.key} style={[styles.card, themeStyles.card, themeStyles.border]}>
             <View style={styles.cardIcon}>{f.icon}</View>
             <View style={styles.cardText}>
               <Text style={[styles.cardTitle, themeStyles.text]}>{f.title}</Text>
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 12,
     marginBottom: 16,
-    elevation: 2,
+    elevation: 3,
   },
   cardIcon: {
     marginRight: 16,
