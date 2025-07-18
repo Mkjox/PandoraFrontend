@@ -2,7 +2,6 @@ import React, { useEffect, useState, useCallback } from 'react';
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   ScrollView,
   StyleSheet,
@@ -26,6 +25,7 @@ import ImagePickerButton from '../../components/ImagePickerButton';
 import { CategoryPayload } from '../../types/category.types';
 import { PersonalVaultPayload } from '../../types/personalVault.types';
 import { ServiceResult } from '../../types/service.types';
+import { TextInput } from 'react-native-paper';
 
 type AddCredParams = {
   AddCredentials: {
@@ -271,40 +271,45 @@ export default function AddCredentialsScreen() {
           <>
             <TextInput
               style={[styles.input, themeStyles.inputText, themeStyles.card]}
-              placeholder="Site Name*"
-              placeholderTextColor={isDark ? '#888' : '#666'}
+              label="Site Name*"
               value={form.SiteName}
               onChangeText={v => handleChange('SiteName', v)}
+              mode='outlined'
+              textColor={themeStyles.text.color}
             />
             <TextInput
               style={[styles.input, themeStyles.inputText, themeStyles.card]}
-              placeholder="Username or Email*"
-              placeholderTextColor={isDark ? '#888' : '#666'}
+              label="Username or Email*"
+              mode='outlined'
               value={form.UsernameOrEmail}
               onChangeText={v => handleChange('UsernameOrEmail', v)}
+              textColor={themeStyles.text.color}
             />
             <TextInput
               style={[styles.input, themeStyles.inputText, themeStyles.card]}
-              placeholder="Password*"
-              placeholderTextColor={isDark ? '#888' : '#666'}
+              label="Password*"
+              mode='outlined'
               secureTextEntry
               value={form.Password}
               onChangeText={v => handleChange('Password', v)}
+              textColor={themeStyles.text.color}
             />
             <TextInput
               style={[styles.input, themeStyles.inputText, themeStyles.card]}
-              placeholder="Repeat Password*"
-              placeholderTextColor={isDark ? '#888' : '#666'}
+              label="Repeat Password*"
+              mode='outlined'
               secureTextEntry
               value={form.PasswordRepeat}
               onChangeText={v => handleChange('PasswordRepeat', v)}
+              textColor={themeStyles.text.color}
             />
             <TextInput
               style={[styles.input, themeStyles.inputText, themeStyles.card]}
-              placeholder="Notes"
-              placeholderTextColor={isDark ? '#888' : '#666'}
+              label="Notes"
+              mode='outlined'
               value={form.Notes}
               onChangeText={v => handleChange('Notes', v)}
+              textColor={themeStyles.text.color}
             />
             <TouchableOpacity
               style={[styles.input, themeStyles.inputText, themeStyles.card]}
@@ -333,24 +338,27 @@ export default function AddCredentialsScreen() {
           <>
             <TextInput
               style={[styles.input, themeStyles.inputText, themeStyles.card]}
-              placeholder="Title*"
-              placeholderTextColor={isDark ? '#888' : '#666'}
+              label="Title*"
+              mode='outlined'
               value={form.Title}
               onChangeText={v => handleChange('Title', v)}
+              textColor={themeStyles.text.color}
             />
             <TextInput
               style={[styles.input, themeStyles.inputText, themeStyles.card]}
-              placeholder="Content*"
-              placeholderTextColor={isDark ? '#888' : '#666'}
+              label="Content*"
+              mode='outlined'
               value={form.Content}
               onChangeText={v => handleChange('Content', v)}
+              textColor={themeStyles.text.color}
             />
             <TextInput
               style={[styles.input, themeStyles.inputText, themeStyles.card]}
-              placeholder="URL"
-              placeholderTextColor={isDark ? '#888' : '#666'}
+              label="URL"
+              mode='outlined'
               value={form.Url}
               onChangeText={v => handleChange('Url', v)}
+              textColor={themeStyles.text.color}
             />
             <ImagePickerButton
               title={form.MediaFile ? 'Change Image' : 'Upload Image'}
@@ -365,17 +373,19 @@ export default function AddCredentialsScreen() {
             )}
             <TextInput
               style={[styles.input, themeStyles.inputText, themeStyles.card]}
-              placeholder="Summary"
-              placeholderTextColor={isDark ? '#888' : '#666'}
+              label="Summary"
+              mode='outlined'
               value={form.Summary}
               onChangeText={v => handleChange('Summary', v)}
+              textColor={themeStyles.text.color}
             />
             <TextInput
               style={[styles.input, themeStyles.inputText, themeStyles.card]}
-              placeholder="Tags (comma separated)"
-              placeholderTextColor={isDark ? '#888' : '#666'}
+              label="Tags (comma separated)"
+              mode='outlined'
               value={form.Tags}
               onChangeText={v => handleChange('Tags', v)}
+              textColor={themeStyles.text.color}
             />
             <TouchableOpacity
               style={[styles.input, themeStyles.inputText, themeStyles.card]}
@@ -412,17 +422,19 @@ export default function AddCredentialsScreen() {
           <>
             <TextInput
               style={[styles.input, themeStyles.inputText, themeStyles.card]}
-              placeholder="Name*"
-              placeholderTextColor={isDark ? '#888' : '#666'}
+              label="Name*"
+              mode='outlined'
               value={form.Name}
               onChangeText={v => handleChange('Name', v)}
+              textColor={themeStyles.text.color}
             />
             <TextInput
               style={[styles.input, themeStyles.inputText, themeStyles.card]}
-              placeholder="Description"
-              placeholderTextColor={isDark ? '#888' : '#666'}
+              label="Description"
+              mode='outlined'
               value={form.Description}
               onChangeText={v => handleChange('Description', v)}
+              textColor={themeStyles.text.color}
             />
           </>
         )}
@@ -475,13 +487,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
     borderRadius: 8,
     padding: 12,
     marginBottom: 12,
     justifyContent: 'center',
+    height: height * 0.05,
   },
+  
   uploadButton: {
     marginBottom: 12,
   },

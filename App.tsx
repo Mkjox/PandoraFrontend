@@ -15,6 +15,29 @@ import {
   Poppins_600SemiBold,
   Poppins_700Bold,
 } from '@expo-google-fonts/poppins';
+import {
+  Jost_100Thin,
+  Jost_100Thin_Italic,
+  Jost_200ExtraLight,
+  Jost_200ExtraLight_Italic,
+  Jost_300Light,
+  Jost_300Light_Italic,
+  Jost_400Regular,
+  Jost_400Regular_Italic,
+  Jost_500Medium,
+  Jost_500Medium_Italic,
+  Jost_600SemiBold,
+  Jost_600SemiBold_Italic,
+  Jost_700Bold,
+  Jost_700Bold_Italic,
+  Jost_800ExtraBold,
+  Jost_800ExtraBold_Italic,
+  Jost_900Black,
+  Jost_900Black_Italic,
+} from '@expo-google-fonts/jost'
+import {
+YesevaOne_400Regular
+} from '@expo-google-fonts/yeseva-one'
 
 SplashScreen.preventAutoHideAsync();
 
@@ -59,6 +82,15 @@ export default function App() {
     Poppins_500Medium,
     Poppins_600SemiBold,
     Poppins_700Bold,
+    Jost_400Regular,
+    Jost_400Regular_Italic,
+    Jost_500Medium,
+    Jost_500Medium_Italic,
+    Jost_600SemiBold,
+    Jost_600SemiBold_Italic,
+    Jost_700Bold,
+    Jost_700Bold_Italic,
+    YesevaOne_400Regular
   });
 
   useEffect(() => {

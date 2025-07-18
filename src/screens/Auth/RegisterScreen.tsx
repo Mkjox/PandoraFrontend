@@ -4,19 +4,18 @@ import {
     Text,
     ScrollView,
     StyleSheet,
-    TextInput,
-    TouchableOpacity,
-    ActivityIndicator,
-    Alert,
-    Dimensions
+    Dimensions,
+    TouchableOpacity
 } from 'react-native'
 import { useDispatch } from 'react-redux'
 import AuthService from '../../services/AuthService'
 import { useNavigation } from '@react-navigation/native'
 import { useTheme } from '../../context/ThemeContext'
 import { darkTheme, lightTheme } from '../../assets/colors/theme'
+import { TextInput as PaperInput, Button } from 'react-native-paper'
+import CustomButton from '../../components/CustomButton'
 
-const {height, width} = Dimensions.get("window")
+const { height } = Dimensions.get("window")
 
 export default function RegisterScreen() {
     const { isDark } = useTheme()
@@ -33,10 +32,11 @@ export default function RegisterScreen() {
         Password: '',
         ConfirmPassword: '',
     })
-
     const [errors, setErrors] = useState<Partial<typeof form>>({})
     const [serverError, setServerError] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)
+    const [showConfirm, setShowConfirm] = useState(false)
 
     const handleChange = (field: keyof typeof form, value: string) => {
         setForm(f => ({ ...f, [field]: value }))
@@ -45,16 +45,12 @@ export default function RegisterScreen() {
     }
 
     const handleRegister = async () => {
-        // clear previous
         setErrors({})
         setServerError(null)
 
-        // validate
         const newErrors: Partial<typeof form> = {}
-            ; (Object.keys(form) as (keyof typeof form)[]).forEach(key => {
-                if (!form[key].trim()) {
-                    newErrors[key] = 'This field is required.'
-                }
+            (Object.keys(form) as (keyof typeof form)[]).forEach(key => {
+                if (!form[key].trim()) newErrors[key] = 'This field is required.'
             })
         if (!newErrors.Password && form.Password !== form.ConfirmPassword) {
             newErrors.ConfirmPassword = 'Passwords do not match.'
@@ -69,17 +65,7 @@ export default function RegisterScreen() {
         setLoading(false)
 
         if (result.success) {
-            Alert.alert(
-                'Registration is Successful',
-                'You can now log in with your credentials',
-                [
-                    {
-                        text: 'OK',
-                        onPress: () => navigation.navigate('Login' as never),
-                    },
-                ],
-                { cancelable: false }
-            )
+            navigation.navigate('Login' as never)
         } else {
             setServerError(result.message || 'Registration failed.')
         }
@@ -89,152 +75,127 @@ export default function RegisterScreen() {
         <ScrollView contentContainerStyle={[styles.container, themeStyles.container]}>
             <Text style={[styles.title, themeStyles.text]}>Register</Text>
 
-            {/* FirstName */}
-            <TextInput
-                style={[
-                    styles.input,
-                    themeStyles.card,
-                    themeStyles.inputText,
-                    errors.FirstName ? styles.inputError : undefined,
-                ]}
-                placeholder="First Name"
-                placeholderTextColor={isDark ? '#888' : '#666'}
+            <PaperInput
+                mode="flat"
+                label="First Name"
+                left={<PaperInput.Icon icon="account-outline" />}
+                error={!!errors.FirstName}
                 value={form.FirstName}
                 onChangeText={text => handleChange('FirstName', text)}
+                style={[styles.input, themeStyles.card]}
+                activeUnderlineColor='#1c6d79'
+                placeholderTextColor={isDark ? '#888' : '#666'}
             />
             {errors.FirstName && <Text style={styles.errorText}>{errors.FirstName}</Text>}
 
-            <View style={styles.space} />
-
-            {/* LastName */}
-            <TextInput
-                style={[
-                    styles.input,
-                    themeStyles.card,
-                    themeStyles.inputText,
-                    errors.LastName ? styles.inputError : undefined,
-                ]}
-                placeholder="Last Name"
-                placeholderTextColor={isDark ? '#888' : '#666'}
+            <PaperInput
+                mode="flat"
+                label="Last Name"
+                left={<PaperInput.Icon icon="account-outline" />}
+                error={!!errors.LastName}
                 value={form.LastName}
                 onChangeText={text => handleChange('LastName', text)}
+                style={[styles.input, themeStyles.card]}
+                activeUnderlineColor='#1c6d79'
+                placeholderTextColor={isDark ? '#888' : '#666'}
             />
             {errors.LastName && <Text style={styles.errorText}>{errors.LastName}</Text>}
 
-            <View style={styles.space} />
-
-            {/* PhoneNumber */}
-            <TextInput
-                style={[
-                    styles.input,
-                    themeStyles.card,
-                    themeStyles.inputText,
-                    errors.PhoneNumber ? styles.inputError : undefined,
-                ]}
-                placeholder="Phone Number"
-                placeholderTextColor={isDark ? '#888' : '#666'}
+            <PaperInput
+                mode="flat"
+                label="Phone Number"
+                left={<PaperInput.Icon icon="phone-outline" />}
                 keyboardType="phone-pad"
+                error={!!errors.PhoneNumber}
                 value={form.PhoneNumber}
                 onChangeText={text => handleChange('PhoneNumber', text)}
+                style={[styles.input, themeStyles.card]}
+                activeUnderlineColor='#1c6d79'
+                placeholderTextColor={isDark ? '#888' : '#666'}
             />
             {errors.PhoneNumber && <Text style={styles.errorText}>{errors.PhoneNumber}</Text>}
 
-            <View style={styles.space} />
-
-            {/* Username */}
-            <TextInput
-                style={[
-                    styles.input,
-                    themeStyles.card,
-                    themeStyles.inputText,
-                    errors.Username ? styles.inputError : undefined,
-                ]}
-                placeholder="Username"
-                placeholderTextColor={isDark ? '#888' : '#666'}
+            <PaperInput
+                mode="flat"
+                label="Username"
+                left={<PaperInput.Icon icon="account-circle-outline" />}
                 autoCapitalize="none"
+                error={!!errors.Username}
                 value={form.Username}
                 onChangeText={text => handleChange('Username', text)}
+                style={[styles.input, themeStyles.card]}
+                activeUnderlineColor='#1c6d79'
+                placeholderTextColor={isDark ? '#888' : '#666'}
             />
             {errors.Username && <Text style={styles.errorText}>{errors.Username}</Text>}
 
-            <View style={styles.space} />
-
-            {/* Email */}
-            <TextInput
-                style={[
-                    styles.input,
-                    themeStyles.card,
-                    themeStyles.inputText,
-                    errors.Email ? styles.inputError : undefined,
-                ]}
-                placeholder="Email"
-                placeholderTextColor={isDark ? '#888' : '#666'}
+            <PaperInput
+                mode="flat"
+                label="Email"
+                left={<PaperInput.Icon icon="email-outline" />}
                 keyboardType="email-address"
                 autoCapitalize="none"
+                error={!!errors.Email}
                 value={form.Email}
                 onChangeText={text => handleChange('Email', text)}
+                style={[styles.input, themeStyles.card]}
+                activeUnderlineColor='#1c6d79'
+                placeholderTextColor={isDark ? '#888' : '#666'}
             />
             {errors.Email && <Text style={styles.errorText}>{errors.Email}</Text>}
 
-            <View style={styles.space} />
-
-            {/* Password */}
-            <TextInput
-                style={[
-                    styles.input,
-                    themeStyles.card,
-                    themeStyles.inputText,
-                    errors.Password ? styles.inputError : undefined,
-                ]}
-                placeholder="Password"
-                placeholderTextColor={isDark ? '#888' : '#666'}
-                secureTextEntry
+            <PaperInput
+                mode="flat"
+                label="Password"
+                left={<PaperInput.Icon icon="lock-outline" />}
+                right={
+                    <PaperInput.Icon
+                        icon={showPassword ? 'eye' : 'eye-off'}
+                        onPress={() => setShowPassword(v => !v)}
+                    />
+                }
+                secureTextEntry={!showPassword}
+                error={!!errors.Password}
                 value={form.Password}
                 onChangeText={text => handleChange('Password', text)}
-
+                style={[styles.input, themeStyles.card]}
+                activeUnderlineColor='#1c6d79'
+                placeholderTextColor={isDark ? '#888' : '#666'}
             />
             {errors.Password && <Text style={styles.errorText}>{errors.Password}</Text>}
 
-            <View style={styles.space} />
-
-            {/* ConfirmPassword */}
-            <TextInput
-                style={[
-                    styles.input,
-                    themeStyles.card,
-                    themeStyles.inputText,
-                    errors.ConfirmPassword ? styles.inputError : undefined,
-                ]}
-                placeholder="Confirm Password"
-                placeholderTextColor={isDark ? '#888' : '#666'}
-                secureTextEntry
+            <PaperInput
+                mode="flat"
+                label="Confirm Password"
+                left={<PaperInput.Icon icon="lock-outline" />}
+                right={
+                    <PaperInput.Icon
+                        icon={showConfirm ? 'eye' : 'eye-off'}
+                        onPress={() => setShowConfirm(v => !v)}
+                    />
+                }
+                secureTextEntry={!showConfirm}
+                error={!!errors.ConfirmPassword}
                 value={form.ConfirmPassword}
                 onChangeText={text => handleChange('ConfirmPassword', text)}
+                style={[styles.input, themeStyles.card]}
+                activeUnderlineColor='#1c6d79'
+                placeholderTextColor={isDark ? '#888' : '#666'}
             />
-            {errors.ConfirmPassword && (
-                <Text style={styles.errorText}>{errors.ConfirmPassword}</Text>
-            )}
+            {errors.ConfirmPassword && <Text style={styles.errorText}>{errors.ConfirmPassword}</Text>}
 
-            <View style={styles.space} />
-
-            {/* server error */}
             {serverError && (
-                <Text style={[styles.errorText, { textAlign: 'center', marginBottom: 12 }]}>
+                <Text style={[styles.errorText, { textAlign: 'center' }]}>
                     {serverError}
                 </Text>
             )}
 
-            <TouchableOpacity
-                style={[styles.submitButton, themeStyles.buttonBorder]}
+            <CustomButton
                 onPress={handleRegister}
-                disabled={loading}
-            >
-                {loading ? (
-                    <ActivityIndicator color={themeStyles.buttonText.color} />
-                ) : (
-                    <Text style={[styles.submitText, themeStyles.buttonText]}>Register</Text>
-                )}
-            </TouchableOpacity>
+                loading={loading}
+                title="Register"
+                style={[styles.submitButton, themeStyles.buttonBorder]}
+            />
 
             <TouchableOpacity onPress={() => navigation.goBack()}>
                 <Text style={[styles.link, themeStyles.textBlue]}>
@@ -258,50 +219,35 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins_700Bold',
     },
     input: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        padding: 14,
-        borderRadius: 8,
-        marginBottom: 4,
-        elevation: 3,
-    },
-    inputError: {
-        borderColor: '#D32F2F',
+        marginBottom: 12,
     },
     errorText: {
         color: '#D32F2F',
         fontSize: 13,
-        // marginBottom: 10,
+        marginBottom: 8,
         marginLeft: 4,
         fontFamily: 'Poppins_400Regular',
-        fontWeight: '700'
+        fontWeight: '700',
     },
     submitButton: {
-        height: height * 0.05,
-        borderRadius: 10,
-        alignItems: 'center',
-        marginVertical: 16,
-        borderWidth: 1,
-        justifyContent: 'center',
-        backgroundColor: '#FFFFFF',
-        elevation: 5,
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        shadowOffset: { width: 0, height: 2 },
-    },
-    submitText: {
-        fontSize: 16,
-        fontFamily: 'Poppins_500Medium',
+    height: height * 0.06,         // slightly taller button for balance
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#1c6d79',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+    marginTop: height * 0.1,       // 10% of screen height above button
     },
     link: {
-        textAlign: 'center',
+        marginTop: 8,
         fontFamily: 'Poppins_400Regular',
+        textAlign: 'center'
     },
     innerLink: {
         fontWeight: '700',
     },
-    space: {
-        marginBottom: height * 0.01
-    }
 })
