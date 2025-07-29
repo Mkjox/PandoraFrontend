@@ -69,7 +69,6 @@ export default function LoginScreen() {
       <Image
         source={require('../../assets/images/logo.png')}
         style={styles.logo}
-        resizeMode="contain"
       />
 
 
@@ -85,6 +84,7 @@ export default function LoginScreen() {
         autoCapitalize="none"
         keyboardType="email-address"
         activeUnderlineColor='#1c6d79'
+        textColor={isDark ? '#FFF' : '#000'}
       />
       {usernameError && <Text style={styles.errorText}>{usernameError}</Text>}
 
@@ -106,6 +106,7 @@ export default function LoginScreen() {
         placeholderTextColor={isDark ? '#888' : '#666'}
         autoCapitalize="none"
         activeUnderlineColor='#1c6d79'
+        textColor={isDark ? '#FFF' : '#000'}
       />
       {passwordError && <Text style={styles.errorText}>{passwordError}</Text>}
 
@@ -138,8 +139,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logo: {
-    width: 250,
-    height: 250,
+    // width: 250,
+    // height: 250,
     alignSelf: 'center',
     marginBottom: height * 0.07,   // 5% of screen height
   },

@@ -25,7 +25,7 @@ import ImagePickerButton from '../../components/ImagePickerButton';
 import { CategoryPayload } from '../../types/category.types';
 import { PersonalVaultPayload } from '../../types/personalVault.types';
 import { ServiceResult } from '../../types/service.types';
-import { TextInput } from 'react-native-paper';
+import { Switch, TextInput } from 'react-native-paper';
 
 type AddCredParams = {
   AddCredentials: {
@@ -66,6 +66,7 @@ export default function AddCredentialsScreen() {
     IsLocked: false,
     UnlockDate: '',
     ExpirationDate: '',
+    IsShareable: false,
     IsFavorite: false,
     Name: '',
     Description: '',
@@ -387,22 +388,52 @@ export default function AddCredentialsScreen() {
               onChangeText={v => handleChange('Tags', v)}
               textColor={themeStyles.text.color}
             />
-            <TouchableOpacity
-              style={[styles.input, themeStyles.inputText, themeStyles.card]}
-              onPress={() => showPicker('UnlockDate')}
-            >
-              <Text style={{ color: form.UnlockDate ? '#000' : '#888' }}>
-                {form.UnlockDate || 'Select Unlock Date'}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.input, themeStyles.inputText, themeStyles.card]}
-              onPress={() => showPicker('ExpirationDate')}
-            >
-              <Text style={{ color: form.ExpirationDate ? '#000' : '#888' }}>
-                {form.ExpirationDate || 'Select Expiration Date'}
-              </Text>
-            </TouchableOpacity>
+
+            <View style={styles.switchRow}>
+              <Text style={themeStyles.text}>Lock this item?</Text>
+              <Switch
+                value={form.IsLocked}
+                onValueChange={v => handleChange('isLocked', v)}
+
+              />
+            </View>
+
+            {form.isLocked && (
+              <>
+                <TouchableOpacity
+                  style={[styles.input, themeStyles.inputText, themeStyles.card]}
+                  onPress={() => showPicker('UnlockDate')}
+                >
+                  <Text style={{ color: form.UnlockDate ? '#888' : '#666' }}>
+                    {form.UnlockDate || 'Select Unlock Date'}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.input, themeStyles.inputText, themeStyles.card]}
+                  onPress={() => showPicker('ExpirationDate')}
+                >
+                  <Text style={{ color: form.ExpirationDate ? '#888' : '#666' }}>
+                    {form.ExpirationDate || 'Select Expiration Date'}
+                  </Text>
+                </TouchableOpacity>
+              </>
+            )}
+
+            <View style={styles.switchRow}>
+              <Text style={themeStyles.text}>Allow sharing?</Text>
+              <Switch
+                value={form.IsShareable}
+                onValueChange={v => handleChange('isShareable', v)}
+              />
+            </View>
+            <View style={styles.switchRow}>
+              <Text style={themeStyles.text}>Mark as favorite?</Text>
+              <Switch
+                value={form.isFavorite}
+                onValueChange={v => handleChange('isFavorite', v)}
+              />
+            </View>
+
             <Text style={[styles.label, themeStyles.text]}>Category*</Text>
             <View style={[styles.pickerContainer, themeStyles.card]}>
               <Picker
@@ -411,7 +442,7 @@ export default function AddCredentialsScreen() {
               >
                 <Picker.Item label="Select category..." value="" color={isDark ? '#888' : '#666'} />
                 {categories.map(c => (
-                  <Picker.Item key={c.id} label={c.name} value={c.id} />
+                  <Picker.Item key={c.id} label={c.name} value={c.id} color={isDark ? '#888' : '#666'} />
                 ))}
               </Picker>
             </View>
@@ -493,7 +524,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: height * 0.05,
   },
-  
+  switchRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
   uploadButton: {
     marginBottom: 12,
   },

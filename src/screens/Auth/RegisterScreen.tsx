@@ -85,6 +85,7 @@ export default function RegisterScreen() {
                 style={[styles.input, themeStyles.card]}
                 activeUnderlineColor='#1c6d79'
                 placeholderTextColor={isDark ? '#888' : '#666'}
+                textColor={isDark ? '#FFF' : '#000'}
             />
             {errors.FirstName && <Text style={styles.errorText}>{errors.FirstName}</Text>}
 
@@ -98,6 +99,7 @@ export default function RegisterScreen() {
                 style={[styles.input, themeStyles.card]}
                 activeUnderlineColor='#1c6d79'
                 placeholderTextColor={isDark ? '#888' : '#666'}
+                textColor={isDark ? '#FFF' : '#000'}
             />
             {errors.LastName && <Text style={styles.errorText}>{errors.LastName}</Text>}
 
@@ -112,6 +114,7 @@ export default function RegisterScreen() {
                 style={[styles.input, themeStyles.card]}
                 activeUnderlineColor='#1c6d79'
                 placeholderTextColor={isDark ? '#888' : '#666'}
+                textColor={isDark ? '#FFF' : '#000'}
             />
             {errors.PhoneNumber && <Text style={styles.errorText}>{errors.PhoneNumber}</Text>}
 
@@ -126,6 +129,7 @@ export default function RegisterScreen() {
                 style={[styles.input, themeStyles.card]}
                 activeUnderlineColor='#1c6d79'
                 placeholderTextColor={isDark ? '#888' : '#666'}
+                textColor={isDark ? '#FFF' : '#000'}
             />
             {errors.Username && <Text style={styles.errorText}>{errors.Username}</Text>}
 
@@ -141,6 +145,7 @@ export default function RegisterScreen() {
                 style={[styles.input, themeStyles.card]}
                 activeUnderlineColor='#1c6d79'
                 placeholderTextColor={isDark ? '#888' : '#666'}
+                textColor={isDark ? '#FFF' : '#000'}
             />
             {errors.Email && <Text style={styles.errorText}>{errors.Email}</Text>}
 
@@ -161,6 +166,7 @@ export default function RegisterScreen() {
                 style={[styles.input, themeStyles.card]}
                 activeUnderlineColor='#1c6d79'
                 placeholderTextColor={isDark ? '#888' : '#666'}
+                textColor={isDark ? '#FFF' : '#000'}
             />
             {errors.Password && <Text style={styles.errorText}>{errors.Password}</Text>}
 
@@ -181,6 +187,7 @@ export default function RegisterScreen() {
                 style={[styles.input, themeStyles.card]}
                 activeUnderlineColor='#1c6d79'
                 placeholderTextColor={isDark ? '#888' : '#666'}
+                textColor={isDark ? '#FFF' : '#000'}
             />
             {errors.ConfirmPassword && <Text style={styles.errorText}>{errors.ConfirmPassword}</Text>}
 

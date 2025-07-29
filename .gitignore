@@ -36,3 +36,6 @@ yarn-error.*
 
 # Api Url
 src/config/apiConfig.ts
+
+# Adds these files for some reason
+%ProgramData%/
