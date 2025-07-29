@@ -30,7 +30,7 @@ type RouteProps = RouteProp<EditPassParams, 'EditPassword'>
 export default function EditPasswordsScreen() {
   const navigation = useNavigation()
   const route = useRoute<RouteProps>()
-  const { themeStyles } = useTheme()
+  const { themeStyles, isDark } = useTheme()
 
   const passwordId = route.params.passwordId
 
@@ -88,7 +88,7 @@ export default function EditPasswordsScreen() {
           `/passwordvaults/${passwordId}`
         )
         if (pRes.data && pRes.data.success && isMounted) {
-          const pw = pRes.data.data
+          const pw: any = pRes.data.data
           setForm({
             SiteName: pw.SiteName,
             UsernameOrEmail: pw.UsernameOrEmail,

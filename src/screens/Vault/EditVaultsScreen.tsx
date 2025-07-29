@@ -32,7 +32,7 @@ type RouteProps = RouteProp<EditVaultParams, 'EditVault'>
 export default function EditVaultScreen() {
   const navigation = useNavigation()
   const route = useRoute<RouteProps>()
-  const { themeStyles } = useTheme()
+  const { themeStyles, isDark } = useTheme()
 
   const vaultId = route.params.vaultId
 
@@ -46,11 +46,12 @@ export default function EditVaultScreen() {
   const [form, setForm] = useState<{
     Title: string
     Content: string
-    Url: string
-    MediaFile: string         // base64
+    // Url: string
+    // MediaFile: string         // base64
     Summary: string
     Tags: string
     IsLocked: boolean
+    IsShareable: boolean
     UnlockDate: string
     ExpirationDate: string
     IsFavorite: boolean
@@ -63,11 +64,12 @@ export default function EditVaultScreen() {
   }>({
     Title: '',
     Content: '',
-    Url: '',
-    MediaFile: '',
+    // Url: '',
+    // MediaFile: '',
     Summary: '',
     Tags: '',
     IsLocked: false,
+    IsShareable: false,
     UnlockDate: '',
     ExpirationDate: '',
     IsFavorite: false,
@@ -78,50 +80,51 @@ export default function EditVaultScreen() {
   // Fetch vault + categories
   useEffect(() => {
     let isMounted = true
-    ;(async () => {
-      // 1) categories
-      try {
-        const catRes = await api.get<ServiceResult<Category[]>>('/categories')
-        if (catRes.data && catRes.data.success && isMounted) {
-          setCategories(catRes.data.data)
+      ; (async () => {
+        // 1) categories
+        try {
+          const catRes = await api.get<ServiceResult<Category[]>>('/categories')
+          if (catRes.data && catRes.data.success && isMounted) {
+            setCategories(catRes.data.data)
+          }
+        } catch (_e) {
+        } finally {
+          if (isMounted) setCategoriesLoading(false)
         }
-      } catch (_e) {
-      } finally {
-        if (isMounted) setCategoriesLoading(false)
-      }
 
-      // 2) vault
-      try {
-        const vRes = await api.get<ServiceResult<PersonalVaultPayload & { id: string }>>(
-          `/vaults/${vaultId}`
-        )
-        if (vRes.data && vRes.data.success && isMounted) {
-          const v = vRes.data.data
-          setForm({
-            Title: v.Title,
-            Content: v.Content,
-            Url: v.Url,
-            MediaFile: v.MediaFile ?? '',
-            Summary: v.Summary ?? '',
-            Tags: (v.Tags ?? []).join(', '),
-            IsLocked: v.IsLocked,
-            UnlockDate: v.UnlockDate ?? '',
-            ExpirationDate: v.ExpirationDate ?? '',
-            IsFavorite: v.IsFavorite,
-            CategoryId: v.CategoryId,
-            fieldErrors: {},
-          })
-          setError(null)
-        } else {
-          if (isMounted)
-            setError(vRes.data.message || 'Failed to load vault')
+        // 2) vault
+        try {
+          const vRes = await api.get<ServiceResult<PersonalVaultPayload & { id: string }>>(
+            `/vaults/${vaultId}`
+          )
+          if (vRes.data && vRes.data.success && isMounted) {
+            const v: any = vRes.data.data
+            setForm({
+              Title: v.Title,
+              Content: v.Content,
+              // Url: v.Url,
+              // MediaFile: v.MediaFile ?? '',
+              Summary: v.Summary ?? '',
+              Tags: (v.Tags ?? []).join(', '),
+              IsLocked: v.IsLocked,
+              IsShareable: v.IsShareable,
+              UnlockDate: v.UnlockDate ?? '',
+              ExpirationDate: v.ExpirationDate ?? '',
+              IsFavorite: v.IsFavorite,
+              CategoryId: v.CategoryId,
+              fieldErrors: {},
+            })
+            setError(null)
+          } else {
+            if (isMounted)
+              setError(vRes.data.message || 'Failed to load vault')
+          }
+        } catch (_e) {
+          if (isMounted) setError('An unexpected error occurred.')
+        } finally {
+          if (isMounted) setLoading(false)
         }
-      } catch (_e) {
-        if (isMounted) setError('An unexpected error occurred.')
-      } finally {
-        if (isMounted) setLoading(false)
-      }
-    })()
+      })()
     return () => {
       isMounted = false
     }
@@ -131,11 +134,12 @@ export default function EditVaultScreen() {
     key:
       | 'Title'
       | 'Content'
-      | 'Url'
-      | 'MediaFile'
+      // | 'Url'
+      // | 'MediaFile'
       | 'Summary'
       | 'Tags'
       | 'IsLocked'
+      | 'IsShareable'
       | 'UnlockDate'
       | 'ExpirationDate'
       | 'IsFavorite'
@@ -177,11 +181,12 @@ export default function EditVaultScreen() {
         UserId: '', // backend reads from token
         Title: form.Title,
         Content: form.Content,
-        Url: form.Url,
-        MediaFile: form.MediaFile,
+        // Url: form.Url,
+        // MediaFile: form.MediaFile,
         Summary: form.Summary,
         Tags: form.Tags.split(',').map((t: string) => t.trim()),
         IsLocked: form.IsLocked,
+        IsShareable: form.IsShareable,
         UnlockDate: form.UnlockDate
           ? new Date(form.UnlockDate).toISOString()
           : undefined,
@@ -259,7 +264,7 @@ export default function EditVaultScreen() {
         <Text style={styles.errorText}>{form.fieldErrors.Content}</Text>
       ) : null}
 
-      <TextInput
+      {/* <TextInput
         style={styles.input}
         placeholder="URL"
         placeholderTextColor={isDark ? '#888' : '#666'}
@@ -280,7 +285,7 @@ export default function EditVaultScreen() {
         >
           Image chosen ({form.MediaFile.length.toLocaleString()} chars)
         </Text>
-      ) : null}
+      ) : null} */}
 
       <TextInput
         style={styles.input}
@@ -297,6 +302,14 @@ export default function EditVaultScreen() {
         value={form.Tags}
         onChangeText={text => handleChange('Tags', text)}
       />
+
+      <View style={styles.switchRow}>
+        <Text style={themeStyles.text}>Allow sharing?</Text>
+        <Switch
+          value={form.IsShareable}
+          onValueChange={v => handleChange('IsShareable', v)}
+        />
+      </View>
 
       <View style={styles.row}>
         <Text style={[styles.label, themeStyles.text]}>Locked</Text>
@@ -402,6 +415,12 @@ const styles = StyleSheet.create({
     marginTop: 12,
     marginBottom: 4,
     fontFamily: 'Poppins_500Medium',
+  },
+  switchRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 12,
   },
   pickerContainer: {
     borderWidth: 1,

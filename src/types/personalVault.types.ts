@@ -2,8 +2,8 @@ export interface PersonalVaultPayload {
   UserId: string;
   Title: string;
   Content: string;
-  Url: string;
-  MediaFile: string;
+  // Url: string;
+  // MediaFile: string;
   Summary: string;
   Tags: string[];
   IsLocked: boolean;

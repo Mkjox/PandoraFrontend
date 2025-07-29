@@ -46,8 +46,8 @@ export default function HomeScreen() {
 
   const filteredPasswords = useMemo(() => {
     return passwords.filter(p => {
-      const site = p.SiteName.toLowerCase()
-      const user = p.UsernameOrEmail.toLowerCase()
+      const site = (p.siteName || '').toLowerCase()
+      const user = (p.usernameOrEmail || '').toLowerCase()
       const q = searchQuery.toLowerCase()
       return (site.includes(q) || user.includes(q))
     })
@@ -55,8 +55,8 @@ export default function HomeScreen() {
 
   const filteredVaults = useMemo(() => {
     return vaults.filter(v => {
-      const title = v.Title.toLowerCase()
-      const content = v.Content.toLowerCase()
+      const title = (v.Title || '').toLowerCase()
+      const content = (v.Content || '').toLowerCase()
       const q = searchQuery.toLowerCase()
       return (title.includes(q) || content.includes(q))
     })

@@ -59,8 +59,8 @@ export default function AddCredentialsScreen() {
     PasswordExpirationDate: '',
     Title: '',
     Content: '',
-    Url: '',
-    MediaFile: '',
+    // Url: '',
+    // MediaFile: '',
     Summary: '',
     Tags: '',
     IsLocked: false,
@@ -166,11 +166,12 @@ export default function AddCredentialsScreen() {
           UserId: userId,
           Title: form.Title,
           Content: form.Content,
-          Url: form.Url,
-          MediaFile: form.MediaFile,
+          // Url: form.Url,
+          // MediaFile: form.MediaFile,
           Summary: form.Summary,
           Tags: form.Tags.split(',').map((t: string) => t.trim()),
           IsLocked: form.IsLocked,
+          IsShareable: form.IsShareable,
           UnlockDate: form.UnlockDate
             ? new Date(form.UnlockDate).toISOString()
             : undefined,
@@ -353,15 +354,15 @@ export default function AddCredentialsScreen() {
               onChangeText={v => handleChange('Content', v)}
               textColor={themeStyles.text.color}
             />
-            <TextInput
+            {/* <TextInput
               style={[styles.input, themeStyles.inputText, themeStyles.card]}
               label="URL"
               mode='outlined'
               value={form.Url}
               onChangeText={v => handleChange('Url', v)}
               textColor={themeStyles.text.color}
-            />
-            <ImagePickerButton
+            /> */}
+            {/* <ImagePickerButton
               title={form.MediaFile ? 'Change Image' : 'Upload Image'}
               onImagePicked={b => handleChange('MediaFile', b)}
               style={styles.uploadButton}
@@ -371,7 +372,7 @@ export default function AddCredentialsScreen() {
               <Text style={[styles.helpText, themeStyles.textGray]}>
                 Image selected ({form.MediaFile.length.toLocaleString()} chars)
               </Text>
-            )}
+            )} */}
             <TextInput
               style={[styles.input, themeStyles.inputText, themeStyles.card]}
               label="Summary"
