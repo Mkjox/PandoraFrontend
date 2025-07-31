@@ -10,6 +10,9 @@ import {
 } from "../types/auth.types";
 import { isEnabled } from 'react-native/Libraries/Performance/Systrace';
 
+const ACCESS_KEY = 'auth:accessToken'
+const REFRESH_KEY = 'auth:refreshToken'
+
 const AuthService = {
     register: async (payload: RegisterPayload): Promise<ServiceResult<string>> => {
         try {
@@ -17,7 +20,7 @@ const AuthService = {
                 success: boolean;
                 data: {
                     accessToken: string;
-                    refreshToken: string,
+                    refreshToken: string;
                 };
                 resultStatus: number;
                 message: string;
@@ -46,37 +49,59 @@ const AuthService = {
         }
     },
 
-    login: async (payload: LoginPayload): Promise<ServiceResult<string>> => {
-        try {
-            const response = await api.post<{
-                data: {
-                    accessToken: string;
-                    refreshToken: string;
-                };
-                resultStatus: number;
-                message: string;
-            }>("/auth/login", payload);
-
-            if (response.data.resultStatus !== 0) {
-                return {
-                    success: false,
-                    message: response.data.message
-                };
+    login: async (payload: LoginPayload): Promise<ServiceResult<void>> => {
+        const res = await api.post<{
+            data: {
+                accessToken: string;
+                refreshToken: string;
             }
+            resultStatus: number
+            message: string
+        }>('/auth/login', payload)
 
-            const token = response.data.data.accessToken;
-            await AsyncStorage.setItem("authToken", token);
-
-            return {
-                success: true,
-                data: token
-            };
-        } catch (err: any) {
+        if (res.data.resultStatus !== 0) {
             return {
                 success: false,
-                message: err.response?.data?.message || "Login failed",
-            };
+                message: res.data.message
+            }
         }
+
+        const { accessToken, refreshToken } = res.data.data
+        await AsyncStorage.multiSet([
+            [ACCESS_KEY, accessToken],
+            [REFRESH_KEY, refreshToken],
+        ])
+        return {
+            success: true
+        }
+    },
+
+    getAccessToken: () => AsyncStorage.getItem(ACCESS_KEY),
+    getRefreshToken: () => AsyncStorage.getItem(REFRESH_KEY),
+
+    refreshToken: async (): Promise<string> => {
+        const old = await AuthService.getRefreshToken()
+        if (!old) throw new Error('No refresh token')
+
+        const res = await api.post<{
+            data: {
+                accessToken: string;
+                refreshToken: string;
+            }
+            resultStatus: number
+            message: string
+        }>('/auth/refresh', { refreshToken: old })
+
+        if (res.data.resultStatus !== 0) {
+            throw new Error(res.data.message)
+        }
+
+        const { accessToken, refreshToken } = res.data.data
+        await AsyncStorage.multiSet([
+            [ACCESS_KEY, accessToken],
+            [REFRESH_KEY, refreshToken],
+        ])
+        return accessToken
     },
 
     getToken: async (): Promise<string | null> => {
@@ -84,20 +109,40 @@ const AuthService = {
     },
 
     decodeToken: async (): Promise<DecodedToken | null> => {
-        const token = await AuthService.getToken();
-
-        if (!token) {
-            console.error("No token found.");
-            return null;
-        }
-
+        const token = await AuthService.getAccessToken()
+        if (!token) return null
         try {
-            return jwtDecode<DecodedToken>(token);
-        } catch (err) {
-            console.error("Failed to decode token", err);
-            return null;
+            return jwtDecode<DecodedToken>(token)
+        }
+        catch {
+            return null
         }
     },
+
+    logout: async () => {
+        await AsyncStorage.multiRemove([
+            ACCESS_KEY, REFRESH_KEY
+        ])
+        return {
+            success: true
+        }
+    },
+
+    // decodeToken: async (): Promise<DecodedToken | null> => {
+    //     const token = await AuthService.getToken();
+
+    //     if (!token) {
+    //         console.error("No token found.");
+    //         return null;
+    //     }
+
+    //     try {
+    //         return jwtDecode<DecodedToken>(token);
+    //     } catch (err) {
+    //         console.error("Failed to decode token", err);
+    //         return null;
+    //     }
+    // },
 
     fetchUserProfile: async (): Promise<UserProfileResponse> => {
         const decoded = await AuthService.decodeToken();
@@ -125,20 +170,20 @@ const AuthService = {
         }
     },
 
-    logout: async (): Promise<ServiceResult<null>> => {
-        try {
-            await AsyncStorage.removeItem("authToken");
-            return {
-                success: true
-            };
-        } catch (err) {
-            console.error("Logout failed:", err);
-            return {
-                success: false,
-                message: "Logout failed"
-            };
-        }
-    },
+    // logout: async (): Promise<ServiceResult<null>> => {
+    //     try {
+    //         await AsyncStorage.removeItem("authToken");
+    //         return {
+    //             success: true
+    //         };
+    //     } catch (err) {
+    //         console.error("Logout failed:", err);
+    //         return {
+    //             success: false,
+    //             message: "Logout failed"
+    //         };
+    //     }
+    // },
 
     updateProfile: async (
         payload: { username: string; email: string; photoBase64?: string }
