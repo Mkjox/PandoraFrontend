@@ -39,3 +39,4 @@ src/config/apiConfig.ts
 
 # Adds these files for some reason
 %ProgramData%/
+roadmap/
