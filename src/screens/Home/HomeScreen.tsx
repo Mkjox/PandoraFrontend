@@ -99,7 +99,7 @@ export default function HomeScreen() {
   const renderVault = ({ item }: { item: PersonalVaultPayload & { id: string } }) => (
     <TouchableOpacity
       style={[styles.card, themeStyles.card]}
-      onPress={() => navigation.navigate('PassDetails' as any, { id: item.id })}
+      onPress={() => navigation.navigate('VaultDetails' as any, { id: item.id })}
     >
       <Text style={[styles.cardTitle, themeStyles.text]}>{item.Title}</Text>
       <Text style={[styles.cardSubtitle, themeStyles.textGray]} numberOfLines={2}>

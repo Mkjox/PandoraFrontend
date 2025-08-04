@@ -40,7 +40,9 @@
     "react-native-svg": "15.2.0",
     "react-native-svg-uri": "^1.2.3",
     "react-redux": "^9.2.0",
-    "tinycolor2": "^1.6.0"
+    "tinycolor2": "^1.6.0",
+    "expo-local-authentication": "~14.0.1",
+    "expo-secure-store": "~13.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

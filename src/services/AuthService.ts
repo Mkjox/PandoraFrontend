@@ -1,258 +1,139 @@
-import { ServiceResult } from './../types/service.types';
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { jwtDecode } from "jwt-decode";
-import api from "./api";
+import { ServiceResult } from '../types/service.types';
+import api from './api';
+import { tokenStorage } from './tokenStorage';
 import {
     LoginPayload,
     DecodedToken,
     RegisterPayload,
     UserProfileResponse
-} from "../types/auth.types";
-import { isEnabled } from 'react-native/Libraries/Performance/Systrace';
+} from '../types/auth.types';
+import { jwtDecode } from 'jwt-decode';
 
-const ACCESS_KEY = 'auth:accessToken'
-const REFRESH_KEY = 'auth:refreshToken'
-
-const AuthService = {
-    register: async (payload: RegisterPayload): Promise<ServiceResult<string>> => {
+export default {
+    register: async (payload: RegisterPayload): Promise<ServiceResult<void>> => {
         try {
             const res = await api.post<{
-                success: boolean;
-                data: {
-                    accessToken: string;
-                    refreshToken: string;
-                };
+                data: { accessToken: string; refreshToken: string };
                 resultStatus: number;
                 message: string;
-            }>("/auth/register", payload);
+            }>('/auth/register', payload);
 
             if (res.data.resultStatus !== 0) {
                 return { success: false, message: res.data.message };
             }
 
-            const token = res.data.data.accessToken;
-            await AsyncStorage.setItem("authToken", token);
-            return {
-                success: true,
-                data: token
-            };
-
-            // return AuthService.login({
-            //     UsernameOrEmail: payload.Email,  // or payload.Username
-            //     Password: payload.Password
-            // });
+            const { accessToken, refreshToken } = res.data.data;
+            await tokenStorage.setTokens(accessToken, refreshToken);
+            return { success: true };
         } catch (err: any) {
-            return {
-                success: false,
-                message: err.response?.data?.message || "Registration failed"
-            };
+            return { success: false, message: err.response?.data?.message || 'Registration failed' };
         }
     },
 
     login: async (payload: LoginPayload): Promise<ServiceResult<void>> => {
-        const res = await api.post<{
-            data: {
-                accessToken: string;
-                refreshToken: string;
-            }
-            resultStatus: number
-            message: string
-        }>('/auth/login', payload)
+        try {
+            const res = await api.post<{
+                data: { accessToken: string; refreshToken: string };
+                resultStatus: number;
+                message: string;
+            }>('/auth/login', payload);
 
-        if (res.data.resultStatus !== 0) {
-            return {
-                success: false,
-                message: res.data.message
+            if (res.data.resultStatus !== 0) {
+                return { success: false, message: res.data.message };
             }
-        }
 
-        const { accessToken, refreshToken } = res.data.data
-        await AsyncStorage.multiSet([
-            [ACCESS_KEY, accessToken],
-            [REFRESH_KEY, refreshToken],
-        ])
-        return {
-            success: true
+            const { accessToken, refreshToken } = res.data.data;
+            await tokenStorage.setTokens(accessToken, refreshToken);
+            return { success: true };
+        } catch (err: any) {
+            return { success: false, message: err.response?.data?.message || 'Login failed' };
         }
     },
-
-    getAccessToken: () => AsyncStorage.getItem(ACCESS_KEY),
-    getRefreshToken: () => AsyncStorage.getItem(REFRESH_KEY),
 
     refreshToken: async (): Promise<string> => {
-        const old = await AuthService.getRefreshToken()
-        if (!old) throw new Error('No refresh token')
+        const old = await tokenStorage.getRefreshToken();
+        if (!old) throw new Error('No refresh token stored');
 
         const res = await api.post<{
-            data: {
-                accessToken: string;
-                refreshToken: string;
-            }
-            resultStatus: number
-            message: string
-        }>('/auth/refresh', { refreshToken: old })
+            data: { accessToken: string; refreshToken: string };
+            resultStatus: number;
+            message: string;
+        }>('/auth/refresh', { refreshToken: old });
 
         if (res.data.resultStatus !== 0) {
-            throw new Error(res.data.message)
+            throw new Error(res.data.message);
         }
 
-        const { accessToken, refreshToken } = res.data.data
-        await AsyncStorage.multiSet([
-            [ACCESS_KEY, accessToken],
-            [REFRESH_KEY, refreshToken],
-        ])
-        return accessToken
+        const { accessToken, refreshToken } = res.data.data;
+        await tokenStorage.setTokens(accessToken, refreshToken);
+        return accessToken;
     },
 
-    getToken: async (): Promise<string | null> => {
-        return AsyncStorage.getItem("authToken");
+    logout: async (): Promise<ServiceResult<null>> => {
+        try {
+            await tokenStorage.clearTokens();
+            // you can also notify backend: await api.post('/auth/logout');
+            return { success: true };
+        } catch {
+            return { success: false, message: 'Logout failed' };
+        }
     },
 
     decodeToken: async (): Promise<DecodedToken | null> => {
-        const token = await AuthService.getAccessToken()
-        if (!token) return null
+        const raw = await tokenStorage.getAccessToken();
+        if (!raw) return null;
         try {
-            return jwtDecode<DecodedToken>(token)
-        }
-        catch {
-            return null
-        }
-    },
-
-    logout: async () => {
-        await AsyncStorage.multiRemove([
-            ACCESS_KEY, REFRESH_KEY
-        ])
-        return {
-            success: true
+            return jwtDecode<DecodedToken>(raw);
+        } catch {
+            return null;
         }
     },
-
-    // decodeToken: async (): Promise<DecodedToken | null> => {
-    //     const token = await AuthService.getToken();
-
-    //     if (!token) {
-    //         console.error("No token found.");
-    //         return null;
-    //     }
-
-    //     try {
-    //         return jwtDecode<DecodedToken>(token);
-    //     } catch (err) {
-    //         console.error("Failed to decode token", err);
-    //         return null;
-    //     }
-    // },
 
     fetchUserProfile: async (): Promise<UserProfileResponse> => {
-        const decoded = await AuthService.decodeToken();
-
+        const decoded = await this.decodeToken();
         if (!decoded?.nameid) {
-            return {
-                success: false,
-                message: "Invalid or missing token"
-            };
+            return { success: false, message: 'Invalid or missing token' };
         }
-
         try {
             const response = await api.get(`/users/${decoded.nameid}`);
-
-            return {
-                success: true,
-                userData: response.data
-            };
+            return { success: true, userData: response.data };
         } catch (err: any) {
-            console.error("Error fetching user profile:", err);
-            return {
-                success: false,
-                message: err.response?.data?.message || "Failed to fetch user data",
-            };
+            return { success: false, message: err.response?.data?.message || 'Failed to fetch user data' };
         }
     },
 
-    // logout: async (): Promise<ServiceResult<null>> => {
-    //     try {
-    //         await AsyncStorage.removeItem("authToken");
-    //         return {
-    //             success: true
-    //         };
-    //     } catch (err) {
-    //         console.error("Logout failed:", err);
-    //         return {
-    //             success: false,
-    //             message: "Logout failed"
-    //         };
-    //     }
-    // },
-
-    updateProfile: async (
-        payload: { username: string; email: string; photoBase64?: string }
-    ): Promise<ServiceResult<{ username: string; email: string; photoUrl?: string }>> => {
-        try {
-            const decoded = await AuthService.decodeToken();
-            const userId = decoded?.nameid;
-            if (!userId) {
-                return { success: false, message: 'No valid token / user ID.' };
-            }
-            // PUT to /users/{id}
-            const response = await api.put<{
-                username: string;
-                email: string;
-                photoUrl?: string;
-            }>(`/users/${userId}`, payload);
-            return { success: true, data: response.data };
-        } catch (err: any) {
-            return {
-                success: false,
-                message: err.response?.data?.message || 'Failed to update profile',
-            };
-        }
-    },
-
-    getTwoFactorStatus: async (): Promise<{
-        success: boolean;
-        data?: {
-            isEnabled: boolean;
-            enabledAt: string | null;
-            backupCodesRemaining: number
-        };
-        message?: string;
-    }> => {
+    // two‐factor endpoints:
+    getTwoFactorStatus: async (): Promise<ServiceResult<{
+        isEnabled: boolean;
+        enabledAt: string | null;
+        backupCodesRemaining: number;
+    }>> => {
         try {
             const res = await api.get<{
                 data: {
                     isEnabled: boolean;
                     enabledAt: string | null;
-                    backupCodesRemaining: number
+                    backupCodesRemaining: number;
                 };
                 resultStatus: number;
                 message: string;
-            }>("/TwoFactor/status");
+            }>('/auth/2fa/status');
 
-            if (res.data.resultStatus == 0) throw new Error(res.data.message);
-            return {
-                success: true,
-                data: res.data.data
-            };
-        }
-        catch (err: any) {
-            return {
-                success: false,
-                message: err.message
-            };
+            if (res.data.resultStatus !== 0) {
+                return { success: false, message: res.data.message };
+            }
+            return { success: true, data: res.data.data };
+        } catch (err: any) {
+            return { success: false, message: err.message };
         }
     },
 
-    setupTwoFactor: async (): Promise<{
-        success: boolean;
-        data?: {
-            secretKey: string;
-            qrCodeUri: string;
-            manualEntryKey: string;
-            backupCodes: string[];
-        };
-        message?: string;
-    }> => {
+    setupTwoFactor: async (): Promise<ServiceResult<{
+        secretKey: string;
+        qrCodeUri: string;
+        manualEntryKey: string;
+        backupCodes: string[];
+    }>> => {
         try {
             const res = await api.post<{
                 data: {
@@ -263,68 +144,46 @@ const AuthService = {
                 };
                 resultStatus: number;
                 message: string;
-            }>("/TwoFactor/setup", {});
+            }>('/auth/2fa/setup');
 
-            if (res.data.resultStatus !== 0) throw new Error(res.data.message);
-            return {
-                success: true,
-                data: res.data.data
-            };
-        }
-        catch (err: any) {
-            return {
-                success: false,
-                message: err.message
-            };
+            if (res.data.resultStatus !== 0) {
+                return { success: false, message: res.data.message };
+            }
+            return { success: true, data: res.data.data };
+        } catch (err: any) {
+            return { success: false, message: err.message };
         }
     },
 
-    verifyTwoFactor: async (code: string): Promise<{
-        success: boolean;
-        message?: string;
-    }> => {
+    enableTwoFactor: async (code: string): Promise<ServiceResult<void>> => {
         try {
             const res = await api.post<{
                 resultStatus: number;
                 message: string;
-            }>("/TwoFactor/verify", { code });
+            }>('/auth/2fa/enable', { code });
 
-            if (res.data.resultStatus !== 0) throw new Error(res.data.message);
-            return {
-                success: true
-            };
-        }
-        catch (err: any) {
-            return {
-                success: false,
-                message: err.message
-            };
+            if (res.data.resultStatus !== 0) {
+                return { success: false, message: res.data.message };
+            }
+            return { success: true };
+        } catch (err: any) {
+            return { success: false, message: err.message };
         }
     },
 
-    disableTwoFactor: async (): Promise<{
-        success: boolean;
-        message?: string
-    }> => {
+    disableTwoFactor: async (): Promise<ServiceResult<void>> => {
         try {
             const res = await api.post<{
                 resultStatus: number;
                 message: string;
-            }>("/TwoFactor/disable", {});
+            }>('/auth/2fa/disable');
 
-            if (res.data.resultStatus !== 0) throw new Error(res.data.message);
-            return {
-                success: true
-            };
-        }
-        catch (err: any) {
-            return {
-                success: false,
-                message: err.message
-            };
+            if (res.data.resultStatus !== 0) {
+                return { success: false, message: res.data.message };
+            }
+            return { success: true };
+        } catch (err: any) {
+            return { success: false, message: err.message };
         }
     },
-
 };
-
-export default AuthService;
