@@ -58,6 +58,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
                     <Text
                         style={[
                             styles.textBase,
+                            themeStyles.text,
                             textStyle
                         ]}
                     >
@@ -81,7 +82,6 @@ const styles = StyleSheet.create({
     textBase: {
         fontSize: 16,
         fontFamily: 'Poppins_500Medium',
-        color: '#ffffff'
     },
     disabledButton: {
         opacity: 0.6,

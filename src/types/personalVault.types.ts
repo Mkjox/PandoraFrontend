@@ -1,7 +1,8 @@
 export interface PersonalVaultPayload {
+  id: string;
   UserId: string;
-  Title: string;
-  Content: string;
+  secureTitle: string;
+  secureContent: string;
   // Url: string;
   // MediaFile: string;
   Summary: string;

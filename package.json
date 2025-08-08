@@ -42,7 +42,8 @@
     "react-redux": "^9.2.0",
     "tinycolor2": "^1.6.0",
     "expo-local-authentication": "~14.0.1",
-    "expo-secure-store": "~13.0.2"
+    "expo-secure-store": "~13.0.2",
+    "expo-linear-gradient": "~13.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

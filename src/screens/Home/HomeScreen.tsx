@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
+  SectionList,
 } from 'react-native'
 import { Searchbar } from 'react-native-paper'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
@@ -24,6 +25,10 @@ import PersonalVaultService from '../../services/PersonalVaultService'
 const { width, height } = Dimensions.get('window')
 
 type FilterType = 'all' | 'password' | 'notes'
+
+type SectionDataItem =
+  | ({ type: 'password' } & PasswordItem)
+  | ({ type: 'vault' } & PersonalVaultPayload)
 
 export default function HomeScreen() {
   const navigation = useNavigation()
@@ -55,12 +60,26 @@ export default function HomeScreen() {
 
   const filteredVaults = useMemo(() => {
     return vaults.filter(v => {
-      const title = (v.Title || '').toLowerCase()
-      const content = (v.Content || '').toLowerCase()
+      const title = (v.secureTitle || '').toLowerCase()
+      const content = (v.secureContent || '').toLowerCase()
       const q = searchQuery.toLowerCase()
       return (title.includes(q) || content.includes(q))
     })
   }, [vaults, searchQuery])
+
+  const sections = useMemo(() => {
+    if (filterType !== 'all') return []
+    return [
+      {
+        title: 'Passwords',
+        data: filteredPasswords.map(p => ({ type: 'password' as const, ...p }))
+      },
+      {
+        title: 'Secure Notes',
+        data: filteredVaults.map(v => ({ type: 'vault' as const, ...v }))
+      }
+    ]
+  }, [filterType, filteredPasswords, filteredVaults])
 
   const typeOptions: { key: FilterType; label: string }[] = [
     { key: 'all', label: 'All' },
@@ -96,16 +115,25 @@ export default function HomeScreen() {
     </TouchableOpacity>
   )
 
-  const renderVault = ({ item }: { item: PersonalVaultPayload & { id: string } }) => (
+  const renderVault = ({ item }: { item: PersonalVaultPayload  }) => (
     <TouchableOpacity
       style={[styles.card, themeStyles.card]}
       onPress={() => navigation.navigate('VaultDetails' as any, { id: item.id })}
     >
-      <Text style={[styles.cardTitle, themeStyles.text]}>{item.Title}</Text>
+      <Text style={[styles.cardTitle, themeStyles.text]}>{item.secureTitle}</Text>
       <Text style={[styles.cardSubtitle, themeStyles.textGray]} numberOfLines={2}>
-        {item.Content}
+        {item.secureContent}
       </Text>
     </TouchableOpacity>
+  )
+
+  const renderSectionItem = ({ item }: { item: SectionDataItem }) =>
+    item.type === 'password'
+      ? renderPassword({ item })
+      : renderVault({ item })
+
+  const renderSectionHeader = ({ section }: any) => (
+    <Text style={[styles.sectionHeader, themeStyles.text]}>{section.title}</Text>
   )
 
   const loading = (filterType === 'notes' ? vaultLoading : pwLoading)
@@ -158,7 +186,34 @@ export default function HomeScreen() {
           style={styles.typeList}
         />
 
-        {filterType === 'notes' ? (
+        {filterType === 'all' ? (
+          <SectionList
+            sections={sections}
+            keyExtractor={(item, idx) => `${item.type}-${item.id}-${idx}`}
+            renderItem={renderSectionItem}
+            renderSectionHeader={renderSectionHeader}
+            contentContainerStyle={styles.listContent}
+            showsVerticalScrollIndicator={false}
+          />
+        ) : filterType === 'password' ? (
+          <SectionList
+            sections={[{title: '', data: filteredPasswords}]}
+            keyExtractor={(item: PasswordItem) => item.id}
+            renderItem={renderPassword}
+            contentContainerStyle={styles.listContent}
+            showsVerticalScrollIndicator={false}
+          />
+        ) : (
+          <SectionList
+            sections={[{title: '', data: filteredVaults}]}
+            keyExtractor={(item:PersonalVaultPayload) => item.id}
+            renderItem={renderVault}
+            contentContainerStyle={styles.listContent}
+            showsVerticalScrollIndicator={false}
+          />
+        )}
+
+        {/* {filterType === 'notes' ? (
           <FlatList
             data={filteredVaults}
             keyExtractor={item => item.id}
@@ -174,7 +229,7 @@ export default function HomeScreen() {
             contentContainerStyle={styles.passwordList}
             showsVerticalScrollIndicator={false}
           />
-        )}
+        )} */}
       </View>
     </View>
   )
@@ -251,5 +306,14 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontSize: 14,
     fontFamily: 'Poppins_400Regular'
-  }
+  },
+  sectionHeader: {
+    fontSize: 18,
+    fontFamily: 'Poppins_600SemiBold',
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  listContent: {
+    paddingBottom: 40,
+  },
 })

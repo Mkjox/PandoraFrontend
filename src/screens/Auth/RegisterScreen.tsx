@@ -204,7 +204,7 @@ export default function RegisterScreen() {
                 style={[styles.submitButton, themeStyles.buttonBorder]}
             />
 
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity onPress={() => navigation.navigate('Login' as never)}>
                 <Text style={[styles.link, themeStyles.textBlue]}>
                     Already have an account? <Text style={styles.innerLink}>Log in</Text>
                 </Text>

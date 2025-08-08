@@ -50,13 +50,6 @@ const AccountScreen: React.FC = () => {
                     <Text style={[styles.optionText, themeStyles.buttonText]}>Two-Factor Authentication</Text>
                 </TouchableOpacity>
             </View>
-
-            {/* <View style={styles.section}>
-                <Text style={[styles.sectionHeader, themeStyles.text]}>Other</Text>
-                <TouchableOpacity style={[styles.option, themeStyles.card]} onPress={handleLogout}>
-                    <Text style={[styles.optionText, themeStyles.text]}>Logout</Text>
-                </TouchableOpacity>
-            </View> */}
         </ScrollView>
     );
 };

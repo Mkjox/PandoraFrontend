@@ -16,7 +16,7 @@ import { lightTheme, darkTheme } from '../../assets/colors/theme';
 const { height, width } = Dimensions.get('window');
 
 const SuggestScreen: React.FC = () => {
-    const { themeStyles } = useTheme();
+    const { themeStyles, isDark } = useTheme();
 
     const [suggestion, setSuggestion] = useState('');
 
