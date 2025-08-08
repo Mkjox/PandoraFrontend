@@ -58,7 +58,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
                     <Text
                         style={[
                             styles.textBase,
-                            themeStyles.text,
+                            themeStyles.buttonText || '#fff',
                             textStyle
                         ]}
                     >

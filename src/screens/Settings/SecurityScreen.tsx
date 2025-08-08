@@ -76,7 +76,7 @@ const SecurityScreen: React.FC = () => {
             </View>
 
             <TouchableOpacity
-                style={[styles.resetButton, themeStyles.buttonBorder]}
+                style={[styles.resetButton, themeStyles.button]}
                 onPress={() => Alert.alert('Reset Security', 'All security settings have been reset.')}
             >
                 <Text style={[styles.resetButtonText, themeStyles.buttonText]}>Reset All Security Settings</Text>
@@ -131,9 +131,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         borderRadius: 10,
         alignItems: 'center',
-        borderWidth: 1,
         justifyContent: 'center',
-        backgroundColor: '#FFFFFF',
         elevation: 5,
         shadowColor: '#000',
         shadowOpacity: 0.1,

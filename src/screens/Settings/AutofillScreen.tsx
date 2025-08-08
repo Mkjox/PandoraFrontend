@@ -118,7 +118,7 @@ const AutofillScreen: React.FC = () => {
 
       {/* Optionally, a button to open system settings directly */}
       <TouchableOpacity
-        style={[styles.openSettingsButton, themeStyles.buttonBorder]}
+        style={[styles.openSettingsButton, themeStyles.button]}
         disabled
         onPress={() => {
           if (Platform.OS === 'android') {
@@ -183,9 +183,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 24,
     height: height * 0.055,
-    borderWidth: 1,
     justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
     elevation: 5,
     shadowColor: '#000',
     shadowOpacity: 0.1,

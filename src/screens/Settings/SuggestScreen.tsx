@@ -54,7 +54,7 @@ const SuggestScreen: React.FC = () => {
                 />
             </View>
 
-            <TouchableOpacity style={[styles.button, themeStyles.buttonBorder]} onPress={handleSubmit}>
+            <TouchableOpacity style={[styles.button, themeStyles.button]} onPress={handleSubmit}>
                 <Text style={[styles.buttonText, themeStyles.buttonText]}>Submit</Text>
             </TouchableOpacity>
         </ScrollView>
@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
         marginTop: 8,
         height: height * 0.055,
         borderRadius: 6,
-        borderWidth: 1,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#FFFFFF',

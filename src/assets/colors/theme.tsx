@@ -5,10 +5,10 @@ export const lightTheme = StyleSheet.create({
         backgroundColor: '#FFFFFF',
     },
     button: {
-        backgroundColor: '#4C4DDC',
+        backgroundColor: '#1c6d79',
     },
     buttonText: {
-        color: '#002055'
+        color: '#ffffffff'
     },
     buttonBorder: {
         borderColor: '#4C4DDC',

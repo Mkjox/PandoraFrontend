@@ -5,7 +5,8 @@ import {
     ScrollView,
     StyleSheet,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
+    Image
 } from 'react-native'
 import { useDispatch } from 'react-redux'
 import AuthService from '../../services/AuthService'
@@ -73,7 +74,10 @@ export default function RegisterScreen() {
 
     return (
         <ScrollView contentContainerStyle={[styles.container, themeStyles.container]}>
-            <Text style={[styles.title, themeStyles.text]}>Register</Text>
+            <Image
+                source={require('../../assets/images/logo.png')}
+                style={styles.logo}
+            />
 
             <PaperInput
                 mode="flat"
@@ -218,6 +222,10 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         padding: 24,
         justifyContent: 'center',
+    },
+    logo: {
+        alignSelf: 'center',
+        marginBottom: height * 0.03,
     },
     title: {
         fontSize: 32,

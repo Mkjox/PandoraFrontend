@@ -16,7 +16,7 @@ import { lightTheme, darkTheme } from '../../assets/colors/theme';
 const { height, width } = Dimensions.get('window');
 
 const SearchScreen: React.FC = () => {
-    const { themeStyles } = useTheme();
+    const { themeStyles, isDark } = useTheme();
 
     const [searchQuery, setSearchQuery] = useState('');
 

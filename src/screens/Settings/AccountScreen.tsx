@@ -43,10 +43,10 @@ const AccountScreen: React.FC = () => {
 
             <View style={styles.section}>
                 <Text style={[styles.sectionHeader, themeStyles.text]}>Security</Text>
-                <TouchableOpacity style={[styles.option, themeStyles.buttonBorder]}>
+                <TouchableOpacity style={[styles.option, themeStyles.button]}>
                     <Text style={[styles.optionText, themeStyles.buttonText]}>Change Password</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.option, themeStyles.buttonBorder]} onPress={() => navigation.navigate("TwoFactor" as never)}>
+                <TouchableOpacity style={[styles.option, themeStyles.button]} onPress={() => navigation.navigate("TwoFactor" as never)}>
                     <Text style={[styles.optionText, themeStyles.buttonText]}>Two-Factor Authentication</Text>
                 </TouchableOpacity>
             </View>
@@ -93,9 +93,7 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         marginTop: 8,
         height: height * 0.055,
-        borderWidth: 1,
         justifyContent: 'center',
-        backgroundColor: '#FFFFFF',
         elevation: 5,
         shadowColor: '#000',
         shadowOpacity: 0.1,

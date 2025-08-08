@@ -54,10 +54,10 @@ const ActionsScreen: React.FC = () => {
 
             <View style={styles.section}>
                 <Text style={[styles.sectionHeader, themeStyles.text]}>Manual Actions</Text>
-                <TouchableOpacity style={[styles.button, themeStyles.buttonBorder]}>
+                <TouchableOpacity style={[styles.button, themeStyles.button]}>
                     <Text style={[styles.buttonText, themeStyles.buttonText]}>Clear All Sessions</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.button, themeStyles.buttonBorder]}>
+                <TouchableOpacity style={[styles.button, themeStyles.button]}>
                     <Text style={[styles.buttonText, themeStyles.buttonText]}>Sync Now</Text>
                 </TouchableOpacity>
             </View>
@@ -109,10 +109,8 @@ const styles = StyleSheet.create({
         marginTop: 8,
         height: height * 0.055,
         borderRadius: 6,
-        borderWidth: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#FFFFFF',
         elevation: 5,
         shadowColor: '#000',
         shadowOpacity: 0.1,

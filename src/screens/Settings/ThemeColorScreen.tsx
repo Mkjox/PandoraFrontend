@@ -19,7 +19,7 @@ type Preset = {
 }
 
 const PRESETS: Preset[] = [
-  { id: 'lightDefault', label: 'Light (Default)', mode: 'light', accent: '#4C4DDC' },
+  { id: 'lightDefault', label: 'Light (Default)', mode: 'light', accent: '#1c6d79' },
   { id: 'lightSoft', label: 'Light (Soft)', mode: 'light', accent: '#9E9E9E' },
   { id: 'darkDefault', label: 'Dark (Default)', mode: 'dark', accent: '#3580FF' },
   { id: 'darkAurora', label: 'Dark (Aurora)', mode: 'dark', accent: '#FFB400' },
