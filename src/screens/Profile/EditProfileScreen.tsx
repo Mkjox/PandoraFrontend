@@ -210,7 +210,7 @@ export default function EditProfileScreen() {
         title='Save Changes'
         onPress={handleSave}
         loading={saving}
-        style={[styles.saveButton, themeStyles.buttonBorder]}
+        style={[styles.saveButton, themeStyles.button]}
       />
       <View style={{ height: 40 }} />
     </ScrollView>
@@ -235,7 +235,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontFamily: 'Poppins_700Bold',
     marginVertical: 16,
-    textAlign: 'center',
   },
   avatarCard: {
     alignSelf: 'center',
@@ -315,7 +314,6 @@ const styles = StyleSheet.create({
   saveButton: {
     height: 40,
     borderRadius: 10,
-    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FFFFFF',

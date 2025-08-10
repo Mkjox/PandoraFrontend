@@ -8,6 +8,8 @@ import {
     UserProfileResponse,
 } from '../types/auth.types'
 import { jwtDecode } from 'jwt-decode'
+import { API_URL } from '../config/apiConfig'
+import axios from 'axios'
 
 const AuthService = {
     // --- Auth ---
@@ -209,6 +211,60 @@ const AuthService = {
             return { success: false, message: err.message }
         }
     },
+
+    refreshToken: async (): Promise<ServiceResult<{ accessToken?: string; refreshToken?: string }>> => {
+        try {
+            const refreshToken = await tokenStorage.getRefreshToken()
+            if (!refreshToken) {
+                return {
+                    success: false,
+                    message: 'No refresh token available'
+                }
+            }
+
+            // Using a bare axios instance to avoid interceptor loops
+            const bare = axios.create({ baseURL: API_URL })
+            const res = await bare.post<{
+                data: {
+                    accessToken: string;
+                    refreshToken: string
+                }
+                resultStatus: number
+                message: string
+            }>('/auth/refresh', { refreshToken })
+
+            if (res.data.resultStatus !== 0) {
+                // invalid refresh or server refused -> clear tokens
+                await tokenStorage.clear()
+                return {
+                    success: false,
+                    message: res.data.message || 'Refresh failed'
+                }
+            }
+
+            const { accessToken, refreshToken: newRefresh } = res.data.data
+            // store tokens: access in AsyncStorage, refresh in SecureStore (tokenStorage handles it)
+            await tokenStorage.setTokens(accessToken, newRefresh)
+            return {
+                success: true,
+                data: {
+                    accessToken,
+                    refreshToken: newRefresh
+                }
+            }
+        }
+        catch (err: any) {
+            // on any error, clear tokens to force re-login
+            try {
+                await tokenStorage.clear()
+            }
+            catch {}
+            return {
+                success: false,
+                message: err?.response?.data?.message || err.message || 'Refresh failed'
+            }
+        }
+    }
 }
 
 export default AuthService
