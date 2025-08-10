@@ -61,7 +61,7 @@ const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => 
                         <MaterialIcons
                             name={iconName}
                             size={24}
-                            color={isFocused ? '#6E7FEC' : '#a0a0a0'}
+                            color={isFocused ? '#1c6d79' : '#a0a0a0'}
                         />
                         {typeof label === "string" ? (
                             <Text style={[styles.tabLabel, isFocused && styles.focusedLabel]}>
@@ -69,7 +69,7 @@ const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => 
                             </Text>
                         ) : (
                             label({
-                                focused: isFocused, color: isFocused ? '#6E7FEC' : '#a0a0a0', position: 'below-icon',
+                                focused: isFocused, color: isFocused ? '#1c6d79' : '#a0a0a0', position: 'below-icon',
                                 children: ""
                             })
                         )}
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins_400Regular'
     },
     focusedLabel: {
-        color: '#6E7FEC',
+        color: '#1c6d79',
         fontFamily: 'Poppins_600SemiBold'
     }
 });

@@ -55,7 +55,7 @@ export const darkTheme = StyleSheet.create({
         backgroundColor: '#3580FF',
     },
     buttonText: {
-        color: '#002055',
+        color: '#FFFFFF',
     },
     buttonBorder: {
         borderColor: '#3580FF',
