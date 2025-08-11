@@ -51,7 +51,7 @@ const { width, height } = Dimensions.get('window');
 
 const SecurityDashboardScreen: React.FC = () => {
   const { themeStyles, isDark } = useTheme();
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
 
   const {

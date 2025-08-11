@@ -26,7 +26,7 @@ const { width } = Dimensions.get("window");
 
 const IdentityDetailsScreen: React.FC = () => {
     const route = useRoute<IdentityDetailsRouteProp>();
-    const navigation = useNavigation();
+    const navigation = useNavigation<any>();
     const { themeStyles } = useTheme();
     const [item, setItem] = useState<IdentityItem | null>(null);
     const [loading, setLoading] = useState(true);
@@ -129,7 +129,7 @@ const IdentityDetailsScreen: React.FC = () => {
             <TouchableOpacity
                 style={[styles.editButton, themeStyles.button]}
                 onPress={() =>
-                    navigation.navigate("EditIdentity" as never, {
+                    navigation.navigate("EditIdentity", {
                         mode: "edit",
                         identityId: item.id,
                         fullName: item.fullName,

@@ -25,7 +25,7 @@ const { width } = Dimensions.get("window")
 type Item = { key: string; title: string; icon: React.ReactNode; onPress?: () => void }
 
 const SettingsScreen: React.FC = () => {
-    const navigation = useNavigation()
+    const navigation = useNavigation<any>()
     const { themeStyles } = useTheme()
 
     const sections: { title: string; data: Item[] }[] = [

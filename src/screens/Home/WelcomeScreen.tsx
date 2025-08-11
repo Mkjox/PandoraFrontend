@@ -22,7 +22,7 @@ export default function WelcomeScreen({
 }: {
   onDone?: () => void
 }) {
-  const navigation = useNavigation()
+  const navigation = useNavigation<any>()
   const scrollRef = useRef<ScrollView>(null)
   const [page, setPage] = useState(0)
     const { themeStyles } = useTheme()

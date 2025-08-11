@@ -20,7 +20,7 @@ const { width, height } = Dimensions.get('window');
 const SecurityChallengeScreen: React.FC = () => {
   const { themeStyles } = useTheme();
   const dispatch = useAppDispatch();
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   const { passwords, loading: passwordsLoading, error: passwordsError } = useAppSelector(s => s.passwords);
 

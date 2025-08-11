@@ -22,7 +22,7 @@ export default function RegisterScreen() {
     const { isDark } = useTheme()
     const themeStyles = isDark ? darkTheme : lightTheme
     const dispatch = useDispatch()
-    const navigation = useNavigation()
+    const navigation = useNavigation<any>()
 
     const [form, setForm] = useState({
         FirstName: '',

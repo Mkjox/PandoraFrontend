@@ -40,7 +40,7 @@ type RouteProps = RouteProp<AddCredParams, 'AddCredentials'>;
 const { width, height } = Dimensions.get('window');
 
 export default function AddCredentialsScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const route = useRoute<RouteProps>();
   const dispatch = useAppDispatch();
   const { themeStyles, isDark } = useTheme();

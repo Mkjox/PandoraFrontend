@@ -25,7 +25,7 @@ type EditCatParams = {
 type RouteProps = RouteProp<EditCatParams, 'EditCategory'>
 
 export default function EditCategoriesScreen() {
-  const navigation = useNavigation()
+  const navigation = useNavigation<any>()
   const route = useRoute<RouteProps>()
   const { isDark } = useTheme()
   const themeStyles = isDark ? darkTheme : lightTheme

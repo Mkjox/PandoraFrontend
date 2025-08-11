@@ -27,7 +27,7 @@ const { width } = Dimensions.get("window");
 
 export default function CategoryDetailsScreen() {
   const route = useRoute<CategoryDetailsRouteProp>();
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const { themeStyles } = useTheme();
 
   const [category, setCategory] = useState<Category | null>(null);

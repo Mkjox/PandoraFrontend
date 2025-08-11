@@ -17,7 +17,7 @@ const { height, width } = Dimensions.get('window');
 
 const AccountScreen: React.FC = () => {
     const { themeStyles } = useTheme();
-    const navigation = useNavigation();
+    const navigation = useNavigation<any>();
 
     // const handleLogout = async () => {
     //     await AuthService.logout();

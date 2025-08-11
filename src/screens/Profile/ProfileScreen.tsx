@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  Pressable,
 } from 'react-native';
 import { useTheme } from '../../context/ThemeContext';
 import { lightTheme, darkTheme } from '../../assets/colors/theme';
@@ -24,7 +25,7 @@ const { width } = Dimensions.get('window');
 const ProfileScreen: React.FC = () => {
   const { themeStyles } = useTheme();
   const dispatch = useAppDispatch();
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   const [profile, setProfile] = useState<any>(null);
 
@@ -113,20 +114,20 @@ const ProfileScreen: React.FC = () => {
 
       <View style={[styles.linksGroup, themeStyles.card, themeStyles.border]}>
 
-        <TouchableOpacity onPress={() => navigation.navigate('EditProfile' as never)} style={styles.linkRow}>
+        <Pressable onPress={() => navigation.navigate('EditProfile' as never)} style={styles.linkRow} android_ripple={{ color: 'rgba(0,0,0,0.06)' }}>
           <MaterialIcons name="edit" size={20} style={themeStyles.iconColor} />
           <Text style={[styles.linkText, themeStyles.text]}>Edit Profile</Text>
-        </TouchableOpacity>
+        </Pressable>
 
-        <TouchableOpacity onPress={() => navigation.navigate('ThemeScreen' as never)} style={styles.linkRow}>
+        <Pressable onPress={() => navigation.navigate('ThemeScreen' as never)} style={styles.linkRow} android_ripple={{ color: 'rgba(0,0,0,0.06)' }}>
           <MaterialIcons name="dark-mode" size={20} style={themeStyles.iconColor} />
           <Text style={[styles.linkText, themeStyles.text]}>Theme</Text>
-        </TouchableOpacity>
+        </Pressable>
 
-        <TouchableOpacity onPress={() => navigation.navigate('Settings' as never)} style={styles.linkRow}>
+        <Pressable onPress={() => navigation.navigate('Settings' as never)} style={styles.linkRow} android_ripple={{ color: 'rgba(0,0,0,0.06)' }}>
           <MaterialIcons name="settings" size={20} style={themeStyles.iconColor} />
           <Text style={[styles.linkText, themeStyles.text]}>Settings</Text>
-        </TouchableOpacity>
+        </Pressable>
 
         <LogoutButton />
 

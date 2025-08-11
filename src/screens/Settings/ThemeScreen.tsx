@@ -20,7 +20,7 @@ const { width } = Dimensions.get('window');
 
 const ThemeScreen: React.FC = () => {
   const { themeStyles, isDark, toggleTheme } = useTheme();
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   return (
     <ScrollView style={[styles.container, themeStyles.container]}>

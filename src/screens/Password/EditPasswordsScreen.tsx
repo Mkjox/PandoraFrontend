@@ -28,7 +28,7 @@ type EditPassParams = {
 type RouteProps = RouteProp<EditPassParams, 'EditPassword'>
 
 export default function EditPasswordsScreen() {
-  const navigation = useNavigation()
+  const navigation = useNavigation<any>()
   const route = useRoute<RouteProps>()
   const { themeStyles, isDark } = useTheme()
 

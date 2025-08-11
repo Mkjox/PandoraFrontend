@@ -27,7 +27,7 @@ type Tool = {
 
 const SecurityToolsScreen: React.FC = () => {
   const { themeStyles } = useTheme()
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   const { passwords } = useAppSelector(s => s.passwords);
   const percentage = useMemo(() => {

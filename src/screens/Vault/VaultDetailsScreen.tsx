@@ -27,7 +27,7 @@ const { width } = Dimensions.get("window");
 
 export default function VaultDetailsScreen() {
   const route = useRoute<VaultDetailsRouteProp>();
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const { themeStyles } = useTheme();
 
   const [vault, setVault] = useState<PersonalVaultPayload & { id: string } | null>(null);
@@ -77,18 +77,18 @@ export default function VaultDetailsScreen() {
       <View style={styles.spacer} />
 
       <View style={[styles.header, themeStyles.card]}>
-        <Text style={[styles.title, themeStyles.text]}>{vault.Title}</Text>
+        <Text style={[styles.title, themeStyles.text]}>{vault.secureTitle}</Text>
         <Text style={[styles.subtitle, themeStyles.textGray]} numberOfLines={1}>
-          {vault.Content}
+          {vault.secureContent}
         </Text>
       </View>
 
-      <View style={[styles.section, themeStyles.card]}>
+      {/* <View style={[styles.section, themeStyles.card]}>
         <Text style={[styles.label, themeStyles.text]}>URL:</Text>
         <Text style={[styles.value, themeStyles.text]}>{vault.Url || "—"}</Text>
-      </View>
+      </View> */}
 
-      {vault.MediaFile ? (
+      {/* {vault.MediaFile ? (
         <View style={[styles.section, themeStyles.card]}>
           <Text style={[styles.label, themeStyles.text]}>Media (base64):</Text>
           <Text
@@ -98,7 +98,7 @@ export default function VaultDetailsScreen() {
             {vault.MediaFile.substring(0, 30)}…
           </Text>
         </View>
-      ) : null}
+      ) : null} */}
 
       {vault.Summary ? (
         <View style={[styles.section, themeStyles.card]}>
@@ -143,10 +143,10 @@ export default function VaultDetailsScreen() {
             tab: "vault",
             vaultId: vault.id,
             userId: vault.UserId,
-            title: vault.Title,
-            content: vault.Content,
-            url: vault.Url,
-            mediaFile: vault.MediaFile,
+            title: vault.secureTitle,
+            content: vault.secureContent,
+            // url: vault.Url,
+            // mediaFile: vault.MediaFile,
             summary: vault.Summary,
             tags: vault.Tags.join(","),
             isLocked: vault.IsLocked,

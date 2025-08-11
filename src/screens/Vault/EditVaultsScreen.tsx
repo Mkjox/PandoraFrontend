@@ -30,7 +30,7 @@ type EditVaultParams = {
 type RouteProps = RouteProp<EditVaultParams, 'EditVault'>
 
 export default function EditVaultScreen() {
-  const navigation = useNavigation()
+  const navigation = useNavigation<any>()
   const route = useRoute<RouteProps>()
   const { themeStyles, isDark } = useTheme()
 
@@ -44,8 +44,8 @@ export default function EditVaultScreen() {
   const [categoriesLoading, setCategoriesLoading] = useState<boolean>(true)
 
   const [form, setForm] = useState<{
-    Title: string
-    Content: string
+    secureTitle: string
+    secureContent: string
     // Url: string
     // MediaFile: string         // base64
     Summary: string
@@ -57,13 +57,13 @@ export default function EditVaultScreen() {
     IsFavorite: boolean
     CategoryId: string
     fieldErrors: {
-      Title?: string
-      Content?: string
+      secureTitle?: string
+      secureContent?: string
       CategoryId?: string
     }
   }>({
-    Title: '',
-    Content: '',
+    secureTitle: '',
+    secureContent: '',
     // Url: '',
     // MediaFile: '',
     Summary: '',
@@ -100,8 +100,8 @@ export default function EditVaultScreen() {
           if (vRes.data && vRes.data.success && isMounted) {
             const v: any = vRes.data.data
             setForm({
-              Title: v.Title,
-              Content: v.Content,
+              secureTitle: v.Title,
+              secureContent: v.Content,
               // Url: v.Url,
               // MediaFile: v.MediaFile ?? '',
               Summary: v.Summary ?? '',
@@ -158,11 +158,11 @@ export default function EditVaultScreen() {
     // validation
     const errs: any = {}
     let hasError = false
-    if (!form.Title.trim()) {
+    if (!form.secureTitle.trim()) {
       errs.Title = 'Title is required.'
       hasError = true
     }
-    if (!form.Content.trim()) {
+    if (!form.secureContent.trim()) {
       errs.Content = 'Content is required.'
       hasError = true
     }
@@ -178,9 +178,10 @@ export default function EditVaultScreen() {
     setSaving(true)
     try {
       const payload: PersonalVaultPayload = {
+        id: '',
         UserId: '', // backend reads from token
-        Title: form.Title,
-        Content: form.Content,
+        secureTitle: form.secureTitle,
+        secureContent: form.secureContent,
         // Url: form.Url,
         // MediaFile: form.MediaFile,
         Summary: form.Summary,
@@ -238,30 +239,30 @@ export default function EditVaultScreen() {
         style={[
           styles.input,
           themeStyles.card,
-          form.fieldErrors.Title && styles.inputError,
+          form.fieldErrors.secureTitle && styles.inputError,
         ]}
         placeholder="Title*"
         placeholderTextColor={isDark ? '#888' : '#666'}
-        value={form.Title}
+        value={form.secureTitle}
         onChangeText={text => handleChange('Title', text)}
       />
-      {form.fieldErrors.Title ? (
-        <Text style={styles.errorText}>{form.fieldErrors.Title}</Text>
+      {form.fieldErrors.secureTitle ? (
+        <Text style={styles.errorText}>{form.fieldErrors.secureTitle}</Text>
       ) : null}
 
       <TextInput
         style={[
           styles.input,
           themeStyles.card,
-          form.fieldErrors.Content && styles.inputError,
+          form.fieldErrors.secureContent && styles.inputError,
         ]}
         placeholder="Content*"
         placeholderTextColor={isDark ? '#888' : '#666'}
-        value={form.Content}
+        value={form.secureContent}
         onChangeText={text => handleChange('Content', text)}
       />
-      {form.fieldErrors.Content ? (
-        <Text style={styles.errorText}>{form.fieldErrors.Content}</Text>
+      {form.fieldErrors.secureContent ? (
+        <Text style={styles.errorText}>{form.fieldErrors.secureContent}</Text>
       ) : null}
 
       {/* <TextInput

@@ -20,7 +20,7 @@ import { AntDesign, Entypo } from '@expo/vector-icons'
 const { width, height } = Dimensions.get('window')
 
 export default function CategoryScreen() {
-  const navigation = useNavigation()
+  const navigation = useNavigation<any>()
   const { themeStyles } = useTheme()
   const dispatch = useAppDispatch()
 

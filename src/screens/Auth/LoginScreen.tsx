@@ -33,7 +33,7 @@ export default function LoginScreen() {
   const [serverError, setServerError] = useState<string | null>(null)
 
   const dispatch = useDispatch()
-  const navigation = useNavigation()
+  const navigation = useNavigation<any>()
   const { isDark } = useTheme()
   const themeStyles = isDark ? darkTheme : lightTheme
 

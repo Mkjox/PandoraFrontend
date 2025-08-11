@@ -26,7 +26,7 @@ const { width, height } = Dimensions.get('window');
 const PremiumScreen: React.FC = () => {
   const { isDark } = useTheme();
   const themeStyles = isDark ? darkTheme : lightTheme;
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const priceText = '$29.99 / year';
 
   // Glow animation for diamond

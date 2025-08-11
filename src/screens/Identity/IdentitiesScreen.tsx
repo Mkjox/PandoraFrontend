@@ -21,7 +21,7 @@ const { width, height } = Dimensions.get("window");
 
 const IdentitiesScreen: React.FC = () => {
     const { themeStyles } = useTheme();
-    const navigation = useNavigation();
+    const navigation = useNavigation<any>();
     const dispatch = useAppDispatch();
 
     const { identities, loading, error } = useAppSelector((state) => state.identity);
@@ -35,7 +35,7 @@ const IdentitiesScreen: React.FC = () => {
     const renderItem = ({ item }: { item: IdentityItem }) => (
         <TouchableOpacity
             style={[styles.card, themeStyles.card]}
-            onPress={() => navigation.navigate("IdentityDetails" as never, { id: item.id } as any)}
+            onPress={() => navigation.navigate("IdentityDetails", { id: item.id } as any)}
         >
             <View style={styles.cardInner}>
                 <Text style={[styles.cardTitle, themeStyles.text]} numberOfLines={1}>
@@ -55,7 +55,7 @@ const IdentitiesScreen: React.FC = () => {
                 <Text style={[styles.title, themeStyles.text]}>Identities</Text>
                 <TouchableOpacity
                     style={[styles.addButton, themeStyles.button]}
-                    onPress={() => navigation.navigate("EditIdentity" as never, {
+                    onPress={() => navigation.navigate("EditIdentity", {
                         mode: "create",
                     } as any)
                     }
