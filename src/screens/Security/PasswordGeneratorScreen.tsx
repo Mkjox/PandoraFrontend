@@ -7,17 +7,16 @@ import {
     Dimensions,
     Switch,
     TouchableOpacity,
-    Clipboard,
     Alert,
 } from 'react-native'
 import Slider from '@react-native-community/slider'
 import { useTheme } from '../../context/ThemeContext'
 import { darkTheme, lightTheme } from '../../assets/colors/theme'
 import CustomButton from '../../components/CustomButton'
+import * as Clipboard from 'expo-clipboard'
 
 const { height, width } = Dimensions.get('window')
 
-// helper to build the charset
 const buildCharset = (
     includeUpper: boolean,
     includeNumbers: boolean,
@@ -30,7 +29,6 @@ const buildCharset = (
     return cs
 }
 
-// random password generator
 const generatePassword = (
     length: number,
     includeUpper: boolean,
@@ -70,7 +68,7 @@ const PasswordGeneratorScreen: React.FC = () => {
 
     const onCopy = () => {
         if (!password) return
-        Clipboard.setString(password)
+        Clipboard.setStringAsync(password)
         Alert.alert('Copied to clipboard')
     }
 
@@ -140,7 +138,7 @@ const PasswordGeneratorScreen: React.FC = () => {
                 <CustomButton
                     onPress={onGenerate}
                     title='Generate'
-                    style={[styles.button, themeStyles.buttonBorder]}
+                    style={[styles.button, themeStyles.button]}
                 />
 
             </View>
@@ -153,7 +151,7 @@ const PasswordGeneratorScreen: React.FC = () => {
                     <CustomButton
                         onPress={onCopy}
                         title='Copy'
-                        style={[styles.copyButton, themeStyles.buttonBorder]}
+                        style={[styles.copyButton, themeStyles.button]}
                     />
                 </View>
             ) : null}
@@ -196,10 +194,8 @@ const styles = StyleSheet.create({
         marginTop: 12,
         height: height * 0.06,
         borderRadius: 8,
-        borderWidth: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#FFFFFF',
         elevation: 5,
         shadowColor: '#000',
         shadowOpacity: 0.1,
@@ -222,10 +218,8 @@ const styles = StyleSheet.create({
     copyButton: {
         height: height * 0.06,
         borderRadius: 8,
-        borderWidth: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#FFFFFF',
         elevation: 5,
         shadowColor: '#000',
         shadowOpacity: 0.1,
@@ -238,4 +232,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default PasswordGeneratorScreen;
+export default PasswordGeneratorScreen

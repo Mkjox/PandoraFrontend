@@ -75,8 +75,8 @@ const HelpScreen: React.FC = () => {
                 })}
             </View>
 
-            <TouchableOpacity style={[styles.emailButton, themeStyles.card, themeStyles.border]} onPress={() => { }}>
-                <Text style={[styles.emailButtonText, themeStyles.text]}>✉️ Email Support</Text>
+            <TouchableOpacity style={[styles.emailButton, themeStyles.button]} onPress={() => { }}>
+                <Text style={[styles.emailButtonText, themeStyles.buttonText]}>✉️ Email Support</Text>
             </TouchableOpacity>
         </ScrollView>
     );

@@ -11,7 +11,7 @@ import {
   StatusBar,
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import SvgUri from 'react-native-svg-uri'
+import { SvgUri } from 'react-native-svg'
 import { darkTheme, lightTheme } from '../../assets/colors/theme'
 import { useTheme } from '../../context/ThemeContext'
 
@@ -25,7 +25,7 @@ export default function WelcomeScreen({
   const navigation = useNavigation<any>()
   const scrollRef = useRef<ScrollView>(null)
   const [page, setPage] = useState(0)
-    const { themeStyles } = useTheme()
+  const { themeStyles } = useTheme()
 
   const pages = [
     {
@@ -64,14 +64,14 @@ export default function WelcomeScreen({
         <SvgUri
           // width="150"
           // height="150"
-          source={require('../../assets/images/topLeft.svg')}
+          uri={require('../../assets/images/topLeft.svg')}
         />
       </View>
       <View style={styles.bottomRightSvg}>
         <SvgUri
           // width="150"
           // height="150"
-          source={require('../../assets/images/bottomRight.svg')}
+          uri={require('../../assets/images/bottomRight.svg')}
         />
       </View>
 

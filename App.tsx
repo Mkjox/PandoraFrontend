@@ -128,7 +128,7 @@ function AppContent() {
   if (isLoadingTheme || hasLaunched === null) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" color="#00adf5" />
+        <ActivityIndicator size="large" color="#1c6d79" />
       </View>
     );
   }
