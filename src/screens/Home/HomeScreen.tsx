@@ -107,7 +107,7 @@ export default function HomeScreen() {
 
   const renderPassword = ({ item }: { item: PasswordItem }) => (
     <TouchableOpacity
-      style={[styles.card, themeStyles.card]}
+      style={[styles.card, themeStyles.card, themeStyles.border]}
       onPress={() => navigation.navigate('PassDetails', { id: item.id })}
     >
       <Text style={[styles.cardTitle, themeStyles.text]}>{item.SiteName}</Text>
@@ -117,7 +117,7 @@ export default function HomeScreen() {
 
   const renderVault = ({ item }: { item: PersonalVaultPayload  }) => (
     <TouchableOpacity
-      style={[styles.card, themeStyles.card]}
+      style={[styles.card, themeStyles.card, themeStyles.border]}
       onPress={() => navigation.navigate('VaultDetails', { id: item.id })}
     >
       <Text style={[styles.cardTitle, themeStyles.text]}>{item.secureTitle}</Text>
@@ -295,8 +295,6 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     borderRadius: 8,
     elevation: 2,
-    borderColor: '#ccc',
-    borderWidth: 0.7
   },
   cardTitle: {
     fontSize: 18,

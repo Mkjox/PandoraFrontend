@@ -277,7 +277,7 @@ export default function AddCredentialsScreen() {
               value={form.SiteName}
               onChangeText={v => handleChange('SiteName', v)}
               mode='outlined'
-              textColor={themeStyles.text.color}
+              textColor={themeStyles.text.color as string}
             />
             <TextInput
               style={[styles.input, themeStyles.inputText, themeStyles.card]}
@@ -285,7 +285,7 @@ export default function AddCredentialsScreen() {
               mode='outlined'
               value={form.UsernameOrEmail}
               onChangeText={v => handleChange('UsernameOrEmail', v)}
-              textColor={themeStyles.text.color}
+              textColor={themeStyles.text.color as string}
             />
             <TextInput
               style={[styles.input, themeStyles.inputText, themeStyles.card]}
@@ -294,7 +294,7 @@ export default function AddCredentialsScreen() {
               secureTextEntry
               value={form.Password}
               onChangeText={v => handleChange('Password', v)}
-              textColor={themeStyles.text.color}
+              textColor={themeStyles.text.color as string}
             />
             <TextInput
               style={[styles.input, themeStyles.inputText, themeStyles.card]}
@@ -303,7 +303,7 @@ export default function AddCredentialsScreen() {
               secureTextEntry
               value={form.PasswordRepeat}
               onChangeText={v => handleChange('PasswordRepeat', v)}
-              textColor={themeStyles.text.color}
+              textColor={themeStyles.text.color as string}
             />
             <TextInput
               style={[styles.input, themeStyles.inputText, themeStyles.card]}
@@ -311,23 +311,32 @@ export default function AddCredentialsScreen() {
               mode='outlined'
               value={form.Notes}
               onChangeText={v => handleChange('Notes', v)}
-              textColor={themeStyles.text.color}
+              textColor={themeStyles.text.color as string}
             />
+
             <TouchableOpacity
-              style={[styles.input, themeStyles.inputText, themeStyles.card]}
+              style={[styles.input, themeStyles.inputText, themeStyles.card, {
+                borderWidth: 2,
+                borderColor: '#57555f',
+                borderRadius: 5,
+                marginBottom: 12,
+                overflow: 'hidden',
+                height: height * 0.065
+              }]}
               onPress={() => showPicker('PasswordExpirationDate')}
             >
               <Text style={{ color: form.PasswordExpirationDate ? '#888' : '#666' }}>
                 {form.PasswordExpirationDate || 'Select Expiration Date'}
               </Text>
             </TouchableOpacity>
-            <Text style={[styles.label, themeStyles.text]}>Category*</Text>
+
+            {/* <Text style={[styles.label, themeStyles.text]}>Category*</Text> */}
             <View style={[styles.pickerContainer, themeStyles.card]}>
               <Picker
                 selectedValue={form.CategoryId}
                 onValueChange={v => handleChange('CategoryId', v)}
               >
-                <Picker.Item label="Select category..." value="" color={isDark ? '#888' : '#666'} />
+                <Picker.Item label="Select category*" value="" color={isDark ? '#888' : '#666'} />
                 {categories.map(c => (
                   <Picker.Item key={c.id} label={c.name} value={c.id} style={themeStyles.inputText} />
                 ))}
@@ -344,7 +353,7 @@ export default function AddCredentialsScreen() {
               mode='outlined'
               value={form.Title}
               onChangeText={v => handleChange('Title', v)}
-              textColor={themeStyles.text.color}
+              textColor={themeStyles.text.color as string}
             />
             <TextInput
               style={[styles.input, themeStyles.inputText, themeStyles.card]}
@@ -352,7 +361,7 @@ export default function AddCredentialsScreen() {
               mode='outlined'
               value={form.Content}
               onChangeText={v => handleChange('Content', v)}
-              textColor={themeStyles.text.color}
+              textColor={themeStyles.text.color as string}
             />
             {/* <TextInput
               style={[styles.input, themeStyles.inputText, themeStyles.card]}
@@ -379,7 +388,7 @@ export default function AddCredentialsScreen() {
               mode='outlined'
               value={form.Summary}
               onChangeText={v => handleChange('Summary', v)}
-              textColor={themeStyles.text.color}
+              textColor={themeStyles.text.color as string}
             />
             <TextInput
               style={[styles.input, themeStyles.inputText, themeStyles.card]}
@@ -387,7 +396,7 @@ export default function AddCredentialsScreen() {
               mode='outlined'
               value={form.Tags}
               onChangeText={v => handleChange('Tags', v)}
-              textColor={themeStyles.text.color}
+              textColor={themeStyles.text.color as string}
             />
 
             <View style={styles.switchRow}>
@@ -435,13 +444,13 @@ export default function AddCredentialsScreen() {
               />
             </View>
 
-            <Text style={[styles.label, themeStyles.text]}>Category*</Text>
+            {/* <Text style={[styles.label, themeStyles.text]}>Category*</Text> */}
             <View style={[styles.pickerContainer, themeStyles.card]}>
               <Picker
                 selectedValue={form.CategoryId}
                 onValueChange={v => handleChange('CategoryId', v)}
               >
-                <Picker.Item label="Select category..." value="" color={isDark ? '#888' : '#666'} />
+                <Picker.Item label="Select category*" value="" color={isDark ? '#888' : '#666'} />
                 {categories.map(c => (
                   <Picker.Item key={c.id} label={c.name} value={c.id} color={isDark ? '#888' : '#666'} />
                 ))}
@@ -458,7 +467,7 @@ export default function AddCredentialsScreen() {
               mode='outlined'
               value={form.Name}
               onChangeText={v => handleChange('Name', v)}
-              textColor={themeStyles.text.color}
+              textColor={themeStyles.text.color as string}
             />
             <TextInput
               style={[styles.input, themeStyles.inputText, themeStyles.card]}
@@ -466,14 +475,14 @@ export default function AddCredentialsScreen() {
               mode='outlined'
               value={form.Description}
               onChangeText={v => handleChange('Description', v)}
-              textColor={themeStyles.text.color}
+              textColor={themeStyles.text.color as string}
             />
           </>
         )}
       </View>
 
       <TouchableOpacity
-        style={[styles.submitButton, themeStyles.border]}
+        style={[styles.submitButton, themeStyles.button]}
         onPress={handleSubmit}
         disabled={submitting}
       >
@@ -548,9 +557,9 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   pickerContainer: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: '#57555f',
+    borderRadius: 5,
     marginBottom: 12,
     overflow: 'hidden',
   },
