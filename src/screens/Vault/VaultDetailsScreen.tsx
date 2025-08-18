@@ -100,38 +100,61 @@ export default function VaultDetailsScreen() {
         </View>
       ) : null} */}
 
-      {vault.Summary ? (
+      {vault.secureSummary ? (
         <View style={[styles.section, themeStyles.card]}>
           <Text style={[styles.label, themeStyles.text]}>Summary:</Text>
-          <Text style={[styles.value, themeStyles.text]}>{vault.Summary}</Text>
+          <Text style={[styles.value, themeStyles.text]}>{vault.secureSummary}</Text>
         </View>
       ) : null}
 
-      {vault.Tags && vault.Tags.length > 0 ? (
+      {vault.secureTags && vault.secureTags.length > 0 ? (
         <View style={[styles.section, themeStyles.card]}>
           <Text style={[styles.label, themeStyles.text]}>Tags:</Text>
           <Text style={[styles.value, themeStyles.text]}>
-            {vault.Tags.join(", ")}
+            {vault.secureTags.join(", ")}
           </Text>
         </View>
       ) : null}
 
-      {vault.IsLocked ? (
+      {vault.isLocked ? (
         <View style={[styles.section, themeStyles.card]}>
           <Text style={[styles.label, themeStyles.text]}>Locked Until:</Text>
           <Text style={[styles.value, themeStyles.text]}>
-            {vault.UnlockDate
-              ? new Date(vault.UnlockDate).toLocaleDateString()
+            {vault.unlockDate
+              ? new Date(vault.unlockDate).toLocaleDateString()
               : "—"}
           </Text>
         </View>
       ) : null}
 
-      {vault.ExpirationDate ? (
+      {vault.expirationDate ? (
         <View style={[styles.section, themeStyles.card]}>
           <Text style={[styles.label, themeStyles.text]}>Expires:</Text>
           <Text style={[styles.value, themeStyles.text]}>
-            {new Date(vault.ExpirationDate).toLocaleDateString()}
+            {new Date(vault.expirationDate).toLocaleDateString()}
+          </Text>
+        </View>
+      ) : null}
+
+      {vault.isFavorite ? (
+        <View style={[styles.section, themeStyles.card]}>
+          <Text style={[styles.label, themeStyles.text]}>Is it Favorite:</Text>
+          <Text style={[styles.value, themeStyles.text]}>{vault.isFavorite}</Text>
+        </View>
+      ) : null}
+
+      {vault.isShareable ? (
+        <View style={[styles.section, themeStyles.card]}>
+          <Text style={[styles.label, themeStyles.text]}>Is Shareable:</Text>
+          <Text style={[styles.value, themeStyles.text]}>{vault.isShareable}</Text>
+        </View>
+      ) : null}
+
+      {vault.categoryName ? (
+        <View style={[styles.section, themeStyles.card]}>
+          <Text style={[styles.label, themeStyles.text]}>Category Name:</Text>
+          <Text style={[styles.value, themeStyles.text]}>
+            {vault.categoryName}
           </Text>
         </View>
       ) : null}
@@ -142,18 +165,18 @@ export default function VaultDetailsScreen() {
           navigation.navigate("AddCredentials" as any, {
             tab: "vault",
             vaultId: vault.id,
-            userId: vault.UserId,
+            userId: vault.userId,
             title: vault.secureTitle,
             content: vault.secureContent,
             // url: vault.Url,
             // mediaFile: vault.MediaFile,
-            summary: vault.Summary,
-            tags: vault.Tags.join(","),
-            isLocked: vault.IsLocked,
-            unlockDate: vault.UnlockDate,
-            expirationDate: vault.ExpirationDate,
-            categoryId: vault.CategoryId,
-            isFavorite: vault.IsFavorite,
+            summary: vault.secureSummary,
+            tags: vault.secureTags.join(","),
+            isLocked: vault.isLocked,
+            unlockDate: vault.unlockDate,
+            expirationDate: vault.expirationDate,
+            categoryId: vault.categoryId,
+            isFavorite: vault.isFavorite,
           })
         }
       >

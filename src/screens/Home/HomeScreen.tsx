@@ -21,6 +21,7 @@ import { PersonalVaultPayload } from '../../types/personalVault.types'
 import CategoryService from '../../services/CategoryService'
 import PasswordService from '../../services/PasswordService'
 import PersonalVaultService from '../../services/PersonalVaultService'
+import { ScrollView } from 'react-native-gesture-handler'
 
 const { width, height } = Dimensions.get('window')
 
@@ -164,6 +165,7 @@ export default function HomeScreen() {
   return (
     <View style={[themeStyles.container, styles.container]}>
       <View style={styles.inner}>
+        <ScrollView showsVerticalScrollIndicator={false}>
 
         <View style={styles.headerRow}>
           <Text style={[styles.title, themeStyles.text]}>Vault</Text>
@@ -213,6 +215,7 @@ export default function HomeScreen() {
           />
         )}
 
+
         {/* {filterType === 'notes' ? (
           <FlatList
             data={filteredVaults}
@@ -230,6 +233,7 @@ export default function HomeScreen() {
             showsVerticalScrollIndicator={false}
           />
         )} */}
+        </ScrollView>
       </View>
     </View>
   )

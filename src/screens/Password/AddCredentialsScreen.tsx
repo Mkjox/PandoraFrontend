@@ -51,25 +51,27 @@ export default function AddCredentialsScreen() {
 
   // form state
   const [form, setForm] = useState<Record<string, any>>({
-    SiteName: '',
-    UsernameOrEmail: '',
-    Password: '',
-    PasswordRepeat: '',
-    Notes: '',
-    PasswordExpirationDate: '',
-    Title: '',
-    Content: '',
-    // Url: '',
-    // MediaFile: '',
-    Summary: '',
-    Tags: '',
+    // password
+    siteName: '',
+    usernameOrEmail: '',
+    notes: '',
+    password: '',
+    passwordRepeat: '',
+
+    // personal vault
+    title: '',
+    content: '',
+    summary: '',
+    tags: '',
     IsLocked: false,
-    UnlockDate: '',
-    ExpirationDate: '',
+    unlockDate: '',
+    expirationDate: '',
     IsShareable: false,
     IsFavorite: false,
-    Name: '',
-    Description: '',
+
+    // category
+    name: '',
+    description: '',
     CategoryId: '',
   });
 
@@ -154,7 +156,6 @@ export default function AddCredentialsScreen() {
             : {}),
         };
         const res = (await dispatch(
-          // @ts-ignore
           PasswordService.createPassword(payload)
         )) as ServiceResult<any>;
         if (!res.success) throw new Error(res.message);
@@ -164,22 +165,22 @@ export default function AddCredentialsScreen() {
       else if (selectedTab === 'vault') {
         const payload: PersonalVaultPayload = {
           UserId: userId,
-          Title: form.Title,
-          Content: form.Content,
+          title: form.Title,
+          content: form.Content,
           // Url: form.Url,
           // MediaFile: form.MediaFile,
-          Summary: form.Summary,
-          Tags: form.Tags.split(',').map((t: string) => t.trim()),
-          IsLocked: form.IsLocked,
-          IsShareable: form.IsShareable,
-          UnlockDate: form.UnlockDate
+          summary: form.Summary,
+          tags: form.Tags.split(',').map((t: string) => t.trim()),
+          isLocked: form.IsLocked,
+          isShareable: form.IsShareable,
+          isFavorite: form.IsFavorite,
+          unlockDate: form.UnlockDate
             ? new Date(form.UnlockDate).toISOString()
             : undefined,
-          CategoryId: form.CategoryId,
-          ExpirationDate: form.ExpirationDate
+          categoryId: form.CategoryId,
+          expirationDate: form.ExpirationDate
             ? new Date(form.ExpirationDate).toISOString()
             : undefined,
-          IsFavorite: form.IsFavorite,
         };
         const res = (await dispatch(
           // @ts-ignore
@@ -403,12 +404,11 @@ export default function AddCredentialsScreen() {
               <Text style={themeStyles.text}>Lock this item?</Text>
               <Switch
                 value={form.IsLocked}
-                onValueChange={v => handleChange('isLocked', v)}
-
+                onValueChange={v => handleChange('IsLocked', v)}
               />
             </View>
 
-            {form.isLocked && (
+            {form.IsLocked && (
               <>
                 <TouchableOpacity
                   style={[styles.input, themeStyles.inputText, themeStyles.card]}
@@ -433,14 +433,14 @@ export default function AddCredentialsScreen() {
               <Text style={themeStyles.text}>Allow sharing?</Text>
               <Switch
                 value={form.IsShareable}
-                onValueChange={v => handleChange('isShareable', v)}
+                onValueChange={v => handleChange('IsShareable', v)}
               />
             </View>
             <View style={styles.switchRow}>
               <Text style={themeStyles.text}>Mark as favorite?</Text>
               <Switch
-                value={form.isFavorite}
-                onValueChange={v => handleChange('isFavorite', v)}
+                value={form.IsFavorite}
+                onValueChange={v => handleChange('IsFavorite', v)}
               />
             </View>
 

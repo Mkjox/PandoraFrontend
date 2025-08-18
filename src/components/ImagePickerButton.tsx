@@ -61,13 +61,13 @@ export default function ImagePickerButton({
 
   return (
     <TouchableOpacity
-      style={[styles.button, style, themeStyles.buttonBorder]}
+      style={[styles.button, style]}
       onPress={pickImage}
       disabled={loading}
     >
       {loading
         ? <ActivityIndicator />
-        : <Text style={[styles.text, textStyle, themeStyles.text]}>{title}</Text>
+        : <Text style={[styles.text, textStyle]}>{title}</Text>
       }
     </TouchableOpacity>
   )
@@ -79,7 +79,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 8,
     alignItems: 'center',
-    borderWidth: 1
   },
   text: {
     fontWeight: '600',

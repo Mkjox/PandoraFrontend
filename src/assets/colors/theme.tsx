@@ -87,7 +87,7 @@ export const darkTheme = StyleSheet.create({
     },
     border: {
         borderColor: '#57555f',
-        borderWidth: 1
+        borderWidth: 2
     },
     borderTop: {
         borderColor: '#343434',

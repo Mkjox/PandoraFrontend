@@ -148,8 +148,8 @@ export default function EditProfileScreen() {
         <ImagePickerButton
           title="Change Photo"
           onImagePicked={handleImagePicked}
-          style={styles.changePhotoButton}
-          textStyle={styles.changePhotoText}
+          style={[styles.changePhotoButton, themeStyles.button]}
+          textStyle={[styles.changePhotoText, themeStyles.buttonText]}
         />
       </View>
 
@@ -158,12 +158,13 @@ export default function EditProfileScreen() {
         <Text style={styles.successText}>{serverMessage}</Text>
       ) : null}
 
-      <View style={[styles.fieldCard, themeStyles.card]}>
+      <View style={[styles.fieldCard]}>
         <Text style={[styles.label, themeStyles.text]}>Username</Text>
         <TextInput
           style={[
             styles.input,
             themeStyles.text,
+            themeStyles.border,
             usernameError ? styles.inputError : null,
           ]}
           value={username}
@@ -180,12 +181,13 @@ export default function EditProfileScreen() {
         ) : null}
       </View>
 
-      <View style={[styles.fieldCard, themeStyles.card]}>
+      <View style={[styles.fieldCard]}>
         <Text style={[styles.label, themeStyles.text]}>Email</Text>
         <TextInput
           style={[
             styles.input,
             themeStyles.text,
+            themeStyles.border,
             emailError ? styles.inputError : null,
           ]}
           value={email}
@@ -266,7 +268,6 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     marginTop: 8,
     justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
     elevation: 5,
     shadowColor: '#000',
     shadowOpacity: 0.1,
@@ -289,8 +290,6 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 16,
     fontFamily: 'Poppins_400Regular',
-    borderWidth: 1,
-    borderColor: '#ccc',
     borderRadius: 10,
     padding: 10,
   },
@@ -316,7 +315,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
     elevation: 5,
     shadowColor: '#000',
     shadowOpacity: 0.1,
