@@ -7,11 +7,11 @@ import {
   ActivityIndicator,
   ScrollView,
   TouchableOpacity,
-  StatusBar
+  StatusBar,
+  Pressable,
 } from 'react-native';
 import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
 import { useTheme } from "../../context/ThemeContext";
-import { lightTheme, darkTheme } from "../../assets/colors/theme";
 import PasswordService from "../../services/PasswordService";
 import { PasswordItem } from "../../types/password.types";
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
@@ -22,6 +22,7 @@ type RootStackParamList = {
 type PassDetailsRouteProp = RouteProp<RootStackParamList, 'PassDetails'>;
 
 const { width } = Dimensions.get('window');
+const H_PADDING = Math.round(width * 0.05);
 
 const PassDetailsScreen: React.FC = () => {
   const route = useRoute<PassDetailsRouteProp>();
@@ -65,148 +66,227 @@ const PassDetailsScreen: React.FC = () => {
     );
   }
 
+  const formatDate = (d?: string | null) => {
+    if (!d) return '—';
+    try {
+      return new Date(d).toLocaleDateString();
+    } catch {
+      return d;
+    }
+  };
+
   return (
-    <ScrollView style={themeStyles.container}>
-      <View style={styles.topSection}>
-        <Text style={[styles.topText, themeStyles.text]}>
-          Password Details
-        </Text>
-      </View>
+    <ScrollView style={themeStyles.container} contentContainerStyle={styles.scrollContent}>
       <View style={styles.spacer} />
 
-      <View style={[styles.header, themeStyles.card, themeStyles.border]}>
-        <Text style={[styles.title, themeStyles.text]}>{item.SiteName}</Text>
-        <Text style={[styles.subtitle, themeStyles.textGray]}>{item.UsernameOrEmail}</Text>
+      <View style={[styles.headerRow, themeStyles.card, themeStyles.border]}>
+        <View style={[styles.avatar, themeStyles.iconBg]}>
+          <Text style={[styles.avatarText, themeStyles.text]}>
+            {item.SiteName ? item.SiteName.charAt(0).toUpperCase() : 'P'}
+          </Text>
+        </View>
+
+        <View style={styles.headerText}>
+          <Text numberOfLines={1} style={[styles.title, themeStyles.text]}>{item.SiteName}</Text>
+          <Text numberOfLines={1} style={[styles.subtitle, themeStyles.textGray]}>
+            {item.UsernameOrEmail}
+          </Text>
+        </View>
+
+        <TouchableOpacity
+          style={styles.headerAction}
+          onPress={() => navigation.navigate('EditPassword', { passwordId: item.id })}
+        >
+          <MaterialIcons name="edit" size={20} color={themeStyles.iconColor.color} />
+        </TouchableOpacity>
       </View>
 
-      <View style={[styles.section, themeStyles.card, themeStyles.border]}>
+      {/* Password Card */}
+      <View style={[styles.card, themeStyles.card, themeStyles.border]}>
         <View style={styles.row}>
-          <Text style={[styles.label, themeStyles.text]}>Password:</Text>
-          <TouchableOpacity onPress={() => setShowPassword(v => !v)}>
-            <Entypo
-              name={showPassword ? 'eye' : 'eye-with-line'}
-              size={20}
-              color={themeStyles.iconColor.color}
-            />
-          </TouchableOpacity>
+          <Text style={[styles.label, themeStyles.text]}>Password</Text>
+          <Pressable
+            onPress={() => setShowPassword(v => !v)}
+            hitSlop={8}
+            accessibilityRole="button"
+            accessibilityLabel="Toggle password visibility"
+          >
+            <Entypo name={showPassword ? 'eye' : 'eye-with-line'} size={20} color={themeStyles.iconColor.color} />
+          </Pressable>
         </View>
-        <Text style={[styles.value, themeStyles.text]}>
-          {showPassword ? item.Password : '••••••••'}
-        </Text>
+
+        <View style={styles.valueWrap}>
+          <Text selectable style={[styles.value, themeStyles.text]}>
+            {showPassword ? item.Password : '••••••••'}
+          </Text>
+        </View>
+
+        <View style={styles.metaRow}>
+          <View style={styles.metaItem}>
+            <Text style={[styles.metaLabel, themeStyles.text]}>Expires</Text>
+            <Text style={[styles.metaValue, themeStyles.text]}>{formatDate(item.PasswordExpirationDate)}</Text>
+          </View>
+          <View style={styles.metaItem}>
+            <Text style={[styles.metaLabel, themeStyles.text]}>Category</Text>
+            <Text style={[styles.metaValue, themeStyles.text]}>{item.CategoryId ?? '—'}</Text>
+          </View>
+        </View>
       </View>
 
       {item.Notes ? (
-        <View style={[styles.section, themeStyles.card, themeStyles.border]}>
-          <Text style={[styles.label, themeStyles.text]}>Notes:</Text>
+        <View style={[styles.card, themeStyles.card, themeStyles.border]}>
+          <Text style={[styles.label, themeStyles.text]}>Notes</Text>
           <Text style={[styles.value, themeStyles.text]}>{item.Notes}</Text>
         </View>
       ) : null}
 
-      {item.PasswordExpirationDate ? (
-        <View style={[styles.section, themeStyles.card, themeStyles.border]}>
-          <Text style={[styles.label, themeStyles.text]}>Expires:</Text>
-          <Text style={[styles.value, themeStyles.text]}>
-            {new Date(item.PasswordExpirationDate).toLocaleDateString()}
-          </Text>
-        </View>
-      ) : null}
+      {/* Commented navigation data left intact as requested */}
+      {/* onPress={() => navigation.navigate('EditPassword' as any, { 
+          passwordId: item.id,
+          userId: item.UserId,
+          siteName: item.SiteName,
+          usernameOrEmail: item.UsernameOrEmail,
+          password: item.Password,
+          notes: item.Notes ?? '',
+          passwordExpirationDate: item.PasswordExpirationDate ?? undefined,
+          categoryId: item.CategoryId,
+         })} */}
 
-      {item.CategoryId ? (
-        <View style={[styles.section, themeStyles.card, themeStyles.border]}>
-          <Text style={[styles.label, themeStyles.text]}>Category ID:</Text>
-          <Text style={[styles.value, themeStyles.text]}>{item.CategoryId}</Text>
-        </View>
-      ) : null}
+      <View style={styles.actionRow}>
+        <TouchableOpacity
+          style={[styles.actionBtn, themeStyles.button]}
+          onPress={() => navigation.navigate('EditPassword', { passwordId: item.id })}
+        >
+          <MaterialIcons name="edit" size={18} color={themeStyles.buttonText.color} />
+          <Text style={[styles.actionText, themeStyles.buttonText]}>Edit</Text>
+        </TouchableOpacity>
+      </View>
 
-      <TouchableOpacity
-        style={[styles.editButton, themeStyles.buttonBorder]}
-        onPress={() => navigation.navigate('EditPassword', { passwordId: item.id })}
-      // onPress={() => navigation.navigate('EditPassword' as any, { 
-      //   passwordId: item.id,
-      //   userId: item.UserId,
-      //   siteName: item.SiteName,
-      //   usernameOrEmail: item.UsernameOrEmail,
-      //   password: item.Password,
-      //   notes: item.Notes ?? '',
-      //   passwordExpirationDate: item.PasswordExpirationDate ?? undefined,
-      //   categoryId: item.CategoryId,
-      //  })}
-      >
-        <MaterialIcons name="edit" size={20} color={themeStyles.buttonText.color} />
-        <Text style={[styles.editText, themeStyles.buttonText]}>Edit</Text>
-      </TouchableOpacity>
+      <View style={{ height: 32 }} />
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollContent: {
+    paddingHorizontal: H_PADDING,
+    paddingBottom: 24,
+  },
   spacer: {
-    height: StatusBar.currentHeight || 20
-
+    height: StatusBar.currentHeight || 20,
   },
   center: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
   },
-  header: {
-    marginHorizontal: width * 0.05,
-    marginBottom: 16,
-    padding: 16,
-    borderRadius: 8,
-    elevation: 1,
+
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 14,
+    borderRadius: 12,
+    marginTop: 8,
+    marginBottom: 14,
   },
-  topSection: {
-    paddingHorizontal: width * 0.05,
-    paddingTop: StatusBar.currentHeight,
+  avatar: {
+    width: 52,
+    height: 52,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  topText: {
-    fontSize: 20,
+  avatarText: {
+    fontSize: 22,
     fontFamily: 'Poppins_700Bold',
   },
+  headerText: {
+    flex: 1,
+    marginLeft: 12,
+  },
+  headerAction: {
+    marginLeft: 8,
+    padding: 6,
+  },
+
   title: {
-    fontSize: 20,
-    fontFamily: 'Poppins_700Bold'
+    fontSize: 18,
+    fontFamily: 'Poppins_700Bold',
   },
   subtitle: {
-    fontSize: 14,
+    fontSize: 13,
     fontFamily: 'Poppins_400Regular',
-    marginTop: 4
+    marginTop: 4,
+    opacity: 0.85,
   },
-  section: {
-    marginHorizontal: width * 0.05,
+
+  card: {
+    borderRadius: 12,
+    padding: 14,
     marginBottom: 12,
-    padding: 12,
-    borderRadius: 8,
-    elevation: 2,
   },
-  label: {
-    fontSize: 14,
-    fontFamily: 'Poppins_600SemiBold'
-  },
-  value: {
-    fontSize: 16,
-    fontFamily: 'Poppins_400Regular',
-    marginTop: 4
-  },
+
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
-  editButton: {
+
+  label: {
+    fontSize: 13,
+    fontFamily: 'Poppins_600SemiBold',
+    marginBottom: 8,
+  },
+
+  valueWrap: {
+    marginTop: 8,
+    marginBottom: 10,
+  },
+
+  value: {
+    fontSize: 16,
+    fontFamily: 'Poppins_500Medium',
+  },
+
+  metaRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 8,
+  },
+
+  metaItem: {
+    flex: 1,
+  },
+
+  metaLabel: {
+    fontSize: 12,
+    fontFamily: 'Poppins_600SemiBold',
+    opacity: 0.7,
+  },
+
+  metaValue: {
+    fontSize: 13,
+    fontFamily: 'Poppins_400Regular',
+    marginTop: 4,
+  },
+
+  actionRow: {
+    marginTop: 18,
+    alignItems: 'center',
+  },
+
+  actionBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 24,
-    padding: 12,
-    marginHorizontal: width * 0.05,
-    borderRadius: 8,
-    justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1
+    paddingVertical: 12,
+    paddingHorizontal: 22,
+    borderRadius: 12,
+    elevation: 2,
   },
-  editText: {
-    fontSize: 16,
+
+  actionText: {
+    marginLeft: 8,
+    fontSize: 15,
     fontFamily: 'Poppins_500Medium',
   },
 });

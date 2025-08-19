@@ -25,7 +25,7 @@ import { ScrollView } from 'react-native-gesture-handler'
 
 const { width, height } = Dimensions.get('window')
 
-type FilterType = 'all' | 'password' | 'notes'
+type FilterType = 'all' | 'password' | 'personal vault'
 
 type SectionDataItem =
   | ({ type: 'password' } & PasswordItem)
@@ -76,7 +76,7 @@ export default function HomeScreen() {
         data: filteredPasswords.map(p => ({ type: 'password' as const, ...p }))
       },
       {
-        title: 'Secure Notes',
+        title: 'Personal Vaults',
         data: filteredVaults.map(v => ({ type: 'vault' as const, ...v }))
       }
     ]
@@ -85,7 +85,7 @@ export default function HomeScreen() {
   const typeOptions: { key: FilterType; label: string }[] = [
     { key: 'all', label: 'All' },
     { key: 'password', label: 'Password' },
-    { key: 'notes', label: 'Secured Notes' },
+    { key: 'personal vault', label: 'Personal Vault' },
   ]
 
   const renderType = ({ item }: { item: { key: FilterType; label: string } }) => {
@@ -137,9 +137,9 @@ export default function HomeScreen() {
     <Text style={[styles.sectionHeader, themeStyles.text]}>{section.title}</Text>
   )
 
-  const loading = (filterType === 'notes' ? vaultLoading : pwLoading)
-  const error = filterType === 'notes' ? vaultError : pwError
-  const data = filterType === 'notes' ? filteredVaults : filteredPasswords
+  const loading = (filterType === 'personal vault' ? vaultLoading : pwLoading)
+  const error = filterType === 'personal vault' ? vaultError : pwError
+  const data = filterType === 'personal vault' ? filteredVaults : filteredPasswords
 
   if (loading) {
     return (
@@ -216,7 +216,7 @@ export default function HomeScreen() {
         )}
 
 
-        {/* {filterType === 'notes' ? (
+        {/* {filterType === 'personal vault' ? (
           <FlatList
             data={filteredVaults}
             keyExtractor={item => item.id}
@@ -271,7 +271,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins_500Medium'
   },
   typeList: {
-    marginTop: height * 0.02
+    marginTop: height * 0.02,
+    marginBottom: height * 0.02
   },
   typeButton: {
     paddingHorizontal: 12,
