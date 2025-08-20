@@ -21,7 +21,7 @@ import {
 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const PremiumScreen: React.FC = () => {
   const { isDark } = useTheme();
@@ -29,24 +29,25 @@ const PremiumScreen: React.FC = () => {
   const navigation = useNavigation<any>();
   const priceText = '$29.99 / year';
 
-  // Glow animation for diamond
+  // Diamond animation
   const scaleAnim = useRef(new Animated.Value(1)).current;
-
   useEffect(() => {
-    Animated.sequence([
-      Animated.timing(scaleAnim, {
-        toValue: 1.15,
-        duration: 600,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: true,
-      }),
-      Animated.timing(scaleAnim, {
-        toValue: 1,
-        duration: 600,
-        easing: Easing.in(Easing.ease),
-        useNativeDriver: true,
-      }),
-    ]).start();
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(scaleAnim, {
+          toValue: 1.15,
+          duration: 800,
+          easing: Easing.out(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(scaleAnim, {
+          toValue: 1,
+          duration: 800,
+          easing: Easing.in(Easing.ease),
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
   }, [scaleAnim]);
 
   const features = [
@@ -82,33 +83,38 @@ const PremiumScreen: React.FC = () => {
         
         {/* Hero Section */}
         <LinearGradient
-          colors={[themeStyles.button.backgroundColor, isDark ? '#222' : '#eee']}
+          colors={['#ff7eb3', '#ff758c']}
           style={styles.hero}
         >
           <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
-            <Ionicons name="diamond" size={72} color="#fff" />
+            <Ionicons name="diamond" size={80} color="#fff" />
           </Animated.View>
-          <Text style={styles.heroTitle}>Unlock Premium</Text>
+          <Text style={styles.heroTitle}>Go Premium</Text>
           <Text style={styles.heroSubtitle}>
-            Get exclusive features, top security, and VIP support.
+            Unlock all features, get priority support, and keep your data ultra-secure.
           </Text>
         </LinearGradient>
 
         {/* Features Section */}
         <View style={styles.featuresSection}>
-          <Text style={[styles.sectionTitle, themeStyles.text]}>What You Get</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {features.map((f) => (
-              <View
-                key={f.key}
-                style={[styles.featureCard, themeStyles.card, themeStyles.border]}
-              >
-                <View style={styles.featureIcon}>{f.icon}</View>
-                <Text style={[styles.featureTitle, themeStyles.text]}>{f.title}</Text>
-                <Text style={[styles.featureDesc, themeStyles.textGray]}>{f.desc}</Text>
-              </View>
-            ))}
-          </ScrollView>
+          {features.map((f) => (
+            <View
+              key={f.key}
+              style={[styles.featureCard, themeStyles.card, themeStyles.border]}
+            >
+              <View style={styles.featureIcon}>{f.icon}</View>
+              <Text style={[styles.featureTitle, themeStyles.text]}>{f.title}</Text>
+              <Text style={[styles.featureDesc, themeStyles.textGray]}>{f.desc}</Text>
+            </View>
+          ))}
+        </View>
+
+        {/* Price Section */}
+        <View style={[styles.priceCard, themeStyles.card]}>
+          <Text style={[styles.priceText, themeStyles.text]}>{priceText}</Text>
+          <Text style={[styles.priceSub, themeStyles.textGray]}>
+            That’s less than $2.50/month!
+          </Text>
         </View>
 
         {/* Terms Section */}
@@ -124,8 +130,8 @@ const PremiumScreen: React.FC = () => {
         </View>
       </ScrollView>
 
-      {/* Footer CTA */}
-      <View style={[styles.footer, themeStyles.card]}>
+      {/* Sticky CTA */}
+      <View style={styles.footer}>
         <TouchableOpacity
           style={styles.ctaButton}
           onPress={() => navigation.navigate('PurchaseFlow' as never)}
@@ -134,7 +140,7 @@ const PremiumScreen: React.FC = () => {
             colors={['#ff7eb3', '#ff758c']}
             style={styles.ctaGradient}
           >
-            <Text style={styles.ctaText}>Upgrade Now — {priceText}</Text>
+            <Text style={styles.ctaText}>Unlock for {priceText}</Text>
           </LinearGradient>
         </TouchableOpacity>
       </View>
@@ -148,39 +154,35 @@ const styles = StyleSheet.create({
     paddingTop: StatusBar.currentHeight || 40,
     paddingBottom: 40,
     alignItems: 'center',
+    borderBottomLeftRadius: 40,
+    borderBottomRightRadius: 40,
   },
   heroTitle: {
-    fontSize: 28,
+    fontSize: 30,
     fontFamily: 'Poppins_700Bold',
     color: '#fff',
     marginTop: 12,
   },
   heroSubtitle: {
-    fontSize: 14,
+    fontSize: 15,
     fontFamily: 'Poppins_400Regular',
     color: '#fff',
     marginTop: 8,
-    paddingHorizontal: 40,
+    paddingHorizontal: 30,
     textAlign: 'center',
   },
   featuresSection: {
     marginTop: 24,
     paddingHorizontal: 16,
   },
-  sectionTitle: {
-    fontSize: 18,
-    fontFamily: 'Poppins_600SemiBold',
-    marginBottom: 12,
-  },
   featureCard: {
-    width: width * 0.6,
-    marginRight: 16,
-    padding: 16,
-    borderRadius: 12,
+    padding: 20,
+    borderRadius: 14,
+    marginBottom: 16,
     alignItems: 'center',
   },
   featureIcon: {
-    marginBottom: 12,
+    marginBottom: 10,
   },
   featureTitle: {
     fontSize: 16,
@@ -191,12 +193,27 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: 'Poppins_400Regular',
     textAlign: 'center',
+    marginTop: 6,
+  },
+  priceCard: {
+    marginTop: 24,
+    marginHorizontal: 16,
+    padding: 20,
+    borderRadius: 14,
+    alignItems: 'center',
+  },
+  priceText: {
+    fontSize: 20,
+    fontFamily: 'Poppins_700Bold',
+  },
+  priceSub: {
+    fontSize: 13,
     marginTop: 4,
   },
   noteContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 32,
+    marginTop: 24,
     paddingHorizontal: 16,
     marginBottom: 100,
   },
@@ -211,17 +228,16 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: '100%',
     padding: 16,
+    backgroundColor: 'transparent',
   },
-  ctaButton: {
-    width: '100%',
-  },
+  ctaButton: { width: '100%' },
   ctaGradient: {
-    paddingVertical: 14,
-    borderRadius: 8,
+    paddingVertical: 16,
+    borderRadius: 30,
     alignItems: 'center',
   },
   ctaText: {
-    fontSize: 16,
+    fontSize: 17,
     fontFamily: 'Poppins_700Bold',
     color: '#fff',
   },

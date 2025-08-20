@@ -21,7 +21,6 @@ import { PersonalVaultPayload } from '../../types/personalVault.types'
 import CategoryService from '../../services/CategoryService'
 import PasswordService from '../../services/PasswordService'
 import PersonalVaultService from '../../services/PersonalVaultService'
-import { ScrollView } from 'react-native-gesture-handler'
 
 const { width, height } = Dimensions.get('window')
 
@@ -98,7 +97,6 @@ export default function HomeScreen() {
         <Text style={[
           active ? themeStyles.text : themeStyles.textGray,
           active ? styles.activeText : styles.passiveText
-
         ]}>
           {item.label}
         </Text>
@@ -116,7 +114,7 @@ export default function HomeScreen() {
     </TouchableOpacity>
   )
 
-  const renderVault = ({ item }: { item: PersonalVaultPayload  }) => (
+  const renderVault = ({ item }: { item: PersonalVaultPayload }) => (
     <TouchableOpacity
       style={[styles.card, themeStyles.card, themeStyles.border]}
       onPress={() => navigation.navigate('VaultDetails', { id: item.id })}
@@ -139,7 +137,6 @@ export default function HomeScreen() {
 
   const loading = (filterType === 'personal vault' ? vaultLoading : pwLoading)
   const error = filterType === 'personal vault' ? vaultError : pwError
-  const data = filterType === 'personal vault' ? filteredVaults : filteredPasswords
 
   if (loading) {
     return (
@@ -162,78 +159,63 @@ export default function HomeScreen() {
     )
   }
 
+  const listHeader = (
+    <View>
+      <View style={styles.headerRow}>
+        <Text style={[styles.title, themeStyles.text]}>Vault</Text>
+        <AddButton />
+      </View>
+
+      <Searchbar
+        placeholder="Search"
+        onChangeText={setSearchQuery}
+        value={searchQuery}
+        style={styles.searchBar}
+      />
+
+      <FlatList
+        data={typeOptions}
+        horizontal
+        keyExtractor={t => t.key}
+        renderItem={renderType}
+        showsHorizontalScrollIndicator={false}
+        style={styles.typeList}
+      />
+    </View>
+  )
+
   return (
     <View style={[themeStyles.container, styles.container]}>
       <View style={styles.inner}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-
-        <View style={styles.headerRow}>
-          <Text style={[styles.title, themeStyles.text]}>Vault</Text>
-          <AddButton />
-        </View>
-
-        <Searchbar
-          placeholder="Search"
-          onChangeText={setSearchQuery}
-          value={searchQuery}
-          style={styles.searchBar}
-        />
-
-        <FlatList
-          data={typeOptions}
-          horizontal
-          keyExtractor={t => t.key}
-          renderItem={renderType}
-          showsHorizontalScrollIndicator={false}
-          style={styles.typeList}
-        />
-
         {filterType === 'all' ? (
           <SectionList
             sections={sections}
             keyExtractor={(item, idx) => `${item.type}-${item.id}-${idx}`}
             renderItem={renderSectionItem}
             renderSectionHeader={renderSectionHeader}
+            ListHeaderComponent={listHeader}
             contentContainerStyle={styles.listContent}
             showsVerticalScrollIndicator={false}
           />
         ) : filterType === 'password' ? (
           <SectionList
-            sections={[{title: '', data: filteredPasswords}]}
+            sections={[{ title: '', data: filteredPasswords }]}
             keyExtractor={(item: PasswordItem) => item.id}
             renderItem={renderPassword}
+            ListHeaderComponent={listHeader}
             contentContainerStyle={styles.listContent}
             showsVerticalScrollIndicator={false}
           />
         ) : (
           <SectionList
-            sections={[{title: '', data: filteredVaults}]}
-            keyExtractor={(item:PersonalVaultPayload) => item.id}
+            sections={[{ title: '', data: filteredVaults }]}
+            keyExtractor={(item: PersonalVaultPayload) => item.id}
             renderItem={renderVault}
+            ListHeaderComponent={listHeader}
             contentContainerStyle={styles.listContent}
             showsVerticalScrollIndicator={false}
           />
         )}
-
-
-        {/* {filterType === 'personal vault' ? (
-          <FlatList
-            data={filteredVaults}
-            keyExtractor={item => item.id}
-            renderItem={renderVault}
-            contentContainerStyle={styles.passwordList}
-            showsVerticalScrollIndicator={false}
-          />
-        ) : (
-          <FlatList
-            data={filteredPasswords}
-            keyExtractor={item => item.id}
-            renderItem={renderPassword}
-            contentContainerStyle={styles.passwordList}
-            showsVerticalScrollIndicator={false}
-          />
-        )} */}
-        </ScrollView>
       </View>
     </View>
   )
@@ -281,7 +263,7 @@ const styles = StyleSheet.create({
   },
   activeTypeButton: {
     borderBottomWidth: 2,
-    borderBottomColor: '#6E7FEC',
+    borderBottomColor: '#6E7FEC'
   },
   activeText: {
     fontSize: 14,
@@ -299,7 +281,7 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 12,
     borderRadius: 8,
-    elevation: 2,
+    elevation: 2
   },
   cardTitle: {
     fontSize: 18,
@@ -314,9 +296,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: 'Poppins_600SemiBold',
     marginTop: 16,
-    marginBottom: 8,
+    marginBottom: 8
   },
   listContent: {
-    paddingBottom: 40,
+    paddingBottom: 40
   },
 })
