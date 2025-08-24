@@ -4,35 +4,39 @@ import {
     Text,
     StyleSheet,
     StatusBar,
-    ScrollView,
     Dimensions,
     FlatList,
     TouchableOpacity,
+    KeyboardAvoidingView,
+    Platform,
 } from 'react-native';
 import { Searchbar } from 'react-native-paper';
 import { useTheme } from '../../context/ThemeContext';
-import { lightTheme, darkTheme } from '../../assets/colors/theme';
 
-const { height, width } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const SearchScreen: React.FC = () => {
     const { themeStyles, isDark } = useTheme();
-
     const [searchQuery, setSearchQuery] = useState('');
-
-    // PLACEHOLDER DATA
-    const [recent, setRecent] = useState<string[]>([
-        'Email account',
-        'Bank login',
-        'Work VPN',
-    ]);
+    const [recent, setRecent] = useState<string[]>([]);
 
     const onChangeSearch = (query: string) => setSearchQuery(query);
+
+    const addToRecent = (query: string) => {
+        if (!query.trim()) return;
+        setRecent((prev) => {
+            const updated = [query, ...prev.filter((item) => item !== query)];
+            return updated.slice(0, 10); // keep only 10 recent
+        });
+    };
 
     const clearRecent = () => setRecent([]);
 
     return (
-        <ScrollView style={[styles.container, themeStyles.container]}>
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            style={[styles.container, themeStyles.container]}
+        >
             <View style={styles.spacer} />
 
             <Text style={[styles.title, themeStyles.text]}>Search Vault</Text>
@@ -41,18 +45,28 @@ const SearchScreen: React.FC = () => {
             <View style={styles.section}>
                 <Searchbar
                     placeholder="Type to search..."
-                    placeholderTextColor={isDark ? '888' : '666'}
+                    placeholderTextColor={isDark ? '#888' : '#666'}
                     onChangeText={onChangeSearch}
                     value={searchQuery}
-                    style={[styles.searchBar, themeStyles.buttonBorder]}
+                    style={[
+                        styles.searchBar,
+                        { backgroundColor: themeStyles.container.backgroundColor },
+                    ]}
                     inputStyle={[themeStyles.text, { alignSelf: 'center' }]}
+                    onSubmitEditing={() => {
+                        addToRecent(searchQuery);
+                        setSearchQuery('');
+                    }}
+                    blurOnSubmit={false}
                 />
             </View>
 
             {/* Recent Searches */}
             <View style={styles.section}>
                 <View style={styles.sectionHeaderRow}>
-                    <Text style={[styles.sectionHeader, themeStyles.text]}>Recent Searches</Text>
+                    <Text style={[styles.sectionHeader, themeStyles.text]}>
+                        Recent Searches
+                    </Text>
                     {recent.length > 0 && (
                         <TouchableOpacity onPress={clearRecent}>
                             <Text style={[styles.clearText, themeStyles.text]}>Clear</Text>
@@ -61,29 +75,38 @@ const SearchScreen: React.FC = () => {
                 </View>
 
                 {recent.length === 0 ? (
-                    <Text style={[styles.helperText, themeStyles.text]}>No recent searches</Text>
+                    <Text style={[styles.helperText, themeStyles.text]}>
+                        No recent searches
+                    </Text>
                 ) : (
                     <FlatList
                         data={recent}
                         keyExtractor={(item) => item}
                         renderItem={({ item }) => (
-                            <TouchableOpacity style={[styles.recentItem, themeStyles.card, themeStyles.border]}>
-                                <Text style={[styles.recentText, themeStyles.text]}>{item}</Text>
+                            <TouchableOpacity
+                                style={[styles.recentItem, themeStyles.card, themeStyles.border]}
+                                onPress={() => setSearchQuery(item)}
+                            >
+                                <Text style={[styles.recentText, themeStyles.text]}>
+                                    {item}
+                                </Text>
                             </TouchableOpacity>
                         )}
+                        keyboardShouldPersistTaps="handled"
+                        style={{ backgroundColor: themeStyles.container.backgroundColor }}
                     />
                 )}
             </View>
-        </ScrollView>
+        </KeyboardAvoidingView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
     },
     spacer: {
-        height: StatusBar.currentHeight || 20
+        height: StatusBar.currentHeight || 20,
     },
     title: {
         fontSize: 22,
@@ -97,6 +120,8 @@ const styles = StyleSheet.create({
     },
     searchBar: {
         borderRadius: 8,
+        borderWidth: 1,
+        borderColor: '#ccc'
     },
     sectionHeaderRow: {
         flexDirection: 'row',
