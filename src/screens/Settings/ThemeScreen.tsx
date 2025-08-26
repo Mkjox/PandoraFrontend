@@ -65,7 +65,7 @@ const ThemeScreen: React.FC = () => {
               />
             )}
             right={props => (
-              <List.Icon {...props} icon="chevron-right" color={themeStyles.icon.color} />
+              <List.Icon {...props} icon="chevron-right" color={themeStyles.icon.color as string} />
             )}
             onPress={() => navigation.navigate('ThemeColor' as never)}
             style={themeStyles.card}

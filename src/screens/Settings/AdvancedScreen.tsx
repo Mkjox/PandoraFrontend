@@ -15,7 +15,8 @@ import { lightTheme, darkTheme } from '../../assets/colors/theme';
 const { width } = Dimensions.get('window');
 
 const AdvancedScreen: React.FC = () => {
-    const { themeStyles } = useTheme();
+    const { isDark } = useTheme();
+    const themeStyles = isDark ? darkTheme : lightTheme;
 
     const [autoBackup, setAutoBackup] = useState(true);
 

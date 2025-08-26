@@ -73,9 +73,9 @@ const PasswordService = {
     }
   },
 
-  updatePassword: (id: string, payload: PasswordUpdatePayload) => async (dispatch: AppDispatch) => {
+  updatePassword: (payload: PasswordUpdatePayload) => async (dispatch: AppDispatch) => {
     try {
-      const resp = await api.put<RawPassword>(`/passwordvaults/${id}`, payload);
+      const resp = await api.put<RawPassword>(`/passwordvaults/`, payload);
       const item = mapRaw(resp.data);
       dispatch(updatePasswordAction(item));
       dispatch(PasswordService.getPasswordsByUser() as any);

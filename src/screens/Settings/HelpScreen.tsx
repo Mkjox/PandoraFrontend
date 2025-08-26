@@ -21,7 +21,8 @@ if (Platform.OS === 'android') {
 const { width } = Dimensions.get('window');
 
 const HelpScreen: React.FC = () => {
-    const { themeStyles } = useTheme();
+    const { isDark } = useTheme();
+    const themeStyles = isDark ? darkTheme : lightTheme;
 
     const [openIndex, setOpenIndex] = useState<number | null>(null);
 

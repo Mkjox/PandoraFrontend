@@ -12,11 +12,13 @@ import {
 } from 'react-native';
 import { Searchbar } from 'react-native-paper';
 import { useTheme } from '../../context/ThemeContext';
+import { darkTheme, lightTheme } from '../../assets/colors/theme';
 
 const { width } = Dimensions.get('window');
 
 const SearchScreen: React.FC = () => {
-    const { themeStyles, isDark } = useTheme();
+    const { isDark } = useTheme();
+    const themeStyles = isDark ? darkTheme : lightTheme;
     const [searchQuery, setSearchQuery] = useState('');
     const [recent, setRecent] = useState<string[]>([]);
 

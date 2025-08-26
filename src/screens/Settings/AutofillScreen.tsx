@@ -21,7 +21,8 @@ const { height, width } = Dimensions.get('window');
 const AUTO_FILL_KEY = 'autofillEnabled';
 
 const AutofillScreen: React.FC = () => {
-  const { themeStyles } = useTheme();
+    const { isDark } = useTheme();
+    const themeStyles = isDark ? darkTheme : lightTheme;
 
   const [autofillEnabled, setAutofillEnabled] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);

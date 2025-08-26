@@ -6,7 +6,8 @@ import { lightTheme, darkTheme } from '../../assets/colors/theme';
 const { width } = Dimensions.get('window');
 
 const AboutScreen: React.FC = () => {
-    const { themeStyles } = useTheme();
+      const { isDark } = useTheme();
+      const themeStyles = isDark ? darkTheme : lightTheme;
 
     return (
         <ScrollView style={[styles.container, themeStyles.container]}>

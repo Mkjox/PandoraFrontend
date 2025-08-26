@@ -9,14 +9,15 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import { useTheme } from '../../context/ThemeContext';
-import { lightTheme, darkTheme } from '../../assets/colors/theme';
 import AuthService from '../../services/AuthService';
 import { useNavigation } from '@react-navigation/native';
+import { darkTheme, lightTheme } from '../../assets/colors/theme';
 
 const { height, width } = Dimensions.get('window');
 
 const AccountScreen: React.FC = () => {
-    const { themeStyles } = useTheme();
+    const { isDark } = useTheme();
+    const themeStyles = isDark ? darkTheme : lightTheme;
     const navigation = useNavigation<any>();
 
     // const handleLogout = async () => {

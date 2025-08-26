@@ -16,7 +16,8 @@ import { lightTheme, darkTheme } from '../../assets/colors/theme';
 const { height, width } = Dimensions.get('window');
 
 const SecurityScreen: React.FC = () => {
-    const { themeStyles } = useTheme();
+    const { isDark } = useTheme();
+    const themeStyles = isDark ? darkTheme : lightTheme;
 
     const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
     const [biometricEnabled, setBiometricEnabled] = useState(false);

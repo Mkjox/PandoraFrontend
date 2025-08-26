@@ -150,7 +150,7 @@ const SecurityDashboardScreen: React.FC = () => {
   // Render a single weak password item
   const renderWeakItem = ({ item }: { item: PasswordItem }) => (
     <TouchableOpacity
-      style={[styles.listItem, themeStyles.card, themeStyles.card]}
+      style={[styles.listItem, themeStyles.card, themeStyles.border, themeStyles.card, themeStyles.border]}
       onPress={() =>
         navigation.navigate('PassDetails' as never, { id: item.id } as any)
       }
@@ -172,7 +172,7 @@ const SecurityDashboardScreen: React.FC = () => {
   // Render upcoming expiration item
   const renderExpItem = ({ item }: { item: PasswordItem }) => (
     <TouchableOpacity
-      style={[styles.listItem, themeStyles.card]}
+      style={[styles.listItem, themeStyles.card, themeStyles.border]}
       onPress={() =>
         navigation.navigate('PassDetails' as never, { id: item.id } as any)
       }
@@ -197,44 +197,44 @@ const SecurityDashboardScreen: React.FC = () => {
 
       {/* Summary Stats */}
       <View style={styles.statsContainer}>
-        <View style={[styles.statCard, themeStyles.card]}>
+        <View style={[styles.statCard, themeStyles.card, themeStyles.border]}>
           <Text style={[styles.statLabel, themeStyles.text]}>Total Passwords</Text>
           <Text style={[styles.statValue, themeStyles.text]}>{passwords.length}</Text>
         </View>
-        <View style={[styles.statCard, themeStyles.card]}>
+        <View style={[styles.statCard, themeStyles.card, themeStyles.border]}>
           <Text style={[styles.statLabel, themeStyles.text]}>Strong</Text>
           <Text style={[styles.statValue, themeStyles.text]}>
             {strengthCounts.Strong.length}
           </Text>
         </View>
-        <View style={[styles.statCard, themeStyles.card]}>
+        <View style={[styles.statCard, themeStyles.card, themeStyles.border]}>
           <Text style={[styles.statLabel, themeStyles.text]}>Medium</Text>
           <Text style={[styles.statValue, themeStyles.text]}>
             {strengthCounts.Medium.length}
           </Text>
         </View>
-        <View style={[styles.statCard, themeStyles.card]}>
+        <View style={[styles.statCard, themeStyles.card, themeStyles.border]}>
           <Text style={[styles.statLabel, themeStyles.text]}>Weak</Text>
           <Text style={[styles.statValue, themeStyles.text]}>
             {strengthCounts.Weak.length}
           </Text>
         </View>
-        <View style={[styles.statCard, themeStyles.card]}>
+        <View style={[styles.statCard, themeStyles.card, themeStyles.border]}>
           <Text style={[styles.statLabel, themeStyles.text]}>Score (%)</Text>
           <Text style={[styles.statValue, themeStyles.text]}>{securityScore}</Text>
         </View>
-        <View style={[styles.statCard, themeStyles.card]}>
+        <View style={[styles.statCard, themeStyles.card, themeStyles.border]}>
           <Text style={[styles.statLabel, themeStyles.text]}>Vaults</Text>
           <Text style={[styles.statValue, themeStyles.text]}>{vaults.length}</Text>
         </View>
-        <View style={[styles.statCard, themeStyles.card]}>
+        <View style={[styles.statCard, themeStyles.card, themeStyles.border]}>
           <Text style={[styles.statLabel, themeStyles.text]}>Categories</Text>
           <Text style={[styles.statValue, themeStyles.text]}>{categories.length}</Text>
         </View>
       </View>
 
       {/* Recommendations / Actions */}
-      <View style={[styles.section, themeStyles.card]}>
+      <View style={[styles.section, themeStyles.card, themeStyles.border]}>
         <Text style={[styles.sectionTitle, themeStyles.text]}>Recommendations</Text>
         {strengthCounts.Weak.length > 0 ? (
           <Text style={[styles.recommendationText, themeStyles.text]}>
@@ -259,7 +259,7 @@ const SecurityDashboardScreen: React.FC = () => {
       </View>
 
       {/* Two-Factor Toggle */}
-      {/* <View style={[styles.section, themeStyles.card]}> */}
+      {/* <View style={[styles.section, themeStyles.card, themeStyles.border]}> */}
       {/* <Text style={[styles.sectionTitle, themeStyles.text]}>
           Two-Factor Authentication
         </Text>
@@ -285,7 +285,7 @@ const SecurityDashboardScreen: React.FC = () => {
             renderItem={renderWeakItem}
             horizontal={false}
             scrollEnabled={false}
-            contentContainerStyle={[styles.listContainer, themeStyles.card]}
+            contentContainerStyle={[styles.listContainer, themeStyles.card, themeStyles.border]}
           />
           <TouchableOpacity
             style={[styles.actionButton, themeStyles.buttonBorder]}
@@ -316,7 +316,7 @@ const SecurityDashboardScreen: React.FC = () => {
       )}
 
       {/* Quick Actions */}
-      {/* <View style={[styles.section, themeStyles.card]}>
+      {/* <View style={[styles.section, themeStyles.card, themeStyles.border]}>
         <Text style={[styles.sectionTitle, themeStyles.text]}>Quick Actions</Text>
         <TouchableOpacity
           style={[styles.actionButton, themeStyles.button]}
@@ -369,7 +369,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 12,
     alignItems: 'center',
-    elevation: 2,
+    elevation: 1,
+    borderWidth: 1,
   },
   statLabel: {
     fontSize: 14,
@@ -384,7 +385,8 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 8,
     marginBottom: 24,
-    elevation: 2,
+    elevation: 1,
+    borderWidth: 1,
   },
   sectionTitle: {
     fontSize: 16,
@@ -423,7 +425,8 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 8,
     marginBottom: 8,
-    elevation: 3,
+    elevation: 1,
+    borderWidth: 1,
   },
   listIcon: {
     width: 32,
