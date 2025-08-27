@@ -19,13 +19,13 @@ import { ServiceResult } from '../types/service.types';
 function mapRaw(raw: RawPassword): PasswordItem {
   return {
     id: raw.id,
-    UserId: raw.userId,
-    SiteName: raw.secureSiteName,
-    UsernameOrEmail: raw.secureUsernameOrEmail,
-    Password: raw.password,
-    Notes: raw.secureNotes,
-    PasswordExpirationDate: raw.passwordExpirationDate,
-    CategoryId: raw.categoryId,
+    userId: raw.userId,
+    siteName: raw.secureSiteName,
+    usernameOrEmail: raw.secureUsernameOrEmail,
+    password: raw.password,
+    notes: raw.secureNotes,
+    passwordExpirationDate: raw.passwordExpirationDate,
+    categoryId: raw.categoryId,
   };
 }
 
@@ -73,21 +73,73 @@ const PasswordService = {
     }
   },
 
-  updatePassword: (payload: PasswordUpdatePayload) => async (dispatch: AppDispatch) => {
-    try {
-      const resp = await api.put<RawPassword>(`/passwordvaults/`, payload);
-      const item = mapRaw(resp.data);
-      dispatch(updatePasswordAction(item));
-      dispatch(PasswordService.getPasswordsByUser() as any);
-      return { success: true, data: item };
-    } catch (err: any) {
-      console.error("Failed to update password:", err);
-      return {
-        success: false,
-        message: err.response?.data?.message || "Failed to update password",
-      };
-    }
-  },
+updatePassword: (payload: PasswordUpdatePayload) => async (dispatch: AppDispatch) => {
+  try {
+    const dto = {
+      id: payload.id,
+      siteName: payload.siteName ?? null,
+      usernameOrEmail: payload.usernameOrEmail ?? null,
+      notes: payload.notes ?? null,
+      lastPasswordChangeDate: payload.lastPasswordChangeDate ?? null,
+      password: payload.password ?? null,
+      newPassword: payload.newPassword ?? null,
+      newPasswordRepeat: payload.newPasswordRepeat ?? null,
+      categoryId: payload.categoryId ?? null,
+    };
+
+    const resp = await api.put<RawPassword>(
+      `/passwordvaults`, 
+      { dto },
+      { headers: { "Content-Type": "application/json" } }
+    );
+
+    const item = mapRaw(resp.data);
+    dispatch(updatePasswordAction(item));
+    dispatch(PasswordService.getPasswordsByUser() as any);
+
+    return { success: true, data: item };
+  } catch (err: any) {
+    console.error("Failed to update password:", err.response?.data || err);
+    return {
+      success: false,
+      message: err.response?.data?.message || "Failed to update password",
+    };
+  }
+},
+
+  // updatePassword:
+  //   (idOrPayload: string | PasswordUpdatePayload, maybePayload?: PasswordUpdatePayload) =>
+  //   async (dispatch: AppDispatch): Promise<ServiceResult<PasswordItem>> => {
+  //     // normalize args: allow updatePassword(id, payload) or updatePassword(payloadWithId)
+  //     let id: string | undefined;
+  //     let payload: PasswordUpdatePayload;
+
+  //     if (typeof idOrPayload === 'string') {
+  //       id = idOrPayload;
+  //       payload = maybePayload as PasswordUpdatePayload;
+  //     } else {
+  //       payload = idOrPayload as PasswordUpdatePayload;
+  //       id = (payload as any).id || undefined;
+  //     }
+
+  //     try {
+  //       const url = id ? `/passwordvaults/${id}` : `/passwordvaults`;
+  //       // ensure JSON type
+  //       const resp = await api.put<RawPassword>(url, payload, {
+  //         headers: { 'Content-Type': 'application/json' },
+  //       });
+  //       const item = mapRaw(resp.data);
+  //       dispatch(updatePasswordAction(item));
+  //       dispatch(PasswordService.getPasswordsByUser() as any);
+  //       return { success: true, data: item };
+  //     } catch (err: any) {
+  //       console.error('Failed to update password:', err);
+  //       return {
+  //         success: false,
+  //         message: err.response?.data?.message || 'Failed to update password',
+  //       };
+  //     }
+  //   },
 
   deletePassword: (id: string) => async (dispatch: AppDispatch) => {
     try {

@@ -109,8 +109,8 @@ export default function HomeScreen() {
       style={[styles.card, themeStyles.card, themeStyles.border]}
       onPress={() => navigation.navigate('PassDetails', { id: item.id })}
     >
-      <Text style={[styles.cardTitle, themeStyles.text]}>{item.SiteName}</Text>
-      <Text style={[styles.cardSubtitle, themeStyles.textGray]}>{item.UsernameOrEmail}</Text>
+      <Text style={[styles.cardTitle, themeStyles.text]}>{item.siteName}</Text>
+      <Text style={[styles.cardSubtitle, themeStyles.textGray]}>{item.usernameOrEmail}</Text>
     </TouchableOpacity>
   )
 

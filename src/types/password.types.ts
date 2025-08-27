@@ -36,12 +36,11 @@ export interface PasswordPayload {
 
 /** Payload for updating an existing password */
 export interface PasswordUpdatePayload {
-  /** always include the id when updating */
   id: string;
   siteName?: string | null;
   usernameOrEmail?: string | null;
   notes?: string | null;
-  /** the current password, if required by the API */
+  lastPasswordChangeDate?: string | null; // ISO string
   password?: string | null;
   newPassword?: string | null;
   newPasswordRepeat?: string | null;

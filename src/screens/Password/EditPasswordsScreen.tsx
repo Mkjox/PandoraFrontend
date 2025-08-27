@@ -57,12 +57,12 @@ const EditPasswordScreen: React.FC = () => {
         // res.data is PasswordItem (capitalized keys) from mapRaw
         setForm((prev) => ({
           ...prev,
-          siteName: (res.data as any).SiteName ?? "",
-          usernameOrEmail: (res.data as any).UsernameOrEmail ?? "",
-          notes: (res.data as any).Notes ?? "",
-          password: (res.data as any).Password ?? "",
-          categoryId: (res.data as any).CategoryId ?? "",
-          passwordExpirationDate: (res.data as any).PasswordExpirationDate ?? "",
+          siteName: (res.data as any).siteName ?? "",
+          usernameOrEmail: (res.data as any).usernameOrEmail ?? "",
+          notes: (res.data as any).notes ?? "",
+          password: (res.data as any).password ?? "",
+          categoryId: (res.data as any).categoryId ?? "",
+          passwordExpirationDate: (res.data as any).passwordExpirationDate ?? "",
         }));
       } else {
         Alert.alert("Error", res.message || "Failed to load password");
@@ -94,7 +94,7 @@ const EditPasswordScreen: React.FC = () => {
 
     if (form.newPassword) {
       payload.newPassword = form.newPassword;
-      // payload.newPasswordRepeat = form.newPasswordRepeat;
+      payload.newPasswordRepeat = form.newPasswordRepeat;
       payload.password = form.password; // current password
     } else {
       // if no new password, optionally include current password as 'password' if backend requires it

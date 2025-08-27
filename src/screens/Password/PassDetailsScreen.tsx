@@ -82,14 +82,14 @@ const PassDetailsScreen: React.FC = () => {
       <View style={[styles.headerRow, themeStyles.card, themeStyles.border]}>
         <View style={[styles.avatar, themeStyles.iconBg]}>
           <Text style={[styles.avatarText, themeStyles.text]}>
-            {item.SiteName ? item.SiteName.charAt(0).toUpperCase() : 'P'}
+            {item.siteName ? item.siteName.charAt(0).toUpperCase() : 'P'}
           </Text>
         </View>
 
         <View style={styles.headerText}>
-          <Text numberOfLines={1} style={[styles.title, themeStyles.text]}>{item.SiteName}</Text>
+          <Text numberOfLines={1} style={[styles.title, themeStyles.text]}>{item.siteName}</Text>
           <Text numberOfLines={1} style={[styles.subtitle, themeStyles.textGray]}>
-            {item.UsernameOrEmail}
+            {item.usernameOrEmail}
           </Text>
         </View>
 
@@ -117,40 +117,40 @@ const PassDetailsScreen: React.FC = () => {
 
         <View style={styles.valueWrap}>
           <Text selectable style={[styles.value, themeStyles.text]}>
-            {showPassword ? item.Password : '••••••••'}
+            {showPassword ? item.password : '••••••••'}
           </Text>
         </View>
 
         <View style={styles.metaRow}>
           <View style={styles.metaItem}>
             <Text style={[styles.metaLabel, themeStyles.text]}>Expires</Text>
-            <Text style={[styles.metaValue, themeStyles.text]}>{formatDate(item.PasswordExpirationDate)}</Text>
+            <Text style={[styles.metaValue, themeStyles.text]}>{formatDate(item.passwordExpirationDate)}</Text>
           </View>
           <View style={styles.metaItem}>
             <Text style={[styles.metaLabel, themeStyles.text]}>Category</Text>
-            <Text style={[styles.metaValue, themeStyles.text]}>{item.CategoryId ?? '—'}</Text>
+            <Text style={[styles.metaValue, themeStyles.text]}>{item.categoryId ?? '—'}</Text>
           </View>
         </View>
       </View>
 
-      {item.Notes ? (
+      {item.notes ? (
         <View style={[styles.card, themeStyles.card, themeStyles.border]}>
           <Text style={[styles.label, themeStyles.text]}>Notes</Text>
-          <Text style={[styles.value, themeStyles.text]}>{item.Notes}</Text>
+          <Text style={[styles.value, themeStyles.text]}>{item.notes}</Text>
         </View>
       ) : null}
 
       {/* Commented navigation data left intact as requested */}
-      {/* onPress={() => navigation.navigate('EditPassword' as any, { 
-          passwordId: item.id,
-          userId: item.UserId,
-          siteName: item.SiteName,
-          usernameOrEmail: item.UsernameOrEmail,
-          password: item.Password,
-          notes: item.Notes ?? '',
-          passwordExpirationDate: item.PasswordExpirationDate ?? undefined,
-          categoryId: item.CategoryId,
-         })} */}
+      {/* onPress={() => navigation.navigate('EditPassword' as any, {
+        passwordId: item.id,
+        userId: item.userId,
+        siteName: item.siteName,
+        usernameOrEmail: item.usernameOrEmail,
+        password: item.password,
+        notes: item.notes ?? '',
+        passwordExpirationDate: item.passwordExpirationDate ?? undefined,
+        categoryId: item.categoryId,
+      })} */}
 
       <View style={styles.actionRow}>
         <TouchableOpacity
