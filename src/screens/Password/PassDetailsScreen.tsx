@@ -93,12 +93,12 @@ const PassDetailsScreen: React.FC = () => {
           </Text>
         </View>
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.headerAction}
           onPress={() => navigation.navigate('EditPassword', { passwordId: item.id })}
         >
           <MaterialIcons name="edit" size={20} color={themeStyles.iconColor.color} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       {/* Password Card */}
@@ -127,7 +127,7 @@ const PassDetailsScreen: React.FC = () => {
             <Text style={[styles.metaValue, themeStyles.text]}>{formatDate(item.passwordExpirationDate)}</Text>
           </View>
           <View style={styles.metaItem}>
-            <Text style={[styles.metaLabel, themeStyles.text]}>Category</Text>
+            <Text style={[styles.metaLabel, themeStyles.text]}>Category Id</Text>
             <Text style={[styles.metaValue, themeStyles.text]}>{item.categoryId ?? '—'}</Text>
           </View>
         </View>

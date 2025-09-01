@@ -27,7 +27,7 @@ type EditPasswordRouteProp = RouteProp<RootStackParamList, "EditPassword">;
 const { width } = Dimensions.get("window");
 const H_PADDING = Math.round(width * 0.05);
 
-const EditPasswordScreen: React.FC = () => {
+const EditPasswordsScreen: React.FC = () => {
   const route = useRoute<EditPasswordRouteProp>();
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
@@ -241,4 +241,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EditPasswordScreen;
+export default EditPasswordsScreen;

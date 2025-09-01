@@ -77,12 +77,36 @@ const PersonalVaultService = {
     }
   },
 
+  /**
+   * Update vault (maps frontend keys -> backend DTO shape and wraps as { dto })
+   * Backend expects: PersonalVaultUpdateDto (PascalCase fields). We send:
+   * PUT /personalvaults/ { dto: { Id, Title, Content, Summary, Tags, IsLocked, UnlockDate, CategoryId, ExpirationDate, IsFavorite, LastModifiedDate } }
+   */
   updateVault: (vaultId: string, payload: PersonalVaultUpdatePayload) => async (dispatch: AppDispatch): Promise<ServiceResult<VaultItem>> => {
     try {
-      const response = await api.put<VaultItem>(`/personalvaults/${vaultId}`, payload);
-      dispatch(updateVaultAction(response.data));
+      // Map frontend payload to backend DTO (PascalCase). Use null for missing values (backend may require presence)
+      const dto: any = {
+        Id: vaultId,
+        Title: (payload.secureTitle ?? payload.title ?? null),
+        Content: (payload.secureContent ?? payload.content ?? null),
+        Summary: (payload.secureSummary ?? payload.summary ?? null),
+        Tags: Array.isArray(payload.secureTags ?? payload.tags) ? (payload.secureTags ?? payload.tags) : (payload.secureTags ? payload.secureTags : (payload.tags ? payload.tags : [])),
+        IsLocked: typeof payload.IsLocked !== 'undefined' ? payload.IsLocked : (typeof payload.isLocked !== 'undefined' ? payload.isLocked : false),
+        UnlockDate: payload.unlockDate ?? payload.UnlockDate ?? null,
+        CategoryId: payload.categoryId ?? payload.CategoryId ?? null,
+        ExpirationDate: payload.expirationDate ?? payload.ExpirationDate ?? null,
+        IsFavorite: typeof payload.IsFavorite !== 'undefined' ? payload.IsFavorite : (typeof payload.isFavorite !== 'undefined' ? payload.isFavorite : false),
+        LastModifiedDate: new Date().toISOString()
+      };
 
-      // re-fetching the list
+      // ensure tags is at least an empty array (backend expects array or null)
+      if (!Array.isArray(dto.Tags)) dto.Tags = [];
+
+      const response = await api.put<VaultItem>(`/personalvaults/`, { dto }, {
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      dispatch(updateVaultAction(response.data));
       dispatch<any>(PersonalVaultService.getPersonalVaults());
       return {
         success: true,
@@ -90,10 +114,10 @@ const PersonalVaultService = {
       };
     }
     catch (err: any) {
-      console.error('Failed to update vault:', err.response?.data?.message || err.message);
+      console.error('Failed to update vault:', err.response?.data?.message || err.message || err);
       return {
         success: false,
-        data: err.response?.data?.message || 'Failed to update personal vault',
+        message: err.response?.data?.message || err.message || 'Failed to update personal vault',
       };
     }
   },

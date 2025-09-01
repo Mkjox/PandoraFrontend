@@ -1,226 +1,190 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  StatusBar,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
-  StatusBar,
   ActivityIndicator,
-  Switch,
   Alert,
-} from 'react-native'
-import { Picker } from '@react-native-picker/picker'
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native'
-import { useTheme } from '../../context/ThemeContext'
-import { darkTheme, lightTheme } from '../../assets/colors/theme'
-import { PersonalVaultPayload } from '../../types/personalVault.types'
-import { Category } from '../../types/category.types'
-import { ServiceResult } from '../../types/service.types'
-import api from '../../services/api'
-import AuthService from '../../services/AuthService'
-import PersonalVaultService from '../../services/PersonalVaultService'
-import CategoryService from '../../services/CategoryService'
-import ImagePickerButton from '../../components/ImagePickerButton'
+  Switch,
+} from "react-native";
+import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
+import { useTheme } from "../../context/ThemeContext";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import PersonalVaultService from "../../services/PersonalVaultService";
+import CategoryService from "../../services/CategoryService";
+import { ServiceResult } from "../../types/service.types";
+import { PersonalVaultPayload } from "../../types/personalVault.types";
+import { MaterialIcons } from "@expo/vector-icons";
 
 type EditVaultParams = {
-  EditVault: { vaultId: string }
-}
+  EditVault: { vaultId: string };
+};
+type RouteProps = RouteProp<EditVaultParams, "EditVault">;
 
-type RouteProps = RouteProp<EditVaultParams, 'EditVault'>
+const { width } = Dimensions.get("window");
+const H_PADDING = Math.round(width * 0.05);
 
-export default function EditVaultScreen() {
-  const navigation = useNavigation<any>()
-  const route = useRoute<RouteProps>()
-  const { themeStyles, isDark } = useTheme()
+export default function EditVaultsScreen() {
+  const navigation = useNavigation<any>();
+  const route = useRoute<RouteProps>();
+  const dispatch = useAppDispatch();
+  const { themeStyles, isDark } = useTheme();
 
-  const vaultId = route.params.vaultId
+  const vaultId = route.params.vaultId;
 
-  const [loading, setLoading] = useState<boolean>(true)
-  const [saving, setSaving] = useState<boolean>(false)
-  const [error, setError] = useState<string | null>(null)
+  // categories from redux (keeps consistent with other screens)
+  const { categories, loading: catLoading } = useAppSelector((s) => s.category);
 
-  const [categories, setCategories] = useState<Category[]>([])
-  const [categoriesLoading, setCategoriesLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(true);
+  const [saving, setSaving] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const [form, setForm] = useState<{
-    secureTitle: string
-    secureContent: string
-    // Url: string
-    // MediaFile: string         // base64
-    Summary: string
-    Tags: string
-    IsLocked: boolean
-    IsShareable: boolean
-    UnlockDate: string
-    ExpirationDate: string
-    IsFavorite: boolean
-    CategoryId: string
-    fieldErrors: {
-      secureTitle?: string
-      secureContent?: string
-      CategoryId?: string
-    }
-  }>({
-    secureTitle: '',
-    secureContent: '',
-    // Url: '',
-    // MediaFile: '',
-    Summary: '',
-    Tags: '',
-    IsLocked: false,
-    IsShareable: false,
-    UnlockDate: '',
-    ExpirationDate: '',
-    IsFavorite: false,
-    CategoryId: '',
-    fieldErrors: {},
-  })
+  const [form, setForm] = useState({
+    id: vaultId,
+    title: "",
+    content: "",
+    summary: "",
+    tags: "", // comma separated in UI
+    isLocked: false,
+    unlockDate: "",
+    categoryId: "",
+    expirationDate: "",
+    isFavorite: false,
+    lastModifiedDate: "",
+    fieldErrors: {} as Record<string, string | undefined>,
+  });
 
-  // Fetch vault + categories
+  // fetch categories + vault
   useEffect(() => {
-    let isMounted = true
-      ; (async () => {
-        // 1) categories
-        try {
-          const catRes = await api.get<ServiceResult<Category[]>>('/categories')
-          if (catRes.data && catRes.data.success && isMounted) {
-            setCategories(catRes.data.data)
-          }
-        } catch (_e) {
-        } finally {
-          if (isMounted) setCategoriesLoading(false)
-        }
+    let mounted = true;
+    (async () => {
+      setLoading(true);
+      try {
+        // fetch categories via redux thunk (if not loaded)
+        dispatch(CategoryService.getCategoriesByUser() as any);
+      } catch (e) {
+        // ignore
+      }
 
-        // 2) vault
-        try {
-          const vRes = await api.get<ServiceResult<PersonalVaultPayload & { id: string }>>(
-            `/vaults/${vaultId}`
-          )
-          if (vRes.data && vRes.data.success && isMounted) {
-            const v: any = vRes.data.data
-            setForm({
-              secureTitle: v.Title,
-              secureContent: v.Content,
-              // Url: v.Url,
-              // MediaFile: v.MediaFile ?? '',
-              Summary: v.Summary ?? '',
-              Tags: (v.Tags ?? []).join(', '),
-              IsLocked: v.IsLocked,
-              IsShareable: v.IsShareable,
-              UnlockDate: v.UnlockDate ?? '',
-              ExpirationDate: v.ExpirationDate ?? '',
-              IsFavorite: v.IsFavorite,
-              CategoryId: v.CategoryId,
-              fieldErrors: {},
-            })
-            setError(null)
-          } else {
-            if (isMounted)
-              setError(vRes.data.message || 'Failed to load vault')
-          }
-        } catch (_e) {
-          if (isMounted) setError('An unexpected error occurred.')
-        } finally {
-          if (isMounted) setLoading(false)
+      try {
+        const res = await PersonalVaultService.getVaultsById(vaultId);
+        if (!mounted) return;
+        if (res.success && res.data) {
+          const v: any = res.data;
+          setForm((prev) => ({
+            ...prev,
+            id: vaultId,
+            title: v.title ?? v.secureTitle ?? "",
+            content: v.content ?? v.secureContent ?? "",
+            summary: v.summary ?? v.secureSummary ?? "",
+            tags: (v.tags ?? v.secureTags ?? []).join(", "),
+            isLocked: !!v.isLocked,
+            unlockDate: v.unlockDate ?? "",
+            categoryId: v.categoryId ?? v.categoryId ?? "",
+            expirationDate: v.expirationDate ?? "",
+            isFavorite: !!v.isFavorite,
+            lastModifiedDate: v.lastModifiedDate ?? v.lastModifiedDate ?? "",
+            fieldErrors: {},
+          }));
+          setError(null);
+        } else {
+          setError(res.message || "Failed to load vault");
         }
-      })()
+      } catch (e: any) {
+        setError("An unexpected error occurred.");
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    })();
     return () => {
-      isMounted = false
-    }
-  }, [vaultId])
+      mounted = false;
+    };
+  }, [vaultId, dispatch]);
 
-  const handleChange = (
-    key:
-      | 'Title'
-      | 'Content'
-      // | 'Url'
-      // | 'MediaFile'
-      | 'Summary'
-      | 'Tags'
-      | 'IsLocked'
-      | 'IsShareable'
-      | 'UnlockDate'
-      | 'ExpirationDate'
-      | 'IsFavorite'
-      | 'CategoryId',
-    value: any
-  ) => {
-    setForm(f => ({
+  const handleChange = (key: keyof typeof form, value: any) => {
+    setForm((f) => ({
       ...f,
       [key]: value,
       fieldErrors: { ...f.fieldErrors, [key]: undefined },
-    }))
-    setError(null)
-  }
+    }));
+    setError(null);
+  };
+
+  const validate = () => {
+    const errs: Record<string, string> = {};
+    let hasError = false;
+    if (!form.title || !form.title.trim()) {
+      errs.title = "Title is required.";
+      hasError = true;
+    }
+    if (!form.content || !form.content.trim()) {
+      errs.content = "Content is required.";
+      hasError = true;
+    }
+    if (!form.categoryId) {
+      errs.categoryId = "Select a category.";
+      hasError = true;
+    }
+    setForm((f) => ({ ...f, fieldErrors: errs }));
+    return !hasError;
+  };
 
   const handleSave = async () => {
-    // validation
-    const errs: any = {}
-    let hasError = false
-    if (!form.secureTitle.trim()) {
-      errs.Title = 'Title is required.'
-      hasError = true
-    }
-    if (!form.secureContent.trim()) {
-      errs.Content = 'Content is required.'
-      hasError = true
-    }
-    if (!form.CategoryId) {
-      errs.CategoryId = 'Select a category.'
-      hasError = true
-    }
-    if (hasError) {
-      setForm(f => ({ ...f, fieldErrors: errs }))
-      return
-    }
+    if (!validate()) return;
 
-    setSaving(true)
+    setSaving(true);
     try {
-      const payload: PersonalVaultPayload = {
-        id: '',
-        UserId: '', // backend reads from token
-        secureTitle: form.secureTitle,
-        secureContent: form.secureContent,
-        // Url: form.Url,
-        // MediaFile: form.MediaFile,
-        Summary: form.Summary,
-        Tags: form.Tags.split(',').map((t: string) => t.trim()),
-        IsLocked: form.IsLocked,
-        IsShareable: form.IsShareable,
-        UnlockDate: form.UnlockDate
-          ? new Date(form.UnlockDate).toISOString()
-          : undefined,
-        CategoryId: form.CategoryId,
-        ExpirationDate: form.ExpirationDate
-          ? new Date(form.ExpirationDate).toISOString()
-          : undefined,
-        IsFavorite: form.IsFavorite,
-      }
-      const resp = await api.put<ServiceResult<PersonalVaultPayload & { id: string }>>(
-        `/vaults/${vaultId}`,
-        payload
-      )
-      if (resp.data && resp.data.success) {
-        Alert.alert('Success', 'Vault updated.', [
-          { text: 'OK', onPress: () => navigation.goBack() },
-        ])
-      } else {
-        Alert.alert('Error', resp.data.message || 'Failed to update.')
-      }
-    } catch (_e) {
-      Alert.alert('Error', 'An unexpected error occurred.')
-    } finally {
-      setSaving(false)
-    }
-  }
+      // Build the DTO exactly as backend expects (fields present)
+      const dto: any = {
+        id: form.id,
+        title: form.title ?? null,
+        content: form.content ?? null,
+        summary: form.summary ?? null,
+        tags: form.tags
+          ? form.tags.split(",").map((t) => t.trim()).filter(Boolean)
+          : [],
+        isLocked: !!form.isLocked,
+        unlockDate: form.unlockDate ? new Date(form.unlockDate).toISOString() : null,
+        categoryId: form.categoryId || null,
+        expirationDate: form.expirationDate
+          ? new Date(form.expirationDate).toISOString()
+          : null,
+        isFavorite: !!form.isFavorite,
+        lastModifiedDate: new Date().toISOString(),
+      };
 
-  if (loading || categoriesLoading) {
+      // Call service via dispatch to keep redux in sync
+      const res = (await dispatch(
+        // @ts-ignore
+        PersonalVaultService.updateVault(vaultId, dto)
+      )) as ServiceResult<any>;
+
+      if (res.success) {
+        Alert.alert("Success", "Vault updated.", [
+          { text: "OK", onPress: () => navigation.goBack() },
+        ]);
+      } else {
+        Alert.alert("Error", res.message || "Failed to update.");
+      }
+    } catch (e: any) {
+      console.error("Update error:", e);
+      Alert.alert("Error", e?.message || "An unexpected error occurred.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading || catLoading) {
     return (
       <View style={[styles.loaderContainer, themeStyles.container]}>
         <ActivityIndicator size="large" />
       </View>
-    )
+    );
   }
 
   if (error) {
@@ -228,235 +192,217 @@ export default function EditVaultScreen() {
       <View style={[styles.loaderContainer, themeStyles.container]}>
         <Text style={themeStyles.text}>{error}</Text>
       </View>
-    )
+    );
   }
 
-  return (
-    <View style={[styles.container, themeStyles.container]}>
-      <Text style={[styles.title, themeStyles.text]}>Edit Vault</Text>
-
+  const renderInput = (
+    label: string,
+    field: keyof typeof form,
+    multiline = false,
+    placeholder?: string
+  ) => (
+    <View style={[styles.card, themeStyles.card, themeStyles.border]}>
+      <Text style={[styles.label, themeStyles.text]}>{label}</Text>
       <TextInput
         style={[
           styles.input,
-          themeStyles.card,
-          form.fieldErrors.secureTitle && styles.inputError,
+          multiline ? { height: 100, textAlignVertical: "top" } : undefined,
+          themeStyles.text,
         ]}
-        placeholder="Title*"
-        placeholderTextColor={isDark ? '#888' : '#666'}
-        value={form.secureTitle}
-        onChangeText={text => handleChange('Title', text)}
+        value={(form[field] as string) || ""}
+        onChangeText={(t) => handleChange(field, t)}
+        placeholder={placeholder ?? label}
+        placeholderTextColor={isDark ? "#888" : "#666"}
+        multiline={multiline}
       />
-      {form.fieldErrors.secureTitle ? (
-        <Text style={styles.errorText}>{form.fieldErrors.secureTitle}</Text>
+      {form.fieldErrors[field as string] ? (
+        <Text style={styles.errorText}>{form.fieldErrors[field as string]}</Text>
       ) : null}
-
-      <TextInput
-        style={[
-          styles.input,
-          themeStyles.card,
-          form.fieldErrors.secureContent && styles.inputError,
-        ]}
-        placeholder="Content*"
-        placeholderTextColor={isDark ? '#888' : '#666'}
-        value={form.secureContent}
-        onChangeText={text => handleChange('Content', text)}
-      />
-      {form.fieldErrors.secureContent ? (
-        <Text style={styles.errorText}>{form.fieldErrors.secureContent}</Text>
-      ) : null}
-
-      {/* <TextInput
-        style={styles.input}
-        placeholder="URL"
-        placeholderTextColor={isDark ? '#888' : '#666'}
-        value={form.Url}
-        onChangeText={text => handleChange('Url', text)}
-      />
-
-      <ImagePickerButton
-        title={form.MediaFile ? 'Change Image' : 'Upload Image'}
-        onImagePicked={base64 => handleChange('MediaFile', base64)}
-        style={styles.uploadButton}
-        textStyle={styles.uploadButtonText}
-      />
-      {form.MediaFile ? (
-        <Text
-          style={[styles.helpText, themeStyles.textGray]}
-          numberOfLines={1}
-        >
-          Image chosen ({form.MediaFile.length.toLocaleString()} chars)
-        </Text>
-      ) : null} */}
-
-      <TextInput
-        style={styles.input}
-        placeholder="Summary"
-        placeholderTextColor={isDark ? '#888' : '#666'}
-        value={form.Summary}
-        onChangeText={text => handleChange('Summary', text)}
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Tags (comma separated)"
-        placeholderTextColor={isDark ? '#888' : '#666'}
-        value={form.Tags}
-        onChangeText={text => handleChange('Tags', text)}
-      />
-
-      <View style={styles.switchRow}>
-        <Text style={themeStyles.text}>Allow sharing?</Text>
-        <Switch
-          value={form.IsShareable}
-          onValueChange={v => handleChange('IsShareable', v)}
-        />
-      </View>
-
-      <View style={styles.row}>
-        <Text style={[styles.label, themeStyles.text]}>Locked</Text>
-        <Switch
-          value={form.IsLocked}
-          onValueChange={v => handleChange('IsLocked', v)}
-        />
-      </View>
-
-      <TextInput
-        style={[styles.input]}
-        placeholder="Unlock Date (YYYY-MM-DD)"
-        placeholderTextColor={isDark ? '#888' : '#666'}
-        value={form.UnlockDate}
-        onChangeText={text => handleChange('UnlockDate', text)}
-      />
-
-      <TextInput
-        style={[styles.input]}
-        placeholder="Expiration Date (YYYY-MM-DD)"
-        placeholderTextColor={isDark ? '#888' : '#666'}
-        value={form.ExpirationDate}
-        onChangeText={text => handleChange('ExpirationDate', text)}
-      />
-
-      <Text style={[styles.label, themeStyles.text]}>Category*</Text>
-      <View style={styles.pickerContainer}>
-        <Picker
-          selectedValue={form.CategoryId}
-          onValueChange={v => handleChange('CategoryId', v)}
-        >
-          <Picker.Item label="Select category..." value="" />
-          {categories.map(c => (
-            <Picker.Item key={c.id} label={c.name} value={c.id} />
-          ))}
-        </Picker>
-      </View>
-      {form.fieldErrors.CategoryId ? (
-        <Text style={styles.errorText}>{form.fieldErrors.CategoryId}</Text>
-      ) : null}
-
-      <View style={[styles.row, { marginBottom: 12 }]}>
-        <Text style={[styles.label, themeStyles.text]}>Favorite</Text>
-        <Switch
-          value={form.IsFavorite}
-          onValueChange={v => handleChange('IsFavorite', v)}
-        />
-      </View>
-
-      <TouchableOpacity
-        style={[styles.saveButton, themeStyles.button]}
-        onPress={handleSave}
-        disabled={saving}
-      >
-        {saving ? (
-          <ActivityIndicator color={themeStyles.buttonText.color} />
-        ) : (
-          <Text style={[styles.saveButtonText, themeStyles.buttonText]}>
-            Save
-          </Text>
-        )}
-      </TouchableOpacity>
     </View>
-  )
+  );
+
+  return (
+    <ScrollView
+      style={[styles.container, themeStyles.container]}
+      contentContainerStyle={styles.scrollContent}
+      keyboardShouldPersistTaps="handled"
+    >
+      <View style={styles.spacer} />
+      <View style={[styles.headerRow, themeStyles.card, themeStyles.border]}>
+        <View style={styles.headerText}>
+          <Text style={[styles.title, themeStyles.text]}>Edit Vault</Text>
+        </View>
+        <TouchableOpacity
+          style={styles.headerAction}
+          onPress={() => navigation.goBack()}
+        >
+          <MaterialIcons name="close" size={20} color={themeStyles.iconColor.color} />
+        </TouchableOpacity>
+      </View>
+
+      {renderInput("Title*", "title")}
+      {renderInput("Content*", "content", true)}
+      {renderInput("Summary", "summary")}
+      {renderInput("Tags (comma separated)", "tags", false, "tag1, tag2")}
+
+      <View style={[styles.switchRow, themeStyles.card, themeStyles.border]}>
+        <Text style={themeStyles.text}>Locked</Text>
+        <Switch
+          value={form.isLocked}
+          onValueChange={(v) => handleChange("isLocked", v)}
+        />
+      </View>
+
+      {form.isLocked && (
+        <View style={[styles.card, themeStyles.card, themeStyles.border]}>
+          <Text style={[styles.label, themeStyles.text]}>Unlock Date (YYYY-MM-DD)</Text>
+          <TextInput
+            style={[styles.input, themeStyles.text]}
+            value={form.unlockDate}
+            onChangeText={(t) => handleChange("unlockDate", t)}
+            placeholder="2025-08-25"
+            placeholderTextColor={isDark ? "#888" : "#666"}
+          />
+        </View>
+      )}
+
+      <View style={[styles.card, themeStyles.card, themeStyles.border]}>
+        <Text style={[styles.label, themeStyles.text]}>Expiration Date (YYYY-MM-DD)</Text>
+        <TextInput
+          style={[styles.input, themeStyles.text]}
+          value={form.expirationDate}
+          onChangeText={(t) => handleChange("expirationDate", t)}
+          placeholder="2025-12-31"
+          placeholderTextColor={isDark ? "#888" : "#666"}
+        />
+      </View>
+
+      <View style={[styles.card, themeStyles.card, themeStyles.border]}>
+        <Text style={[styles.label, themeStyles.text]}>Category*</Text>
+        <View style={[styles.pickerContainer, themeStyles.card]}>
+          <Picker
+            selectedValue={form.categoryId}
+            onValueChange={(v) => handleChange("categoryId", v)}
+          >
+            <Picker.Item label="Select category..." value="" />
+            {categories.map((c: any) => (
+              <Picker.Item key={c.id} label={c.name} value={c.id} />
+            ))}
+          </Picker>
+        </View>
+        {form.fieldErrors.categoryId ? (
+          <Text style={styles.errorText}>{form.fieldErrors.categoryId}</Text>
+        ) : null}
+      </View>
+
+      <View style={[styles.switchRow, { marginTop: 6 }]}>
+        <Text style={themeStyles.text}>Favorite</Text>
+        <Switch
+          value={form.isFavorite}
+          onValueChange={(v) => handleChange("isFavorite", v)}
+        />
+      </View>
+
+      <View style={styles.actionRow}>
+        <TouchableOpacity
+          disabled={saving}
+          style={[styles.saveButton, themeStyles.button, saving && { opacity: 0.7 }]}
+          onPress={handleSave}
+        >
+          {saving ? (
+            <ActivityIndicator color={themeStyles.buttonText.color} />
+          ) : (
+            <Text style={[styles.saveButtonText, themeStyles.buttonText]}>Save</Text>
+          )}
+        </TouchableOpacity>
+      </View>
+
+      <View style={{ height: 32 }} />
+    </ScrollView>
+  );
 }
+
+import { Picker } from "@react-native-picker/picker"; // keep at file top if not already imported
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
+  },
+  scrollContent: {
+    paddingHorizontal: H_PADDING,
+    paddingBottom: 24,
+  },
+  spacer: {
+    height: StatusBar.currentHeight || 20,
   },
   loaderContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  headerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 12,
+    marginBottom: 12,
+    borderRadius: 12,
+  },
+  headerText: {
+    flex: 1,
+  },
+  headerAction: {
+    padding: 6,
   },
   title: {
-    fontSize: 24,
-    fontFamily: 'Poppins_700Bold',
-    marginBottom: 16,
+    fontSize: 20,
+    fontFamily: "Poppins_700Bold",
+  },
+  card: {
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 12,
+  },
+  label: {
+    fontSize: 13,
+    fontFamily: "Poppins_600SemiBold",
+    marginBottom: 8,
   },
   input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
-    marginBottom: 4,
-    fontFamily: 'Poppins_400Regular',
-  },
-  inputError: {
-    borderColor: '#D32F2F',
-  },
-  errorText: {
-    color: '#D32F2F',
-    fontSize: 13,
-    marginBottom: 8,
-    fontFamily: 'Poppins_400Regular',
-    fontWeight: '600',
-  },
-  label: {
-    fontWeight: '600',
-    marginTop: 12,
-    marginBottom: 4,
-    fontFamily: 'Poppins_500Medium',
+    fontFamily: "Poppins_400Regular",
+    fontSize: 15,
   },
   switchRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 12,
+    borderRadius: 12,
     marginBottom: 12,
   },
   pickerContainer: {
-    borderWidth: 1,
-    borderColor: '#ccc',
     borderRadius: 8,
-    marginBottom: 4,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
-  uploadButton: {
-    marginVertical: 12,
-    backgroundColor: '#6E7FEC',
-  },
-  uploadButtonText: {
-    color: '#fff',
-    fontWeight: '600',
-  },
-  helpText: {
-    marginBottom: 12,
-    fontSize: 12,
-    fontFamily: 'Poppins_400Regular',
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 12,
+  actionRow: {
+    marginTop: 18,
+    alignItems: "center",
   },
   saveButton: {
-    marginTop: 20,
-    paddingVertical: 14,
-    borderRadius: 8,
-    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 28,
+    borderRadius: 12,
   },
   saveButtonText: {
     fontSize: 16,
-    fontFamily: 'Poppins_600SemiBold',
+    fontFamily: "Poppins_600SemiBold",
   },
-})
+  errorText: {
+    color: "#D32F2F",
+    marginTop: 6,
+    fontSize: 13,
+    fontFamily: "Poppins_500Medium",
+  },
+});

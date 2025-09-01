@@ -103,10 +103,10 @@ export default function VaultDetailsScreen() {
           </Text>
         </View>
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.headerAction}
           onPress={() =>
-            navigation.navigate("AddCredentials" as any, {
+            navigation.navigate("EditVault" as any, {
               tab: "vault",
               vaultId: vault.id,
               userId: vault.userId,
@@ -125,7 +125,7 @@ export default function VaultDetailsScreen() {
           }
         >
           <MaterialIcons name="edit" size={20} color={themeStyles.iconColor.color} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       {vault.secureSummary ? (
@@ -200,7 +200,7 @@ export default function VaultDetailsScreen() {
         <TouchableOpacity
           style={[styles.actionBtn, themeStyles.button]}
           onPress={() =>
-            navigation.navigate("AddCredentials" as any, {
+            navigation.navigate("EditVault" as any, {
               tab: "vault",
               vaultId: vault.id,
               userId: vault.userId,
