@@ -73,39 +73,41 @@ const PasswordService = {
     }
   },
 
-updatePassword: (passwordId: string, payload: PasswordUpdatePayload) => async (dispatch: AppDispatch): Promise<ServiceResult<PasswordItem>> => {
-  try {
-    const dto: any = {
-      Id: passwordId,
-      SiteName: payload.siteName ?? null,
-      UsernameOrEmail: payload.usernameOrEmail ?? null,
-      Notes: payload.notes ?? null,
-      LastPasswordChangeDate: payload.lastPasswordChangeDate ?? null,
-      Password: payload.password ?? null,
-      NewPassword: payload.newPassword ?? null,
-      NewPasswordRepeat: payload.newPasswordRepeat ?? null,
-      CategoryId: payload.categoryId ?? null,
-    };
+  updatePassword: (passwordId: string, payload: PasswordUpdatePayload) => async (dispatch: AppDispatch): Promise<ServiceResult<PasswordItem>> => {
+    try {
+      const dto: any = {
+        Id: passwordId,
+        SiteName: payload.siteName ?? null,
+        UsernameOrEmail: payload.usernameOrEmail ?? null,
+        Notes: payload.notes ?? null,
+        LastPasswordChangeDate: payload.lastPasswordChangeDate ?? null,
+        Password: payload.password ?? null,
+        NewPassword: payload.newPassword ?? null,
+        NewPasswordRepeat: payload.newPasswordRepeat ?? null,
+        CategoryId: payload.categoryId ?? null,
+      };
 
-    const resp = await api.put<RawPassword>(
-      `/passwordvaults`, 
-       dto ,
-      { headers: { "Content-Type": "application/json" } }
-    );
+      const response = await api.put<PasswordItem>(
+        `/passwordvaults`,
+        dto,
+        { headers: { "Content-Type": "application/json" } }
+      );
 
-    const item = mapRaw(resp.data);
-    dispatch(updatePasswordAction(item));
-    dispatch(PasswordService.getPasswordsByUser() as any);
+      dispatch(updatePasswordAction(response.data));
+      dispatch<any>(PasswordService.getPasswordsByUser());
 
-    return { success: true, data: item };
-  } catch (err: any) {
-    console.error("Failed to update password:", err.response?.data || err);
-    return {
-      success: false,
-      message: err.response?.data?.message || "Failed to update password",
-    };
-  }
-},
+      return {
+        success: true,
+        data: response.data
+      };
+    } catch (err: any) {
+      console.error("Failed to update password:", err.response?.data || err);
+      return {
+        success: false,
+        message: err.response?.data?.message || "Failed to update password",
+      };
+    }
+  },
 
   // updatePassword:
   //   (idOrPayload: string | PasswordUpdatePayload, maybePayload?: PasswordUpdatePayload) =>

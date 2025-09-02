@@ -165,7 +165,7 @@ export default function EditVaultsScreen() {
       )) as ServiceResult<any>;
 
       if (res.success) {
-        Alert.alert("Success", "Vault updated.", [
+        Alert.alert("Success", "Vault updated successfully.", [
           { text: "OK", onPress: () => navigation.goBack() },
         ]);
       } else {
