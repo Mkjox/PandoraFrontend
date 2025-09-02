@@ -83,44 +83,42 @@ const EditPasswordsScreen: React.FC = () => {
       return;
     }
 
-    const payload: Record<string, any> = {
-      siteName: form.siteName,
-      usernameOrEmail: form.usernameOrEmail,
-      notes: form.notes,
-      categoryId: form.categoryId || undefined,
-      // expiration if present
-      ...(form.passwordExpirationDate ? { passwordExpirationDate: form.passwordExpirationDate } : {}),
-    };
-
-    if (form.newPassword) {
-      payload.newPassword = form.newPassword;
-      payload.newPasswordRepeat = form.newPasswordRepeat;
-      payload.password = form.password; // current password
-    } else {
-      // if no new password, optionally include current password as 'password' if backend requires it
-      payload.password = form.password;
-    }
+    setSaving(true);
 
     try {
-      setSaving(true);
       // dispatch expects (id, payload)
+
+      const dto: any = {
+        siteName: form.siteName,
+        usernameOrEmail: form.usernameOrEmail,
+        notes: form.notes,
+        categoryId: form.categoryId || undefined,
+        // expiration if present
+        ...(form.passwordExpirationDate ? { passwordExpirationDate: form.passwordExpirationDate } : {}),
+        newPassword: form.newPassword,
+        newPasswordRepeat: form.newPasswordRepeat,
+        password: form.password, // current password
+      };
+
       const res = (await dispatch(
         // @ts-ignore - thunk action
-        PasswordService.updatePassword(passwordId, payload)
+        PasswordService.updatePassword(passwordId, dto)
       )) as ServiceResult<any>;
-      setSaving(false);
 
       if (res.success) {
         Alert.alert("Success", "Password updated successfully", [
           { text: "OK", onPress: () => navigation.goBack() },
         ]);
       } else {
-        Alert.alert("Error", res.message || "Failed to update password");
+        Alert.alert("Error", res.message || "Failed to update Password");
       }
     } catch (err: any) {
       setSaving(false);
-      console.error("Save error:", err);
-      Alert.alert("Error", err?.message || "Failed to update password");
+      console.error("Update error:", err);
+      Alert.alert("Error", err?.message || "Failed to update Password");
+    }
+    finally {
+      setSaving(false);
     }
   };
 

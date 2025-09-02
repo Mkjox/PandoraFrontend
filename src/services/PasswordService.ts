@@ -73,23 +73,23 @@ const PasswordService = {
     }
   },
 
-updatePassword: (payload: PasswordUpdatePayload) => async (dispatch: AppDispatch) => {
+updatePassword: (passwordId: string, payload: PasswordUpdatePayload) => async (dispatch: AppDispatch): Promise<ServiceResult<PasswordItem>> => {
   try {
-    const dto = {
-      id: payload.id,
-      siteName: payload.siteName ?? null,
-      usernameOrEmail: payload.usernameOrEmail ?? null,
-      notes: payload.notes ?? null,
-      lastPasswordChangeDate: payload.lastPasswordChangeDate ?? null,
-      password: payload.password ?? null,
-      newPassword: payload.newPassword ?? null,
-      newPasswordRepeat: payload.newPasswordRepeat ?? null,
-      categoryId: payload.categoryId ?? null,
+    const dto: any = {
+      Id: passwordId,
+      SiteName: payload.siteName ?? null,
+      UsernameOrEmail: payload.usernameOrEmail ?? null,
+      Notes: payload.notes ?? null,
+      LastPasswordChangeDate: payload.lastPasswordChangeDate ?? null,
+      Password: payload.password ?? null,
+      NewPassword: payload.newPassword ?? null,
+      NewPasswordRepeat: payload.newPasswordRepeat ?? null,
+      CategoryId: payload.categoryId ?? null,
     };
 
     const resp = await api.put<RawPassword>(
       `/passwordvaults`, 
-      { dto },
+       dto ,
       { headers: { "Content-Type": "application/json" } }
     );
 

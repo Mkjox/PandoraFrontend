@@ -60,7 +60,7 @@ const PersonalVaultService = {
     try {
       const response = await api.post<VaultItem>('/personalvaults', payload);
       dispatch(addVault(response.data));
-      
+
       // re-fetching the list
       dispatch<any>(PersonalVaultService.getPersonalVaults());
       return {
@@ -102,7 +102,7 @@ const PersonalVaultService = {
       // ensure tags is at least an empty array (backend expects array or null)
       if (!Array.isArray(dto.Tags)) dto.Tags = [];
 
-      const response = await api.put<VaultItem>(`/personalvaults/`, { dto }, {
+      const response = await api.put<VaultItem>(`/personalvaults/`, dto, {
         headers: { 'Content-Type': 'application/json' }
       });
 

@@ -169,11 +169,11 @@ export default function EditVaultsScreen() {
           { text: "OK", onPress: () => navigation.goBack() },
         ]);
       } else {
-        Alert.alert("Error", res.message || "Failed to update.");
+        Alert.alert("Error", res.message || "Failed to update Vault.");
       }
     } catch (e: any) {
       console.error("Update error:", e);
-      Alert.alert("Error", e?.message || "An unexpected error occurred.");
+      Alert.alert("Error", e?.message || "Failed to update Vault.");
     } finally {
       setSaving(false);
     }
@@ -228,17 +228,7 @@ export default function EditVaultsScreen() {
       keyboardShouldPersistTaps="handled"
     >
       <View style={styles.spacer} />
-      <View style={[styles.headerRow, themeStyles.card, themeStyles.border]}>
-        <View style={styles.headerText}>
-          <Text style={[styles.title, themeStyles.text]}>Edit Vault</Text>
-        </View>
-        <TouchableOpacity
-          style={styles.headerAction}
-          onPress={() => navigation.goBack()}
-        >
-          <MaterialIcons name="close" size={20} color={themeStyles.iconColor.color} />
-        </TouchableOpacity>
-      </View>
+
 
       {renderInput("Title*", "title")}
       {renderInput("Content*", "content", true)}
