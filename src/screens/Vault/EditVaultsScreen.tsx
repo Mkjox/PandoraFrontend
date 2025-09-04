@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
   Alert,
   Switch,
+  Platform,
 } from "react-native";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import { useTheme } from "../../context/ThemeContext";
@@ -18,8 +19,10 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import PersonalVaultService from "../../services/PersonalVaultService";
 import CategoryService from "../../services/CategoryService";
 import { ServiceResult } from "../../types/service.types";
-import { PersonalVaultPayload } from "../../types/personalVault.types";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Picker } from "@react-native-picker/picker";
+import CustomAlert from "../../components/CustomAlert";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 type EditVaultParams = {
   EditVault: { vaultId: string };
@@ -34,10 +37,9 @@ export default function EditVaultsScreen() {
   const route = useRoute<RouteProps>();
   const dispatch = useAppDispatch();
   const { themeStyles, isDark } = useTheme();
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
   const vaultId = route.params.vaultId;
-
-  // categories from redux (keeps consistent with other screens)
   const { categories, loading: catLoading } = useAppSelector((s) => s.category);
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -49,7 +51,7 @@ export default function EditVaultsScreen() {
     title: "",
     content: "",
     summary: "",
-    tags: "", // comma separated in UI
+    tags: "",
     isLocked: false,
     unlockDate: "",
     categoryId: "",
@@ -59,17 +61,17 @@ export default function EditVaultsScreen() {
     fieldErrors: {} as Record<string, string | undefined>,
   });
 
-  // fetch categories + vault
+  // date pickers
+  const [showUnlockPicker, setShowUnlockPicker] = useState(false);
+  const [showExpirationPicker, setShowExpirationPicker] = useState(false);
+
   useEffect(() => {
     let mounted = true;
     (async () => {
       setLoading(true);
       try {
-        // fetch categories via redux thunk (if not loaded)
         dispatch(CategoryService.getCategoriesByUser() as any);
-      } catch (e) {
-        // ignore
-      }
+      } catch {}
 
       try {
         const res = await PersonalVaultService.getVaultsById(vaultId);
@@ -85,17 +87,17 @@ export default function EditVaultsScreen() {
             tags: (v.tags ?? v.secureTags ?? []).join(", "),
             isLocked: !!v.isLocked,
             unlockDate: v.unlockDate ?? "",
-            categoryId: v.categoryId ?? v.categoryId ?? "",
+            categoryId: v.categoryId ?? "",
             expirationDate: v.expirationDate ?? "",
             isFavorite: !!v.isFavorite,
-            lastModifiedDate: v.lastModifiedDate ?? v.lastModifiedDate ?? "",
+            lastModifiedDate: v.lastModifiedDate ?? "",
             fieldErrors: {},
           }));
           setError(null);
         } else {
           setError(res.message || "Failed to load vault");
         }
-      } catch (e: any) {
+      } catch {
         setError("An unexpected error occurred.");
       } finally {
         if (mounted) setLoading(false);
@@ -118,11 +120,11 @@ export default function EditVaultsScreen() {
   const validate = () => {
     const errs: Record<string, string> = {};
     let hasError = false;
-    if (!form.title || !form.title.trim()) {
+    if (!form.title.trim()) {
       errs.title = "Title is required.";
       hasError = true;
     }
-    if (!form.content || !form.content.trim()) {
+    if (!form.content.trim()) {
       errs.content = "Content is required.";
       hasError = true;
     }
@@ -139,12 +141,11 @@ export default function EditVaultsScreen() {
 
     setSaving(true);
     try {
-      // Build the DTO exactly as backend expects (fields present)
       const dto: any = {
         id: form.id,
-        title: form.title ?? null,
-        content: form.content ?? null,
-        summary: form.summary ?? null,
+        title: form.title,
+        content: form.content,
+        summary: form.summary,
         tags: form.tags
           ? form.tags.split(",").map((t) => t.trim()).filter(Boolean)
           : [],
@@ -158,21 +159,17 @@ export default function EditVaultsScreen() {
         lastModifiedDate: new Date().toISOString(),
       };
 
-      // Call service via dispatch to keep redux in sync
       const res = (await dispatch(
         // @ts-ignore
         PersonalVaultService.updateVault(vaultId, dto)
       )) as ServiceResult<any>;
 
       if (res.success) {
-        Alert.alert("Success", "Vault updated successfully.", [
-          { text: "OK", onPress: () => navigation.goBack() },
-        ]);
+        setShowSuccessAlert(true);
       } else {
         Alert.alert("Error", res.message || "Failed to update Vault.");
       }
     } catch (e: any) {
-      console.error("Update error:", e);
       Alert.alert("Error", e?.message || "Failed to update Vault.");
     } finally {
       setSaving(false);
@@ -215,104 +212,137 @@ export default function EditVaultsScreen() {
         placeholderTextColor={isDark ? "#888" : "#666"}
         multiline={multiline}
       />
-      {form.fieldErrors[field as string] ? (
-        <Text style={styles.errorText}>{form.fieldErrors[field as string]}</Text>
+      {form.fieldErrors[field] ? (
+        <Text style={styles.errorText}>{form.fieldErrors[field]}</Text>
       ) : null}
     </View>
   );
 
   return (
-    <ScrollView
-      style={[styles.container, themeStyles.container]}
-      contentContainerStyle={styles.scrollContent}
-      keyboardShouldPersistTaps="handled"
-    >
-      <View style={styles.spacer} />
+    <>
+      <ScrollView
+        style={[styles.container, themeStyles.container]}
+        contentContainerStyle={styles.scrollContent}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={styles.spacer} />
 
+        {renderInput("Title*", "title")}
+        {renderInput("Content*", "content", true)}
+        {renderInput("Summary", "summary")}
+        {renderInput("Tags (comma separated)", "tags", false, "tag1, tag2")}
 
-      {renderInput("Title*", "title")}
-      {renderInput("Content*", "content", true)}
-      {renderInput("Summary", "summary")}
-      {renderInput("Tags (comma separated)", "tags", false, "tag1, tag2")}
-
-      <View style={[styles.switchRow, themeStyles.card, themeStyles.border]}>
-        <Text style={themeStyles.text}>Locked</Text>
-        <Switch
-          value={form.isLocked}
-          onValueChange={(v) => handleChange("isLocked", v)}
-        />
-      </View>
-
-      {form.isLocked && (
-        <View style={[styles.card, themeStyles.card, themeStyles.border]}>
-          <Text style={[styles.label, themeStyles.text]}>Unlock Date (YYYY-MM-DD)</Text>
-          <TextInput
-            style={[styles.input, themeStyles.text]}
-            value={form.unlockDate}
-            onChangeText={(t) => handleChange("unlockDate", t)}
-            placeholder="2025-08-25"
-            placeholderTextColor={isDark ? "#888" : "#666"}
+        <View style={[styles.switchRow, themeStyles.card, themeStyles.border]}>
+          <Text style={themeStyles.text}>Locked</Text>
+          <Switch
+            value={form.isLocked}
+            onValueChange={(v) => handleChange("isLocked", v)}
           />
         </View>
+
+        {form.isLocked && (
+          <TouchableOpacity
+            style={[styles.card, themeStyles.card, themeStyles.border]}
+            onPress={() => setShowUnlockPicker(true)}
+          >
+            <Text style={[styles.label, themeStyles.text]}>Unlock Date</Text>
+            <Text style={themeStyles.text}>
+              {form.unlockDate ? new Date(form.unlockDate).toDateString() : "Select date"}
+            </Text>
+          </TouchableOpacity>
+        )}
+
+        <TouchableOpacity
+          style={[styles.card, themeStyles.card, themeStyles.border]}
+          onPress={() => setShowExpirationPicker(true)}
+        >
+          <Text style={[styles.label, themeStyles.text]}>Expiration Date</Text>
+          <Text style={themeStyles.text}>
+            {form.expirationDate
+              ? new Date(form.expirationDate).toDateString()
+              : "Select date"}
+          </Text>
+        </TouchableOpacity>
+
+        <View style={[styles.card, themeStyles.card, themeStyles.border]}>
+          <Text style={[styles.label, themeStyles.text]}>Category*</Text>
+          <View style={[styles.pickerContainer, themeStyles.card]}>
+            <Picker
+              selectedValue={form.categoryId}
+              onValueChange={(v) => handleChange("categoryId", v)}
+            >
+              <Picker.Item label="Select category..." value="" />
+              {categories.map((c: any) => (
+                <Picker.Item key={c.id} label={c.name} value={c.id} />
+              ))}
+            </Picker>
+          </View>
+          {form.fieldErrors.categoryId ? (
+            <Text style={styles.errorText}>{form.fieldErrors.categoryId}</Text>
+          ) : null}
+        </View>
+
+        <View style={[styles.switchRow, { marginTop: 6 }]}>
+          <Text style={themeStyles.text}>Favorite</Text>
+          <Switch
+            value={form.isFavorite}
+            onValueChange={(v) => handleChange("isFavorite", v)}
+          />
+        </View>
+
+        <View style={styles.actionRow}>
+          <TouchableOpacity
+            disabled={saving}
+            style={[styles.saveButton, themeStyles.button, saving && { opacity: 0.7 }]}
+            onPress={handleSave}
+          >
+            {saving ? (
+              <ActivityIndicator color={themeStyles.buttonText.color} />
+            ) : (
+              <Text style={[styles.saveButtonText, themeStyles.buttonText]}>Save</Text>
+            )}
+          </TouchableOpacity>
+        </View>
+
+        <View style={{ height: 32 }} />
+      </ScrollView>
+
+      {showUnlockPicker && (
+        <DateTimePicker
+          value={form.unlockDate ? new Date(form.unlockDate) : new Date()}
+          mode="date"
+          display={Platform.OS === "ios" ? "spinner" : "default"}
+          onChange={(event, date) => {
+            setShowUnlockPicker(false);
+            if (date) handleChange("unlockDate", date.toISOString());
+          }}
+        />
       )}
 
-      <View style={[styles.card, themeStyles.card, themeStyles.border]}>
-        <Text style={[styles.label, themeStyles.text]}>Expiration Date (YYYY-MM-DD)</Text>
-        <TextInput
-          style={[styles.input, themeStyles.text]}
-          value={form.expirationDate}
-          onChangeText={(t) => handleChange("expirationDate", t)}
-          placeholder="2025-12-31"
-          placeholderTextColor={isDark ? "#888" : "#666"}
+      {showExpirationPicker && (
+        <DateTimePicker
+          value={form.expirationDate ? new Date(form.expirationDate) : new Date()}
+          mode="date"
+          display={Platform.OS === "ios" ? "spinner" : "default"}
+          onChange={(event, date) => {
+            setShowExpirationPicker(false);
+            if (date) handleChange("expirationDate", date.toISOString());
+          }}
         />
-      </View>
+      )}
 
-      <View style={[styles.card, themeStyles.card, themeStyles.border]}>
-        <Text style={[styles.label, themeStyles.text]}>Category*</Text>
-        <View style={[styles.pickerContainer, themeStyles.card]}>
-          <Picker
-            selectedValue={form.categoryId}
-            onValueChange={(v) => handleChange("categoryId", v)}
-          >
-            <Picker.Item label="Select category..." value="" />
-            {categories.map((c: any) => (
-              <Picker.Item key={c.id} label={c.name} value={c.id} />
-            ))}
-          </Picker>
-        </View>
-        {form.fieldErrors.categoryId ? (
-          <Text style={styles.errorText}>{form.fieldErrors.categoryId}</Text>
-        ) : null}
-      </View>
-
-      <View style={[styles.switchRow, { marginTop: 6 }]}>
-        <Text style={themeStyles.text}>Favorite</Text>
-        <Switch
-          value={form.isFavorite}
-          onValueChange={(v) => handleChange("isFavorite", v)}
-        />
-      </View>
-
-      <View style={styles.actionRow}>
-        <TouchableOpacity
-          disabled={saving}
-          style={[styles.saveButton, themeStyles.button, saving && { opacity: 0.7 }]}
-          onPress={handleSave}
-        >
-          {saving ? (
-            <ActivityIndicator color={themeStyles.buttonText.color} />
-          ) : (
-            <Text style={[styles.saveButtonText, themeStyles.buttonText]}>Save</Text>
-          )}
-        </TouchableOpacity>
-      </View>
-
-      <View style={{ height: 32 }} />
-    </ScrollView>
+      <CustomAlert
+        visible={showSuccessAlert}
+        title="Success"
+        message="Vault updated successfully"
+        onClose={() => {
+          setShowSuccessAlert(false);
+          navigation.goBack();
+        }}
+      />
+    </>
   );
 }
-
-import { Picker } from "@react-native-picker/picker"; // keep at file top if not already imported
 
 const styles = StyleSheet.create({
   container: {
@@ -329,23 +359,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-  },
-  headerRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 12,
-    marginBottom: 12,
-    borderRadius: 12,
-  },
-  headerText: {
-    flex: 1,
-  },
-  headerAction: {
-    padding: 6,
-  },
-  title: {
-    fontSize: 20,
-    fontFamily: "Poppins_700Bold",
   },
   card: {
     borderRadius: 12,
