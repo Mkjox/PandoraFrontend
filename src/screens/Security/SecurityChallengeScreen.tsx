@@ -47,7 +47,7 @@ const SecurityChallengeScreen: React.FC = () => {
     const strongCount = passwords.reduce((cnt, p) => {
       // Assuming PasswordItem.Password holds the plaintext or decrypted password
       // If it's encrypted on client or not directly accessible, adjust accordingly.
-      return cnt + (isStrongPassword(p.Password) ? 1 : 0);
+      return cnt + (isStrongPassword(p.password) ? 1 : 0);
     }, 0);
     const pct = (strongCount / total) * 100;
     // Format to two decimals
@@ -84,18 +84,18 @@ const SecurityChallengeScreen: React.FC = () => {
 
   // Now it can list weak passwords, strong passwords, or summary
   // Example: list all weak passwords:
-  const weakPasswords = passwords.filter(pw => !isStrongPassword(pw.Password));
+  const weakPasswords = passwords.filter(pw => !isStrongPassword(pw.password));
 
   const renderItem = ({ item }: { item: typeof passwords[0] }) => (
     <View style={[styles.itemCard, themeStyles.card]}>
       <Text style={[styles.itemTitle, themeStyles.text]}>
-        {item.SiteName}
+        {item.siteName}
       </Text>
       <Text style={[styles.itemSubtitle, themeStyles.textGray]}>
-        {item.UsernameOrEmail}
+        {item.usernameOrEmail}
       </Text>
       <Text style={[styles.itemNote, themeStyles.text]}>
-        {isStrongPassword(item.Password) ? 'Strong' : 'Weak'}
+        {isStrongPassword(item.password) ? 'Strong' : 'Weak'}
       </Text>
     </View>
   );

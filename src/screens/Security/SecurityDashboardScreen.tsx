@@ -88,7 +88,7 @@ const SecurityDashboardScreen: React.FC = () => {
     const mediumList: PasswordItem[] = [];
     const strongList: PasswordItem[] = [];
     passwords.forEach(p => {
-      const label = getStrengthLabel(p.Password);
+      const label = getStrengthLabel(p.password);
       if (label === 'Weak') weakList.push(p);
       else if (label === 'Medium') mediumList.push(p);
       else strongList.push(p);
@@ -106,8 +106,8 @@ const SecurityDashboardScreen: React.FC = () => {
     const in7 = new Date();
     in7.setDate(now.getDate() + 7);
     return passwords.filter(p => {
-      if (!p.PasswordExpirationDate) return false;
-      const exp = new Date(p.PasswordExpirationDate);
+      if (!p.passwordExpirationDate) return false;
+      const exp = new Date(p.passwordExpirationDate);
       return exp >= now && exp <= in7;
     });
   }, [passwords]);
@@ -160,10 +160,10 @@ const SecurityDashboardScreen: React.FC = () => {
       </View>
       <View style={styles.listTextContainer}>
         <Text style={[styles.listTitle, themeStyles.text]} numberOfLines={1}>
-          {item.SiteName}
+          {item.siteName}
         </Text>
         <Text style={[styles.listSubtitle, themeStyles.textGray]} numberOfLines={1}>
-          {item.UsernameOrEmail}
+          {item.usernameOrEmail}
         </Text>
       </View>
     </TouchableOpacity>
@@ -182,10 +182,10 @@ const SecurityDashboardScreen: React.FC = () => {
       </View>
       <View style={styles.listTextContainer}>
         <Text style={[styles.listTitle, themeStyles.text]} numberOfLines={1}>
-          {item.SiteName}
+          {item.siteName}
         </Text>
         <Text style={[styles.listSubtitle, themeStyles.textGray]} numberOfLines={1}>
-          Expires on {new Date(item.PasswordExpirationDate!).toLocaleDateString()}
+          Expires on {new Date(item.passwordExpirationDate!).toLocaleDateString()}
         </Text>
       </View>
     </TouchableOpacity>

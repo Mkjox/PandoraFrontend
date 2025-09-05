@@ -32,7 +32,7 @@ type SectionDataItem =
 
 export default function HomeScreen() {
   const navigation = useNavigation<any>()
-  const { themeStyles } = useTheme()
+  const { themeStyles, isDark } = useTheme()
   const dispatch = useAppDispatch()
 
   const { passwords, loading: pwLoading, error: pwError } = useAppSelector(s => s.passwords)
@@ -170,7 +170,9 @@ export default function HomeScreen() {
         placeholder="Search"
         onChangeText={setSearchQuery}
         value={searchQuery}
-        style={styles.searchBar}
+        style={[styles.searchBar, themeStyles.container]}
+        placeholderTextColor={isDark ? '#888' : '#666'}
+        iconColor={isDark ? '#888' : '#666'}
       />
 
       <FlatList

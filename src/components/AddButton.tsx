@@ -10,8 +10,8 @@ export default function AddButton() {
 
 
   return (
-    <TouchableOpacity style={[styles.button, themeStyles.border]} onPress={() => navigation.navigate("AddCredentials")}>
-      <Text style={[styles.text, themeStyles.customButtonText]}>+ New</Text>
+    <TouchableOpacity style={[styles.button, themeStyles.button]} onPress={() => navigation.navigate("AddCredentials")}>
+      <Text style={[styles.text, themeStyles.buttonText]}>+ New</Text>
     </TouchableOpacity>
   );
 }

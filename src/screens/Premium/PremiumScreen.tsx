@@ -83,7 +83,7 @@ const PremiumScreen: React.FC = () => {
         
         {/* Hero Section */}
         <LinearGradient
-          colors={['#ff7eb3', '#ff758c']}
+          colors={['#41e1faff', '#065a41ff']}
           style={styles.hero}
         >
           <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
@@ -137,7 +137,7 @@ const PremiumScreen: React.FC = () => {
           onPress={() => navigation.navigate('PurchaseFlow' as never)}
         >
           <LinearGradient
-            colors={['#ff7eb3', '#ff758c']}
+            colors={['#41e1faff', '#065a41ff']}
             style={styles.ctaGradient}
           >
             <Text style={styles.ctaText}>Unlock for {priceText}</Text>
