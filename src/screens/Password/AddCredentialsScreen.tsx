@@ -532,7 +532,7 @@ const styles = StyleSheet.create({
     padding: 12,
     marginBottom: 12,
     justifyContent: 'center',
-    height: height * 0.05,
+    height: height * 0.035,
   },
   switchRow: {
     flexDirection: 'row',

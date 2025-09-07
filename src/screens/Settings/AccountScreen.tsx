@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import {
     View,
     Text,
@@ -10,8 +10,10 @@ import {
 } from 'react-native';
 import { useTheme } from '../../context/ThemeContext';
 import AuthService from '../../services/AuthService';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { darkTheme, lightTheme } from '../../assets/colors/theme';
+import { useAppDispatch } from '../../redux/hooks';
+
 
 const { height, width } = Dimensions.get('window');
 
@@ -19,11 +21,19 @@ const AccountScreen: React.FC = () => {
     const { isDark } = useTheme();
     const themeStyles = isDark ? darkTheme : lightTheme;
     const navigation = useNavigation<any>();
+    const dispatch = useAppDispatch();
 
-    // const handleLogout = async () => {
-    //     await AuthService.logout();
-    //     // navigate to login if needed...
-    // };
+    const [profile, setProfile] = useState<any>(null);
+
+    const loadProfile = useCallback(async () => {
+        const res = await AuthService.fetchUserProfile();
+        if (res.success) {
+            setProfile(res.userData);
+        }
+    }, []);
+
+    useFocusEffect(useCallback(() => { loadProfile(); }, [loadProfile]));
+
 
     return (
         <ScrollView style={[styles.container, themeStyles.container]}>
@@ -35,10 +45,14 @@ const AccountScreen: React.FC = () => {
                 <Text style={[styles.sectionHeader, themeStyles.text]}>Profile</Text>
                 <Text style={[styles.sectionBody, themeStyles.text]}>
                     {/* Replace with real data from Redux or context */}
-                    Username: <Text style={styles.bold}>john_doe</Text>
-                </Text>
+                    Username: <Text style={styles.bold}>
+                        {/* {profile.username} */}
+                    </Text>
+                </Text>n
                 <Text style={[styles.sectionBody, themeStyles.text]}>
-                    Email: <Text style={styles.bold}>john@example.com</Text>
+                    Email: <Text style={styles.bold}>
+                        john@example.com
+                    </Text>
                 </Text>
             </View>
 

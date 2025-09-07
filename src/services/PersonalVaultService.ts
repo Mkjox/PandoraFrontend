@@ -122,7 +122,7 @@ const PersonalVaultService = {
     }
   },
 
-  removeVault: (vaultId: string) => async (dispatch: AppDispatch): Promise<ServiceResult<null>> => {
+  deleteVault: (vaultId: string) => async (dispatch: AppDispatch): Promise<ServiceResult<null>> => {
     try {
       await api.delete(`/personalvaults/${vaultId}`);
       dispatch(deleteVault(vaultId));

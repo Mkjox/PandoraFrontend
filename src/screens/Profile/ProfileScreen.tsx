@@ -46,33 +46,6 @@ const ProfileScreen: React.FC = () => {
     );
   }
 
-  const handleLogout = async () => {
-    Alert.alert(
-      'Logout',
-      'Are you sure you want to logout?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Logout',
-          style: 'destructive',
-          onPress: async () => {
-            // 1️⃣ clear stored token
-            await AuthService.logout()
-
-            // 2️⃣ update Redux state
-            dispatch(logoutAction())
-
-            // 3️⃣ send user back to login screen
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'Login' }],
-            });
-          }
-        }
-      ]
-    )
-  }
-
   return (
     <ScrollView style={[styles.container, themeStyles.container]}>
       <View style={styles.spacer} />
@@ -119,7 +92,7 @@ const ProfileScreen: React.FC = () => {
           <Text style={[styles.linkText, themeStyles.text]}>Edit Profile</Text>
         </Pressable>
 
-        <Pressable onPress={() => navigation.navigate('ThemeScreen' as never)} style={styles.linkRow} android_ripple={{ color: 'rgba(0,0,0,0.06)' }}>
+        <Pressable onPress={() => navigation.navigate('ThemeScreen' as never)} style={styles.linkRow} android_ripple={{ color: 'rgba(0, 0, 0, 0.06)' }}>
           <MaterialIcons name="dark-mode" size={20} style={themeStyles.iconColor} />
           <Text style={[styles.linkText, themeStyles.text]}>Theme</Text>
         </Pressable>

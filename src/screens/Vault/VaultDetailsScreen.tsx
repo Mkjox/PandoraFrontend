@@ -13,8 +13,10 @@ import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
 import { useTheme } from "../../context/ThemeContext";
 import PersonalVaultService from "../../services/PersonalVaultService";
 import { PersonalVaultPayload } from "../../types/personalVault.types";
-import { MaterialIcons } from "@expo/vector-icons";
+import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { ServiceResult } from "../../types/service.types";
+import { useAppDispatch } from "../../redux/hooks";
+import ConfirmDeleteModal from "../../components/ConfirmDeleteModal";
 
 type RootStackParamList = {
   VaultDetails: { id: string };
@@ -28,11 +30,13 @@ const H_PADDING = Math.round(width * 0.05);
 export default function VaultDetailsScreen() {
   const route = useRoute<VaultDetailsRouteProp>();
   const navigation = useNavigation<any>();
+  const dispatch = useAppDispatch();
   const { themeStyles } = useTheme();
 
   const [vault, setVault] = useState<PersonalVaultPayload & { id: string } | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const { id } = route.params;
 
@@ -81,150 +85,152 @@ export default function VaultDetailsScreen() {
     }
   };
 
+  const handleDelete = async () => {
+    if (!vault) return;
+    const res = await dispatch(PersonalVaultService.deleteVault(vault.id) as any);
+    if (res.success) {
+      navigation.goBack();
+    } else {
+      console.error("Delete failed:", res.message);
+    }
+    setShowDeleteModal(false);
+  };
+
   return (
-    <ScrollView
-      style={themeStyles.container}
-      contentContainerStyle={styles.scrollContent}
-    >
-      <View style={styles.spacer} />
+    <>
+      <ScrollView
+        style={themeStyles.container}
+        contentContainerStyle={styles.scrollContent}
+      >
+        <View style={styles.spacer} />
 
-      {/* Header */}
-      <View style={[styles.headerRow, themeStyles.card, themeStyles.border]}>
-        <View style={[styles.badge, themeStyles.iconBg]}>
-          <MaterialIcons name="lock" size={20} color={themeStyles.iconColor.color} />
-        </View>
-
-        <View style={styles.headerText}>
-          <Text numberOfLines={1} style={[styles.title, themeStyles.text]}>
-            {vault.secureTitle}
-          </Text>
-          <Text numberOfLines={2} style={[styles.subtitle, themeStyles.textGray]}>
-            {vault.secureContent}
-          </Text>
-        </View>
-
-        {/* <TouchableOpacity
-          style={styles.headerAction}
-          onPress={() =>
-            navigation.navigate("EditVault" as any, {
-              tab: "vault",
-              vaultId: vault.id,
-              userId: vault.userId,
-              title: vault.secureTitle,
-              content: vault.secureContent,
-              // url: vault.Url,
-              // mediaFile: vault.MediaFile,
-              summary: vault.secureSummary,
-              tags: vault.secureTags?.join(","),
-              isLocked: vault.IsLocked,
-              unlockDate: vault.unlockDate,
-              expirationDate: vault.expirationDate,
-              categoryId: vault.categoryId,
-              isFavorite: vault.IsFavorite,
-            })
-          }
-        >
-          <MaterialIcons name="edit" size={20} color={themeStyles.iconColor.color} />
-        </TouchableOpacity> */}
-      </View>
-
-      {vault.secureSummary ? (
-        <View style={[styles.card, themeStyles.card, styles.sectionMargin, themeStyles.border]}>
-          <Text style={[styles.label, themeStyles.text]}>Summary</Text>
-          <Text style={[styles.value, themeStyles.text]}>{vault.secureSummary}</Text>
-        </View>
-      ) : null}
-
-      {vault.secureTags && vault.secureTags.length > 0 ? (
-        <View style={[styles.card, themeStyles.card, styles.sectionMargin, themeStyles.border]}>
-          <Text style={[styles.label, themeStyles.text]}>Tags</Text>
-          <View style={styles.tagsWrap}>
-            {vault.secureTags.map((t, i) => (
-              <View key={i} style={[styles.tag, themeStyles.card, themeStyles.border]}>
-                <Text style={[styles.tagText, themeStyles.text]} numberOfLines={1}>{t}</Text>
-              </View>
-            ))}
+        {/* Header */}
+        <View style={[styles.headerRow, themeStyles.card, themeStyles.border]}>
+          <View style={[styles.badge, themeStyles.iconBg]}>
+            <MaterialIcons name="lock" size={20} color={themeStyles.iconColor.color} />
           </View>
-        </View>
-      ) : null}
 
-      <View style={[styles.rowCards, styles.sectionMargin]}>
-        {vault.IsLocked ? (
-          <View style={[styles.smallCard, themeStyles.card, themeStyles.border]}>
-            <Text style={[styles.smallLabel, themeStyles.text]}>Locked Until</Text>
-            <Text style={[styles.smallValue, themeStyles.text]}>
-              {vault.unlockDate ? new Date(vault.unlockDate).toLocaleDateString() : '—'}
+          <View style={styles.headerText}>
+            <Text numberOfLines={1} style={[styles.title, themeStyles.text]}>
+              {vault.secureTitle}
+            </Text>
+            <Text numberOfLines={2} style={[styles.subtitle, themeStyles.textGray]}>
+              {vault.secureContent}
             </Text>
           </View>
-        ) : null}
 
-        {vault.expirationDate ? (
-          <View style={[styles.smallCard, themeStyles.card, themeStyles.border]}>
-            <Text style={[styles.smallLabel, themeStyles.text]}>Expires</Text>
-            <Text style={[styles.smallValue, themeStyles.text]}>
-              {new Date(vault.expirationDate).toLocaleDateString()}
-            </Text>
+          <TouchableOpacity
+            style={styles.headerAction}
+            onPress={() => setShowDeleteModal(true)}
+          >
+            <Entypo name="trash" size={20} color={themeStyles.iconColor.color} />
+          </TouchableOpacity>
+        </View>
+
+        {vault.secureSummary ? (
+          <View style={[styles.card, themeStyles.card, styles.sectionMargin, themeStyles.border]}>
+            <Text style={[styles.label, themeStyles.text]}>Summary</Text>
+            <Text style={[styles.value, themeStyles.text]}>{vault.secureSummary}</Text>
           </View>
         ) : null}
 
-        {vault.IsFavorite ? (
-          <View style={[styles.smallCard, themeStyles.card, themeStyles.border]}>
-            <Text style={[styles.smallLabel, themeStyles.text]}>Favorite</Text>
-            <Text style={[styles.smallValue, themeStyles.text]}>{vault.IsFavorite ? 'Yes' : 'No'}</Text>
+        {vault.secureTags && vault.secureTags.length > 0 ? (
+          <View style={[styles.card, themeStyles.card, styles.sectionMargin, themeStyles.border]}>
+            <Text style={[styles.label, themeStyles.text]}>Tags</Text>
+            <View style={styles.tagsWrap}>
+              {vault.secureTags.map((t, i) => (
+                <View key={i} style={[styles.tag, themeStyles.card, themeStyles.border]}>
+                  <Text style={[styles.tagText, themeStyles.text]} numberOfLines={1}>{t}</Text>
+                </View>
+              ))}
+            </View>
           </View>
         ) : null}
-      </View>
 
-      {/* {vault.IsShareable ? (
+        <View style={[styles.rowCards, styles.sectionMargin]}>
+          {vault.IsLocked ? (
+            <View style={[styles.smallCard, themeStyles.card, themeStyles.border]}>
+              <Text style={[styles.smallLabel, themeStyles.text]}>Locked Until</Text>
+              <Text style={[styles.smallValue, themeStyles.text]}>
+                {vault.unlockDate ? new Date(vault.unlockDate).toLocaleDateString() : '—'}
+              </Text>
+            </View>
+          ) : null}
+
+          {vault.expirationDate ? (
+            <View style={[styles.smallCard, themeStyles.card, themeStyles.border]}>
+              <Text style={[styles.smallLabel, themeStyles.text]}>Expires</Text>
+              <Text style={[styles.smallValue, themeStyles.text]}>
+                {new Date(vault.expirationDate).toLocaleDateString()}
+              </Text>
+            </View>
+          ) : null}
+
+          {vault.IsFavorite ? (
+            <View style={[styles.smallCard, themeStyles.card, themeStyles.border]}>
+              <Text style={[styles.smallLabel, themeStyles.text]}>Favorite</Text>
+              <Text style={[styles.smallValue, themeStyles.text]}>{vault.IsFavorite ? 'Yes' : 'No'}</Text>
+            </View>
+          ) : null}
+        </View>
+
+        {/* {vault.IsShareable ? (
         <View style={[styles.section, themeStyles.card]}>
           <Text style={[styles.label, themeStyles.text]}>Is it Shareable:</Text>
           <Text style={[styles.value, themeStyles.text]}>{vault.IsShareable}</Text>
         </View>
       ) : null} */}
 
-      {vault.categoryName ? (
-        <View style={[styles.card, themeStyles.card, styles.sectionMargin, themeStyles.border]}>
-          <Text style={[styles.label, themeStyles.text]}>Category</Text>
-          <Text style={[styles.value, themeStyles.text]}>{vault.categoryName}</Text>
+        {vault.categoryName ? (
+          <View style={[styles.card, themeStyles.card, styles.sectionMargin, themeStyles.border]}>
+            <Text style={[styles.label, themeStyles.text]}>Category</Text>
+            <Text style={[styles.value, themeStyles.text]}>{vault.categoryName}</Text>
+          </View>
+        ) : null}
+
+        {vault.createdDate ? (
+          <View style={[styles.card, themeStyles.card, styles.sectionMargin, themeStyles.border]}>
+            <Text style={[styles.label, themeStyles.text]}>Created</Text>
+            <Text style={[styles.value, themeStyles.text]}>{formatDate(vault.createdDate)}</Text>
+          </View>
+        ) : null}
+
+        <View style={styles.actionRow}>
+          <TouchableOpacity
+            style={[styles.actionBtn, themeStyles.button]}
+            onPress={() =>
+              navigation.navigate("EditVault" as any, {
+                tab: "vault",
+                vaultId: vault.id,
+                userId: vault.userId,
+                title: vault.secureTitle,
+                content: vault.secureContent,
+                // url: vault.Url,
+                // mediaFile: vault.MediaFile,
+                summary: vault.secureSummary,
+                tags: vault.secureTags?.join(","),
+                isLocked: vault.IsLocked,
+                unlockDate: vault.unlockDate,
+                expirationDate: vault.expirationDate,
+                categoryId: vault.categoryId,
+                isFavorite: vault.IsFavorite,
+              })
+            }
+          >
+            <MaterialIcons name="edit" size={18} color={themeStyles.buttonText.color} />
+            <Text style={[styles.actionText, themeStyles.buttonText]}>Edit</Text>
+          </TouchableOpacity>
         </View>
-      ) : null}
 
-      {vault.createdDate ? (
-        <View style={[styles.card, themeStyles.card, styles.sectionMargin, themeStyles.border]}>
-          <Text style={[styles.label, themeStyles.text]}>Created</Text>
-          <Text style={[styles.value, themeStyles.text]}>{formatDate(vault.createdDate)}</Text>
-        </View>
-      ) : null}
+        <View style={{ height: 28 }} />
+      </ScrollView>
 
-      <View style={styles.actionRow}>
-        <TouchableOpacity
-          style={[styles.actionBtn, themeStyles.button]}
-          onPress={() =>
-            navigation.navigate("EditVault" as any, {
-              tab: "vault",
-              vaultId: vault.id,
-              userId: vault.userId,
-              title: vault.secureTitle,
-              content: vault.secureContent,
-              // url: vault.Url,
-              // mediaFile: vault.MediaFile,
-              summary: vault.secureSummary,
-              tags: vault.secureTags?.join(","),
-              isLocked: vault.IsLocked,
-              unlockDate: vault.unlockDate,
-              expirationDate: vault.expirationDate,
-              categoryId: vault.categoryId,
-              isFavorite: vault.IsFavorite,
-            })
-          }
-        >
-          <MaterialIcons name="edit" size={18} color={themeStyles.buttonText.color} />
-          <Text style={[styles.actionText, themeStyles.buttonText]}>Edit</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={{ height: 28 }} />
-    </ScrollView>
+      <ConfirmDeleteModal
+        visible={showDeleteModal}
+        onCancel={() => setShowDeleteModal(false)}
+        onConfirm={handleDelete}
+      />
+    </>
   );
 }
 
@@ -264,6 +270,7 @@ const styles = StyleSheet.create({
   headerAction: {
     marginLeft: 8,
     padding: 6,
+    alignItems: 'flex-end'
   },
 
   title: {

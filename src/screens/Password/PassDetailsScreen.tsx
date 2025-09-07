@@ -15,6 +15,8 @@ import { useTheme } from "../../context/ThemeContext";
 import PasswordService from "../../services/PasswordService";
 import { PasswordItem } from "../../types/password.types";
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
+import { useAppDispatch } from "../../redux/hooks";
+import ConfirmDeleteModal from "../../components/ConfirmDeleteModal";
 
 type RootStackParamList = {
   PassDetails: { id: string };
@@ -27,12 +29,14 @@ const H_PADDING = Math.round(width * 0.05);
 const PassDetailsScreen: React.FC = () => {
   const route = useRoute<PassDetailsRouteProp>();
   const navigation = useNavigation<any>();
+  const dispatch = useAppDispatch();
   const { themeStyles } = useTheme();
 
   const [item, setItem] = useState<PasswordItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const { id } = route.params;
 
@@ -75,95 +79,103 @@ const PassDetailsScreen: React.FC = () => {
     }
   };
 
+  const handleDelete = async () => {
+    if (!item) return;
+    const res = await dispatch(PasswordService.deletePassword(item.id) as any);
+    if (res.success) {
+      navigation.goBack();
+    } else {
+      console.error("Delete failed:", res.message);
+    }
+    setShowDeleteModal(false);
+  };
+
   return (
-    <ScrollView style={themeStyles.container} contentContainerStyle={styles.scrollContent}>
-      <View style={styles.spacer} />
+    <>
+      <ScrollView style={themeStyles.container} contentContainerStyle={styles.scrollContent}>
+        <View style={styles.spacer} />
 
-      <View style={[styles.headerRow, themeStyles.card, themeStyles.border]}>
-        <View style={[styles.avatar, themeStyles.iconBg]}>
-          <Text style={[styles.avatarText, themeStyles.text]}>
-            {item.siteName ? item.siteName.charAt(0).toUpperCase() : 'P'}
-          </Text>
-        </View>
+        <View style={[styles.headerRow, themeStyles.card, themeStyles.border]}>
+          <View style={[styles.avatar, themeStyles.iconBg]}>
+            <Text style={[styles.avatarText, themeStyles.text]}>
+              {item.siteName ? item.siteName.charAt(0).toUpperCase() : 'P'}
+            </Text>
+          </View>
 
-        <View style={styles.headerText}>
-          <Text numberOfLines={1} style={[styles.title, themeStyles.text]}>{item.siteName}</Text>
-          <Text numberOfLines={1} style={[styles.subtitle, themeStyles.textGray]}>
-            {item.usernameOrEmail}
-          </Text>
-        </View>
+          <View style={styles.headerText}>
+            <Text numberOfLines={1} style={[styles.title, themeStyles.text]}>{item.siteName}</Text>
+            <Text numberOfLines={1} style={[styles.subtitle, themeStyles.textGray]}>
+              {item.usernameOrEmail}
+            </Text>
+          </View>
 
-        {/* <TouchableOpacity
-          style={styles.headerAction}
-          onPress={() => navigation.navigate('EditPassword', { passwordId: item.id })}
-        >
-          <MaterialIcons name="edit" size={20} color={themeStyles.iconColor.color} />
-        </TouchableOpacity> */}
-      </View>
-
-      {/* Password Card */}
-      <View style={[styles.card, themeStyles.card, themeStyles.border]}>
-        <View style={styles.row}>
-          <Text style={[styles.label, themeStyles.text]}>Password</Text>
-          <Pressable
-            onPress={() => setShowPassword(v => !v)}
-            hitSlop={8}
-            accessibilityRole="button"
-            accessibilityLabel="Toggle password visibility"
+          <TouchableOpacity
+            style={styles.headerAction}
+            onPress={() => setShowDeleteModal(true)}
           >
-            <Entypo name={showPassword ? 'eye' : 'eye-with-line'} size={20} color={themeStyles.iconColor.color} />
-          </Pressable>
+            <Entypo name="trash" size={20} color={themeStyles.iconColor.color} />
+          </TouchableOpacity>
         </View>
 
-        <View style={styles.valueWrap}>
-          <Text selectable style={[styles.value, themeStyles.text]}>
-            {showPassword ? item.password : '••••••••'}
-          </Text>
-        </View>
-
-        <View style={styles.metaRow}>
-          <View style={styles.metaItem}>
-            <Text style={[styles.metaLabel, themeStyles.text]}>Expires</Text>
-            <Text style={[styles.metaValue, themeStyles.text]}>{formatDate(item.passwordExpirationDate)}</Text>
-          </View>
-          <View style={styles.metaItem}>
-            <Text style={[styles.metaLabel, themeStyles.text]}>Category Id</Text>
-            <Text style={[styles.metaValue, themeStyles.text]}>{item.categoryId ?? '—'}</Text>
-          </View>
-        </View>
-      </View>
-
-      {item.notes ? (
+        {/* Password Card */}
         <View style={[styles.card, themeStyles.card, themeStyles.border]}>
-          <Text style={[styles.label, themeStyles.text]}>Notes</Text>
-          <Text style={[styles.value, themeStyles.text]}>{item.notes}</Text>
+          <View style={styles.row}>
+            <Text style={[styles.label, themeStyles.text]}>Password</Text>
+            <Pressable
+              onPress={() => setShowPassword(v => !v)}
+              hitSlop={8}
+              accessibilityRole="button"
+              accessibilityLabel="Toggle password visibility"
+            >
+              <Entypo name={showPassword ? 'eye' : 'eye-with-line'} size={20} color={themeStyles.iconColor.color} />
+            </Pressable>
+          </View>
+
+          <View style={styles.valueWrap}>
+            <Text selectable style={[styles.value, themeStyles.text]}>
+              {showPassword ? item.password : '••••••••'}
+            </Text>
+          </View>
+
+          <View style={styles.metaRow}>
+            <View style={styles.metaItem}>
+              <Text style={[styles.metaLabel, themeStyles.text]}>Expires</Text>
+              <Text style={[styles.metaValue, themeStyles.text]}>{formatDate(item.passwordExpirationDate)}</Text>
+            </View>
+            <View style={styles.metaItem}>
+              <Text style={[styles.metaLabel, themeStyles.text]}>Category Id</Text>
+              <Text style={[styles.metaValue, themeStyles.text]}>{item.categoryId ?? '—'}</Text>
+            </View>
+          </View>
         </View>
-      ) : null}
 
-      {/* Commented navigation data left intact as requested */}
-      {/* onPress={() => navigation.navigate('EditPassword' as any, {
-        passwordId: item.id,
-        userId: item.userId,
-        siteName: item.siteName,
-        usernameOrEmail: item.usernameOrEmail,
-        password: item.password,
-        notes: item.notes ?? '',
-        passwordExpirationDate: item.passwordExpirationDate ?? undefined,
-        categoryId: item.categoryId,
-      })} */}
+        {item.notes ? (
+          <View style={[styles.card, themeStyles.card, themeStyles.border]}>
+            <Text style={[styles.label, themeStyles.text]}>Notes</Text>
+            <Text style={[styles.value, themeStyles.text]}>{item.notes}</Text>
+          </View>
+        ) : null}
 
-      <View style={styles.actionRow}>
-        <TouchableOpacity
-          style={[styles.actionBtn, themeStyles.button]}
-          onPress={() => navigation.navigate('EditPassword', { passwordId: item.id })}
-        >
-          <MaterialIcons name="edit" size={18} color={themeStyles.buttonText.color} />
-          <Text style={[styles.actionText, themeStyles.buttonText]}>Edit</Text>
-        </TouchableOpacity>
-      </View>
 
-      <View style={{ height: 32 }} />
-    </ScrollView>
+        <View style={styles.actionRow}>
+          <TouchableOpacity
+            style={[styles.actionBtn, themeStyles.button]}
+            onPress={() => navigation.navigate('EditPassword', { passwordId: item.id })}
+          >
+            <MaterialIcons name="edit" size={18} color={themeStyles.buttonText.color} />
+            <Text style={[styles.actionText, themeStyles.buttonText]}>Edit</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={{ height: 32 }} />
+      </ScrollView>
+
+      <ConfirmDeleteModal
+        visible={showDeleteModal}
+        onCancel={() => setShowDeleteModal(false)}
+        onConfirm={handleDelete}
+      />
+    </>
   );
 };
 

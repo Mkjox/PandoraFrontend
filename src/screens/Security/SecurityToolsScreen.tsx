@@ -32,7 +32,7 @@ const SecurityToolsScreen: React.FC = () => {
   const { passwords } = useAppSelector(s => s.passwords);
   const percentage = useMemo(() => {
     if (!passwords.length) return '0.00';
-    const strongCount = passwords.filter(pw => isStrongPassword(pw.Password)).length;
+    const strongCount = passwords.filter(pw => isStrongPassword(pw.password)).length;
     return ((strongCount / passwords.length) * 100).toFixed(2);
   }, [passwords]);
 

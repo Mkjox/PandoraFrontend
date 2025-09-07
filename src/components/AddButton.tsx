@@ -6,12 +6,12 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function AddButton() {
   const navigation = useNavigation<any>();
-  const { themeStyles } = useTheme();
+  const { themeStyles, isDark } = useTheme();
 
 
   return (
-    <TouchableOpacity style={[styles.button, themeStyles.button]} onPress={() => navigation.navigate("AddCredentials")}>
-      <Text style={[styles.text, themeStyles.buttonText]}>+ New</Text>
+    <TouchableOpacity style={[styles.button, themeStyles.card, themeStyles.border]} onPress={() => navigation.navigate("AddCredentials")}>
+      <Text style={[styles.text, themeStyles.inputText]}>+ New</Text>
     </TouchableOpacity>
   );
 }
