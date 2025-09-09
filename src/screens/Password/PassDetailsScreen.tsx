@@ -72,11 +72,23 @@ const PassDetailsScreen: React.FC = () => {
 
   const formatDate = (d?: string | null) => {
     if (!d) return '—';
-    try {
-      return new Date(d).toLocaleDateString();
-    } catch {
-      return d;
-    }
+  try {
+    // Remove microseconds if present (e.g. ".558431Z" → "Z")
+    const cleaned = d.replace(/\.\d+Z$/, 'Z');
+    const date = new Date(cleaned);
+
+    if (isNaN(date.getTime())) return '—';
+
+    return date.toLocaleString('en-GB', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  } catch {
+    return d;
+  }
   };
 
   const handleDelete = async () => {
@@ -139,8 +151,8 @@ const PassDetailsScreen: React.FC = () => {
 
           <View style={styles.metaRow}>
             <View style={styles.metaItem}>
-              <Text style={[styles.metaLabel, themeStyles.text]}>Expires</Text>
-              <Text style={[styles.metaValue, themeStyles.text]}>{formatDate(item.passwordExpirationDate)}</Text>
+              <Text style={[styles.metaLabel, themeStyles.text]}>Changed At</Text>
+              <Text style={[styles.metaValue, themeStyles.text]}>{formatDate(item.lastPasswordChangeDate)}</Text>
             </View>
             <View style={styles.metaItem}>
               <Text style={[styles.metaLabel, themeStyles.text]}>Category Id</Text>

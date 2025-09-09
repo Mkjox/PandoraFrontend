@@ -46,12 +46,12 @@ const AccountScreen: React.FC = () => {
                 <Text style={[styles.sectionBody, themeStyles.text]}>
                     {/* Replace with real data from Redux or context */}
                     Username: <Text style={styles.bold}>
-                        {/* {profile.username} */}
+                        {profile.username}
                     </Text>
-                </Text>n
+                </Text>
                 <Text style={[styles.sectionBody, themeStyles.text]}>
                     Email: <Text style={styles.bold}>
-                        john@example.com
+                        {profile.email}
                     </Text>
                 </Text>
             </View>

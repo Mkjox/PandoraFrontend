@@ -25,6 +25,7 @@ function mapRaw(raw: RawPassword): PasswordItem {
     password: raw.password,
     notes: raw.secureNotes,
     passwordExpirationDate: raw.passwordExpirationDate,
+    lastPasswordChangeDate: raw.lastPasswordChangeDate ?? undefined,
     categoryId: raw.categoryId,
   };
 }
