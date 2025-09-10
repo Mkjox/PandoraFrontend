@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   StatusBar,
   Pressable,
+  Alert,
 } from 'react-native';
 import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
 import { useTheme } from "../../context/ThemeContext";
@@ -17,6 +18,7 @@ import { PasswordItem } from "../../types/password.types";
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { useAppDispatch } from "../../redux/hooks";
 import ConfirmDeleteModal from "../../components/ConfirmDeleteModal";
+import * as Clipboard from 'expo-clipboard'
 
 type RootStackParamList = {
   PassDetails: { id: string };
@@ -72,23 +74,23 @@ const PassDetailsScreen: React.FC = () => {
 
   const formatDate = (d?: string | null) => {
     if (!d) return '—';
-  try {
-    // Remove microseconds if present (e.g. ".558431Z" → "Z")
-    const cleaned = d.replace(/\.\d+Z$/, 'Z');
-    const date = new Date(cleaned);
+    try {
+      // Remove microseconds if present (e.g. ".558431Z" → "Z")
+      const cleaned = d.replace(/\.\d+Z$/, 'Z');
+      const date = new Date(cleaned);
 
-    if (isNaN(date.getTime())) return '—';
+      if (isNaN(date.getTime())) return '—';
 
-    return date.toLocaleString('en-GB', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  } catch {
-    return d;
-  }
+      return date.toLocaleString('en-GB', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    } catch {
+      return d;
+    }
   };
 
   const handleDelete = async () => {
@@ -101,6 +103,11 @@ const PassDetailsScreen: React.FC = () => {
     }
     setShowDeleteModal(false);
   };
+
+  const onCopy = () => {
+    Clipboard.setStringAsync(item.password)
+    Alert.alert('Copied to clipboard')
+  }
 
   return (
     <>
@@ -147,6 +154,14 @@ const PassDetailsScreen: React.FC = () => {
             <Text selectable style={[styles.value, themeStyles.text]}>
               {showPassword ? item.password : '••••••••'}
             </Text>
+            <Pressable
+              onPress={onCopy}
+              hitSlop={8}
+              accessibilityRole="button"
+              accessibilityLabel="Copy the password"
+            >
+              <Entypo name='copy' size={20} color={themeStyles.iconColor.color} />
+            </Pressable>
           </View>
 
           <View style={styles.metaRow}>
@@ -265,6 +280,8 @@ const styles = StyleSheet.create({
   valueWrap: {
     marginTop: 8,
     marginBottom: 10,
+    justifyContent: 'space-between',
+    flexDirection: 'row'
   },
 
   value: {

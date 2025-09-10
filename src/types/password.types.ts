@@ -7,7 +7,7 @@ export interface RawPassword {
   secureNotes?: string;
   password: string;
   lastPasswordChangeDate?: string | null;
-  passwordExpirationDate?: string;
+  // passwordExpirationDate?: string;
   categoryId: string;
 }
 
@@ -20,7 +20,7 @@ export interface PasswordItem {
   password: string;
   notes?: string;
   lastPasswordChangeDate?: string;
-  passwordExpirationDate?: string;
+  // passwordExpirationDate?: string;
   categoryId: string;
 }
 

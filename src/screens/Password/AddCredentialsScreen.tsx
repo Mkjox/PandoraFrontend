@@ -151,9 +151,9 @@ export default function AddCredentialsScreen() {
           passwordRepeat: form.PasswordRepeat,
           notes: form.Notes,
           categoryId: form.CategoryId,
-          ...(form.PasswordExpirationDate
-            ? { expirationDate: new Date(form.PasswordExpirationDate).toISOString() }
-            : {}),
+          // ...(form.PasswordExpirationDate
+            // ? { expirationDate: new Date(form.PasswordExpirationDate).toISOString() }
+            // : {}),
         };
         const res = (await dispatch(
           PasswordService.createPassword(payload)
@@ -315,7 +315,7 @@ export default function AddCredentialsScreen() {
               textColor={themeStyles.text.color as string}
             />
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={[styles.input, themeStyles.inputText, themeStyles.card, {
                 borderWidth: 2,
                 borderColor: '#57555f',
@@ -329,7 +329,7 @@ export default function AddCredentialsScreen() {
               <Text style={{ color: form.PasswordExpirationDate ? '#888' : '#666' }}>
                 {form.PasswordExpirationDate || 'Select Expiration Date'}
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             {/* <Text style={[styles.label, themeStyles.text]}>Category*</Text> */}
             <View style={[styles.pickerContainer, themeStyles.card]}>

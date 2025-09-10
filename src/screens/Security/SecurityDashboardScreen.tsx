@@ -285,15 +285,18 @@ const SecurityDashboardScreen: React.FC = () => {
             renderItem={renderWeakItem}
             horizontal={false}
             scrollEnabled={false}
-            contentContainerStyle={[styles.listContainer, themeStyles.card, themeStyles.border]}
+            contentContainerStyle={[styles.listContainer, themeStyles.card]}
           />
           <TouchableOpacity
-            style={[styles.actionButton, themeStyles.buttonBorder]}
+            style={[styles.actionButton, themeStyles.button]}
             onPress={() => navigation.navigate('SecurityChallenge' as never)}
           >
             <Text style={[styles.actionText, themeStyles.buttonText]}>
-              Review Weak Passwords
+              Review Passwords
             </Text>
+            {/* <Text style={[styles.actionText, themeStyles.buttonText]}>
+              Review Weak Passwords
+            </Text> */}
           </TouchableOpacity>
         </View>
       )}
@@ -446,12 +449,10 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   actionButton: {
-    marginTop: 12,
+    marginVertical: 12,
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
-    borderWidth: 1,
-    backgroundColor: '#FFFFFF',
     elevation: 5,
     shadowColor: '#000',
     shadowOpacity: 0.1,
