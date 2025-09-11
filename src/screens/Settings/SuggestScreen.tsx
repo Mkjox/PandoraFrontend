@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
     View,
     Text,
@@ -10,24 +10,89 @@ import {
     TouchableOpacity,
     Alert,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../../context/ThemeContext';
 import { lightTheme, darkTheme } from '../../assets/colors/theme';
 
 const { height, width } = Dimensions.get('window');
+const COOLDOWN_HOURS = 6; // lock period after a suggestion
+const COOLDOWN_MS = COOLDOWN_HOURS * 60 * 60 * 1000;
 
 const SuggestScreen: React.FC = () => {
     const { isDark } = useTheme();
     const themeStyles = isDark ? darkTheme : lightTheme;
 
     const [suggestion, setSuggestion] = useState('');
+    const [isOnCooldown, setIsOnCooldown] = useState(false);
+    const [remainingTime, setRemainingTime] = useState<number | null>(null);
 
-    const handleSubmit = () => {
+    const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+    useEffect(() => {
+        checkCooldown();
+
+        return () => {
+            if (timerRef.current) clearInterval(timerRef.current);
+        };
+    }, []);
+
+    const checkCooldown = async () => {
+        const lastSent = await AsyncStorage.getItem('lastSuggestionTime');
+        if (lastSent) {
+            const lastTime = parseInt(lastSent, 10);
+            const now = Date.now();
+            const diff = now - lastTime;
+
+            if (diff < COOLDOWN_MS) {
+                const timeLeft = COOLDOWN_MS - diff;
+                startTimer(timeLeft);
+            }
+        }
+    };
+
+    const startTimer = (initialMs: number) => {
+        setIsOnCooldown(true);
+        updateRemainingTime(initialMs);
+
+        if (timerRef.current) clearInterval(timerRef.current);
+
+        timerRef.current = setInterval(() => {
+            setRemainingTime(prev => {
+                if (!prev) return null;
+                if (prev <= 1) {
+                    clearInterval(timerRef.current!);
+                    setIsOnCooldown(false);
+                    return null;
+                }
+                return prev - 1;
+            });
+        }, 60000); // update every 1 min
+    };
+
+    const updateRemainingTime = (ms: number) => {
+        const minutesLeft = Math.ceil(ms / (1000 * 60));
+        setRemainingTime(minutesLeft);
+    };
+
+    const handleSubmit = async () => {
         if (!suggestion.trim()) {
             return Alert.alert('Oops!', 'Please enter your suggestion before submitting.');
         }
-        // TODO: send suggestion to your backend or email service
+
+        if (isOnCooldown) {
+            return Alert.alert(
+                'Slow down!',
+                `You can only send one suggestion every ${COOLDOWN_HOURS} hours.\nPlease wait about ${remainingTime} minutes.`
+            );
+        }
+
+        // TODO: send suggestion to backend/email service
         Alert.alert('Thank you!', 'Your suggestion has been sent.');
         setSuggestion('');
+
+        const now = Date.now();
+        await AsyncStorage.setItem('lastSuggestionTime', now.toString());
+        startTimer(COOLDOWN_MS);
     };
 
     return (
@@ -52,23 +117,32 @@ const SuggestScreen: React.FC = () => {
                     placeholderTextColor={isDark ? '#888' : '#666'}
                     value={suggestion}
                     onChangeText={setSuggestion}
+                    editable={!isOnCooldown}
                 />
             </View>
 
-            <TouchableOpacity style={[styles.button, themeStyles.button]} onPress={handleSubmit}>
-                <Text style={[styles.buttonText, themeStyles.buttonText]}>Submit</Text>
+            <TouchableOpacity
+                style={[
+                    styles.button,
+                    themeStyles.button,
+                    isOnCooldown && { opacity: 0.5 }
+                ]}
+                onPress={handleSubmit}
+                disabled={isOnCooldown}
+            >
+                <Text style={[styles.buttonText, themeStyles.buttonText]}>
+                    {isOnCooldown
+                        ? `Wait ${remainingTime} min`
+                        : 'Submit'}
+                </Text>
             </TouchableOpacity>
         </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1
-    },
-    spacer: {
-        height: StatusBar.currentHeight || 20
-    },
+    container: { flex: 1 },
+    spacer: { height: StatusBar.currentHeight || 20 },
     title: {
         fontSize: 22,
         fontFamily: 'Poppins_700Bold',
@@ -102,7 +176,7 @@ const styles = StyleSheet.create({
         textAlignVertical: 'top',
         borderWidth: 1,
         borderColor: '#ccc',
-        elevation: 2
+        elevation: 2,
     },
     button: {
         marginHorizontal: width * 0.05,
