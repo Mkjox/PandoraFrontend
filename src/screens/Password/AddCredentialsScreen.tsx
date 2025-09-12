@@ -43,7 +43,8 @@ export default function AddCredentialsScreen() {
   const navigation = useNavigation<any>();
   const route = useRoute<RouteProps>();
   const dispatch = useAppDispatch();
-  const { themeStyles, isDark } = useTheme();
+  const { isDark } = useTheme();
+  const themeStyles = isDark ? darkTheme : lightTheme;
 
   // initial tab
   const initialTab = route.params?.tab ?? 'password';
@@ -152,8 +153,8 @@ export default function AddCredentialsScreen() {
           notes: form.Notes,
           categoryId: form.CategoryId,
           // ...(form.PasswordExpirationDate
-            // ? { expirationDate: new Date(form.PasswordExpirationDate).toISOString() }
-            // : {}),
+          // ? { expirationDate: new Date(form.PasswordExpirationDate).toISOString() }
+          // : {}),
         };
         const res = (await dispatch(
           PasswordService.createPassword(payload)

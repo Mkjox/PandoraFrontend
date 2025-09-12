@@ -19,6 +19,7 @@ import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { useAppDispatch } from "../../redux/hooks";
 import ConfirmDeleteModal from "../../components/ConfirmDeleteModal";
 import * as Clipboard from 'expo-clipboard'
+import { darkTheme, lightTheme } from "../../assets/colors/theme";
 
 type RootStackParamList = {
   PassDetails: { id: string };
@@ -32,7 +33,8 @@ const PassDetailsScreen: React.FC = () => {
   const route = useRoute<PassDetailsRouteProp>();
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
-  const { themeStyles } = useTheme();
+  const { isDark } = useTheme();
+  const themeStyles = isDark ? darkTheme : lightTheme;
 
   const [item, setItem] = useState<PasswordItem | null>(null);
   const [loading, setLoading] = useState(true);

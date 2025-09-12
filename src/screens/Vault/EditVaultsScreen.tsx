@@ -23,6 +23,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import CustomAlert from "../../components/CustomAlert";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { darkTheme, lightTheme } from "../../assets/colors/theme";
 
 type EditVaultParams = {
   EditVault: { vaultId: string };
@@ -36,7 +37,8 @@ export default function EditVaultsScreen() {
   const navigation = useNavigation<any>();
   const route = useRoute<RouteProps>();
   const dispatch = useAppDispatch();
-  const { themeStyles, isDark } = useTheme();
+  const { isDark } = useTheme();
+  const themeStyles = isDark ? darkTheme : lightTheme;
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
   const vaultId = route.params.vaultId;
@@ -71,7 +73,7 @@ export default function EditVaultsScreen() {
       setLoading(true);
       try {
         dispatch(CategoryService.getCategoriesByUser() as any);
-      } catch {}
+      } catch { }
 
       try {
         const res = await PersonalVaultService.getVaultsById(vaultId);

@@ -20,6 +20,7 @@ import { ServiceResult } from "../../types/service.types";
 import { useAppDispatch } from "../../redux/hooks";
 import CustomAlert from "../../components/CustomAlert";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { darkTheme, lightTheme } from "../../assets/colors/theme";
 
 type RootStackParamList = {
   EditPassword: { passwordId: string };
@@ -34,7 +35,8 @@ const EditPasswordsScreen: React.FC = () => {
   const route = useRoute<EditPasswordRouteProp>();
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
-  const { themeStyles } = useTheme();
+  const { isDark } = useTheme();
+  const themeStyles = isDark ? darkTheme : lightTheme;
 
   const { passwordId } = route.params;
 

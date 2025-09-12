@@ -21,6 +21,7 @@ import { PersonalVaultPayload } from '../../types/personalVault.types'
 import CategoryService from '../../services/CategoryService'
 import PasswordService from '../../services/PasswordService'
 import PersonalVaultService from '../../services/PersonalVaultService'
+import { darkTheme, lightTheme } from '../../assets/colors/theme'
 
 const { width, height } = Dimensions.get('window')
 
@@ -32,7 +33,8 @@ type SectionDataItem =
 
 export default function HomeScreen() {
   const navigation = useNavigation<any>()
-  const { themeStyles, isDark } = useTheme()
+  const { isDark } = useTheme();
+  const themeStyles = isDark ? darkTheme : lightTheme;
   const dispatch = useAppDispatch()
 
   const { passwords, loading: pwLoading, error: pwError } = useAppSelector(s => s.passwords)

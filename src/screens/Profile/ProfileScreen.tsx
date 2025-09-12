@@ -23,7 +23,8 @@ import LogoutButton from '../../components/LogoutButton';
 const { width } = Dimensions.get('window');
 
 const ProfileScreen: React.FC = () => {
-  const { themeStyles } = useTheme();
+  const { isDark } = useTheme();
+  const themeStyles = isDark ? darkTheme : lightTheme;
   const dispatch = useAppDispatch();
   const navigation = useNavigation<any>();
 

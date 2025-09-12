@@ -21,7 +21,8 @@ const { width, height } = Dimensions.get('window')
 
 export default function CategoryScreen() {
   const navigation = useNavigation<any>()
-  const { themeStyles } = useTheme()
+  const { isDark } = useTheme();
+  const themeStyles = isDark ? darkTheme : lightTheme;
   const dispatch = useAppDispatch()
 
   const { categories, loading, error } = useAppSelector(s => s.category)
@@ -59,7 +60,7 @@ export default function CategoryScreen() {
             <Text style={[styles.cardDescription, themeStyles.textGray]}>
               {item.description}
             </Text>
-        ) : null}
+          ) : null}
         </TouchableOpacity>
       </View>
       <View style={styles.cardActions}>

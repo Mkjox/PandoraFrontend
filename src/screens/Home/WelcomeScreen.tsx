@@ -25,7 +25,8 @@ export default function WelcomeScreen({
   const navigation = useNavigation<any>()
   const scrollRef = useRef<ScrollView>(null)
   const [page, setPage] = useState(0)
-  const { themeStyles } = useTheme()
+  const { isDark } = useTheme();
+  const themeStyles = isDark ? darkTheme : lightTheme;
 
   const pages = [
     {

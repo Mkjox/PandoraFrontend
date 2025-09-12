@@ -29,7 +29,8 @@ interface EmergencyContact {
 }
 
 const EmergencyAccessScreen: React.FC = () => {
-  const { themeStyles } = useTheme()
+  const { isDark } = useTheme();
+  const themeStyles = isDark ? darkTheme : lightTheme;
 
   const [contacts, setContacts] = useState<EmergencyContact[]>([])
   const [loading, setLoading] = useState(true)
@@ -49,8 +50,8 @@ const EmergencyAccessScreen: React.FC = () => {
       // setContacts(res.data)
       // ** Stubbed: replace with real data fetch **
       setContacts([
-        { id: '1', name: 'Alice Smith',  email: 'alice@example.com',  delayHours: 24 },
-        { id: '2', name: 'Bob Johnson',  email: 'bob@example.com',    delayHours: 48 },
+        { id: '1', name: 'Alice Smith', email: 'alice@example.com', delayHours: 24 },
+        { id: '2', name: 'Bob Johnson', email: 'bob@example.com', delayHours: 48 },
       ])
     } catch (e: any) {
       setError(e.message || 'Failed to load contacts')

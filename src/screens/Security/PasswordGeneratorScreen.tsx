@@ -44,7 +44,8 @@ const generatePassword = (
 }
 
 const PasswordGeneratorScreen: React.FC = () => {
-    const { themeStyles } = useTheme()
+    const { isDark } = useTheme();
+    const themeStyles = isDark ? darkTheme : lightTheme;
 
     const [length, setLength] = useState(12)
     const [includeUpper, setIncludeUpper] = useState(true)

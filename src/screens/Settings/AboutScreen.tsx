@@ -16,7 +16,6 @@ const AboutScreen: React.FC = () => {
             <Text style={[styles.title, themeStyles.text]}>About Pandora</Text>
 
             <View style={styles.section}>
-                <Text style={[styles.sectionHeader, themeStyles.text]}>Welcome</Text>
                 <Text style={[styles.sectionBody, themeStyles.text]}>
                     Pandora is your personal, secure vault for passwords and sensitive notes. Everything you store here is encrypted on your device.
                 </Text>

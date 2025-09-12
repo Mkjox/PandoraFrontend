@@ -17,6 +17,7 @@ import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { ServiceResult } from "../../types/service.types";
 import { useAppDispatch } from "../../redux/hooks";
 import ConfirmDeleteModal from "../../components/ConfirmDeleteModal";
+import { darkTheme, lightTheme } from "../../assets/colors/theme";
 
 type RootStackParamList = {
   VaultDetails: { id: string };
@@ -31,7 +32,8 @@ export default function VaultDetailsScreen() {
   const route = useRoute<VaultDetailsRouteProp>();
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
-  const { themeStyles } = useTheme();
+  const { isDark } = useTheme();
+  const themeStyles = isDark ? darkTheme : lightTheme;
 
   const [vault, setVault] = useState<PersonalVaultPayload & { id: string } | null>(null);
   const [loading, setLoading] = useState<boolean>(true);

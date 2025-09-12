@@ -18,7 +18,8 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 const { width, height } = Dimensions.get('window');
 
 const SecurityChallengeScreen: React.FC = () => {
-  const { themeStyles } = useTheme();
+  const { isDark } = useTheme();
+  const themeStyles = isDark ? darkTheme : lightTheme;
   const dispatch = useAppDispatch();
   const navigation = useNavigation<any>();
 

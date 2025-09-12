@@ -4,143 +4,137 @@ import {
   Text,
   StyleSheet,
   StatusBar,
-  Dimensions,
   ScrollView,
-  TouchableOpacity,
   Animated,
   Easing,
+  TouchableOpacity,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '../../context/ThemeContext';
 import { darkTheme, lightTheme } from '../../assets/colors/theme';
 import {
   MaterialCommunityIcons,
-  FontAwesome5,
-  MaterialIcons,
   Ionicons,
+  FontAwesome5,
 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-
-const { width } = Dimensions.get('window');
 
 const PremiumScreen: React.FC = () => {
   const { isDark } = useTheme();
   const themeStyles = isDark ? darkTheme : lightTheme;
   const navigation = useNavigation<any>();
-  const priceText = '$29.99 / year';
 
-  // Diamond animation
-  const scaleAnim = useRef(new Animated.Value(1)).current;
+  // pulse animation for the shield icon
+  const pulseAnim = useRef(new Animated.Value(1)).current;
   useEffect(() => {
     Animated.loop(
       Animated.sequence([
-        Animated.timing(scaleAnim, {
-          toValue: 1.15,
-          duration: 800,
+        Animated.timing(pulseAnim, {
+          toValue: 1.2,
+          duration: 900,
           easing: Easing.out(Easing.ease),
           useNativeDriver: true,
         }),
-        Animated.timing(scaleAnim, {
+        Animated.timing(pulseAnim, {
           toValue: 1,
-          duration: 800,
+          duration: 900,
           easing: Easing.in(Easing.ease),
           useNativeDriver: true,
         }),
       ])
     ).start();
-  }, [scaleAnim]);
+  }, [pulseAnim]);
 
-  const features = [
+  const insights = [
     {
-      key: 'sync',
-      icon: <MaterialCommunityIcons name="cloud-sync-outline" size={32} color={themeStyles.text.color} />,
-      title: 'Auto Sync',
-      desc: 'Always updated across all devices.',
+      key: 'strength',
+      icon: <FontAwesome5 name="lock" size={26} color={themeStyles.text.color} />,
+      title: 'Password Strength',
+      desc: 'Most of your stored passwords are strong.',
     },
     {
-      key: 'share',
-      icon: <MaterialCommunityIcons name="account-group-outline" size={32} color={themeStyles.text.color} />,
-      title: 'Group Sharing',
-      desc: 'Share & manage access effortlessly.',
+      key: 'reuse',
+      icon: (
+        <MaterialCommunityIcons
+          name="repeat-variant"
+          size={28}
+          color={themeStyles.text.color}
+        />
+      ),
+      title: 'Reused Passwords',
+      desc: '2 accounts use the same password.',
     },
     {
-      key: 'backup',
-      icon: <FontAwesome5 name="file-medical-alt" size={28} color={themeStyles.text.color} />,
-      title: 'Encrypted Backup',
-      desc: 'Secure off-site copy of your data.',
-    },
-    {
-      key: 'support',
-      icon: <MaterialIcons name="support-agent" size={32} color={themeStyles.text.color} />,
-      title: 'Premium Support',
-      desc: 'Priority help when you need it.',
+      key: 'breach',
+      icon: (
+        <MaterialCommunityIcons
+          name="alert-decagram-outline"
+          size={28}
+          color={themeStyles.text.color}
+        />
+      ),
+      title: 'Breach Check',
+      desc: 'No recent breaches detected.',
     },
   ];
 
   return (
     <View style={[styles.screen, themeStyles.container]}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        
-        {/* Hero Section */}
-        <LinearGradient
-          colors={['#41e1faff', '#065a41ff']}
-          style={styles.hero}
-        >
-          <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
-            <Ionicons name="diamond" size={80} color="#fff" />
+        {/* Hero */}
+        <LinearGradient colors={['#ff9966', '#ff5e62']} style={styles.hero}>
+          <Animated.View style={{ transform: [{ scale: pulseAnim }] }}>
+            <Ionicons name="shield-checkmark" size={80} color="#fff" />
           </Animated.View>
-          <Text style={styles.heroTitle}>Go Premium</Text>
+          <Text style={styles.heroTitle}>Security Insights</Text>
           <Text style={styles.heroSubtitle}>
-            Unlock all features, get priority support, and keep your data ultra-secure.
+            Stay informed about your vault’s health and keep your data protected.
           </Text>
         </LinearGradient>
 
-        {/* Features Section */}
-        <View style={styles.featuresSection}>
-          {features.map((f) => (
+        {/* Insights Section */}
+        <View style={styles.insightsSection}>
+          {insights.map((i) => (
             <View
-              key={f.key}
-              style={[styles.featureCard, themeStyles.card, themeStyles.border]}
+              key={i.key}
+              style={[styles.insightCard, themeStyles.card, themeStyles.border]}
             >
-              <View style={styles.featureIcon}>{f.icon}</View>
-              <Text style={[styles.featureTitle, themeStyles.text]}>{f.title}</Text>
-              <Text style={[styles.featureDesc, themeStyles.textGray]}>{f.desc}</Text>
+              <View style={styles.insightIcon}>{i.icon}</View>
+              <Text style={[styles.insightTitle, themeStyles.text]}>
+                {i.title}
+              </Text>
+              <Text style={[styles.insightDesc, themeStyles.textGray]}>
+                {i.desc}
+              </Text>
             </View>
           ))}
         </View>
 
-        {/* Price Section */}
-        <View style={[styles.priceCard, themeStyles.card]}>
-          <Text style={[styles.priceText, themeStyles.text]}>{priceText}</Text>
-          <Text style={[styles.priceSub, themeStyles.textGray]}>
-            That’s less than $2.50/month!
-          </Text>
-        </View>
-
-        {/* Terms Section */}
-        <View style={styles.noteContainer}>
+        {/* Tip of the Day */}
+        <View style={[styles.tipCard, themeStyles.card]}>
           <MaterialCommunityIcons
-            name="information-outline"
-            size={20}
-            color={themeStyles.textGray.color}
+            name="lightbulb-on-outline"
+            size={22}
+            color={themeStyles.text.color}
           />
-          <Text style={[styles.noteText, themeStyles.textGray]}>
-            By subscribing you agree to our Terms of Service and Privacy Policy.
+          <Text style={[styles.tipText, themeStyles.text]}>
+            Tip: Enable two-factor authentication for your most important
+            accounts.
           </Text>
         </View>
       </ScrollView>
 
-      {/* Sticky CTA */}
+      {/* Footer CTA */}
       <View style={styles.footer}>
         <TouchableOpacity
           style={styles.ctaButton}
-          onPress={() => navigation.navigate('PurchaseFlow' as never)}
+          onPress={() => navigation.navigate('PasswordGenerator' as never)}
         >
           <LinearGradient
-            colors={['#41e1faff', '#065a41ff']}
+            colors={['#ff9966', '#ff5e62']}
             style={styles.ctaGradient}
           >
-            <Text style={styles.ctaText}>Unlock for {priceText}</Text>
+            <Text style={styles.ctaText}>Generate Stronger Passwords</Text>
           </LinearGradient>
         </TouchableOpacity>
       </View>
@@ -158,7 +152,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 40,
   },
   heroTitle: {
-    fontSize: 30,
+    fontSize: 28,
     fontFamily: 'Poppins_700Bold',
     color: '#fff',
     marginTop: 12,
@@ -168,59 +162,43 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins_400Regular',
     color: '#fff',
     marginTop: 8,
-    paddingHorizontal: 30,
+    paddingHorizontal: 28,
     textAlign: 'center',
   },
-  featuresSection: {
+  insightsSection: {
     marginTop: 24,
     paddingHorizontal: 16,
   },
-  featureCard: {
+  insightCard: {
     padding: 20,
     borderRadius: 14,
     marginBottom: 16,
     alignItems: 'center',
   },
-  featureIcon: {
-    marginBottom: 10,
-  },
-  featureTitle: {
+  insightIcon: { marginBottom: 10 },
+  insightTitle: {
     fontSize: 16,
     fontFamily: 'Poppins_600SemiBold',
     textAlign: 'center',
   },
-  featureDesc: {
+  insightDesc: {
     fontSize: 13,
     fontFamily: 'Poppins_400Regular',
     textAlign: 'center',
     marginTop: 6,
   },
-  priceCard: {
-    marginTop: 24,
-    marginHorizontal: 16,
-    padding: 20,
-    borderRadius: 14,
-    alignItems: 'center',
-  },
-  priceText: {
-    fontSize: 20,
-    fontFamily: 'Poppins_700Bold',
-  },
-  priceSub: {
-    fontSize: 13,
-    marginTop: 4,
-  },
-  noteContainer: {
+  tipCard: {
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 24,
-    paddingHorizontal: 16,
-    marginBottom: 100,
+    marginHorizontal: 16,
+    padding: 18,
+    borderRadius: 14,
   },
-  noteText: {
-    fontSize: 12,
+  tipText: {
+    fontSize: 13,
     fontFamily: 'Poppins_400Regular',
-    marginLeft: 6,
+    marginLeft: 8,
     flex: 1,
   },
   footer: {
@@ -237,7 +215,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   ctaText: {
-    fontSize: 17,
+    fontSize: 16,
     fontFamily: 'Poppins_700Bold',
     color: '#fff',
   },

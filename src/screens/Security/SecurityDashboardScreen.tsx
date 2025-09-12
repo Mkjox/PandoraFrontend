@@ -50,7 +50,8 @@ function getStrengthLabel(pw: string): 'Weak' | 'Medium' | 'Strong' {
 const { width, height } = Dimensions.get('window');
 
 const SecurityDashboardScreen: React.FC = () => {
-  const { themeStyles, isDark } = useTheme();
+  const { isDark } = useTheme();
+  const themeStyles = isDark ? darkTheme : lightTheme;
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
 
