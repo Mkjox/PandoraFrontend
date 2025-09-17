@@ -56,6 +56,7 @@ export default function MainNavigator() {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name='Tabs' component={TabNavigator} />
+            <Stack.Screen name='Categories' component={CategoryScreen} />
             <Stack.Screen name='EditProfile' component={EditProfileScreen} />
             <Stack.Screen name='PassDetails' component={PassDetailsScreen} />
             <Stack.Screen name='CategoryDetails' component={CategoryDetailsScreen} />
@@ -78,7 +79,7 @@ export default function MainNavigator() {
             <Stack.Screen name='SecurityChallenge' component={SecurityChallengeScreen} />
             <Stack.Screen name='SecurityDashboard' component={SecurityDashboardScreen} />
             <Stack.Screen name='TwoFactor' component={TwoFactorScreen} />
-            <Stack.Screen name='EditCategories' component={EditCategoriesScreen} />
+            <Stack.Screen name='EditCategory' component={EditCategoriesScreen} />
             <Stack.Screen name='EditPassword' component={EditPasswordsScreen} />
             <Stack.Screen name='EditVault' component={EditVaultScreen} />
             <Stack.Screen name="Identities" component={IdentitiesScreen} />

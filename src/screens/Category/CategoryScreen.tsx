@@ -63,14 +63,9 @@ export default function CategoryScreen() {
           ) : null}
         </TouchableOpacity>
       </View>
-      <View style={styles.cardActions}>
+      {/* <View style={styles.cardActions}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('AddCredentials' as any, {
-            tab: 'category',
-            categoryId: item.id,
-            name: item.name,
-            description: item.description ?? '',
-          })}
+          onPress={() => navigation.navigate('AddCredentials' as any, )}
           style={styles.actionButton}
         >
           <AntDesign name="edit" size={20} color={themeStyles.iconColor.color} />
@@ -81,7 +76,7 @@ export default function CategoryScreen() {
         >
           <Entypo name="trash" size={20} color={themeStyles.iconColor.color} />
         </TouchableOpacity>
-      </View>
+      </View> */}
     </View>
   )
 
@@ -92,9 +87,7 @@ export default function CategoryScreen() {
         <TouchableOpacity
           style={[styles.newButton, themeStyles.button]}
           onPress={() =>
-            navigation.navigate('AddCredentials' as any, {
-              tab: 'category',
-            })
+            navigation.navigate('AddCredentials' as any)
           }
         >
           <AntDesign name="plus" size={16} color={themeStyles.buttonText.color} />
@@ -162,6 +155,8 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     padding: 16,
+    marginHorizontal: width * 0.01,
+    marginTop: height * 0.002,
     marginBottom: height * 0.015,
     borderRadius: 10,
     elevation: 3,

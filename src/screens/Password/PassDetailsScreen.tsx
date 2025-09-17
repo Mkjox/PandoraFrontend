@@ -117,7 +117,7 @@ const PassDetailsScreen: React.FC = () => {
         <View style={styles.spacer} />
 
         <View style={[styles.headerRow, themeStyles.card, themeStyles.border]}>
-          <View style={[styles.avatar, themeStyles.iconBg]}>
+          <View style={[styles.avatar]}>
             <Text style={[styles.avatarText, themeStyles.text]}>
               {item.siteName ? item.siteName.charAt(0).toUpperCase() : 'P'}
             </Text>
