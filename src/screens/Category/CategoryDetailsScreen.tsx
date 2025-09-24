@@ -87,8 +87,8 @@ export default function CategoryDetailsScreen() {
         <TouchableOpacity
           style={[styles.actionButton, themeStyles.button]}
           onPress={() =>
-            navigation.navigate("EditCategory" as any, {
-              category
+            navigation.navigate("EditCategory", {
+              categoryId: category.id
             })
           }
         >

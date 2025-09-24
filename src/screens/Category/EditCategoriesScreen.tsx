@@ -1,240 +1,247 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  StatusBar,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
-  StatusBar,
   ActivityIndicator,
   Alert,
-} from 'react-native'
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native'
-import { useTheme } from '../../context/ThemeContext'
-import { darkTheme, lightTheme } from '../../assets/colors/theme'
-import { Category } from '../../types/category.types'
-import api from '../../services/api'
-import AuthService from '../../services/AuthService'
-import { ServiceResult } from '../../types/service.types'
-import { CategoryPayload } from '../../types/category.types'
+} from "react-native";
+import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
+import { useTheme } from "../../context/ThemeContext";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useAppDispatch } from "../../redux/hooks";
+import { ServiceResult } from "../../types/service.types";
+import { Category, UpdateCategoryPayload } from "../../types/category.types";
+import CategoryService from "../../services/CategoryService";
+import CustomAlert from "../../components/CustomAlert";
+import { darkTheme, lightTheme } from "../../assets/colors/theme";
 
-type EditCatParams = {
-  EditCategory: { categoryId: string }
-}
+type RootStackParamList = {
+  EditCategory: { categoryId: string };
+};
 
-type RouteProps = RouteProp<EditCatParams, 'EditCategory'>
+type EditCategoryRouteProp = RouteProp<RootStackParamList, "EditCategory">;
 
-export default function EditCategoriesScreen() {
-  const navigation = useNavigation<any>()
-  const route = useRoute<RouteProps>()
-  const { isDark } = useTheme()
-  const themeStyles = isDark ? darkTheme : lightTheme
+const { width } = Dimensions.get("window");
+const H_PADDING = Math.round(width * 0.05);
 
-  const categoryId = route.params.categoryId
+const EditCategoriesScreen: React.FC = () => {
+  const route = useRoute<EditCategoryRouteProp>();
+  const navigation = useNavigation<any>();
+  const dispatch = useAppDispatch();
+  const { isDark } = useTheme();
+  const themeStyles = isDark ? darkTheme : lightTheme;
 
-  const [loading, setLoading] = useState<boolean>(true)
-  const [saving, setSaving] = useState<boolean>(false)
-  const [error, setError] = useState<string | null>(null)
+  const { categoryId } = route.params;
 
-  const [form, setForm] = useState<{
-    name: string
-    description: string
-    fieldErrors: { name?: string }
-  }>({
-    name: '',
-    description: '',
-    fieldErrors: {},
-  })
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
-  // Fetch existing category (requires token)
+  const [form, setForm] = useState<UpdateCategoryPayload>({
+    id: categoryId,
+    name: "",
+    description: "",
+  });
+
   useEffect(() => {
-    let isMounted = true
-    ;(async () => {
-      const token = await AuthService.getToken()
-      if (!token) {
-        Alert.alert('Error', 'Not authenticated. Please log in again.')
-        navigation.goBack()
-        return
-      }
+    const fetchCategory = async () => {
       try {
-        const resp = await api.get<ServiceResult<Category>>(
-          `/categories/${categoryId}`
-        )
-        if (resp.data && resp.data.success) {
-          const cat = resp.data.data
-          if (!isMounted) return
-          setForm({
-            name: cat.name,
-            description: cat.description ?? '',
-            fieldErrors: {},
-          })
-          setError(null)
+        const response = await CategoryService.getCategoriesByUser()(dispatch);
+        if (response.success && response.data) {
+          const cat = response.data.find((c) => c.id === categoryId);
+          if (cat) {
+            setForm({
+              id: cat.id,
+              name: cat.name,
+              description: cat.description || "",
+            });
+          } else {
+            Alert.alert("Error", "Category not found.");
+            navigation.goBack();
+          }
         } else {
-          if (!isMounted) return
-          setError(resp.data.message || 'Failed to load category')
+          Alert.alert("Error", response.message || "Failed to load category.");
+          navigation.goBack();
         }
-      } catch (e: any) {
-        if (!isMounted) return
-        setError('An unexpected error occurred.')
+      } catch (err: any) {
+        console.error("Fetch error:", err);
+        Alert.alert("Error", err?.message || "Failed to load category.");
+        navigation.goBack();
       } finally {
-        if (!isMounted) return
-        setLoading(false)
+        setLoading(false);
       }
-    })()
-    return () => {
-      isMounted = false
-    }
-  }, [categoryId, navigation])
+    };
 
-  const handleChange = (key: 'name' | 'description', value: string) => {
-    setForm(f => ({
-      ...f,
-      [key]: value,
-      fieldErrors: { ...f.fieldErrors, [key]: undefined },
-    }))
-    setError(null)
-  }
+    fetchCategory();
+  }, [categoryId]);
+
+  const handleChange = (field: keyof UpdateCategoryPayload, value: string) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+  };
 
   const handleSave = async () => {
-    // Validation
-    let hasError = false
-    const errs: { name?: string } = {}
     if (!form.name.trim()) {
-      errs.name = 'Name is required.'
-      hasError = true
-    }
-    if (hasError) {
-      setForm(f => ({ ...f, fieldErrors: errs }))
-      return
+      Alert.alert("Error", "Category name cannot be empty.");
+      return;
     }
 
-    setSaving(true)
+    setSaving(true);
+
     try {
-      const payload: CategoryPayload = {
-        UserId: '', // (backend will ignore userId if auth token is used)
-        name: form.name.trim(),
-        description: form.description.trim(),
-      }
-      const resp = await api.put<ServiceResult<Category>>(
-        `/categories/${categoryId}`,
-        payload
-      )
-      if (resp.data && resp.data.success) {
-        Alert.alert('Success', 'Category updated.', [
-          { text: 'OK', onPress: () => navigation.goBack() },
-        ])
+      const res = (await dispatch(
+        // @ts-ignore - thunk
+        CategoryService.updateCategory(form)
+      )) as ServiceResult<Category>;
+
+      if (res.success) {
+        setShowSuccessAlert(true);
       } else {
-        Alert.alert('Error', resp.data.message || 'Failed to update.')
+        Alert.alert("Error", res.message || "Failed to update category");
       }
-    } catch (e: any) {
-      Alert.alert('Error', 'An unexpected error occurred.')
+    } catch (err: any) {
+      console.error("Update error:", err);
+      Alert.alert("Error", err?.message || "Failed to update category");
     } finally {
-      setSaving(false)
+      setSaving(false);
     }
-  }
+  };
 
-  if (loading) {
-    return (
-      <View style={[styles.loaderContainer, themeStyles.container]}>
-        <ActivityIndicator size="large" />
-      </View>
-    )
-  }
-
-  if (error) {
-    return (
-      <View style={[styles.loaderContainer, themeStyles.container]}>
-        <Text style={themeStyles.text}>{error}</Text>
-      </View>
-    )
-  }
-
-  return (
-    <View style={[styles.container, themeStyles.container]}>
-      <Text style={[styles.title, themeStyles.text]}>Edit Category</Text>
-
+  const renderInput = (
+    label: string,
+    field: keyof UpdateCategoryPayload,
+    multiline?: boolean
+  ) => (
+    <View style={[styles.card, themeStyles.card, themeStyles.border]}>
+      <Text style={[styles.label, themeStyles.text]}>{label}</Text>
       <TextInput
         style={[
           styles.input,
-          themeStyles.card,
-          form.fieldErrors.name && styles.inputError,
+          themeStyles.text,
+          multiline ? { height: 100, textAlignVertical: "top" } : undefined,
         ]}
-        placeholder="Name*"
-        placeholderTextColor={isDark ? '#888' : '#666'}
-        value={form.name}
-        onChangeText={text => handleChange('name', text)}
+        value={form[field] || ""}
+        onChangeText={(t) => handleChange(field, t)}
+        placeholder={`Enter ${label}`}
+        placeholderTextColor={themeStyles.textGray.color}
+        multiline={multiline}
       />
-      {form.fieldErrors.name ? (
-        <Text style={styles.errorText}>{form.fieldErrors.name}</Text>
-      ) : null}
-
-      <TextInput
-        style={[styles.input, themeStyles.card]}
-        placeholder="Description"
-        placeholderTextColor={isDark ? '#888' : '#666'}
-        value={form.description}
-        onChangeText={text => handleChange('description', text)}
-      />
-
-      <TouchableOpacity
-        style={[styles.saveButton, themeStyles.button]}
-        onPress={handleSave}
-        disabled={saving}
-      >
-        {saving ? (
-          <ActivityIndicator color={themeStyles.buttonText.color} />
-        ) : (
-          <Text style={[styles.saveButtonText, themeStyles.buttonText]}>
-            Save
-          </Text>
-        )}
-      </TouchableOpacity>
     </View>
-  )
-}
+  );
+
+  if (loading) {
+    return (
+      <View style={[themeStyles.container, styles.center]}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  return (
+    <>
+      <ScrollView
+        style={themeStyles.container}
+        contentContainerStyle={styles.scrollContent}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={styles.spacer} />
+
+        {renderInput("Category Name", "name")}
+        {renderInput("Description", "description", true)}
+
+        <View style={styles.actionRow}>
+          <TouchableOpacity
+            disabled={saving}
+            style={[
+              styles.actionBtn,
+              themeStyles.button,
+              saving && { opacity: 0.7 },
+            ]}
+            onPress={handleSave}
+          >
+            {saving ? (
+              <ActivityIndicator color={themeStyles.buttonText.color} />
+            ) : (
+              <>
+                <MaterialIcons
+                  name="save"
+                  size={18}
+                  color={themeStyles.buttonText.color}
+                />
+                <Text style={[styles.actionText, themeStyles.buttonText]}>
+                  Save Changes
+                </Text>
+              </>
+            )}
+          </TouchableOpacity>
+        </View>
+
+        <View style={{ height: 32 }} />
+      </ScrollView>
+
+      <CustomAlert
+        visible={showSuccessAlert}
+        title="Success"
+        message="Category updated successfully"
+        onClose={() => {
+          setShowSuccessAlert(false);
+          navigation.goBack();
+        }}
+      />
+    </>
+  );
+};
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
+  scrollContent: {
+    paddingHorizontal: H_PADDING,
+    paddingBottom: 24,
   },
-  loaderContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  spacer: {
+    height: StatusBar.currentHeight || 20,
   },
-  title: {
-    fontSize: 24,
-    fontFamily: 'Poppins_700Bold',
-    marginBottom: 16,
+  center: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  card: {
+    borderRadius: 12,
+    padding: 14,
+    marginBottom: 12,
+  },
+  label: {
+    fontSize: 13,
+    fontFamily: "Poppins_600SemiBold",
+    marginBottom: 6,
   },
   input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    marginBottom: 4,
-    fontFamily: 'Poppins_400Regular',
+    fontSize: 15,
+    fontFamily: "Poppins_400Regular",
+    paddingVertical: 6,
   },
-  inputError: {
-    borderColor: '#D32F2F',
+  actionRow: {
+    marginTop: 18,
+    alignItems: "center",
   },
-  errorText: {
-    color: '#D32F2F',
-    fontSize: 13,
-    marginBottom: 8,
-    fontFamily: 'Poppins_400Regular',
-    fontWeight: '600',
+  actionBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 22,
+    borderRadius: 12,
+    elevation: 2,
   },
-  saveButton: {
-    marginTop: 20,
-    paddingVertical: 14,
-    borderRadius: 8,
-    alignItems: 'center',
+  actionText: {
+    marginLeft: 8,
+    fontSize: 15,
+    fontFamily: "Poppins_500Medium",
   },
-  saveButtonText: {
-    fontSize: 16,
-    fontFamily: 'Poppins_600SemiBold',
-  },
-})
+});
+
+export default EditCategoriesScreen;
