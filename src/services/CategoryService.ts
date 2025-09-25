@@ -87,7 +87,7 @@ const CategoryService = {
     (id: string) =>
     async (dispatch: AppDispatch): Promise<ServiceResult<null>> => {
       try {
-        await api.delete(`/api/Categories/${id}`);
+        await api.delete(`/Categories/${id}`);
         await dispatch(CategoryService.getCategoriesByUser() as any);
         return { success: true };
       } catch (error: any) {

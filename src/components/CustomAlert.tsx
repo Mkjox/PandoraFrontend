@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../context/ThemeContext';
+import { darkTheme, lightTheme } from '../assets/colors/theme';
 
 const { width } = Dimensions.get('window');
 
@@ -26,7 +27,8 @@ const CustomAlert: React.FC<CustomAlertProps> = ({
   onClose,
 }) => {
   const navigation = useNavigation();
-  const { themeStyles, isDark } = useTheme();
+    const { isDark } = useTheme();
+    const themeStyles = isDark ? darkTheme : lightTheme;
 
   const handleClose = () => {
     if (onClose) {
