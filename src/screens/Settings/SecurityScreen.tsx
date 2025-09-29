@@ -38,6 +38,12 @@ const SecurityScreen: React.FC = () => {
         );
     };
 
+    const resetSettings = () => {
+        setTwoFactorEnabled(false);
+        setBiometricEnabled(false);
+        Alert.alert('Reset Security', 'All security settings have been reset.');
+    };
+
     return (
         <ScrollView style={[styles.container, themeStyles.container]}>
             <View style={styles.spacer} />
@@ -78,9 +84,11 @@ const SecurityScreen: React.FC = () => {
 
             <TouchableOpacity
                 style={[styles.resetButton, themeStyles.button]}
-                onPress={() => Alert.alert('Reset Security', 'All security settings have been reset.')}
+                onPress={resetSettings}
             >
-                <Text style={[styles.resetButtonText, themeStyles.buttonText]}>Reset All Security Settings</Text>
+                <Text style={[styles.resetButtonText, themeStyles.buttonText]}>
+                    Reset All Security Settings
+                </Text>
             </TouchableOpacity>
         </ScrollView>
     );
