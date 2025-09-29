@@ -102,16 +102,16 @@ const SecurityDashboardScreen: React.FC = () => {
   }, [passwords]);
 
   // Compute upcoming expirations: within next 7 days
-  const upcomingExpirations = useMemo(() => {
-    const now = new Date();
-    const in7 = new Date();
-    in7.setDate(now.getDate() + 7);
-    return passwords.filter(p => {
-      if (!p.passwordExpirationDate) return false;
-      const exp = new Date(p.passwordExpirationDate);
-      return exp >= now && exp <= in7;
-    });
-  }, [passwords]);
+  // const upcomingExpirations = useMemo(() => {
+  //   const now = new Date();
+  //   const in7 = new Date();
+  //   in7.setDate(now.getDate() + 7);
+  //   return passwords.filter(p => {
+  //     if (!p.passwordExpirationDate) return false;
+  //     const exp = new Date(p.passwordExpirationDate);
+  //     return exp >= now && exp <= in7;
+  //   });
+  // }, [passwords]);
 
   // Compute security score: percentage of strong passwords
   const securityScore = useMemo(() => {
@@ -171,26 +171,23 @@ const SecurityDashboardScreen: React.FC = () => {
   );
 
   // Render upcoming expiration item
-  const renderExpItem = ({ item }: { item: PasswordItem }) => (
-    <TouchableOpacity
-      style={[styles.listItem, themeStyles.card, themeStyles.border]}
-      onPress={() =>
-        navigation.navigate('PassDetails' as never, { id: item.id } as any)
-      }
-    >
-      <View style={styles.listIcon}>
-        <MaterialIcons name="schedule" size={20} color={themeStyles.icon.color} />
-      </View>
-      <View style={styles.listTextContainer}>
-        <Text style={[styles.listTitle, themeStyles.text]} numberOfLines={1}>
-          {item.siteName}
-        </Text>
-        <Text style={[styles.listSubtitle, themeStyles.textGray]} numberOfLines={1}>
-          Expires on {new Date(item.passwordExpirationDate!).toLocaleDateString()}
-        </Text>
-      </View>
-    </TouchableOpacity>
-  );
+  // const renderExpItem = ({ item }: { item: PasswordItem }) => (
+  //   <TouchableOpacity
+  //     style={[styles.listItem, themeStyles.card, themeStyles.border]}
+  //     onPress={() =>
+  //       navigation.navigate('PassDetails' as never, { id: item.id } as any)
+  //     }
+  //   >
+  //     <View style={styles.listIcon}>
+  //       <MaterialIcons name="schedule" size={20} color={themeStyles.icon.color} />
+  //     </View>
+  //     <View style={styles.listTextContainer}>
+  //       <Text style={[styles.listTitle, themeStyles.text]} numberOfLines={1}>
+  //         {item.siteName}
+  //       </Text>
+  //     </View>
+  //   </TouchableOpacity>
+  // );
 
   return (
     <ScrollView style={[styles.container, themeStyles.container]}>
@@ -247,7 +244,7 @@ const SecurityDashboardScreen: React.FC = () => {
             Great! No weak passwords found.
           </Text>
         )}
-        {upcomingExpirations.length > 0 ? (
+        {/* {upcomingExpirations.length > 0 ? (
           <Text style={[styles.recommendationText, themeStyles.text]}>
             {upcomingExpirations.length} password
             {upcomingExpirations.length > 1 ? 's are' : ' is'} expiring soon.
@@ -256,7 +253,7 @@ const SecurityDashboardScreen: React.FC = () => {
           <Text style={[styles.recommendationText, themeStyles.text]}>
             No passwords expiring within 7 days.
           </Text>
-        )}
+        )} */}
       </View>
 
       {/* Two-Factor Toggle */}
@@ -303,7 +300,7 @@ const SecurityDashboardScreen: React.FC = () => {
       )}
 
       {/* Upcoming Expirations List */}
-      {upcomingExpirations.length > 0 && (
+      {/* {upcomingExpirations.length > 0 && (
         <View style={styles.listSection}>
           <Text style={[styles.listHeader, themeStyles.text]}>
             Expiring Soon
@@ -317,7 +314,7 @@ const SecurityDashboardScreen: React.FC = () => {
             contentContainerStyle={styles.listContainer}
           />
         </View>
-      )}
+      )} */}
 
       {/* Quick Actions */}
       {/* <View style={[styles.section, themeStyles.card, themeStyles.border]}>
