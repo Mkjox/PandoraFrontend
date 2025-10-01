@@ -106,7 +106,7 @@ export default function LoginScreen() {
 
 
       <PaperInput
-        mode="flat"
+        mode="outlined"
         label="Username or Email"
         left={<PaperInput.Icon icon="account-outline" />}
         error={!!usernameError}
@@ -117,12 +117,13 @@ export default function LoginScreen() {
         autoCapitalize="none"
         keyboardType="email-address"
         activeUnderlineColor='#1c6d79'
+        activeOutlineColor='#1c6d79'
         textColor={isDark ? '#FFF' : '#000'}
       />
       {usernameError && <Text style={styles.errorText}>{usernameError}</Text>}
 
       <PaperInput
-        mode="flat"
+        mode="outlined"
         label="Password"
         left={<PaperInput.Icon icon="lock-outline" />}
         right={
@@ -139,6 +140,7 @@ export default function LoginScreen() {
         placeholderTextColor={isDark ? '#888' : '#666'}
         autoCapitalize="none"
         activeUnderlineColor='#1c6d79'
+        activeOutlineColor='#1c6d79'
         textColor={isDark ? '#FFF' : '#000'}
       />
       {passwordError && <Text style={styles.errorText}>{passwordError}</Text>}

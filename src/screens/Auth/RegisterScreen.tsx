@@ -80,7 +80,7 @@ export default function RegisterScreen() {
             />
 
             <PaperInput
-                mode="flat"
+                mode="outlined"
                 label="First Name"
                 left={<PaperInput.Icon icon="account-outline" />}
                 error={!!errors.FirstName}
@@ -88,13 +88,14 @@ export default function RegisterScreen() {
                 onChangeText={text => handleChange('FirstName', text)}
                 style={[styles.input, themeStyles.card]}
                 activeUnderlineColor='#1c6d79'
+                activeOutlineColor='#1c6d79'
                 placeholderTextColor={isDark ? '#888' : '#666'}
                 textColor={isDark ? '#FFF' : '#000'}
             />
             {errors.FirstName && <Text style={styles.errorText}>{errors.FirstName}</Text>}
 
             <PaperInput
-                mode="flat"
+                mode="outlined"
                 label="Last Name"
                 left={<PaperInput.Icon icon="account-outline" />}
                 error={!!errors.LastName}
@@ -102,13 +103,14 @@ export default function RegisterScreen() {
                 onChangeText={text => handleChange('LastName', text)}
                 style={[styles.input, themeStyles.card]}
                 activeUnderlineColor='#1c6d79'
+                activeOutlineColor='#1c6d79'
                 placeholderTextColor={isDark ? '#888' : '#666'}
                 textColor={isDark ? '#FFF' : '#000'}
             />
             {errors.LastName && <Text style={styles.errorText}>{errors.LastName}</Text>}
 
             <PaperInput
-                mode="flat"
+                mode="outlined"
                 label="Phone Number"
                 left={<PaperInput.Icon icon="phone-outline" />}
                 keyboardType="phone-pad"
@@ -117,13 +119,14 @@ export default function RegisterScreen() {
                 onChangeText={text => handleChange('PhoneNumber', text)}
                 style={[styles.input, themeStyles.card]}
                 activeUnderlineColor='#1c6d79'
+                activeOutlineColor='#1c6d79'
                 placeholderTextColor={isDark ? '#888' : '#666'}
                 textColor={isDark ? '#FFF' : '#000'}
             />
             {errors.PhoneNumber && <Text style={styles.errorText}>{errors.PhoneNumber}</Text>}
 
             <PaperInput
-                mode="flat"
+                mode="outlined"
                 label="Username"
                 left={<PaperInput.Icon icon="account-circle-outline" />}
                 autoCapitalize="none"
@@ -132,13 +135,14 @@ export default function RegisterScreen() {
                 onChangeText={text => handleChange('Username', text)}
                 style={[styles.input, themeStyles.card]}
                 activeUnderlineColor='#1c6d79'
+                activeOutlineColor='#1c6d79'
                 placeholderTextColor={isDark ? '#888' : '#666'}
                 textColor={isDark ? '#FFF' : '#000'}
             />
             {errors.Username && <Text style={styles.errorText}>{errors.Username}</Text>}
 
             <PaperInput
-                mode="flat"
+                mode="outlined"
                 label="Email"
                 left={<PaperInput.Icon icon="email-outline" />}
                 keyboardType="email-address"
@@ -148,13 +152,14 @@ export default function RegisterScreen() {
                 onChangeText={text => handleChange('Email', text)}
                 style={[styles.input, themeStyles.card]}
                 activeUnderlineColor='#1c6d79'
+                activeOutlineColor='#1c6d79'
                 placeholderTextColor={isDark ? '#888' : '#666'}
                 textColor={isDark ? '#FFF' : '#000'}
             />
             {errors.Email && <Text style={styles.errorText}>{errors.Email}</Text>}
 
             <PaperInput
-                mode="flat"
+                mode="outlined"
                 label="Password"
                 left={<PaperInput.Icon icon="lock-outline" />}
                 right={
@@ -169,13 +174,14 @@ export default function RegisterScreen() {
                 onChangeText={text => handleChange('Password', text)}
                 style={[styles.input, themeStyles.card]}
                 activeUnderlineColor='#1c6d79'
+                activeOutlineColor='#1c6d79'
                 placeholderTextColor={isDark ? '#888' : '#666'}
                 textColor={isDark ? '#FFF' : '#000'}
             />
             {errors.Password && <Text style={styles.errorText}>{errors.Password}</Text>}
 
             <PaperInput
-                mode="flat"
+                mode="outlined"
                 label="Confirm Password"
                 left={<PaperInput.Icon icon="lock-outline" />}
                 right={
@@ -190,6 +196,7 @@ export default function RegisterScreen() {
                 onChangeText={text => handleChange('ConfirmPassword', text)}
                 style={[styles.input, themeStyles.card]}
                 activeUnderlineColor='#1c6d79'
+                activeOutlineColor='#1c6d79'
                 placeholderTextColor={isDark ? '#888' : '#666'}
                 textColor={isDark ? '#FFF' : '#000'}
             />
@@ -210,7 +217,7 @@ export default function RegisterScreen() {
 
             <TouchableOpacity onPress={() => navigation.navigate('Login' as never)}>
                 <Text style={[styles.link, themeStyles.textBlue]}>
-                    Already have an account? <Text style={styles.innerLink}>Log in</Text>
+                    Already have an account? <Text style={styles.innerLink}>Login here</Text>
                 </Text>
             </TouchableOpacity>
         </ScrollView>
@@ -258,7 +265,7 @@ const styles = StyleSheet.create({
     marginTop: height * 0.1,       // 10% of screen height above button
     },
     link: {
-        marginTop: 8,
+        marginTop: 12,
         fontFamily: 'Poppins_400Regular',
         textAlign: 'center'
     },

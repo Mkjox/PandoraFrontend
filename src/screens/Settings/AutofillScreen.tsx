@@ -110,6 +110,7 @@ const AutofillScreen: React.FC = () => {
           <Switch
             value={autofillEnabled}
             onValueChange={toggleAutofill}
+            disabled
           />
         </View>
         <Text style={[styles.helperText, themeStyles.text]}>

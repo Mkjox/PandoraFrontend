@@ -18,7 +18,7 @@ const ActionsScreen: React.FC = () => {
     const { isDark } = useTheme();
     const themeStyles = isDark ? darkTheme : lightTheme;
 
-    const [autoLock, setAutoLock] = useState(true);
+    const [autoLock, setAutoLock] = useState(false);
     const [clearClipboard, setClearClipboard] = useState(false);
 
     return (
