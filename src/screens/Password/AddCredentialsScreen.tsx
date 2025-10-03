@@ -14,17 +14,17 @@ import {
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
-import { useTheme } from '../../context/ThemeContext';
-import { darkTheme, lightTheme } from '../../assets/colors/theme';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import AuthService from '../../services/AuthService';
-import PasswordService from '../../services/PasswordService';
-import CategoryService from '../../services/CategoryService';
-import PersonalVaultService from '../../services/PersonalVaultService';
-import ImagePickerButton from '../../components/ImagePickerButton';
-import { CategoryPayload } from '../../types/category.types';
-import { PersonalVaultPayload } from '../../types/personalVault.types';
-import { ServiceResult } from '../../types/service.types';
+import { useTheme } from '@context/ThemeContext';
+import { darkTheme, lightTheme } from '@assets/colors/theme';
+import { useAppDispatch, useAppSelector } from '@redux/hooks';
+import AuthService from '@services/AuthService';
+import PasswordService from '@services/PasswordService';
+import CategoryService from '@services/CategoryService';
+import PersonalVaultService from '@services/PersonalVaultService';
+import ImagePickerButton from '@components/ImagePickerButton';
+import { CreateCategoryPayload } from '@appTypes/category.types';
+import { PersonalVaultPayload } from '@appTypes/personalVault.types';
+import { ServiceResult } from '@appTypes/service.types';
 import { Switch, TextInput } from 'react-native-paper';
 
 type AddCredParams = {
@@ -165,23 +165,17 @@ export default function AddCredentialsScreen() {
 
       else if (selectedTab === 'vault') {
         const payload: PersonalVaultPayload = {
-          UserId: userId,
-          title: form.Title,
-          content: form.Content,
+          userId: userId,
+          secureTitle: form.Title,
+          secureContent: form.Content,
           // Url: form.Url,
           // MediaFile: form.MediaFile,
-          summary: form.Summary,
-          tags: form.Tags.split(',').map((t: string) => t.trim()),
-          isLocked: form.IsLocked,
-          isShareable: form.IsShareable,
-          isFavorite: form.IsFavorite,
-          unlockDate: form.UnlockDate
-            ? new Date(form.UnlockDate).toISOString()
-            : undefined,
+          secureSummary: form.Summary,
+          secureTags: form.Tags.split(',').map((t: string) => t.trim()),
+          IsLocked: form.IsLocked,
+          IsShareable: form.IsShareable,
+          IsFavorite: form.IsFavorite,
           categoryId: form.CategoryId,
-          expirationDate: form.ExpirationDate
-            ? new Date(form.ExpirationDate).toISOString()
-            : undefined,
         };
         const res = (await dispatch(
           // @ts-ignore
@@ -192,8 +186,8 @@ export default function AddCredentialsScreen() {
       }
 
       else {
-        const payload: CategoryPayload = {
-          UserId: userId,
+        const payload: CreateCategoryPayload = {
+          userId: userId,
           name: form.Name,
           description: form.Description,
         };

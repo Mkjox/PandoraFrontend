@@ -11,8 +11,8 @@ import {
     Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useTheme } from '../../context/ThemeContext';
-import { lightTheme, darkTheme } from '../../assets/colors/theme';
+import { useTheme } from '@context/ThemeContext';
+import { lightTheme, darkTheme } from '@assets/colors/theme';
 
 const { height, width } = Dimensions.get('window');
 const COOLDOWN_HOURS = 6; // lock period after a suggestion

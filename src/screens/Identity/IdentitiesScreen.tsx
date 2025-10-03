@@ -9,18 +9,19 @@ import {
     FlatList,
     TouchableOpacity
 } from "react-native";
-import { useTheme } from "../../context/ThemeContext";
-import { darkTheme, lightTheme } from "../../assets/colors/theme";
+import { useTheme } from "@context/ThemeContext";
+import { darkTheme, lightTheme } from "@assets/colors/theme";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import IdentityService from "../../services/IdentityService";
-import { IdentityItem } from "../../types/identity.types";
+import { useAppDispatch, useAppSelector } from "@redux/hooks";
+import IdentityService from "@services/IdentityService";
+import { IdentityItem } from "@appTypes/identity.types";
 import { AntDesign } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get("window");
 
 const IdentitiesScreen: React.FC = () => {
-    const { themeStyles } = useTheme();
+    const { isDark } = useTheme();
+    const themeStyles = isDark ? darkTheme : lightTheme;
     const navigation = useNavigation<any>();
     const dispatch = useAppDispatch();
 

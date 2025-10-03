@@ -2,8 +2,8 @@ import React from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import { useTheme } from "../context/ThemeContext";
-import { darkTheme, lightTheme } from "../assets/colors/theme";
+import { useTheme } from "@context/ThemeContext";
+import { darkTheme, lightTheme } from "@assets/colors/theme";
 
 const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
     const { themeStyles } = useTheme();

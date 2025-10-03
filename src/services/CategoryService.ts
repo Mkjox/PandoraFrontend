@@ -4,14 +4,14 @@ import {
   Category,
   CreateCategoryPayload,
   UpdateCategoryPayload,
-} from "../types/category.types";
+} from "@appTypes/category.types";
 import {
   fetchCategoriesStart,
   fetchCategoriesSuccess,
   fetchCategoriesFailure,
   addCategory,
-} from "../redux/store/slices/categorySlice";
-import { ServiceResult } from "../types/service.types";
+} from "@redux/store/slices/categorySlice";
+import { ServiceResult } from "@appTypes/service.types";
 
 const CategoryService = {
   createCategory:

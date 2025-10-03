@@ -10,8 +10,8 @@ import {
     TouchableOpacity,
     Alert,
 } from 'react-native';
-import { useTheme } from '../../context/ThemeContext';
-import { lightTheme, darkTheme } from '../../assets/colors/theme';
+import { useTheme } from '@context/ThemeContext';
+import { lightTheme, darkTheme } from '@assets/colors/theme';
 
 const { height, width } = Dimensions.get('window');
 

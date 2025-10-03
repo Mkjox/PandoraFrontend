@@ -11,10 +11,10 @@ import {
     Alert,
 } from "react-native";
 import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
-import { useTheme } from "../../context/ThemeContext";
-import { darkTheme, lightTheme } from "../../assets/colors/theme";
-import IdentityService from "../../services/IdentityService";
-import { IdentityItem } from "../../types/identity.types";
+import { useTheme } from "@context/ThemeContext";
+import { darkTheme, lightTheme } from "@assets/colors/theme";
+import IdentityService from "@services/IdentityService";
+import { IdentityItem } from "@appTypes/identity.types";
 import { MaterialIcons, Entypo } from "@expo/vector-icons";
 
 type RootStackParamList = {
@@ -27,7 +27,8 @@ const { width } = Dimensions.get("window");
 const IdentityDetailsScreen: React.FC = () => {
     const route = useRoute<IdentityDetailsRouteProp>();
     const navigation = useNavigation<any>();
-    const { themeStyles } = useTheme();
+    const { isDark } = useTheme();
+    const themeStyles = isDark ? darkTheme : lightTheme;
     const [item, setItem] = useState<IdentityItem | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -49,30 +50,30 @@ const IdentityDetailsScreen: React.FC = () => {
     }, [id]);
 
     const handleDelete = async () => {
-  Alert.alert(
-    "Delete Identity",
-    "Are you sure you want to delete this identity?",
-    [
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-      {
-        text: "Delete",
-        style: "destructive",
-        onPress: async () => {
-          try {
-            await IdentityService.deleteIdentity(id);
-            navigation.goBack();
-          } catch (error) {
-            console.error("Failed to delete identity:", error);
-            // Optionally show an error toast or alert here
-          }
-        },
-      },
-    ]
-  );
-};
+        Alert.alert(
+            "Delete Identity",
+            "Are you sure you want to delete this identity?",
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel",
+                },
+                {
+                    text: "Delete",
+                    style: "destructive",
+                    onPress: async () => {
+                        try {
+                            await IdentityService.deleteIdentity(id);
+                            navigation.goBack();
+                        } catch (error) {
+                            console.error("Failed to delete identity:", error);
+                            // Optionally show an error toast or alert here
+                        }
+                    },
+                },
+            ]
+        );
+    };
 
     if (loading) {
         return (

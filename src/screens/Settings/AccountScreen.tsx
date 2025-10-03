@@ -8,11 +8,11 @@ import {
     Dimensions,
     TouchableOpacity,
 } from 'react-native';
-import { useTheme } from '../../context/ThemeContext';
-import AuthService from '../../services/AuthService';
+import { useTheme } from '@context/ThemeContext';
+import AuthService from '@services/AuthService';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { darkTheme, lightTheme } from '../../assets/colors/theme';
-import { useAppDispatch } from '../../redux/hooks';
+import { darkTheme, lightTheme } from '@assets/colors/theme';
+import { useAppDispatch } from '@redux/hooks';
 
 
 const { height, width } = Dimensions.get('window');

@@ -11,13 +11,13 @@ import {
   Alert,
 } from "react-native";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
-import { useTheme } from "../../context/ThemeContext";
-import { darkTheme, lightTheme } from "../../assets/colors/theme";
-import { useAppDispatch } from "../../redux/hooks";
-import AuthService from "../../services/AuthService";
-import IdentityService from "../../services/IdentityService";
-import { IdentityPayload } from "../../types/identity.types";
-import { ServiceResult } from "../../types/service.types";
+import { useTheme } from "@context/ThemeContext";
+import { darkTheme, lightTheme } from "@assets/colors/theme";
+import { useAppDispatch } from "@redux/hooks";
+import AuthService from "@services/AuthService";
+import IdentityService from "@services/IdentityService";
+import { IdentityPayload } from "@appTypes/identity.types";
+import { ServiceResult } from "@appTypes/service.types";
 
 type RouteParams = {
   EditIdentity: {
@@ -35,7 +35,8 @@ type EditIdentityRouteProp = RouteProp<RouteParams, "EditIdentity">;
 const EditIdentityScreen: React.FC = () => {
   const navigation = useNavigation<any>();
   const route = useRoute<EditIdentityRouteProp>();
-  const { themeStyles, isDark } = useTheme();
+  const { isDark } = useTheme();
+  const themeStyles = isDark ? darkTheme : lightTheme;
   const dispatch = useAppDispatch();
 
   const mode = route.params.mode;

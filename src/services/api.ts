@@ -1,5 +1,5 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
-import { API_URL } from "../config/apiConfig";
+import { API_URL } from "@config/apiConfig";
 import { tokenStorage } from "./tokenStorage";
 
 const api = axios.create({

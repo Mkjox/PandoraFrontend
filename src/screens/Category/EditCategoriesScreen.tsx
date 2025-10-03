@@ -12,14 +12,14 @@ import {
   Alert,
 } from "react-native";
 import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
-import { useTheme } from "../../context/ThemeContext";
+import { useTheme } from "@context/ThemeContext";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useAppDispatch } from "../../redux/hooks";
-import { ServiceResult } from "../../types/service.types";
-import { Category, UpdateCategoryPayload } from "../../types/category.types";
-import CategoryService from "../../services/CategoryService";
-import CustomAlert from "../../components/CustomAlert";
-import { darkTheme, lightTheme } from "../../assets/colors/theme";
+import { useAppDispatch } from "@redux/hooks";
+import { ServiceResult } from "@appTypes/service.types";
+import { Category, UpdateCategoryPayload } from "@appTypes/category.types";
+import CategoryService from "@services/CategoryService";
+import CustomAlert from "@components/CustomAlert";
+import { darkTheme, lightTheme } from "@assets/colors/theme";
 
 type RootStackParamList = {
   EditCategory: { categoryId: string };

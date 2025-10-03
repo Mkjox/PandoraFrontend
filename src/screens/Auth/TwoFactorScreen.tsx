@@ -12,8 +12,8 @@ import {
   Image,
   Alert,
 } from 'react-native'
-import { useTheme } from '../../context/ThemeContext'
-import AuthService from '../../services/AuthService'
+import { useTheme } from '@context/ThemeContext'
+import AuthService from '@services/AuthService'
 
 const TwoFactorScreen: React.FC = () => {
   const { isDark, themeStyles } = useTheme()

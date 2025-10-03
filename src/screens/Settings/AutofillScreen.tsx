@@ -12,8 +12,8 @@ import {
   Linking,
   Alert,
 } from 'react-native';
-import { useTheme } from '../../context/ThemeContext';
-import { lightTheme, darkTheme } from '../../assets/colors/theme';
+import { useTheme } from '@context/ThemeContext';
+import { lightTheme, darkTheme } from '@assets/colors/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { height, width } = Dimensions.get('window');

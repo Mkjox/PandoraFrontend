@@ -11,12 +11,12 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
-import { useTheme } from '../../context/ThemeContext';
-import { lightTheme, darkTheme } from '../../assets/colors/theme';
-import AuthService from '../../services/AuthService';
-import ImagePickerButton from '../../components/ImagePickerButton';
-import { ServiceResult } from '../../types/service.types';
-import CustomButton from '../../components/CustomButton';
+import { useTheme } from '@context/ThemeContext';
+import { lightTheme, darkTheme } from '@assets/colors/theme';
+import AuthService from '@services/AuthService';
+import ImagePickerButton from '@components/ImagePickerButton';
+import { ServiceResult } from '@appTypes/service.types';
+import CustomButton from '@components/CustomButton';
 
 const { width } = Dimensions.get('window');
 

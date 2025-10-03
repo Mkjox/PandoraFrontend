@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IdentityItem } from "../../../types/identity.types";
+import { IdentityItem } from "@appTypes/identity.types";
 
 interface IdentityState {
     identities: IdentityItem[];

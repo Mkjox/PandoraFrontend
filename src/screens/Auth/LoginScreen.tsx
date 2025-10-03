@@ -9,15 +9,15 @@ import {
   Alert
 } from 'react-native'
 import { useDispatch } from 'react-redux'
-import { login as loginAction } from '../../redux/store/slices/authSlice'
+import { login as loginAction } from '@redux/store/slices/authSlice'
 import { useNavigation } from '@react-navigation/native'
-import AuthService from '../../services/AuthService'
-import { useTheme } from '../../context/ThemeContext'
-import { darkTheme, lightTheme } from '../../assets/colors/theme'
+import AuthService from '@services/AuthService'
+import { useTheme } from '@context/ThemeContext'
+import { darkTheme, lightTheme } from '@assets/colors/theme'
 import { TextInput as PaperInput } from 'react-native-paper'
-import CustomButton from '../../components/CustomButton'
-import { isBiometricAvailable, promptBiometric } from '../../services/biometric'
-import { tokenStorage } from '../../services/tokenStorage'
+import CustomButton from '@components/CustomButton'
+import { isBiometricAvailable, promptBiometric } from '@services/biometric'
+import { tokenStorage } from '@services/tokenStorage'
 
 const { height } = Dimensions.get("window")
 
@@ -61,40 +61,40 @@ export default function LoginScreen() {
     setLoading(false)
 
     if (result.success) {
-  // Normal flow
-  dispatch(loginAction())
+      // Normal flow
+      dispatch(loginAction())
 
-  // Offer biometric enable — best-effort
-  try {
-    const available = await isBiometricAvailable()
-    if (available) {
-      Alert.alert(
-        'Enable biometric login?',
-        'Use fingerprint / Face ID to unlock Pandora on this device.',
-        [
-          { text: 'No', style: 'cancel' },
-          {
-            text: 'Yes',
-            onPress: async () => {
-              // Confirm biometric now
-              const ok = await promptBiometric('Confirm to enable biometric login')
-              if (!ok) return
-              // Move tokens to secure storage
-              const access = await tokenStorage.getAccessToken()
-              const refresh = await tokenStorage.getRefreshToken()
-              if (access || refresh) {
-                await tokenStorage.setTokens(access ?? '', refresh ?? '', { secure: true })
-                await tokenStorage.setBiometricEnabled(true)
-              }
-            },
-          },
-        ]
-      )
+      // Offer biometric enable — best-effort
+      try {
+        const available = await isBiometricAvailable()
+        if (available) {
+          Alert.alert(
+            'Enable biometric login?',
+            'Use fingerprint / Face ID to unlock Pandora on this device.',
+            [
+              { text: 'No', style: 'cancel' },
+              {
+                text: 'Yes',
+                onPress: async () => {
+                  // Confirm biometric now
+                  const ok = await promptBiometric('Confirm to enable biometric login')
+                  if (!ok) return
+                  // Move tokens to secure storage
+                  const access = await tokenStorage.getAccessToken()
+                  const refresh = await tokenStorage.getRefreshToken()
+                  if (access || refresh) {
+                    await tokenStorage.setTokens(access ?? '', refresh ?? '', { secure: true })
+                    await tokenStorage.setBiometricEnabled(true)
+                  }
+                },
+              },
+            ]
+          )
+        }
+      } catch (e) {
+        // ignore non-critical errors
+      }
     }
-  } catch (e) {
-    // ignore non-critical errors
-  }
-}
   }
 
   return (

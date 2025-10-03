@@ -10,12 +10,12 @@ import {
   Alert,
 } from "react-native";
 import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
-import { useTheme } from "../../context/ThemeContext";
-import { lightTheme, darkTheme } from "../../assets/colors/theme";
-import { useAppSelector, useAppDispatch } from "../../redux/hooks";
-import { Category } from "../../types/category.types";
+import { useTheme } from "@context/ThemeContext";
+import { lightTheme, darkTheme } from "@assets/colors/theme";
+import { useAppSelector, useAppDispatch } from "@redux/hooks";
+import { Category } from "@appTypes/category.types";
 import { AntDesign, Entypo } from "@expo/vector-icons";
-import CategoryService from "../../services/CategoryService";
+import CategoryService from "@services/CategoryService";
 
 type RootStackParamList = {
   CategoryDetails: { id: string };

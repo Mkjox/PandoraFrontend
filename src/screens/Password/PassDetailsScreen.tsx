@@ -12,14 +12,14 @@ import {
   Alert,
 } from 'react-native';
 import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
-import { useTheme } from "../../context/ThemeContext";
-import PasswordService from "../../services/PasswordService";
-import { PasswordItem } from "../../types/password.types";
+import { useTheme } from "@context/ThemeContext";
+import PasswordService from "@services/PasswordService";
+import { PasswordItem } from "@appTypes/password.types";
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
-import { useAppDispatch } from "../../redux/hooks";
-import ConfirmDeleteModal from "../../components/ConfirmDeleteModal";
+import { useAppDispatch } from "@redux/hooks";
+import ConfirmDeleteModal from "@components/ConfirmDeleteModal";
 import * as Clipboard from 'expo-clipboard'
-import { darkTheme, lightTheme } from "../../assets/colors/theme";
+import { darkTheme, lightTheme } from "@assets/colors/theme";
 
 type RootStackParamList = {
   PassDetails: { id: string };

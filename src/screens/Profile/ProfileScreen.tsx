@@ -11,14 +11,14 @@ import {
   Alert,
   Pressable,
 } from 'react-native';
-import { useTheme } from '../../context/ThemeContext';
-import { lightTheme, darkTheme } from '../../assets/colors/theme';
+import { useTheme } from '@context/ThemeContext';
+import { lightTheme, darkTheme } from '@assets/colors/theme';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import AuthService from '../../services/AuthService';
+import AuthService from '@services/AuthService';
 import { Entypo, FontAwesome, MaterialIcons } from '@expo/vector-icons';
-import { useAppDispatch } from '../../redux/hooks';
-import { logout as logoutAction } from '../../redux/store/slices/authSlice';
-import LogoutButton from '../../components/LogoutButton';
+import { useAppDispatch } from '@redux/hooks';
+import { logout as logoutAction } from '@redux/store/slices/authSlice';
+import LogoutButton from '@components/LogoutButton';
 
 const { width } = Dimensions.get('window');
 

@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   lightTheme as baseLight,
   darkTheme as baseDark,
-} from '../assets/colors/theme';
+} from '@assets/colors/theme';
 import { ViewStyle, TextStyle } from 'react-native';
 
 type ThemeStyles = {

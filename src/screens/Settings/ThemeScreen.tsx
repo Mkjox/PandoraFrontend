@@ -12,8 +12,8 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { List } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useTheme } from '../../context/ThemeContext';
-import { lightTheme, darkTheme } from '../../assets/colors/theme';
+import { useTheme } from '@context/ThemeContext';
+import { lightTheme, darkTheme } from '@assets/colors/theme';
 import { Ionicons } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');

@@ -12,12 +12,12 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native'
-import { useTheme } from '../../context/ThemeContext'
-import { darkTheme, lightTheme } from '../../assets/colors/theme'
+import { useTheme } from '@context/ThemeContext'
+import { darkTheme, lightTheme } from '@assets/colors/theme'
 import { useFocusEffect } from '@react-navigation/native'
 import { AntDesign, MaterialIcons } from '@expo/vector-icons'
-// import EmergencyAccessService from '../services/EmergencyAccessService'
-// import { EmergencyContact } from '../types/emergency.types'
+// import EmergencyAccessService from '@services/EmergencyAccessService'
+// import { EmergencyContact } from '.@appTypes/emergency.types'
 
 const { width } = Dimensions.get('window')
 

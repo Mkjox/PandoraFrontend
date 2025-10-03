@@ -9,12 +9,12 @@ import {
     Image
 } from 'react-native'
 import { useDispatch } from 'react-redux'
-import AuthService from '../../services/AuthService'
+import AuthService from '@services/AuthService'
 import { useNavigation } from '@react-navigation/native'
-import { useTheme } from '../../context/ThemeContext'
-import { darkTheme, lightTheme } from '../../assets/colors/theme'
+import { useTheme } from '@context/ThemeContext'
+import { darkTheme, lightTheme } from '@assets/colors/theme'
 import { TextInput as PaperInput, Button } from 'react-native-paper'
-import CustomButton from '../../components/CustomButton'
+import CustomButton from '@components/CustomButton'
 
 const { height } = Dimensions.get("window")
 

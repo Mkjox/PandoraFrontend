@@ -14,16 +14,16 @@ import {
   Platform,
 } from "react-native";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
-import { useTheme } from "../../context/ThemeContext";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import PersonalVaultService from "../../services/PersonalVaultService";
-import CategoryService from "../../services/CategoryService";
-import { ServiceResult } from "../../types/service.types";
+import { useTheme } from "@context/ThemeContext";
+import { useAppDispatch, useAppSelector } from "@redux/hooks";
+import PersonalVaultService from "@services/PersonalVaultService";
+import CategoryService from "@services/CategoryService";
+import { ServiceResult } from "@appTypes/service.types";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
-import CustomAlert from "../../components/CustomAlert";
+import CustomAlert from "@components/CustomAlert";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { darkTheme, lightTheme } from "../../assets/colors/theme";
+import { darkTheme, lightTheme } from "@assets/colors/theme";
 
 type EditVaultParams = {
   EditVault: { vaultId: string };

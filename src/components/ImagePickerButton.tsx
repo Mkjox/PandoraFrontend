@@ -8,8 +8,8 @@ import {
   TextStyle,
 } from 'react-native'
 import * as ImagePicker from 'expo-image-picker'
-import { useTheme } from '../context/ThemeContext'
-import { darkTheme, lightTheme } from '../assets/colors/theme'
+import { useTheme } from '@context/ThemeContext'
+import { darkTheme, lightTheme } from '@assets/colors/theme'
 
 type Props = {
   /** Called with `base64` string when an image is picked */

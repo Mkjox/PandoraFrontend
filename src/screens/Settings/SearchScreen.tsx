@@ -11,8 +11,8 @@ import {
     Platform,
 } from 'react-native';
 import { Searchbar } from 'react-native-paper';
-import { useTheme } from '../../context/ThemeContext';
-import { darkTheme, lightTheme } from '../../assets/colors/theme';
+import { useTheme } from '@context/ThemeContext';
+import { darkTheme, lightTheme } from '@assets/colors/theme';
 
 const { width } = Dimensions.get('window');
 

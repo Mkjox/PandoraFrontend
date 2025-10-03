@@ -12,8 +12,8 @@ import {
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { SvgUri } from 'react-native-svg'
-import { darkTheme, lightTheme } from '../../assets/colors/theme'
-import { useTheme } from '../../context/ThemeContext'
+import { darkTheme, lightTheme } from '@assets/colors/theme'
+import { useTheme } from '@context/ThemeContext'
 
 const { width, height } = Dimensions.get('window')
 

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { PasswordItem } from "../../../types/password.types";
+import { PasswordItem } from "@appTypes/password.types";
 
 interface PasswordState {
   passwords: PasswordItem[];

@@ -10,14 +10,14 @@ import {
   StatusBar,
 } from "react-native";
 import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
-import { useTheme } from "../../context/ThemeContext";
-import PersonalVaultService from "../../services/PersonalVaultService";
-import { PersonalVaultPayload } from "../../types/personalVault.types";
+import { useTheme } from "@context/ThemeContext";
+import PersonalVaultService from "@services/PersonalVaultService";
+import { PersonalVaultPayload } from "@appTypes/personalVault.types";
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
-import { ServiceResult } from "../../types/service.types";
-import { useAppDispatch } from "../../redux/hooks";
-import ConfirmDeleteModal from "../../components/ConfirmDeleteModal";
-import { darkTheme, lightTheme } from "../../assets/colors/theme";
+import { ServiceResult } from "@appTypes/service.types";
+import { useAppDispatch } from "@redux/hooks";
+import ConfirmDeleteModal from "@components/ConfirmDeleteModal";
+import { darkTheme, lightTheme } from "@assets/colors/theme";
 
 type RootStackParamList = {
   VaultDetails: { id: string };
@@ -108,7 +108,7 @@ export default function VaultDetailsScreen() {
 
         {/* Header */}
         <View style={[styles.headerRow, themeStyles.card, themeStyles.border]}>
-          <View style={[styles.badge, themeStyles.iconBg]}>
+          <View style={[styles.badge]}>
             <MaterialIcons name="lock" size={20} color={themeStyles.iconColor.color} />
           </View>
 

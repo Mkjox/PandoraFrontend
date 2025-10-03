@@ -8,8 +8,8 @@ import {
   Dimensions,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useTheme } from '../context/ThemeContext';
-import { darkTheme, lightTheme } from '../assets/colors/theme';
+import { useTheme } from '@context/ThemeContext';
+import { darkTheme, lightTheme } from '@assets/colors/theme';
 
 const { width } = Dimensions.get('window');
 

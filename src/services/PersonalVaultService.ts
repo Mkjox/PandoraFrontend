@@ -1,4 +1,4 @@
-import { AppDispatch } from "../redux/store";
+import { AppDispatch } from "@redux/store";
 import api from "./api";
 import {
   fetchVaultsStart,
@@ -7,12 +7,12 @@ import {
   addVault,
   deleteVault,
   updateVault as updateVaultAction
-} from '../redux/store/slices/vaultSlice';
+} from '@redux/store/slices/vaultSlice';
 import {
   PersonalVaultPayload,
   PersonalVaultUpdatePayload
-} from './../types/personalVault.types';
-import { ServiceResult } from "../types/service.types";
+} from '@appTypes/personalVault.types';
+import { ServiceResult } from "@appTypes/service.types";
 
 interface VaultItem extends PersonalVaultPayload {
   id: string;

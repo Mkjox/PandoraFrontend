@@ -1,6 +1,6 @@
-import { AppDispatch } from "../redux/store";
+import { AppDispatch } from "@redux/store";
 import api from "./api";
-import { ServiceResult } from "../types/service.types";
+import { ServiceResult } from "@appTypes/service.types";
 import {
     fetchIdentitiesStart,
     fetchIdentitiesSuccess,
@@ -8,8 +8,8 @@ import {
     addIdentity,
     updateIdentity as updateIdentityAction,
     deleteIdentity as deleteIdentityAction,
-} from '../redux/store/slices/identitySlice';
-import { IdentityItem, IdentityPayload, IdentityUpdatePayload } from "../types/identity.types";
+} from '@redux/store/slices/identitySlice';
+import { IdentityItem, IdentityPayload, IdentityUpdatePayload } from "@appTypes/identity.types";
 import AuthService from "./AuthService";
 
 const IdentityService = {

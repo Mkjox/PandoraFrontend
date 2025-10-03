@@ -1,5 +1,5 @@
-import { AppDispatch } from '../redux/store/index';
-import api from '../services/api';
+import { AppDispatch } from '@redux/store/index';
+import api from '@services/api';
 import {
   fetchPasswordsStart,
   fetchPasswordsSuccess,
@@ -7,14 +7,14 @@ import {
   addPassword,
   updatePassword as updatePasswordAction,
   deletePassword as deletePasswordAction
-} from '../redux/store/slices/passwordSlice';
+} from '@redux/store/slices/passwordSlice';
 import {
   PasswordItem,
   PasswordPayload,
   PasswordUpdatePayload,
   RawPassword
-} from '../types/password.types';
-import { ServiceResult } from '../types/service.types';
+} from '@appTypes/password.types';
+import { ServiceResult } from '@appTypes/service.types';
 
 function mapRaw(raw: RawPassword): PasswordItem {
   return {

@@ -12,15 +12,15 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import { useTheme } from '../../context/ThemeContext';
-import { darkTheme, lightTheme } from '../../assets/colors/theme';
+import { useTheme } from '@context/ThemeContext';
+import { darkTheme, lightTheme } from '@assets/colors/theme';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import PasswordService from '../../services/PasswordService';
-import PersonalVaultService from '../../services/PersonalVaultService';
-import CategoryService from '../../services/CategoryService';
-import ErrorDisplay from '../../components/ErrorDisplay';
-import { PasswordItem } from '../../types/password.types';
+import { useAppDispatch, useAppSelector } from '@redux/hooks';
+import PasswordService from '@services/PasswordService';
+import PersonalVaultService from '@services/PersonalVaultService';
+import CategoryService from '@services/CategoryService';
+import ErrorDisplay from '@components/ErrorDisplay';
+import { PasswordItem } from '@appTypes/password.types';
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
 
 // // Replace or import your actual password-strength check function

@@ -15,7 +15,6 @@ import { useTheme } from '../../context/ThemeContext'
 import { darkTheme, lightTheme } from '../../assets/colors/theme'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import CategoryService from '../../services/CategoryService'
-import { AntDesign, Entypo } from '@expo/vector-icons'
 
 const { width, height } = Dimensions.get('window')
 
@@ -63,20 +62,6 @@ export default function CategoryScreen() {
           ) : null}
         </TouchableOpacity>
       </View>
-      {/* <View style={styles.cardActions}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('AddCredentials' as any, )}
-          style={styles.actionButton}
-        >
-          <AntDesign name="edit" size={20} color={themeStyles.iconColor.color} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => onDelete(item.id)}
-          style={styles.actionButton}
-        >
-          <Entypo name="trash" size={20} color={themeStyles.iconColor.color} />
-        </TouchableOpacity>
-      </View> */}
     </View>
   )
 
@@ -84,15 +69,6 @@ export default function CategoryScreen() {
     <View style={[themeStyles.container, styles.container]}>
       <View style={styles.topSection}>
         <Text style={[styles.title, themeStyles.text]}>Categories</Text>
-        {/* <TouchableOpacity
-          style={[styles.newButton, themeStyles.button]}
-          onPress={() =>
-            navigation.navigate('AddCredentials' as any)
-          }
-        >
-          <AntDesign name="plus" size={16} color={themeStyles.buttonText.color} />
-          <Text style={[styles.newButtonText, themeStyles.buttonText]}>New</Text>
-        </TouchableOpacity> */}
       </View>
 
       {loading ? (

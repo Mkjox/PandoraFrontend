@@ -8,11 +8,11 @@ import {
   FlatList,
   ActivityIndicator,
 } from 'react-native';
-import { useTheme } from '../../context/ThemeContext';
-import { darkTheme, lightTheme } from '../../assets/colors/theme';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import PasswordService from '../../services/PasswordService';
-import { isStrongPassword } from '../../utils/password';
+import { useTheme } from '@context/ThemeContext';
+import { darkTheme, lightTheme } from '@assets/colors/theme';
+import { useAppDispatch, useAppSelector } from '@redux/hooks';
+import PasswordService from '@services/PasswordService';
+import { isStrongPassword } from '@utils/password';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 const { width, height } = Dimensions.get('window');

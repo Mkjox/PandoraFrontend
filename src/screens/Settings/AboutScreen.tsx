@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, StatusBar, ScrollView, Dimensions } from 'react-native';
-import { useTheme } from '../../context/ThemeContext';
-import { lightTheme, darkTheme } from '../../assets/colors/theme';
+import { useTheme } from '@context/ThemeContext';
+import { lightTheme, darkTheme } from '@assets/colors/theme';
 
 const { width } = Dimensions.get('window');
 

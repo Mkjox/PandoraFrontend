@@ -1,6 +1,6 @@
 import api from './api'
 import { tokenStorage } from './tokenStorage'
-import { ServiceResult } from './../types/service.types'
+import { ServiceResult } from '@appTypes/service.types'
 import {
     LoginPayload,
     DecodedToken,
@@ -8,7 +8,7 @@ import {
     UserProfileResponse,
 } from '../types/auth.types'
 import { jwtDecode } from 'jwt-decode'
-import { API_URL } from '../config/apiConfig'
+import { API_URL } from '@config/apiConfig'
 import axios from 'axios'
 
 const AuthService = {

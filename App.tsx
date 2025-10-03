@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Provider, useDispatch } from 'react-redux';
-import { store } from './src/redux/store';
-import { ThemeProvider, useTheme } from './src/context/ThemeContext';
-import AppNavigator from './src/navigation/AppNavigator';
-import WelcomeScreen from './src/screens/Home/WelcomeScreen';
+import { store } from '@redux/store';
+import { ThemeProvider, useTheme } from '@context/ThemeContext';
+import AppNavigator from '@navigation/AppNavigator';
+import WelcomeScreen from '@screens/Home/WelcomeScreen';
 import * as SplashScreen from 'expo-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';

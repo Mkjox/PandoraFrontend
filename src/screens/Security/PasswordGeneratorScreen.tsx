@@ -10,9 +10,9 @@ import {
     Alert,
 } from 'react-native'
 import Slider from '@react-native-community/slider'
-import { useTheme } from '../../context/ThemeContext'
-import { darkTheme, lightTheme } from '../../assets/colors/theme'
-import CustomButton from '../../components/CustomButton'
+import { useTheme } from '@context/ThemeContext'
+import { darkTheme, lightTheme } from '@assets/colors/theme'
+import CustomButton from '@components/CustomButton'
 import * as Clipboard from 'expo-clipboard'
 
 const { height, width } = Dimensions.get('window')

@@ -12,16 +12,17 @@ import {
 } from 'react-native'
 import { Searchbar } from 'react-native-paper'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
-import { useTheme } from '../../context/ThemeContext'
-import AddButton from '../../components/AddButton'
-import { useAppSelector, useAppDispatch } from '../../redux/hooks'
-import ErrorDisplay from '../../components/ErrorDisplay'
-import { PasswordItem } from '../../types/password.types'
-import { PersonalVaultPayload } from '../../types/personalVault.types'
-import CategoryService from '../../services/CategoryService'
-import PasswordService from '../../services/PasswordService'
-import PersonalVaultService from '../../services/PersonalVaultService'
-import { darkTheme, lightTheme } from '../../assets/colors/theme'
+import { useTheme } from '@context/ThemeContext'
+import AddButton from '@components/AddButton'
+import { useAppSelector, useAppDispatch } from '@redux/hooks'
+import ErrorDisplay from '@components/ErrorDisplay'
+import { PasswordItem } from '@appTypes/password.types'
+import { PersonalVaultPayload } from '@appTypes/personalVault.types'
+import CategoryService from '@services/CategoryService'
+import PasswordService from '@services/PasswordService'
+import PersonalVaultService from '@services/PersonalVaultService'
+import { darkTheme, lightTheme } from '@assets/colors/theme'
+import CustomCard from '@components/CustomCard'
 
 const { width, height } = Dimensions.get('window')
 
@@ -107,25 +108,26 @@ export default function HomeScreen() {
   }
 
   const renderPassword = ({ item }: { item: PasswordItem }) => (
-    <TouchableOpacity
-      style={[styles.card, themeStyles.card, themeStyles.border]}
+    <CustomCard
+      style={[themeStyles.card, themeStyles.border]}
       onPress={() => navigation.navigate('PassDetails', { id: item.id })}
     >
       <Text style={[styles.cardTitle, themeStyles.text]}>{item.siteName}</Text>
       <Text style={[styles.cardSubtitle, themeStyles.textGray]}>{item.usernameOrEmail}</Text>
-    </TouchableOpacity>
+    </CustomCard>
   )
 
   const renderVault = ({ item }: { item: PersonalVaultPayload }) => (
-    <TouchableOpacity
-      style={[styles.card, themeStyles.card, themeStyles.border]}
+    <CustomCard
+      style={[themeStyles.card, themeStyles.border]}
       onPress={() => navigation.navigate('VaultDetails', { id: item.id })}
     >
       <Text style={[styles.cardTitle, themeStyles.text]}>{item.secureTitle}</Text>
       <Text style={[styles.cardSubtitle, themeStyles.textGray]} numberOfLines={2}>
         {item.secureContent}
       </Text>
-    </TouchableOpacity>
+    </CustomCard>
+
   )
 
   const renderSectionItem = ({ item }: { item: SectionDataItem }) =>

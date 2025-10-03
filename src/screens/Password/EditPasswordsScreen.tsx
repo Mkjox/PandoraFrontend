@@ -13,14 +13,14 @@ import {
   Platform,
 } from "react-native";
 import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
-import { useTheme } from "../../context/ThemeContext";
-import PasswordService from "../../services/PasswordService";
+import { useTheme } from "@context/ThemeContext";
+import PasswordService from "@services/PasswordService";
 import { MaterialIcons } from "@expo/vector-icons";
-import { ServiceResult } from "../../types/service.types";
-import { useAppDispatch } from "../../redux/hooks";
-import CustomAlert from "../../components/CustomAlert";
+import { ServiceResult } from "@appTypes/service.types";
+import { useAppDispatch } from "@redux/hooks";
+import CustomAlert from "@components/CustomAlert";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { darkTheme, lightTheme } from "../../assets/colors/theme";
+import { darkTheme, lightTheme } from "@assets/colors/theme";
 
 type RootStackParamList = {
   EditPassword: { passwordId: string };

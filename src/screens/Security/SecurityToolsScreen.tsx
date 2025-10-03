@@ -8,12 +8,12 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native"
-import { useTheme } from "../../context/ThemeContext"
-import { darkTheme, lightTheme } from "../../assets/colors/theme"
+import { useTheme } from "@context/ThemeContext"
+import { darkTheme, lightTheme } from "@assets/colors/theme"
 import { MaterialIcons, FontAwesome5, Entypo } from "@expo/vector-icons"
 import { useNavigation } from "@react-navigation/native"
-import { useAppSelector } from "../../redux/hooks"
-import { isStrongPassword } from "../../utils/password"
+import { useAppSelector } from "@redux/hooks"
+import { isStrongPassword } from "@utils/password"
 
 const { width, height } = Dimensions.get("window")
 

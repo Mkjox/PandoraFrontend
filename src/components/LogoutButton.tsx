@@ -10,10 +10,10 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import { Entypo } from '@expo/vector-icons';
-import { useTheme } from '../context/ThemeContext';
-import AuthService from '../services/AuthService';
-import { useAppDispatch } from '../redux/hooks';
-import { logout as logoutAction } from '../redux/store/slices/authSlice';
+import { useTheme } from '@context/ThemeContext';
+import AuthService from '@services/AuthService';
+import { useAppDispatch } from '@redux/hooks';
+import { logout as logoutAction } from '@redux/store/slices/authSlice';
 import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { PersonalVaultPayload } from '../../../types/personalVault.types'
+import { PersonalVaultPayload } from '@appTypes/personalVault.types'
 
 interface VaultItem extends PersonalVaultPayload {
     id: string;
