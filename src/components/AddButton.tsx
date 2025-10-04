@@ -6,7 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function AddButton() {
   const navigation = useNavigation<any>();
-  const { themeStyles, isDark } = useTheme();
+  const { isDark } = useTheme();
+  const themeStyles = isDark ? darkTheme : lightTheme;
 
 
   return (

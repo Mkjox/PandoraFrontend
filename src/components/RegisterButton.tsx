@@ -4,12 +4,13 @@ import { useTheme } from '@context/ThemeContext';
 import { darkTheme, lightTheme } from '@assets/colors/theme';
 import { useNavigation } from '@react-navigation/native';
 
-export default function RegisterButton({onPress}) {
-  const { themeStyles } = useTheme();
+export default function RegisterButton({ onPress }: any) {
+  const { isDark } = useTheme();
+  const themeStyles = isDark ? darkTheme : lightTheme;
 
   return (
     <TouchableOpacity style={[styles.button, themeStyles.buttonBorder]} onPress={onPress}>
-        <Text style={styles.text}>Register</Text>
+      <Text style={styles.text}>Register</Text>
     </TouchableOpacity>
   );
 }

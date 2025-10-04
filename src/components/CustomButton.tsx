@@ -32,8 +32,9 @@ const CustomButton: React.FC<CustomButtonProps> = ({
     icon,
     iconRight,
 }) => {
-    const { themeStyles } = useTheme()
-    
+    const { isDark } = useTheme();
+    const themeStyles = isDark ? darkTheme : lightTheme;
+
     const isDisabled = disabled || loading
 
     return (

@@ -15,6 +15,7 @@ import AuthService from '@services/AuthService';
 import { useAppDispatch } from '@redux/hooks';
 import { logout as logoutAction } from '@redux/store/slices/authSlice';
 import { useNavigation } from '@react-navigation/native';
+import { darkTheme, lightTheme } from '@assets/colors/theme';
 
 const { width } = Dimensions.get('window');
 const MODAL_WIDTH = Math.min(360, width - 48);
@@ -22,7 +23,8 @@ const MODAL_WIDTH = Math.min(360, width - 48);
 const LogoutButton: React.FC = () => {
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { themeStyles } = useTheme();
+  const { isDark } = useTheme();
+  const themeStyles = isDark ? darkTheme : lightTheme;
   const dispatch = useAppDispatch();
   const navigation = useNavigation<any>();
   const [userLabel, setUserLabel] = useState<string | null>(null);
@@ -83,7 +85,7 @@ const LogoutButton: React.FC = () => {
         accessibilityLabel="Logout"
         hitSlop={8}
       >
-          <Entypo name="log-out" size={20} style={[themeStyles.iconColor]} />
+        <Entypo name="log-out" size={20} style={[themeStyles.iconColor]} />
         <Text style={[styles.linkText, themeStyles.text]}>Logout</Text>
       </Pressable>
 

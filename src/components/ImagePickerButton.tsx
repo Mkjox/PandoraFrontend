@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ViewStyle,
   TextStyle,
+  StyleProp,
 } from 'react-native'
 import * as ImagePicker from 'expo-image-picker'
 import { useTheme } from '@context/ThemeContext'
@@ -17,9 +18,9 @@ type Props = {
   /** Button label */
   title?: string
   /** Override container style */
-  style?: ViewStyle
+  style?: StyleProp<ViewStyle>
   /** Override text style */
-  textStyle?: TextStyle
+  textStyle?: StyleProp<TextStyle>
 }
 
 export default function ImagePickerButton({
@@ -30,7 +31,8 @@ export default function ImagePickerButton({
 }: Props) {
   const [loading, setLoading] = useState(false)
 
-  const { themeStyles } = useTheme()
+  const { isDark } = useTheme();
+  const themeStyles = isDark ? darkTheme : lightTheme;
 
   const pickImage = async () => {
     // ask for camera-roll permission

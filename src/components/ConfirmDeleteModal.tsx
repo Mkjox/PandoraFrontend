@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from "react-native";
 import { useTheme } from "@context/ThemeContext";
+import { darkTheme, lightTheme } from "@assets/colors/theme";
 
 const { width } = Dimensions.get("window");
 
@@ -22,7 +23,8 @@ const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
   onCancel,
   onConfirm,
 }) => {
-  const { themeStyles } = useTheme();
+  const { isDark } = useTheme();
+  const themeStyles = isDark ? darkTheme : lightTheme;
 
   return (
     <Modal
