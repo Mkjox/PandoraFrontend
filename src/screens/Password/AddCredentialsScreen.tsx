@@ -23,7 +23,7 @@ import CategoryService from '@services/CategoryService';
 import PersonalVaultService from '@services/PersonalVaultService';
 import ImagePickerButton from '@components/ImagePickerButton';
 import { CreateCategoryPayload } from '@appTypes/category.types';
-import { PersonalVaultPayload } from '@appTypes/personalVault.types';
+import { PersonalVaultAddPayload, PersonalVaultPayload } from '@appTypes/personalVault.types';
 import { ServiceResult } from '@appTypes/service.types';
 import { Switch, TextInput } from 'react-native-paper';
 
@@ -128,16 +128,20 @@ export default function AddCredentialsScreen() {
     setForm(prev => ({ ...prev, [key]: val }));
 
   const showPicker = (field: 'PasswordExpirationDate' | 'UnlockDate' | 'ExpirationDate') => {
-    setDatePicker({ field, date: form[field] ? new Date(form[field]) : new Date() });
+    const value = form[field];
+    setDatePicker({ field, date: value ? new Date(value) : new Date() });
   };
+
   const onDateSelected = (_: any, sel?: Date) => {
     const { field, date } = datePicker;
     setDatePicker({ field: null, date });
+
     if (field && sel) {
-      const iso = sel.toISOString().split('T')[0];
+      const iso = sel.toISOString();
       handleChange(field, iso);
     }
   };
+
 
   const handleSubmit = useCallback(async () => {
     if (!userId) return;
@@ -164,17 +168,19 @@ export default function AddCredentialsScreen() {
       }
 
       else if (selectedTab === 'vault') {
-        const payload: PersonalVaultPayload = {
+        const payload: PersonalVaultAddPayload = {
           userId: userId,
-          secureTitle: form.Title,
-          secureContent: form.Content,
+          title: form.Title,
+          content: form.Content,
           // Url: form.Url,
           // MediaFile: form.MediaFile,
-          secureSummary: form.Summary,
-          secureTags: form.Tags.split(',').map((t: string) => t.trim()),
-          IsLocked: form.IsLocked,
-          IsShareable: form.IsShareable,
-          IsFavorite: form.IsFavorite,
+          summary: form.Summary,
+          tags: form.Tags.split(',').map((t: string) => t.trim()),
+          isLocked: form.IsLocked,
+          unlockDate: form.UnlockDate,
+          expirationDate: form.ExpirationDate,
+          isShareable: form.IsShareable,
+          isFavorite: form.IsFavorite,
           categoryId: form.CategoryId,
         };
         const res = (await dispatch(
@@ -406,18 +412,28 @@ export default function AddCredentialsScreen() {
             {form.IsLocked && (
               <>
                 <TouchableOpacity
-                  style={[styles.input, themeStyles.inputText, themeStyles.card]}
+                  style={[styles.input, themeStyles.card]}
                   onPress={() => showPicker('UnlockDate')}
                 >
-                  <Text style={{ color: form.UnlockDate ? '#888' : '#666' }}>
+                  <Text
+                    style={[
+                      themeStyles.inputText,
+                      { color: form.UnlockDate ? '#888' : '#666' },
+                    ]}
+                  >
                     {form.UnlockDate || 'Select Unlock Date'}
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={[styles.input, themeStyles.inputText, themeStyles.card]}
+                  style={[styles.input, themeStyles.card]}
                   onPress={() => showPicker('ExpirationDate')}
                 >
-                  <Text style={{ color: form.ExpirationDate ? '#888' : '#666' }}>
+                  <Text
+                    style={[
+                      themeStyles.inputText,
+                      { color: form.ExpirationDate ? '#888' : '#666' },
+                    ]}
+                  >
                     {form.ExpirationDate || 'Select Expiration Date'}
                   </Text>
                 </TouchableOpacity>
@@ -482,7 +498,7 @@ export default function AddCredentialsScreen() {
         disabled={submitting}
       >
         {submitting
-          ? <ActivityIndicator color={isDark ? '#fff' : '#000'} />
+          ? <ActivityIndicator color={isDark ? '#000' : '#fff'} />
           : <Text style={[styles.buttonText, themeStyles.buttonText]}>
             {route.params?.categoryId ? 'Update' : 'Submit'}
           </Text>}
