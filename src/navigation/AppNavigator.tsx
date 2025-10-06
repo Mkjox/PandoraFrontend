@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@redux/store";
 import AuthNavigator from "./AuthNavigator";
 import MainNavigator from "./MainNavigator";
+import { NavigationContainer } from "@react-navigation/native";
 // import AsyncStorage from "@react-native-async-storage/async-storage";
 // import { ActivityIndicator, View } from "react-native";
 // import WelcomeScreen from "../screens/Home/WelcomeScreen";
@@ -10,23 +11,23 @@ import MainNavigator from "./MainNavigator";
 // import { useFirstLaunch } from "../hooks/useFirstLaunch";
 
 export default function AppNavigator() {
-    const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+    const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 
     // ALL COMMENTED BELOW
-//    const firstLaunch = useFirstLaunch()
+    //    const firstLaunch = useFirstLaunch()
 
 
     // if (firstLaunch === null) {
-        // return (
-            // <View style={{
-            //     flex: 1,
-            //     justifyContent: 'center',
-            //     alignItems: 'center'
-            // }}>
-            //     <ActivityIndicator size="large" />
-            // </View>
-            // null
-        // )
+    // return (
+    // <View style={{
+    //     flex: 1,
+    //     justifyContent: 'center',
+    //     alignItems: 'center'
+    // }}>
+    //     <ActivityIndicator size="large" />
+    // </View>
+    // null
+    // )
     // }
 
     return (
@@ -34,13 +35,21 @@ export default function AppNavigator() {
         // Supposedly only working way of this below 1 line of code
         isAuthenticated ? <MainNavigator /> : <AuthNavigator />
 
+        // <NavigationContainer>
+        //     {
+        //         isAuthenticated
+        //             ? <MainNavigator />
+        //             : <AuthNavigator />
+        //     }
+        // </NavigationContainer>
+
 
         // <NavigationContainer>
-            //{/* {firstLaunch */}
-                // ? <WelcomeScreen />
-                // : isAuthenticated
-                    // ? <MainNavigator />
-                    // : <AuthNavigator />}
+        //{/* {firstLaunch */}
+        // ? <WelcomeScreen />
+        // : isAuthenticated
+        // ? <MainNavigator />
+        // : <AuthNavigator />}
         //{/* </NavigationContainer> */}
     )
 }
