@@ -177,17 +177,17 @@ const styles = StyleSheet.create({
     // width: 250,
     // height: 250,
     alignSelf: 'center',
-    marginBottom: height * 0.07,   // 5% of screen height
+    marginBottom: height * 0.07,
   },
   title: {
     fontSize: 56,
     textAlign: 'center',
     fontFamily: 'YesevaOne_400Regular',
     color: '#1c6d79',
-    marginBottom: height * 0.1,    // 10% of screen height
+    marginBottom: height * 0.1,
   },
   input: {
-    marginBottom: 16,              // consistent spacing between inputs
+    marginBottom: 16,
   },
   errorText: {
     color: '#D32F2F',
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   button: {
-    height: height * 0.06,         // slightly taller button for balance
+    height: height * 0.06,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     shadowOffset: { width: 0, height: 2 },
-    marginTop: height * 0.2,       // 10% of screen height above button
+    marginTop: height * 0.2,
   },
   link: {
     marginTop: 24,

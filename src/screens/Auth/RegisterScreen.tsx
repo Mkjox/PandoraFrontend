@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
         fontWeight: '700',
     },
     submitButton: {
-    height: height * 0.06,         // slightly taller button for balance
+    height: height * 0.06,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     shadowOffset: { width: 0, height: 2 },
-    marginTop: height * 0.1,       // 10% of screen height above button
+    marginTop: height * 0.1,
     },
     link: {
         marginTop: 12,

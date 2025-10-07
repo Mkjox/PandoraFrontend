@@ -14,8 +14,8 @@
       "@utils/*": ["src/utils/*"],
       "@config/*": ["src/config/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@navigation/*": ["src/navigation/*"]
-      // "@assets/*": ["assets/*"]
+      "@navigation/*": ["src/navigation/*"],
+      "@tests/*": ["src/__tests__/*"],
     }
   }
 }
