@@ -23,6 +23,7 @@ import PasswordService from '@services/PasswordService'
 import PersonalVaultService from '@services/PersonalVaultService'
 import { darkTheme, lightTheme } from '@assets/colors/theme'
 import CustomCard from '@components/CustomCard'
+import Notes from '@assets/images/notes.svg';
 
 const { width, height } = Dimensions.get('window')
 
@@ -190,6 +191,38 @@ export default function HomeScreen() {
     </View>
   )
 
+  const isEmpty =
+    (filterType === 'all' && filteredPasswords.length === 0 && filteredVaults.length === 0) ||
+    (filterType === 'password' && filteredPasswords.length === 0) ||
+    (filterType === 'personal vault' && filteredVaults.length === 0);
+
+  if (isEmpty) {
+    return (
+      <View style={[themeStyles.container, styles.container]}>
+        <View style={styles.inner}>
+          <SectionList
+            sections={sections}
+            keyExtractor={(item, idx) => `${item.type}-${item.id}-${idx}`}
+            renderItem={renderSectionItem}
+            ListHeaderComponent={listHeader}
+            contentContainerStyle={styles.listContent}
+            showsVerticalScrollIndicator={false}
+          />
+          <View style={styles.emptyIndicator}>
+            <Notes
+              width={width * 0.7}
+              height={height * 0.4}
+              preserveAspectRatio="xMidYMid meet"
+            />
+            <Text style={styles.emptyRecordText}>
+              Nothing to see here yet{'\n'}Click on New button to add a Password
+            </Text>
+          </View>
+        </View>
+      </View>
+    )
+  }
+
   return (
     <View style={[themeStyles.container, styles.container]}>
       <View style={styles.inner}>
@@ -239,6 +272,16 @@ const styles = StyleSheet.create({
   inner: {
     marginHorizontal: width * 0.06,
     marginTop: StatusBar.currentHeight
+  },
+  emptyIndicator: {
+    alignItems: 'center'
+  },
+  emptyRecordText: {
+    // fontFamily: 'Poppins_500Medium',
+    fontFamily: 'Jost_400Regular',
+    marginTop: 10,
+    fontSize: 20,
+    textAlign: 'center'
   },
   headerRow: {
     flexDirection: 'row',
