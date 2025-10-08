@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "PassApp",
-    "slug": "PassApp",
+    "name": "Pandora",
+    "slug": "pandora",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/icons/icon.png",
@@ -12,9 +12,11 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mkjox.pandora"
     },
     "android": {
+      "package": "com.mkjox.pandora",
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/icons/adaptive-icon.png",
         "backgroundColor": "#ffffff"

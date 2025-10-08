@@ -113,19 +113,24 @@ const AuthService = {
     },
 
     updateProfile: async (
-        payload: { username: string; email: string; photoBase64?: string }
-    ): Promise<ServiceResult<{ username: string; email: string; photoUrl?: string }>> => {
+        // payload: { username: string; email: string; photoBase64?: string }
+    // ): Promise<ServiceResult<{ username: string; email: string; photoUrl?: string }>> => {
+        payload: { username: string; email: string }
+    ): Promise<ServiceResult<{ username: string; email: string }>> => {
         try {
             const decoded = await AuthService.decodeToken()
             const userId = decoded?.nameid
             if (!userId) {
                 return { success: false, message: 'No valid token / user ID.' }
             }
+
+            const payloadWithId = { ...payload, id: userId }
+
             const response = await api.put<{
                 username: string
                 email: string
-                photoUrl?: string
-            }>(`/users/${userId}`, payload)
+                // photoUrl?: string
+            }>(`/users/${userId}`, payloadWithId)
 
             return { success: true, data: response.data }
         } catch (err: any) {

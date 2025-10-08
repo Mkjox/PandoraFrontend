@@ -124,11 +124,12 @@ function AppContent() {
 
   return (
     <NavigationContainer>
-      {hasLaunched ? (
+      {/* {hasLaunched ? (
         <AppNavigator />
       ) : (
         <WelcomeScreen onDone={() => setHasLaunched(true)} />
-      )}
+      )} */}
+        <AppNavigator />
     </NavigationContainer>
   );
 }

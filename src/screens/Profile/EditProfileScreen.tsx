@@ -97,22 +97,24 @@ export default function EditProfileScreen() {
         username: username.trim(),
         email: email.trim(),
       };
-      if (imageBase64) {
-        payload.photoBase64 = imageBase64;
-      }
-      const res: ServiceResult<{ username: string; email: string; photoUrl?: string }> =
+      // if (imageBase64) {
+      //   payload.photoBase64 = imageBase64;
+      // }
+      // const res: ServiceResult<{ username: string; email: string; photoUrl?: string; }> =
+      const res: ServiceResult<{ username: string; email: string; }> =
         await AuthService.updateProfile(payload);
       if (res.success && res.data) {
         setUsername(res.data.username);
         setEmail(res.data.email);
-        if (res.data.photoUrl) {
-          setImageUri(res.data.photoUrl);
-          setImageBase64(null);
-        }
+        // if (res.data.photoUrl) {
+        //   setImageUri(res.data.photoUrl);
+        //   setImageBase64(null);
+        // }
         setServerMessage('Profile updated successfully.');
-      } else {
-        setServerMessage(res.message || 'Failed to update profile.');
       }
+      // else {
+      //   setServerMessage(res.message || 'Failed to update photo.');
+      // }
     } catch (err: any) {
       setServerMessage(err.message || 'Failed to update profile.');
     } finally {
