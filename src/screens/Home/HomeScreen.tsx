@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react'
+import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import {
   View,
   Text,
@@ -9,6 +9,8 @@ import {
   FlatList,
   ActivityIndicator,
   SectionList,
+  Animated,
+  Easing,
 } from 'react-native'
 import { Searchbar } from 'react-native-paper'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
@@ -52,6 +54,16 @@ export default function HomeScreen() {
       dispatch(PersonalVaultService.getPersonalVaults())
     }, [dispatch])
   )
+
+  const fadeAnim = useRef(new Animated.Value(0.3)).current;
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(fadeAnim, { toValue: 1, duration: 800, useNativeDriver: true, easing: Easing.linear }),
+        Animated.timing(fadeAnim, { toValue: 0.3, duration: 800, useNativeDriver: true, easing: Easing.linear }),
+      ])
+    ).start();
+  }, []);
 
   const filteredPasswords = useMemo(() => {
     return passwords.filter(p => {
@@ -146,7 +158,19 @@ export default function HomeScreen() {
   if (loading) {
     return (
       <View style={[themeStyles.container, styles.center]}>
-        <ActivityIndicator size="large" />
+        {[...Array(3)].map((_, i) => (
+          <Animated.View
+            key={i}
+            style={{
+              opacity: fadeAnim,
+              width: width * 0.85,
+              height: 80,
+              backgroundColor: isDark ? "#333" : "#ddd",
+              borderRadius: 8,
+              marginVertical: 10,
+            }}
+          />
+        ))}
       </View>
     )
   }

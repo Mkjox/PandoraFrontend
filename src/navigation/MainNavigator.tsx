@@ -26,7 +26,6 @@ import PasswordGeneratorScreen from '@screens/Security/PasswordGeneratorScreen';
 import EmergencyAccessScreen from '@screens/Security/EmergencyAccessScreen';
 import SecurityChallengeScreen from '@screens/Security/SecurityChallengeScreen';
 import SecurityDashboardScreen from '@screens/Security/SecurityDashboardScreen';
-import TwoFactorScreen from '@screens/Auth/TwoFactorScreen';
 import EditCategoriesScreen from '@screens/Category/EditCategoriesScreen';
 import EditPasswordsScreen from '@screens/Password/EditPasswordsScreen';
 import EditVaultScreen from '@screens/Vault/EditVaultsScreen';
@@ -78,7 +77,6 @@ export default function MainNavigator() {
             <Stack.Screen name='EmergencyAccess' component={EmergencyAccessScreen} />
             <Stack.Screen name='SecurityChallenge' component={SecurityChallengeScreen} />
             <Stack.Screen name='SecurityDashboard' component={SecurityDashboardScreen} />
-            <Stack.Screen name='TwoFactor' component={TwoFactorScreen} />
             <Stack.Screen name='EditCategory' component={EditCategoriesScreen} />
             <Stack.Screen name='EditPassword' component={EditPasswordsScreen} />
             <Stack.Screen name='EditVault' component={EditVaultScreen} />

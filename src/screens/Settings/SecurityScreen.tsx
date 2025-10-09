@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { useTheme } from '@context/ThemeContext';
 import { lightTheme, darkTheme } from '@assets/colors/theme';
+import TwoFactorSetup from '@components/TwoFactorSetup';
 
 const { height, width } = Dimensions.get('window');
 
@@ -52,7 +53,7 @@ const SecurityScreen: React.FC = () => {
 
             <View style={styles.section}>
                 <Text style={[styles.sectionHeader, themeStyles.text]}>Two-Factor Authentication</Text>
-                <View style={styles.optionRow}>
+                {/* <View style={styles.optionRow}>
                     <Text style={[styles.optionText, themeStyles.text]}>
                         {twoFactorEnabled ? 'Enabled' : 'Disabled'}
                     </Text>
@@ -60,10 +61,11 @@ const SecurityScreen: React.FC = () => {
                         value={twoFactorEnabled}
                         onValueChange={toggleTwoFactor}
                     />
-                </View>
-                <Text style={[styles.helperText, themeStyles.text]}>
+                </View> */}
+                <TwoFactorSetup />
+                {/* <Text style={[styles.helperText, themeStyles.text]}>
                     Add an extra layer of security by requiring a code from your authenticator app when logging in.
-                </Text>
+                </Text> */}
             </View>
 
             <View style={styles.section}>
@@ -127,7 +129,7 @@ const styles = StyleSheet.create({
     },
     optionText: {
         fontSize: 16,
-        fontFamily: 'Poppins_400Regular',
+        fontFamily: 'Poppins_600SemiBold',
     },
     helperText: {
         fontSize: 14,
