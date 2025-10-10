@@ -167,7 +167,7 @@ export default function App() {
     <Provider store={store}>
       <ThemeProvider>
         <AppContent />
-        <Toast config={toastConfig}/>
+        <Toast config={toastConfig} position='bottom' />
       </ThemeProvider>
     </Provider>
   );
