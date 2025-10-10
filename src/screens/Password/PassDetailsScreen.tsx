@@ -20,6 +20,7 @@ import { useAppDispatch } from "@redux/hooks";
 import ConfirmDeleteModal from "@components/ConfirmDeleteModal";
 import * as Clipboard from 'expo-clipboard'
 import { darkTheme, lightTheme } from "@assets/colors/theme";
+import Toast from "react-native-toast-message";
 
 type RootStackParamList = {
   PassDetails: { id: string };
@@ -108,7 +109,11 @@ const PassDetailsScreen: React.FC = () => {
 
   const onCopy = () => {
     Clipboard.setStringAsync(item.password)
-    Alert.alert('Copied to clipboard')
+    // Alert.alert('Copied to clipboard')
+    Toast.show({
+      type: 'info',
+      text1: 'Copied to clipboard'
+    });
   }
 
   return (

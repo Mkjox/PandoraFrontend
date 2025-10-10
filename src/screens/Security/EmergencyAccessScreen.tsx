@@ -16,6 +16,7 @@ import { useTheme } from '@context/ThemeContext'
 import { darkTheme, lightTheme } from '@assets/colors/theme'
 import { useFocusEffect } from '@react-navigation/native'
 import { AntDesign, MaterialIcons } from '@expo/vector-icons'
+import Toast from 'react-native-toast-message'
 // import EmergencyAccessService from '@services/EmergencyAccessService'
 // import { EmergencyContact } from '.@appTypes/emergency.types'
 
@@ -66,11 +67,23 @@ const EmergencyAccessScreen: React.FC = () => {
 
   const handleAdd = async () => {
     if (!newName.trim() || !newEmail.trim()) {
-      return Alert.alert('Missing fields', 'Please enter name and email.')
+      // return Alert.alert('Missing fields', 'Please enter name and email.')
+      Toast.show({
+        type: 'error',
+        text1: 'Missing fields',
+        text2: 'Please enter name and email'
+      });
     }
     const delay = Number(newDelay)
     if (isNaN(delay) || delay < 1) {
-      return Alert.alert('Invalid delay', 'Please enter a valid number of hours.')
+      return (
+        // Alert.alert('Invalid delay', 'Please enter a valid number of hours.')
+        Toast.show({
+          type: 'error',
+          text1: 'Invalid delay',
+          text2: 'Please enter a valid number of hours.'
+        })
+      )
     }
     try {
       // const res = await EmergencyAccessService.addContact({ name: newName, email: newEmail, delayHours: delay })
@@ -86,7 +99,12 @@ const EmergencyAccessScreen: React.FC = () => {
       setNewEmail('')
       setNewDelay('')
     } catch (e: any) {
-      Alert.alert('Error', e.message || 'Failed to add contact')
+      // Alert.alert('Error', e.message || 'Failed to add contact')
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: e.message || 'Failed to add contact'
+      })
     }
   }
 
@@ -104,7 +122,12 @@ const EmergencyAccessScreen: React.FC = () => {
               // await EmergencyAccessService.removeContact(id)
               setContacts(prev => prev.filter(c => c.id !== id))
             } catch {
-              Alert.alert('Error', 'Could not remove contact.')
+              // Alert.alert('Error', 'Could not remove contact.')
+              Toast.show({
+                type: 'error',
+                text1: 'Error',
+                text2: 'Could not remove contact.'
+              });
             }
           },
         },

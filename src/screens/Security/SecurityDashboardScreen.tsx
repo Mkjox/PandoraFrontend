@@ -22,6 +22,7 @@ import CategoryService from '@services/CategoryService';
 import ErrorDisplay from '@components/ErrorDisplay';
 import { PasswordItem } from '@appTypes/password.types';
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
+import Toast from 'react-native-toast-message';
 
 // // Replace or import your actual password-strength check function
 // function isStrongPassword(pw: string): boolean {
@@ -128,6 +129,11 @@ const SecurityDashboardScreen: React.FC = () => {
   //     setTwoFAEnabled(val);
   //   } catch (err) {
   //     Alert.alert('Error', 'Could not update Two-Factor setting.');
+  // Toast.show({
+  //   type: 'error',
+  //   text1: 'Error',
+  //   text2: 'Could not update Two-Factor setting.'
+  // });
   //   } finally {
   //     setToggling2FA(false);
   //   }

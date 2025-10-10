@@ -32,6 +32,8 @@ import { jwtDecode } from 'jwt-decode';
 import AuthService from './src/services/AuthService';
 import { login as loginAction } from './src/redux/store/slices/authSlice';
 import { NavigationContainer } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
+import { toastConfig } from '@components/ToastConfig';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -165,6 +167,7 @@ export default function App() {
     <Provider store={store}>
       <ThemeProvider>
         <AppContent />
+        <Toast config={toastConfig}/>
       </ThemeProvider>
     </Provider>
   );

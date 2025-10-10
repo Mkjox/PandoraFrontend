@@ -13,6 +13,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '@context/ThemeContext';
 import { lightTheme, darkTheme } from '@assets/colors/theme';
+import Toast from 'react-native-toast-message';
 
 const { height, width } = Dimensions.get('window');
 const COOLDOWN_HOURS = 6; // lock period after a suggestion
@@ -76,18 +77,37 @@ const SuggestScreen: React.FC = () => {
 
     const handleSubmit = async () => {
         if (!suggestion.trim()) {
-            return Alert.alert('Oops!', 'Please enter your suggestion before submitting.');
+            return (
+                // Alert.alert('Oops!', 'Please enter your suggestion before submitting.');
+                Toast.show({
+                    type: 'error',
+                    text1: 'Oops!',
+                    text2: 'Please enter your suggestion before submitting.'
+                })
+            )
         }
 
         if (isOnCooldown) {
-            return Alert.alert(
-                'Slow down!',
-                `You can only send one suggestion every ${COOLDOWN_HOURS} hours.\nPlease wait about ${remainingTime} minutes.`
-            );
+            return (
+                // Alert.alert(
+                //     'Slow down!',
+                //     `You can only send one suggestion every ${COOLDOWN_HOURS} hours.\nPlease wait about ${remainingTime} minutes.`
+                // )
+                Toast.show({
+                    type: 'error',
+                    text1: 'Slow down!',
+                    text2: `You can only send one suggestion every ${COOLDOWN_HOURS} hours.\nPlease wait about ${remainingTime} minutes.`
+                })
+            )
         }
 
         // TODO: send suggestion to backend/email service
-        Alert.alert('Thank you!', 'Your suggestion has been sent.');
+        // Alert.alert('Thank you!', 'Your suggestion has been sent.');
+        Toast.show({
+            type: 'success',
+            text1: 'Thank you!',
+            text2: 'Your suggestion has been sent.'
+        });
         setSuggestion('');
 
         const now = Date.now();

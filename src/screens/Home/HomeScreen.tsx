@@ -47,6 +47,24 @@ export default function HomeScreen() {
   const [searchQuery, setSearchQuery] = useState('')
   const [filterType, setFilterType] = useState<FilterType>('all')
 
+  const spinValue = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.timing(spinValue, {
+        toValue: 1,
+        duration: 1000,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
+    ).start();
+  }, [spinValue]);
+
+  const spin = spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg']
+  });
+
   useFocusEffect(
     useCallback(() => {
       dispatch(CategoryService.getCategoriesByUser())
@@ -157,20 +175,10 @@ export default function HomeScreen() {
 
   if (loading) {
     return (
-      <View style={[themeStyles.container, styles.center]}>
-        {[...Array(3)].map((_, i) => (
-          <Animated.View
-            key={i}
-            style={{
-              opacity: fadeAnim,
-              width: width * 0.85,
-              height: 80,
-              backgroundColor: isDark ? "#333" : "#ddd",
-              borderRadius: 8,
-              marginVertical: 10,
-            }}
-          />
-        ))}
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Animated.View style={{ transform: [{ rotate: spin }] }}>
+          <ActivityIndicator size="large" color={themeStyles.button.backgroundColor} />
+        </Animated.View>
       </View>
     )
   }

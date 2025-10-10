@@ -18,6 +18,7 @@ import AuthService from "@services/AuthService";
 import IdentityService from "@services/IdentityService";
 import { IdentityPayload } from "@appTypes/identity.types";
 import { ServiceResult } from "@appTypes/service.types";
+import Toast from "react-native-toast-message";
 
 type RouteParams = {
   EditIdentity: {
@@ -135,7 +136,12 @@ const EditIdentityScreen: React.FC = () => {
         if (!res.success) {
           throw new Error(res.message || "Failed to update identity.");
         }
-        Alert.alert("Success", "Identity updated.");
+        // Alert.alert("Success", "Identity updated.");
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Identity updated.'
+        });
       } else {
         // Create new identity
         res = (await dispatch(
@@ -144,13 +150,23 @@ const EditIdentityScreen: React.FC = () => {
         if (!res.success) {
           throw new Error(res.message || "Failed to create identity.");
         }
-        Alert.alert("Success", "Identity created.");
+        // Alert.alert("Success", "Identity created.");
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Identity created.'
+        });
       }
 
       navigation.goBack();
     } catch (err: any) {
       console.error("EditIdentity error:", err);
-      Alert.alert("Error", err.message || "Operation failed.");
+      // Alert.alert("Error", err.message || "Operation failed.");
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: err.message || 'Operation failed.'
+      });
     } finally {
       setSubmitting(false);
     }

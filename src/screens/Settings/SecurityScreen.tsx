@@ -13,6 +13,7 @@ import {
 import { useTheme } from '@context/ThemeContext';
 import { lightTheme, darkTheme } from '@assets/colors/theme';
 import TwoFactorSetup from '@components/TwoFactorSetup';
+import Toast from 'react-native-toast-message';
 
 const { height, width } = Dimensions.get('window');
 
@@ -25,24 +26,39 @@ const SecurityScreen: React.FC = () => {
 
     const toggleTwoFactor = () => {
         setTwoFactorEnabled(!twoFactorEnabled);
-        Alert.alert(
-            twoFactorEnabled ? '2FA Disabled' : '2FA Enabled',
-            `Two-Factor Authentication has been ${twoFactorEnabled ? 'disabled' : 'enabled'}.`
-        );
+        // Alert.alert(
+        //     twoFactorEnabled ? '2FA Disabled' : '2FA Enabled',
+        //     `Two-Factor Authentication has been ${twoFactorEnabled ? 'disabled' : 'enabled'}.`
+        // );
+        Toast.show({
+            type: 'info',
+            text1: twoFactorEnabled ? '2FA Disabled' : '2FA Enabled',
+            text2: `Two-Factor Authentication has been ${twoFactorEnabled ? 'disabled' : 'enabled'}.`
+        });
     };
 
     const toggleBiometric = () => {
         setBiometricEnabled(!biometricEnabled);
-        Alert.alert(
-            biometricEnabled ? 'Biometric Unlock Disabled' : 'Biometric Unlock Enabled',
-            `Biometric Unlock has been ${biometricEnabled ? 'disabled' : 'enabled'}.`
-        );
+        // Alert.alert(
+        //     biometricEnabled ? 'Biometric Unlock Disabled' : 'Biometric Unlock Enabled',
+        //     `Biometric Unlock has been ${biometricEnabled ? 'disabled' : 'enabled'}.`
+        // );
+        Toast.show({
+            type: 'info',
+            text1: biometricEnabled ? 'Biometric Unlock Disabled' : 'Biometric Unlock Enabled',
+            text2: `Biometric Unlock has been ${biometricEnabled ? 'disabled' : 'enabled'}.`
+        });
     };
 
     const resetSettings = () => {
         setTwoFactorEnabled(false);
         setBiometricEnabled(false);
-        Alert.alert('Reset Security', 'All security settings have been reset.');
+        // Alert.alert('Reset Security', 'All security settings have been reset.');
+        Toast.show({
+            type: 'info',
+            text1: 'Reset Security',
+            text2: 'All security settings have been reset.'
+        });
     };
 
     return (

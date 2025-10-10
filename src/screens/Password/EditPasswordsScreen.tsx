@@ -21,6 +21,7 @@ import { useAppDispatch } from "@redux/hooks";
 import CustomAlert from "@components/CustomAlert";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { darkTheme, lightTheme } from "@assets/colors/theme";
+import Toast from "react-native-toast-message";
 
 type RootStackParamList = {
   EditPassword: { passwordId: string };
@@ -72,7 +73,12 @@ const EditPasswordsScreen: React.FC = () => {
           categoryId: (res.data as any).categoryId ?? "",
         }));
       } else {
-        Alert.alert("Error", res.message || "Failed to load password");
+        // Alert.alert("Error", res.message || "Failed to load password");
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: res.message || 'Failed to load password.'
+        });
       }
       setLoading(false);
     })();
@@ -85,7 +91,12 @@ const EditPasswordsScreen: React.FC = () => {
 
   const handleSave = async () => {
     if (form.newPassword !== form.newPasswordRepeat) {
-      Alert.alert("Error", "New passwords do not match");
+      // Alert.alert("Error", "New passwords do not match");
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'New passwords do not match.'
+      });
       return;
     }
 
@@ -110,12 +121,22 @@ const EditPasswordsScreen: React.FC = () => {
       if (res.success) {
         setShowSuccessAlert(true);
       } else {
-        Alert.alert("Error", res.message || "Failed to update Password");
+        // Alert.alert("Error", res.message || "Failed to update Password");
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: res.message || 'Failed to update Password.'
+        });
       }
     } catch (err: any) {
       setSaving(false);
       console.error("Update error:", err);
-      Alert.alert("Error", err?.message || "Failed to update Password");
+      // Alert.alert("Error", err?.message || "Failed to update Password");
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: err?.message || 'Failed to update Password'
+      });
     } finally {
       setSaving(false);
     }

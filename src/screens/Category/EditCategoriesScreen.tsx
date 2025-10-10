@@ -20,6 +20,7 @@ import { Category, UpdateCategoryPayload } from "@appTypes/category.types";
 import CategoryService from "@services/CategoryService";
 import CustomAlert from "@components/CustomAlert";
 import { darkTheme, lightTheme } from "@assets/colors/theme";
+import Toast from "react-native-toast-message";
 
 type RootStackParamList = {
   EditCategory: { categoryId: string };
@@ -62,16 +63,31 @@ const EditCategoriesScreen: React.FC = () => {
               description: cat.description || "",
             });
           } else {
-            Alert.alert("Error", "Category not found.");
+            // Alert.alert("Error", "Category not found.");
+            Toast.show({
+              type: 'error',
+              text1: 'Error',
+              text2: 'Category not found.'
+            });
             navigation.goBack();
           }
         } else {
-          Alert.alert("Error", response.message || "Failed to load category.");
+          // Alert.alert("Error", response.message || "Failed to load category.");
+          Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: response.message || 'Failed to load category.'
+          });
           navigation.goBack();
         }
       } catch (err: any) {
         console.error("Fetch error:", err);
-        Alert.alert("Error", err?.message || "Failed to load category.");
+        // Alert.alert("Error", err?.message || "Failed to load category.");
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: err?.message || 'Failed to load category.'
+        });
         navigation.goBack();
       } finally {
         setLoading(false);
@@ -87,7 +103,12 @@ const EditCategoriesScreen: React.FC = () => {
 
   const handleSave = async () => {
     if (!form.name.trim()) {
-      Alert.alert("Error", "Category name cannot be empty.");
+      // Alert.alert("Error", "Category name cannot be empty.");
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Category name cannot be empty.'
+      });
       return;
     }
 
@@ -102,11 +123,21 @@ const EditCategoriesScreen: React.FC = () => {
       if (res.success) {
         setShowSuccessAlert(true);
       } else {
-        Alert.alert("Error", res.message || "Failed to update category");
+        // Alert.alert("Error", res.message || "Failed to update category");
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: res.message || 'Failed to update category'
+        });
       }
     } catch (err: any) {
       console.error("Update error:", err);
-      Alert.alert("Error", err?.message || "Failed to update category");
+      // Alert.alert("Error", err?.message || "Failed to update category");
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: err?.message || 'Failed to update category.'
+      });
     } finally {
       setSaving(false);
     }

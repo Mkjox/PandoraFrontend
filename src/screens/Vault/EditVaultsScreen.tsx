@@ -24,6 +24,7 @@ import { Picker } from "@react-native-picker/picker";
 import CustomAlert from "@components/CustomAlert";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { darkTheme, lightTheme } from "@assets/colors/theme";
+import Toast from "react-native-toast-message";
 
 type EditVaultParams = {
   EditVault: { vaultId: string };
@@ -169,10 +170,20 @@ export default function EditVaultsScreen() {
       if (res.success) {
         setShowSuccessAlert(true);
       } else {
-        Alert.alert("Error", res.message || "Failed to update Vault.");
+        // Alert.alert("Error", res.message || "Failed to update Vault.");
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: res.message || 'Failed to update Vault.'
+        });
       }
     } catch (e: any) {
-      Alert.alert("Error", e?.message || "Failed to update Vault.");
+      // Alert.alert("Error", e?.message || "Failed to update Vault.");
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: e?.message || 'Failed to update Vault.'
+      });
     } finally {
       setSaving(false);
     }

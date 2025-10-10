@@ -14,6 +14,7 @@ import { useTheme } from '@context/ThemeContext'
 import { darkTheme, lightTheme } from '@assets/colors/theme'
 import CustomButton from '@components/CustomButton'
 import * as Clipboard from 'expo-clipboard'
+import Toast from 'react-native-toast-message'
 
 const { height, width } = Dimensions.get('window')
 
@@ -55,7 +56,12 @@ const PasswordGeneratorScreen: React.FC = () => {
 
     const onGenerate = () => {
         if (length < 4) {
-            Alert.alert('Length too short', 'Please choose at least 4 characters.')
+            // Alert.alert('Length too short', 'Please choose at least 4 characters.')
+            Toast.show({
+                type: 'error',
+                text1: 'Length too short',
+                text2: 'Please choose at least 4 characters.'
+            });
             return
         }
         const pw = generatePassword(
@@ -70,7 +76,11 @@ const PasswordGeneratorScreen: React.FC = () => {
     const onCopy = () => {
         if (!password) return
         Clipboard.setStringAsync(password)
-        Alert.alert('Copied to clipboard')
+        // Alert.alert('Copied to clipboard')
+        Toast.show({
+            type: 'info',
+            text1: 'Copied to clipboard.'
+        });
     }
 
     return (

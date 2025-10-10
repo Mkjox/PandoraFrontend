@@ -26,6 +26,7 @@ import { CreateCategoryPayload } from '@appTypes/category.types';
 import { PersonalVaultAddPayload, PersonalVaultPayload } from '@appTypes/personalVault.types';
 import { ServiceResult } from '@appTypes/service.types';
 import { Switch, TextInput } from 'react-native-paper';
+import Toast from 'react-native-toast-message';
 
 type AddCredParams = {
   AddCredentials: {
@@ -97,7 +98,12 @@ export default function AddCredentialsScreen() {
       const decoded = await AuthService.decodeToken();
       if (decoded?.nameid) setUserId(decoded.nameid);
       else {
-        Alert.alert('Error', 'Please log in again.');
+        // Alert.alert('Error', 'Please log in again.');
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: 'Please log in again.',
+        });
         navigation.goBack();
       }
       setLoadingUser(false);
@@ -164,7 +170,12 @@ export default function AddCredentialsScreen() {
           PasswordService.createPassword(payload)
         )) as ServiceResult<any>;
         if (!res.success) throw new Error(res.message);
-        Alert.alert('Success', 'Password saved.');
+        // Alert.alert('Success', 'Password saved.');
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Password saved successfully.',
+        });
       }
 
       else if (selectedTab === 'vault') {
@@ -188,7 +199,12 @@ export default function AddCredentialsScreen() {
           PersonalVaultService.createVault(payload)
         )) as ServiceResult<any>;
         if (!res.success) throw new Error(res.message);
-        Alert.alert('Success', 'Vault entry saved.');
+        // Alert.alert('Success', 'Vault entry saved.');
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Vault saved successfully.'
+        });
       }
 
       else {
@@ -204,20 +220,41 @@ export default function AddCredentialsScreen() {
             CategoryService.updateCategory(catId, payload)
           )) as ServiceResult<any>;
           if (!res.success) throw new Error(res.message);
-          Alert.alert('Success', 'Category updated.');
+
+          // Alert.alert('Success', 'Category updated.');
+
+          Toast.show({
+            type: 'success',
+            text1: 'Category Updated',
+            text2: 'Your changes have been saved successfully.',
+          });
+
         } else {
           const res = (await dispatch(
             // @ts-ignore
             CategoryService.createCategory(payload)
           )) as ServiceResult<any>;
           if (!res.success) throw new Error(res.message);
-          Alert.alert('Success', 'Category created.');
+
+          // Alert.alert('Success', 'Category created.');
+
+          Toast.show({
+            type: 'success',
+            text1: 'Category Created',
+            text2: 'A new category has been added.',
+          });
         }
       }
 
       navigation.goBack();
     } catch (err: any) {
-      Alert.alert('Error', err.message || 'Submit failed');
+      // Alert.alert('Error', err.message || 'Submit failed');
+
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: err.message || 'Something went wrong.',
+      });
     } finally {
       setSubmitting(false);
     }

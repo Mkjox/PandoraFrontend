@@ -15,14 +15,15 @@ import {
 import { useTheme } from '@context/ThemeContext';
 import { lightTheme, darkTheme } from '@assets/colors/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 
 const { height, width } = Dimensions.get('window');
 
 const AUTO_FILL_KEY = 'autofillEnabled';
 
 const AutofillScreen: React.FC = () => {
-    const { isDark } = useTheme();
-    const themeStyles = isDark ? darkTheme : lightTheme;
+  const { isDark } = useTheme();
+  const themeStyles = isDark ? darkTheme : lightTheme;
 
   const [autofillEnabled, setAutofillEnabled] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
@@ -64,21 +65,36 @@ const AutofillScreen: React.FC = () => {
         } catch (err) {
           console.warn('Unable to open settings:', err);
         }
-        Alert.alert(
-          'Enable Autofill Service',
-          'To complete setup, please enable Autofill Service for this app in Android Settings → Autofill Service.'
-        );
+        // Alert.alert(
+        //   'Enable Autofill Service',
+        //   'To complete setup, please enable Autofill Service for this app in Android Settings → Autofill Service.'
+        // );
+        Toast.show({
+          type: 'info',
+          text1: 'Enable Autofill Service',
+          text2: 'To complete setup, please enable Autofill Service for this app in Android Settings → Autofill Service. '
+        });
       } else if (Platform.OS === 'ios') {
-        Alert.alert(
-          'Enable Autofill Extension',
-          'To complete setup, ensure the Password Autofill extension is enabled in iOS Settings → Passwords → AutoFill Passwords.'
-        );
+        // Alert.alert(
+        //   'Enable Autofill Extension',
+        //   'To complete setup, ensure the Password Autofill extension is enabled in iOS Settings → Passwords → AutoFill Passwords.'
+        // );
+        Toast.show({
+          type: 'info',
+          text1: 'Enable Autofill Extension',
+          text2: 'To complete setup, ensure the Password Autofill extension is enabled in iOS Settings → Passwords → AutoFill Passwords.'
+        });
         // You might open general settings:
         Linking.openURL('App-Prefs:Passwords&AutoFill'); // may not work on all iOS versions
       }
     } else {
       // If disabling: optionally show info
-      Alert.alert('Autofill Disabled', 'Autofill service/extension remains installed but disabled in-app.');
+      // Alert.alert('Autofill Disabled', 'Autofill service/extension remains installed but disabled in-app.');
+      Toast.show({
+        type: 'info',
+        text1: 'Autofill Disabled',
+        text2: 'Autofill service/extension remains installed but disabled in-app.'
+      });
     }
   };
 
