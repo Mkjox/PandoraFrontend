@@ -136,7 +136,6 @@ const EditIdentityScreen: React.FC = () => {
         if (!res.success) {
           throw new Error(res.message || "Failed to update identity.");
         }
-        // Alert.alert("Success", "Identity updated.");
         Toast.show({
           type: 'success',
           text1: 'Success',
@@ -150,7 +149,6 @@ const EditIdentityScreen: React.FC = () => {
         if (!res.success) {
           throw new Error(res.message || "Failed to create identity.");
         }
-        // Alert.alert("Success", "Identity created.");
         Toast.show({
           type: 'success',
           text1: 'Success',
@@ -161,7 +159,6 @@ const EditIdentityScreen: React.FC = () => {
       navigation.goBack();
     } catch (err: any) {
       console.error("EditIdentity error:", err);
-      // Alert.alert("Error", err.message || "Operation failed.");
       Toast.show({
         type: 'error',
         text1: 'Error',

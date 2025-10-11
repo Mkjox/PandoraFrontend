@@ -56,7 +56,6 @@ const PasswordGeneratorScreen: React.FC = () => {
 
     const onGenerate = () => {
         if (length < 4) {
-            // Alert.alert('Length too short', 'Please choose at least 4 characters.')
             Toast.show({
                 type: 'error',
                 text1: 'Length too short',
@@ -76,7 +75,6 @@ const PasswordGeneratorScreen: React.FC = () => {
     const onCopy = () => {
         if (!password) return
         Clipboard.setStringAsync(password)
-        // Alert.alert('Copied to clipboard')
         Toast.show({
             type: 'info',
             text1: 'Copied to clipboard.'
@@ -204,7 +202,7 @@ const styles = StyleSheet.create({
     button: {
         marginTop: 12,
         height: height * 0.06,
-        borderRadius: 8,
+        borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
         elevation: 5,
@@ -228,7 +226,7 @@ const styles = StyleSheet.create({
     },
     copyButton: {
         height: height * 0.06,
-        borderRadius: 8,
+        borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
         elevation: 5,

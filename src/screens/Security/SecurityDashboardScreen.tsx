@@ -128,7 +128,6 @@ const SecurityDashboardScreen: React.FC = () => {
   //     // e.g. await AuthService.setTwoFactor(val);
   //     setTwoFAEnabled(val);
   //   } catch (err) {
-  //     Alert.alert('Error', 'Could not update Two-Factor setting.');
   // Toast.show({
   //   type: 'error',
   //   text1: 'Error',

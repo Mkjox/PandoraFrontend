@@ -26,10 +26,6 @@ const SecurityScreen: React.FC = () => {
 
     const toggleTwoFactor = () => {
         setTwoFactorEnabled(!twoFactorEnabled);
-        // Alert.alert(
-        //     twoFactorEnabled ? '2FA Disabled' : '2FA Enabled',
-        //     `Two-Factor Authentication has been ${twoFactorEnabled ? 'disabled' : 'enabled'}.`
-        // );
         Toast.show({
             type: 'info',
             text1: twoFactorEnabled ? '2FA Disabled' : '2FA Enabled',
@@ -39,10 +35,6 @@ const SecurityScreen: React.FC = () => {
 
     const toggleBiometric = () => {
         setBiometricEnabled(!biometricEnabled);
-        // Alert.alert(
-        //     biometricEnabled ? 'Biometric Unlock Disabled' : 'Biometric Unlock Enabled',
-        //     `Biometric Unlock has been ${biometricEnabled ? 'disabled' : 'enabled'}.`
-        // );
         Toast.show({
             type: 'info',
             text1: biometricEnabled ? 'Biometric Unlock Disabled' : 'Biometric Unlock Enabled',
@@ -53,7 +45,6 @@ const SecurityScreen: React.FC = () => {
     const resetSettings = () => {
         setTwoFactorEnabled(false);
         setBiometricEnabled(false);
-        // Alert.alert('Reset Security', 'All security settings have been reset.');
         Toast.show({
             type: 'info',
             text1: 'Reset Security',

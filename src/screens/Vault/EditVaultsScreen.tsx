@@ -170,7 +170,6 @@ export default function EditVaultsScreen() {
       if (res.success) {
         setShowSuccessAlert(true);
       } else {
-        // Alert.alert("Error", res.message || "Failed to update Vault.");
         Toast.show({
           type: 'error',
           text1: 'Error',
@@ -178,7 +177,6 @@ export default function EditVaultsScreen() {
         });
       }
     } catch (e: any) {
-      // Alert.alert("Error", e?.message || "Failed to update Vault.");
       Toast.show({
         type: 'error',
         text1: 'Error',

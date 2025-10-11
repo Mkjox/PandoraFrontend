@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -16,6 +16,7 @@ import { useAppSelector, useAppDispatch } from "@redux/hooks";
 import { Category } from "@appTypes/category.types";
 import { AntDesign, Entypo } from "@expo/vector-icons";
 import CategoryService from "@services/CategoryService";
+import CustomModal from "@components/CustomModal";
 
 type RootStackParamList = {
   CategoryDetails: { id: string };
@@ -31,6 +32,7 @@ export default function CategoryDetailsScreen() {
   const { isDark } = useTheme();
   const themeStyles = isDark ? darkTheme : lightTheme;
   const dispatch = useAppDispatch();
+  const [visible, setVisible] = useState(false);
 
   const { id } = route.params;
 
@@ -39,23 +41,12 @@ export default function CategoryDetailsScreen() {
     s.category.categories.find((c: Category) => c.id === id)
   );
 
-  const onDelete = () => {
-    Alert.alert(
-      "Delete Category",
-      "Are you sure you want to delete this category?",
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Delete",
-          style: "destructive",
-          onPress: () => {
-            dispatch(CategoryService.deleteCategory(id));
-            navigation.goBack();
-          },
-        },
-      ]
-    );
-  };
+
+  const handleDelete = async () => {
+    await dispatch(CategoryService.deleteCategory(id));
+    setVisible(false);
+    navigation.goBack();
+  }
 
   if (!category) {
     return (
@@ -102,7 +93,7 @@ export default function CategoryDetailsScreen() {
 
         <TouchableOpacity
           style={[styles.actionButton, themeStyles.button]}
-          onPress={onDelete}
+          onPress={() => setVisible(true)}
         >
           <Entypo
             name="trash"
@@ -113,6 +104,17 @@ export default function CategoryDetailsScreen() {
             Delete
           </Text>
         </TouchableOpacity>
+
+        <CustomModal
+          visible={visible}
+          title="Delete Category"
+          message="Are you sure you want to delete this category?"
+          confirmText="Delete"
+          cancelText="Cancel"
+          destructive
+          onConfirm={handleDelete}
+          onCancel={() => setVisible(false)}
+        />
       </View>
     </ScrollView>
   );

@@ -33,23 +33,6 @@ export default function CategoryScreen() {
     }, [dispatch])
   )
 
-  const onDelete = useCallback((id: string) => {
-    Alert.alert(
-      'Delete Category',
-      'Are you sure you want to delete this category?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: () => {
-            dispatch(CategoryService.deleteCategory(id))
-          },
-        },
-      ]
-    )
-  }, [dispatch])
-
   const renderItem = ({ item }: { item: { id: string; name: string; description?: string } }) => (
     <View style={[styles.card, themeStyles.card]}>
       <View style={styles.cardText}>

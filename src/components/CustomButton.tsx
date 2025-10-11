@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         paddingHorizontal: 20,
-        borderRadius: 8,
+        borderRadius: 10,
     },
     textBase: {
         fontSize: 16,

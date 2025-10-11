@@ -109,7 +109,6 @@ const PassDetailsScreen: React.FC = () => {
 
   const onCopy = () => {
     Clipboard.setStringAsync(item.password)
-    // Alert.alert('Copied to clipboard')
     Toast.show({
       type: 'info',
       text1: 'Copied to clipboard'

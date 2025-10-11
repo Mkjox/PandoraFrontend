@@ -67,7 +67,6 @@ const EmergencyAccessScreen: React.FC = () => {
 
   const handleAdd = async () => {
     if (!newName.trim() || !newEmail.trim()) {
-      // return Alert.alert('Missing fields', 'Please enter name and email.')
       Toast.show({
         type: 'error',
         text1: 'Missing fields',
@@ -77,7 +76,6 @@ const EmergencyAccessScreen: React.FC = () => {
     const delay = Number(newDelay)
     if (isNaN(delay) || delay < 1) {
       return (
-        // Alert.alert('Invalid delay', 'Please enter a valid number of hours.')
         Toast.show({
           type: 'error',
           text1: 'Invalid delay',
@@ -99,7 +97,6 @@ const EmergencyAccessScreen: React.FC = () => {
       setNewEmail('')
       setNewDelay('')
     } catch (e: any) {
-      // Alert.alert('Error', e.message || 'Failed to add contact')
       Toast.show({
         type: 'error',
         text1: 'Error',
@@ -122,7 +119,6 @@ const EmergencyAccessScreen: React.FC = () => {
               // await EmergencyAccessService.removeContact(id)
               setContacts(prev => prev.filter(c => c.id !== id))
             } catch {
-              // Alert.alert('Error', 'Could not remove contact.')
               Toast.show({
                 type: 'error',
                 text1: 'Error',

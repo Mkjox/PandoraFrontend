@@ -98,7 +98,6 @@ export default function AddCredentialsScreen() {
       const decoded = await AuthService.decodeToken();
       if (decoded?.nameid) setUserId(decoded.nameid);
       else {
-        // Alert.alert('Error', 'Please log in again.');
         Toast.show({
           type: 'error',
           text1: 'Error',
@@ -170,7 +169,6 @@ export default function AddCredentialsScreen() {
           PasswordService.createPassword(payload)
         )) as ServiceResult<any>;
         if (!res.success) throw new Error(res.message);
-        // Alert.alert('Success', 'Password saved.');
         Toast.show({
           type: 'success',
           text1: 'Success',
@@ -199,7 +197,6 @@ export default function AddCredentialsScreen() {
           PersonalVaultService.createVault(payload)
         )) as ServiceResult<any>;
         if (!res.success) throw new Error(res.message);
-        // Alert.alert('Success', 'Vault entry saved.');
         Toast.show({
           type: 'success',
           text1: 'Success',
@@ -221,7 +218,6 @@ export default function AddCredentialsScreen() {
           )) as ServiceResult<any>;
           if (!res.success) throw new Error(res.message);
 
-          // Alert.alert('Success', 'Category updated.');
 
           Toast.show({
             type: 'success',
@@ -236,7 +232,6 @@ export default function AddCredentialsScreen() {
           )) as ServiceResult<any>;
           if (!res.success) throw new Error(res.message);
 
-          // Alert.alert('Success', 'Category created.');
 
           Toast.show({
             type: 'success',
@@ -248,7 +243,6 @@ export default function AddCredentialsScreen() {
 
       navigation.goBack();
     } catch (err: any) {
-      // Alert.alert('Error', err.message || 'Submit failed');
 
       Toast.show({
         type: 'error',

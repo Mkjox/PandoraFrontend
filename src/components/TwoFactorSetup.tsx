@@ -34,7 +34,6 @@ const TwoFactorSetup: React.FC = () => {
             const res = await AuthService.getTwoFactorStatus();
             if (res.success && res.data) setIsEnabled(res.data.isEnabled);
             else if (!res.success)
-                // Alert.alert("Error", res.message || "Could not fetch 2FA status");
                 Toast.show({
                     type: 'error',
                     text1: 'Error',
@@ -50,7 +49,6 @@ const TwoFactorSetup: React.FC = () => {
             const res = await AuthService.setupTwoFactor();
             setLoading(false);
             if (res.success && res.data) setSetupData(res.data);
-            // else Alert.alert("Error", res.message || "Could not start setup");
             else
                 Toast.show({
                     type: 'error',
@@ -72,7 +70,6 @@ const TwoFactorSetup: React.FC = () => {
                             setSetupData(null);
                         }
                         else
-                            //  Alert.alert("Error", res.message || "Could not disable 2FA");
                             Toast.show({
                                 type: 'error',
                                 text1: 'Error',
@@ -86,7 +83,6 @@ const TwoFactorSetup: React.FC = () => {
 
     const onVerify = async () => {
         if (!code.trim()) {
-            // Alert.alert("Validation", "Please enter the code from your authenticator app.");
             Toast.show({
                 type: 'info',
                 text1: 'Validation',
@@ -101,14 +97,12 @@ const TwoFactorSetup: React.FC = () => {
             setIsEnabled(true);
             setSetupData(null);
             setCode("");
-            // Alert.alert("Success", "Two-factor authentication enabled.");
             Toast.show({
                 type: 'success',
                 text1: 'Success',
                 text2: 'Two-factor authentication enabled.'
             });
         } else 
-            // Alert.alert("Error", res.message || "Verification failed");
             Toast.show({
                 type: 'error',
                 text1: 'Error',

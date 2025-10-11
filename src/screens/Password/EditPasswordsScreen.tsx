@@ -73,7 +73,6 @@ const EditPasswordsScreen: React.FC = () => {
           categoryId: (res.data as any).categoryId ?? "",
         }));
       } else {
-        // Alert.alert("Error", res.message || "Failed to load password");
         Toast.show({
           type: 'error',
           text1: 'Error',
@@ -91,7 +90,6 @@ const EditPasswordsScreen: React.FC = () => {
 
   const handleSave = async () => {
     if (form.newPassword !== form.newPasswordRepeat) {
-      // Alert.alert("Error", "New passwords do not match");
       Toast.show({
         type: 'error',
         text1: 'Error',
@@ -121,7 +119,6 @@ const EditPasswordsScreen: React.FC = () => {
       if (res.success) {
         setShowSuccessAlert(true);
       } else {
-        // Alert.alert("Error", res.message || "Failed to update Password");
         Toast.show({
           type: 'error',
           text1: 'Error',
@@ -131,7 +128,6 @@ const EditPasswordsScreen: React.FC = () => {
     } catch (err: any) {
       setSaving(false);
       console.error("Update error:", err);
-      // Alert.alert("Error", err?.message || "Failed to update Password");
       Toast.show({
         type: 'error',
         text1: 'Error',

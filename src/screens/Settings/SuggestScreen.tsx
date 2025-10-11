@@ -78,7 +78,6 @@ const SuggestScreen: React.FC = () => {
     const handleSubmit = async () => {
         if (!suggestion.trim()) {
             return (
-                // Alert.alert('Oops!', 'Please enter your suggestion before submitting.');
                 Toast.show({
                     type: 'error',
                     text1: 'Oops!',
@@ -89,10 +88,6 @@ const SuggestScreen: React.FC = () => {
 
         if (isOnCooldown) {
             return (
-                // Alert.alert(
-                //     'Slow down!',
-                //     `You can only send one suggestion every ${COOLDOWN_HOURS} hours.\nPlease wait about ${remainingTime} minutes.`
-                // )
                 Toast.show({
                     type: 'error',
                     text1: 'Slow down!',
@@ -102,7 +97,6 @@ const SuggestScreen: React.FC = () => {
         }
 
         // TODO: send suggestion to backend/email service
-        // Alert.alert('Thank you!', 'Your suggestion has been sent.');
         Toast.show({
             type: 'success',
             text1: 'Thank you!',

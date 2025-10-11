@@ -65,20 +65,12 @@ const AutofillScreen: React.FC = () => {
         } catch (err) {
           console.warn('Unable to open settings:', err);
         }
-        // Alert.alert(
-        //   'Enable Autofill Service',
-        //   'To complete setup, please enable Autofill Service for this app in Android Settings → Autofill Service.'
-        // );
         Toast.show({
           type: 'info',
           text1: 'Enable Autofill Service',
           text2: 'To complete setup, please enable Autofill Service for this app in Android Settings → Autofill Service. '
         });
       } else if (Platform.OS === 'ios') {
-        // Alert.alert(
-        //   'Enable Autofill Extension',
-        //   'To complete setup, ensure the Password Autofill extension is enabled in iOS Settings → Passwords → AutoFill Passwords.'
-        // );
         Toast.show({
           type: 'info',
           text1: 'Enable Autofill Extension',
@@ -89,7 +81,6 @@ const AutofillScreen: React.FC = () => {
       }
     } else {
       // If disabling: optionally show info
-      // Alert.alert('Autofill Disabled', 'Autofill service/extension remains installed but disabled in-app.');
       Toast.show({
         type: 'info',
         text1: 'Autofill Disabled',
