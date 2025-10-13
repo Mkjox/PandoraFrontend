@@ -7,10 +7,7 @@ import {
   Dimensions,
   ScrollView,
   FlatList,
-  Switch,
-  ActivityIndicator,
   TouchableOpacity,
-  Alert,
 } from 'react-native';
 import { useTheme } from '@context/ThemeContext';
 import { darkTheme, lightTheme } from '@assets/colors/theme';
@@ -23,6 +20,7 @@ import ErrorDisplay from '@components/ErrorDisplay';
 import { PasswordItem } from '@appTypes/password.types';
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
 import Toast from 'react-native-toast-message';
+import CustomSpinner from '@components/CustomSpinner';
 
 // // Replace or import your actual password-strength check function
 // function isStrongPassword(pw: string): boolean {
@@ -140,9 +138,7 @@ const SecurityDashboardScreen: React.FC = () => {
 
   if (pwdLoading || vaultLoading || catLoading) {
     return (
-      <View style={[styles.center, themeStyles.container]}>
-        <ActivityIndicator size="large" />
-      </View>
+      <CustomSpinner />
     );
   }
   if (pwdError || vaultError || catError) {

@@ -6,7 +6,6 @@ import {
   StatusBar,
   Dimensions,
   FlatList,
-  ActivityIndicator,
 } from 'react-native';
 import { useTheme } from '@context/ThemeContext';
 import { darkTheme, lightTheme } from '@assets/colors/theme';
@@ -14,6 +13,7 @@ import { useAppDispatch, useAppSelector } from '@redux/hooks';
 import PasswordService from '@services/PasswordService';
 import { isStrongPassword } from '@utils/password';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import CustomSpinner from '@components/CustomSpinner';
 
 const { width, height } = Dimensions.get('window');
 
@@ -69,9 +69,7 @@ const SecurityChallengeScreen: React.FC = () => {
 
   if (passwordsLoading) {
     return (
-      <View style={[themeStyles.container, styles.center]}>
-        <ActivityIndicator size="large" />
-      </View>
+      <CustomSpinner />
     );
   }
 

@@ -4,12 +4,10 @@ import {
   Text,
   StyleSheet,
   Dimensions,
-  ActivityIndicator,
   ScrollView,
   TouchableOpacity,
   StatusBar,
   Pressable,
-  Alert,
 } from 'react-native';
 import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
 import { useTheme } from "@context/ThemeContext";
@@ -21,6 +19,7 @@ import ConfirmDeleteModal from "@components/ConfirmDeleteModal";
 import * as Clipboard from 'expo-clipboard'
 import { darkTheme, lightTheme } from "@assets/colors/theme";
 import Toast from "react-native-toast-message";
+import CustomSpinner from "@components/CustomSpinner";
 
 type RootStackParamList = {
   PassDetails: { id: string };
@@ -61,9 +60,7 @@ const PassDetailsScreen: React.FC = () => {
 
   if (loading) {
     return (
-      <View style={[themeStyles.container, styles.center]}>
-        <ActivityIndicator size="large" />
-      </View>
+      <CustomSpinner/>
     );
   }
 

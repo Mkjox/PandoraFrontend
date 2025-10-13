@@ -14,6 +14,7 @@ import {
 import { useTheme } from "@context/ThemeContext";
 import AuthService from "@services/AuthService";
 import Toast from "react-native-toast-message";
+import CustomSpinner from "./CustomSpinner";
 
 const TwoFactorSetup: React.FC = () => {
     const { isDark, themeStyles } = useTheme();
@@ -102,7 +103,7 @@ const TwoFactorSetup: React.FC = () => {
                 text1: 'Success',
                 text2: 'Two-factor authentication enabled.'
             });
-        } else 
+        } else
             Toast.show({
                 type: 'error',
                 text1: 'Error',
@@ -112,9 +113,7 @@ const TwoFactorSetup: React.FC = () => {
 
     if (loading) {
         return (
-            <View style={[styles.center, themeStyles.container]}>
-                <ActivityIndicator size="large" />
-            </View>
+            <CustomSpinner />
         );
     }
 

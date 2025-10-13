@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   Dimensions,
-  ActivityIndicator,
   ScrollView,
   TouchableOpacity,
   StatusBar,
@@ -18,6 +17,7 @@ import { ServiceResult } from "@appTypes/service.types";
 import { useAppDispatch } from "@redux/hooks";
 import ConfirmDeleteModal from "@components/ConfirmDeleteModal";
 import { darkTheme, lightTheme } from "@assets/colors/theme";
+import CustomSpinner from "@components/CustomSpinner";
 
 type RootStackParamList = {
   VaultDetails: { id: string };
@@ -64,9 +64,7 @@ export default function VaultDetailsScreen() {
 
   if (loading) {
     return (
-      <View style={[themeStyles.container, styles.center]}>
-        <ActivityIndicator size="large" />
-      </View>
+      <CustomSpinner />
     );
   }
 

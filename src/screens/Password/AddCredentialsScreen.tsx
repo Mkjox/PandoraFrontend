@@ -369,7 +369,7 @@ export default function AddCredentialsScreen() {
                 selectedValue={form.CategoryId}
                 onValueChange={v => handleChange('CategoryId', v)}
               >
-                <Picker.Item label="Select category*" value="" color={isDark ? '#888' : '#666'} />
+                <Picker.Item label="Select category*" value="" color={isDark ? '#888' : '#49454f'} />
                 {categories.map(c => (
                   <Picker.Item key={c.id} label={c.name} value={c.id} style={themeStyles.inputText} />
                 ))}
@@ -443,26 +443,38 @@ export default function AddCredentialsScreen() {
             {form.IsLocked && (
               <>
                 <TouchableOpacity
-                  style={[styles.input, themeStyles.card]}
+                  style={[styles.input, themeStyles.card,
+                  {
+                    height: height * 0.07,
+                    borderWidth: 1,
+                    borderColor: isDark ? '#888' : '#79747e',
+                    borderRadius: 5
+                  }]}
                   onPress={() => showPicker('UnlockDate')}
                 >
                   <Text
                     style={[
                       themeStyles.inputText,
-                      { color: form.UnlockDate ? '#888' : '#666' },
+                      { color: form.UnlockDate ? '#888' : '#49454f' },
                     ]}
                   >
                     {form.UnlockDate || 'Select Unlock Date'}
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={[styles.input, themeStyles.card]}
+                  style={[styles.input, themeStyles.card,
+                  {
+                    height: height * 0.07,
+                    borderWidth: 1,
+                    borderColor: isDark ? '#888' : '#79747e',
+                    borderRadius: 5
+                  }]}
                   onPress={() => showPicker('ExpirationDate')}
                 >
                   <Text
                     style={[
                       themeStyles.inputText,
-                      { color: form.ExpirationDate ? '#888' : '#666' },
+                      { color: form.ExpirationDate ? '#888' : '#49454f' },
                     ]}
                   >
                     {form.ExpirationDate || 'Select Expiration Date'}
@@ -492,9 +504,9 @@ export default function AddCredentialsScreen() {
                 selectedValue={form.CategoryId}
                 onValueChange={v => handleChange('CategoryId', v)}
               >
-                <Picker.Item label="Select category*" value="" color={isDark ? '#888' : '#666'} />
+                <Picker.Item label="Select category*" value="" color={isDark ? '#888' : '#49454f'} />
                 {categories.map(c => (
-                  <Picker.Item key={c.id} label={c.name} value={c.id} color={isDark ? '#888' : '#666'} />
+                  <Picker.Item key={c.id} label={c.name} value={c.id} color={isDark ? '#888' : '#49454f'} />
                 ))}
               </Picker>
             </View>
@@ -599,11 +611,12 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   pickerContainer: {
-    borderWidth: 2,
-    borderColor: '#57555f',
+    borderWidth: 1,
+    borderColor: '#79747e',
     borderRadius: 5,
     marginBottom: 12,
     overflow: 'hidden',
+    paddingLeft: 10
   },
   submitButton: {
     height: height * 0.055,

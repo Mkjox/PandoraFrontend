@@ -7,10 +7,7 @@ import {
   Dimensions,
   TouchableOpacity,
   FlatList,
-  ActivityIndicator,
   SectionList,
-  Animated,
-  Easing,
 } from 'react-native'
 import { Searchbar } from 'react-native-paper'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
@@ -26,6 +23,7 @@ import PersonalVaultService from '@services/PersonalVaultService'
 import { darkTheme, lightTheme } from '@assets/colors/theme'
 import CustomCard from '@components/CustomCard'
 import Notes from '@assets/images/notes.svg';
+import CustomSpinner from '@components/CustomSpinner'
 
 const { width, height } = Dimensions.get('window')
 
@@ -47,24 +45,6 @@ export default function HomeScreen() {
   const [searchQuery, setSearchQuery] = useState('')
   const [filterType, setFilterType] = useState<FilterType>('all')
 
-  const spinValue = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    Animated.loop(
-      Animated.timing(spinValue, {
-        toValue: 1,
-        duration: 1000,
-        easing: Easing.linear,
-        useNativeDriver: true,
-      })
-    ).start();
-  }, [spinValue]);
-
-  const spin = spinValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '360deg']
-  });
-
   useFocusEffect(
     useCallback(() => {
       dispatch(CategoryService.getCategoriesByUser())
@@ -72,16 +52,6 @@ export default function HomeScreen() {
       dispatch(PersonalVaultService.getPersonalVaults())
     }, [dispatch])
   )
-
-  const fadeAnim = useRef(new Animated.Value(0.3)).current;
-  useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(fadeAnim, { toValue: 1, duration: 800, useNativeDriver: true, easing: Easing.linear }),
-        Animated.timing(fadeAnim, { toValue: 0.3, duration: 800, useNativeDriver: true, easing: Easing.linear }),
-      ])
-    ).start();
-  }, []);
 
   const filteredPasswords = useMemo(() => {
     return passwords.filter(p => {
@@ -158,7 +128,6 @@ export default function HomeScreen() {
         {item.secureContent}
       </Text>
     </CustomCard>
-
   )
 
   const renderSectionItem = ({ item }: { item: SectionDataItem }) =>
@@ -175,11 +144,7 @@ export default function HomeScreen() {
 
   if (loading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Animated.View style={{ transform: [{ rotate: spin }] }}>
-          <ActivityIndicator size="large" color={themeStyles.button.backgroundColor} />
-        </Animated.View>
-      </View>
+      <CustomSpinner />
     )
   }
 

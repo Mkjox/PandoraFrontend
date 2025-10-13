@@ -4,8 +4,9 @@ import { RootState } from "@redux/store";
 import AuthNavigator from "./AuthNavigator";
 import MainNavigator from "./MainNavigator";
 import { NavigationContainer } from "@react-navigation/native";
+import CustomSpinner from "@components/CustomSpinner";
 // import AsyncStorage from "@react-native-async-storage/async-storage";
-// import { ActivityIndicator, View } from "react-native";
+// import { View } from "react-native";
 // import WelcomeScreen from "../screens/Home/WelcomeScreen";
 // import { NavigationContainer } from "@react-navigation/native";
 // import { useFirstLaunch } from "../hooks/useFirstLaunch";
@@ -24,7 +25,7 @@ export default function AppNavigator() {
     //     justifyContent: 'center',
     //     alignItems: 'center'
     // }}>
-    //     <ActivityIndicator size="large" />
+    // <CustomSpinner />
     // </View>
     // null
     // )

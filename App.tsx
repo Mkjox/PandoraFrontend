@@ -3,10 +3,19 @@ import { Provider, useDispatch } from 'react-redux';
 import { store } from '@redux/store';
 import { ThemeProvider, useTheme } from '@context/ThemeContext';
 import AppNavigator from '@navigation/AppNavigator';
-import WelcomeScreen from '@screens/Home/WelcomeScreen';
+// import WelcomeScreen from '@screens/Home/WelcomeScreen';
 import * as SplashScreen from 'expo-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ActivityIndicator, View } from 'react-native';
+import { tokenStorage } from './src/services/tokenStorage';
+import { isBiometricAvailable, promptBiometric } from './src/services/biometric';
+import { jwtDecode } from 'jwt-decode';
+import AuthService from './src/services/AuthService';
+import { login as loginAction } from './src/redux/store/slices/authSlice';
+import { NavigationContainer } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
+import { toastConfig } from '@components/ToastConfig';
+import CustomSpinner from '@components/CustomSpinner';
+
 import {
   useFonts,
   Poppins_400Regular,
@@ -25,15 +34,6 @@ import {
   Jost_700Bold_Italic,
 } from '@expo-google-fonts/jost';
 import { YesevaOne_400Regular } from '@expo-google-fonts/yeseva-one';
-
-import { tokenStorage } from './src/services/tokenStorage';
-import { isBiometricAvailable, promptBiometric } from './src/services/biometric';
-import { jwtDecode } from 'jwt-decode';
-import AuthService from './src/services/AuthService';
-import { login as loginAction } from './src/redux/store/slices/authSlice';
-import { NavigationContainer } from '@react-navigation/native';
-import Toast from 'react-native-toast-message';
-import { toastConfig } from '@components/ToastConfig';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -118,9 +118,7 @@ function AppContent() {
 
   if (isLoadingTheme || hasLaunched === null) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" color="#1c6d79" />
-      </View>
+      <CustomSpinner />
     );
   }
 
@@ -131,7 +129,7 @@ function AppContent() {
       ) : (
         <WelcomeScreen onDone={() => setHasLaunched(true)} />
       )} */}
-        <AppNavigator />
+      <AppNavigator />
     </NavigationContainer>
   );
 }

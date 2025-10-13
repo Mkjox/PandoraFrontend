@@ -21,6 +21,7 @@ import CategoryService from "@services/CategoryService";
 import CustomAlert from "@components/CustomAlert";
 import { darkTheme, lightTheme } from "@assets/colors/theme";
 import Toast from "react-native-toast-message";
+import CustomSpinner from "@components/CustomSpinner";
 
 type RootStackParamList = {
   EditCategory: { categoryId: string };
@@ -161,9 +162,7 @@ const EditCategoriesScreen: React.FC = () => {
 
   if (loading) {
     return (
-      <View style={[themeStyles.container, styles.center]}>
-        <ActivityIndicator size="large" />
-      </View>
+      <CustomSpinner />
     );
   }
 

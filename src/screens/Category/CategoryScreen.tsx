@@ -6,15 +6,14 @@ import {
   StyleSheet,
   StatusBar,
   TouchableOpacity,
-  ActivityIndicator,
   FlatList,
-  Alert,
 } from 'react-native'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { useTheme } from '../../context/ThemeContext'
 import { darkTheme, lightTheme } from '../../assets/colors/theme'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import CategoryService from '../../services/CategoryService'
+import CustomSpinner from '@components/CustomSpinner'
 
 const { width, height } = Dimensions.get('window')
 
@@ -55,7 +54,7 @@ export default function CategoryScreen() {
       </View>
 
       {loading ? (
-        <ActivityIndicator style={styles.loader} size="large" />
+        <CustomSpinner />
       ) : error ? (
         <Text style={styles.error}>{error}</Text>
       ) : (
