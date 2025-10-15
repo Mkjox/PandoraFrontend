@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet, Pressable, Platform } from 'react-native';
 import { useTheme } from '@context/ThemeContext';
 import { darkTheme, lightTheme } from '@assets/colors/theme';
 import { useNavigation } from '@react-navigation/native';
@@ -11,9 +11,18 @@ export default function AddButton() {
 
 
   return (
-    <TouchableOpacity style={[styles.button, themeStyles.card, themeStyles.border]} onPress={() => navigation.navigate("AddCredentials")}>
+    <Pressable
+      style={({ pressed }) => [
+        styles.button,
+        themeStyles.card,
+        themeStyles.border,
+        pressed && { opacity: Platform.OS === 'ios' ? 0.6 : 1 }
+      ]}
+      onPress={() => navigation.navigate("AddCredentials")}
+      android_ripple={isDark ? { color: 'rgba(255, 255, 255, 0.06)' } : { color: 'rgba(0,0,0, 0.06)',  borderless: false}}
+    >
       <Text style={[styles.text, themeStyles.inputText]}>+ New</Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 }
 

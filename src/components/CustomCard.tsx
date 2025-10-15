@@ -1,5 +1,7 @@
+import { darkTheme, lightTheme } from "@assets/colors/theme";
+import { useTheme } from "@context/ThemeContext";
 import React from "react";
-import { View, StyleSheet, GestureResponderEvent, TouchableOpacity } from "react-native";
+import { View, StyleSheet, GestureResponderEvent, TouchableOpacity, Pressable, Platform } from "react-native";
 
 type CardProps = {
   children: React.ReactNode;
@@ -8,24 +10,30 @@ type CardProps = {
 };
 
 const CustomCard: React.FC<CardProps> = ({ children, onPress, style }) => {
+  const { isDark } = useTheme();
+
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={onPress}
-      activeOpacity={0.8}
-      style={[styles.card, style]}
+      android_ripple={isDark ? { color: 'rgba(255, 255, 255, 0.06)' } : { color: 'rgba(0,0,0, 0.06)', borderless: false }}
+      style={({ pressed }) => [
+        styles.card, 
+        style,
+        pressed && {opacity: Platform.OS === 'ios' ? 0.6 : 1}
+      ]}
     >
       <View>{children}</View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
-    card: {
-        padding: 16,
-        borderRadius: 8,
-        marginBottom: 12,
-        elevation: 2,
-    }
+  card: {
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 12,
+    elevation: 2,
+  }
 });
 
 export default CustomCard;

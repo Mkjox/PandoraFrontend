@@ -16,7 +16,7 @@ const isNative = Platform.OS !== 'web'
  */
 
 export const tokenStorage = {
-  setTokens: async (accessToken: string | null, refreshToken: string | null) => {
+  setTokens: async (accessToken: string | null, refreshToken: string | null, p0?: { secure: boolean }) => {
     try {
       if (accessToken != null) {
         await AsyncStorage.setItem(ACCESS_KEY, accessToken)

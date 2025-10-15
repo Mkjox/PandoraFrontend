@@ -1,95 +1,99 @@
 import React from "react";
 import {
-    TouchableOpacity,
-    Text,
-    ActivityIndicator,
-    StyleSheet,
-    ViewStyle,
-    TextStyle,
-    GestureResponderEvent,
+  TouchableOpacity,
+  Text,
+  ActivityIndicator,
+  StyleSheet,
+  ViewStyle,
+  TextStyle,
+  GestureResponderEvent,
+  Platform,
+  Pressable,
 } from "react-native";
 import { useTheme } from "@context/ThemeContext";
 import { darkTheme, lightTheme } from "@assets/colors/theme";
 
 interface CustomButtonProps {
-    title: string
-    onPress: (event: GestureResponderEvent) => void
-    loading?: boolean
-    disabled?: boolean
-    style?: ViewStyle | ViewStyle[]
-    textStyle?: TextStyle | TextStyle[]
-    icon?: React.ReactNode
-    iconRight?: React.ReactNode
+  title: string;
+  onPress: (event: GestureResponderEvent) => void;
+  loading?: boolean;
+  disabled?: boolean;
+  style?: ViewStyle | ViewStyle[];
+  textStyle?: TextStyle | TextStyle[];
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
-    title,
-    onPress,
-    loading = false,
-    disabled = false,
-    style,
-    textStyle,
-    icon,
-    iconRight,
+  title,
+  onPress,
+  loading = false,
+  disabled = false,
+  style,
+  textStyle,
 }) => {
-    const { isDark } = useTheme();
-    const themeStyles = isDark ? darkTheme : lightTheme;
+  const { isDark } = useTheme();
+  const themeStyles = isDark ? darkTheme : lightTheme;
 
-    const isDisabled = disabled || loading
+  const isDisabled = disabled || loading;
 
-    return (
-        <TouchableOpacity
-            onPress={onPress}
-            disabled={isDisabled}
-            activeOpacity={0.7}
-            style={[
-                styles.buttonBase,
-                themeStyles.button,
-                isDisabled && styles.disabledButton,
-                style,
-            ]}
+  const ButtonContent = () => (
+    <>
+      {loading ? (
+        <ActivityIndicator
+          color={themeStyles.buttonText.color || "#fff"}
+          style={{ marginVertical: 2 }}
+        />
+      ) : (
+        <Text
+          style={[
+            styles.textBase,
+            themeStyles.buttonText,
+            textStyle,
+          ]}
         >
-            {loading ? (
-                <ActivityIndicator
-                    color={themeStyles.buttonText.color || '#fff'}
-                />
-            ) : (
-                <React.Fragment>
-                    {icon ? <Text style={styles.iconWrapper}>{icon}</Text> : null}
-                    <Text
-                        style={[
-                            styles.textBase,
-                            themeStyles.buttonText || '#fff',
-                            textStyle
-                        ]}
-                    >
-                        {title}
-                    </Text>
-                    {iconRight ? <Text style={styles.iconWrapper}>{iconRight}</Text> : null}
-                </React.Fragment>
-            )}
-        </TouchableOpacity>
-    )
-}
+          {title}
+        </Text>
+      )}
+    </>
+  );
+
+  return (
+    <Pressable
+      onPress={onPress}
+      disabled={isDisabled}
+      android_ripple={{
+        color: "rgba(255, 255, 255, 0.2)",
+        borderless: false,
+      }}
+      style={({ pressed }) => [
+        styles.buttonBase,
+        themeStyles.button,
+        isDisabled && styles.disabledButton,
+        pressed && { opacity: Platform.OS === "ios" ? 0.6 : 1 },
+        style,
+      ]}
+    >
+      <ButtonContent />
+    </Pressable>
+  );
+};
 
 const styles = StyleSheet.create({
-    buttonBase: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingHorizontal: 20,
-        borderRadius: 10,
-    },
-    textBase: {
-        fontSize: 16,
-        fontFamily: 'Poppins_500Medium',
-    },
-    disabledButton: {
-        opacity: 0.6,
-    },
-    iconWrapper: {
-        marginHorizontal: 4,
-    },
-})
+  buttonBase: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    overflow: "hidden",
+  },
+  textBase: {
+    fontSize: 16,
+    fontFamily: "Poppins_500Medium",
+  },
+  disabledButton: {
+    opacity: 0.6,
+  },
+});
 
-export default CustomButton
+export default CustomButton;

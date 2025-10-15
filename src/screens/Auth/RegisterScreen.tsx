@@ -212,7 +212,7 @@ export default function RegisterScreen() {
                 onPress={handleRegister}
                 loading={loading}
                 title="Register"
-                style={[styles.submitButton, themeStyles.buttonBorder]}
+                style={[styles.submitButton]}
             />
 
             <TouchableOpacity onPress={() => navigation.navigate('Login' as never)}>

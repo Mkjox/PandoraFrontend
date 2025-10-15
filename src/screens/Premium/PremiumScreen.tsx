@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -11,12 +11,14 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from '@context/ThemeContext';
 import { lightTheme, darkTheme } from '@assets/colors/theme';
+import CustomButton from "@components/CustomButton";
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 const PremiumScreen = () => {
   const { isDark } = useTheme();
   const themeStyles = isDark ? darkTheme : lightTheme;
+  const [loading, setLoading] = useState(false);
 
   return (
     <SafeAreaView style={[styles.container, themeStyles.container]}>
@@ -80,9 +82,12 @@ const PremiumScreen = () => {
         </View>
 
         {/* CTA */}
-        <TouchableOpacity style={[styles.button, themeStyles.button]}>
-          <Text style={[styles.buttonText, themeStyles.buttonText]}>Upgrade Now</Text>
-        </TouchableOpacity>
+        <CustomButton
+          onPress={() => { }}
+          loading={loading}
+          title="Upgrade Now"
+          style={styles.button}
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -170,9 +175,9 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   button: {
-    paddingVertical: 16,
-    borderRadius: 14,
+    borderRadius: 10,
     alignItems: "center",
+    height: height * 0.06,
   },
   buttonText: {
     fontSize: 16,

@@ -6,7 +6,8 @@ import {
     StyleSheet,
     StatusBar,
     Dimensions,
-    TouchableOpacity,
+    Pressable,
+    Platform,
 } from "react-native"
 import { useTheme } from "@context/ThemeContext"
 import { darkTheme, lightTheme } from "@assets/colors/theme"
@@ -108,18 +109,21 @@ const SettingsScreen: React.FC = () => {
     ]
 
     const renderItem = ({ item }: { item: Item }) => (
-        <TouchableOpacity
-            style={[styles.row]}
+        <Pressable
+            style={({ pressed }) => [
+                styles.row,
+                pressed && { opacity: Platform.OS === 'ios' ? 0.6 : 1 }
+            ]}
             // style={[styles.row, themeStyles.border]}
             onPress={item.onPress}
-            activeOpacity={0.7}
+            android_ripple={isDark ? { color: 'rgba(255, 255, 255, 0.06)' } : { color: 'rgba(0,0,0, 0.06)', borderless: false }}
         >
             <View style={styles.iconWrapper}>
                 {item.icon}
             </View>
             <Text style={[styles.rowText, themeStyles.text]}>{item.title}</Text>
             <Entypo name="chevron-right" size={18} color={themeStyles.icon.color} />
-        </TouchableOpacity>
+        </Pressable>
     )
 
     const renderSectionHeader = ({ section }: any) =>

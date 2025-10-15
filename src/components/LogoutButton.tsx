@@ -7,6 +7,7 @@ import {
   Dimensions,
   ActivityIndicator,
   Vibration,
+  Platform,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import { Entypo } from '@expo/vector-icons';
@@ -78,9 +79,10 @@ const LogoutButton: React.FC = () => {
         style={({ pressed }) => [
           styles.linkRow,
           themeStyles.card,
-          pressed && styles.pressed,
+          // pressed && styles.pressed,
+          pressed && { opacity: Platform.OS === 'ios' ? 0.6 : 1 },
         ]}
-        android_ripple={{ color: 'rgba(0,0,0,0.06)' }}
+        android_ripple={isDark ? { color: 'rgba(255, 255, 255, 0.06)' } : { color: 'rgba(0,0,0, 0.06)', borderless: false }}
         accessibilityRole="button"
         accessibilityLabel="Logout"
         hitSlop={8}

@@ -6,7 +6,8 @@ import {
   StyleSheet,
   StatusBar,
   Dimensions,
-  TouchableOpacity,
+  Pressable,
+  Platform,
 } from "react-native"
 import { useTheme } from "@context/ThemeContext"
 import { darkTheme, lightTheme } from "@assets/colors/theme"
@@ -76,9 +77,15 @@ const SecurityToolsScreen: React.FC = () => {
   ]
 
   const renderItem = ({ item }: { item: Tool }) => (
-    <TouchableOpacity
-      style={[styles.cardInnerWrapper, themeStyles.card, themeStyles.border]}
+    <Pressable
+      style={({ pressed }) => [
+        styles.cardInnerWrapper,
+        themeStyles.card,
+        themeStyles.border,
+        pressed && { opacity: Platform.OS === 'ios' ? 0.6 : 1 }
+      ]}
       onPress={item.onPress}
+      android_ripple={isDark ? { color: 'rgba(255, 255, 255, 0.06)' } : { color: 'rgba(0,0,0, 0.06)', borderless: false }}
     >
       <View style={styles.cardIcon}>
         {item.icon}
@@ -95,7 +102,7 @@ const SecurityToolsScreen: React.FC = () => {
         color={themeStyles.icon.color}
         style={styles.chevron}
       />
-    </TouchableOpacity>
+    </Pressable>
   )
 
   return (

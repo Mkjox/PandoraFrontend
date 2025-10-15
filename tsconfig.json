@@ -17,5 +17,6 @@
       "@navigation/*": ["src/navigation/*"],
       "@tests/*": ["src/__tests__/*"],
     }
-  }
+  },
+  "include": ["src", "declarations.d.ts"]
 }

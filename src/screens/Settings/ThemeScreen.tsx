@@ -35,41 +35,43 @@ const ThemeScreen: React.FC = () => {
         <List.Section>
           <List.Subheader style={[styles.subheader, themeStyles.text]}>Appearance</List.Subheader>
 
-          <List.Item
-            title="Dark Mode"
-            titleStyle={themeStyles.text}
-            description={isDark ? 'Enabled' : 'Disabled'}
-            descriptionStyle={themeStyles.text}
-            left={props => (
-              <List.Icon
-                {...props}
-                icon={() => <Icon name="dark-mode" size={24} color={themeStyles.icon.color} />}
-              />
-            )}
-            right={props => (
-              <Switch
-                value={isDark}
-                onValueChange={toggleTheme}
-              />
-            )}
-            style={themeStyles.card}
-          />
+          <View style={styles.listInnerWrapper}>
+            <List.Item
+              title="Dark Mode"
+              titleStyle={themeStyles.text}
+              description={isDark ? 'Enabled' : 'Disabled'}
+              descriptionStyle={themeStyles.text}
+              left={props => (
+                <List.Icon
+                  {...props}
+                  icon={() => <Icon name="dark-mode" size={24} color={themeStyles.icon.color} />}
+                />
+              )}
+              right={props => (
+                <Switch
+                  value={isDark}
+                  onValueChange={toggleTheme}
+                />
+              )}
+              style={themeStyles.card}
+            />
 
-          <List.Item
-            title="Theme Color"
-            titleStyle={themeStyles.text}
-            left={props => (
-              <List.Icon
-                {...props}
-                icon={() => <Icon name="palette" size={24} color={themeStyles.icon.color} />}
-              />
-            )}
-            right={props => (
-              <List.Icon {...props} icon="chevron-right" color={themeStyles.icon.color as string} />
-            )}
-            onPress={() => navigation.navigate('ThemeColor' as never)}
-            style={themeStyles.card}
-          />
+            <List.Item
+              title="Theme Color"
+              titleStyle={themeStyles.text}
+              left={props => (
+                <List.Icon
+                  {...props}
+                  icon={() => <Icon name="palette" size={24} color={themeStyles.icon.color} />}
+                />
+              )}
+              right={props => (
+                <List.Icon {...props} icon="chevron-right" color={themeStyles.icon.color as string} />
+              )}
+              onPress={() => navigation.navigate('ThemeColor' as never)}
+              style={themeStyles.card}
+            />
+          </View>
         </List.Section>
       </View>
     </ScrollView>
@@ -99,6 +101,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     elevation: 2,
     paddingVertical: 4,
+  },
+  listInnerWrapper: {
+    paddingHorizontal: 5
   },
   subheader: {
     fontFamily: 'Poppins_600SemiBold',

@@ -10,6 +10,7 @@ import {
   Image,
   Alert,
   Pressable,
+  Platform,
 } from 'react-native';
 import { useTheme } from '@context/ThemeContext';
 import { lightTheme, darkTheme } from '@assets/colors/theme';
@@ -88,17 +89,38 @@ const ProfileScreen: React.FC = () => {
 
       <View style={[styles.linksGroup, themeStyles.card, themeStyles.border]}>
 
-        <Pressable onPress={() => navigation.navigate('EditProfile' as never)} style={styles.linkRow} android_ripple={{ color: 'rgba(0,0,0,0.06)' }}>
+        <Pressable
+          onPress={() => navigation.navigate('EditProfile' as never)}
+          style={({ pressed }) => [
+            styles.linkRow,
+            pressed && { opacity: Platform.OS === 'ios' ? 0.6 : 1 }
+          ]}
+          android_ripple={isDark ? { color: 'rgba(255, 255, 255, 0.06)' } : { color: 'rgba(0,0,0, 0.06)', borderless: false }}
+        >
           <MaterialIcons name="edit" size={20} style={themeStyles.iconColor} />
           <Text style={[styles.linkText, themeStyles.text]}>Edit Profile</Text>
         </Pressable>
 
-        <Pressable onPress={() => navigation.navigate('ThemeScreen' as never)} style={styles.linkRow} android_ripple={{ color: 'rgba(0, 0, 0, 0.06)' }}>
+        <Pressable
+          onPress={() => navigation.navigate('ThemeScreen' as never)}
+          style={({ pressed }) => [
+            styles.linkRow,
+            pressed && { opacity: Platform.OS === 'ios' ? 0.6 : 1 }
+          ]}
+          android_ripple={isDark ? { color: 'rgba(255, 255, 255, 0.06)' } : { color: 'rgba(0,0,0, 0.06)', borderless: false }}
+        >
           <MaterialIcons name="dark-mode" size={20} style={themeStyles.iconColor} />
           <Text style={[styles.linkText, themeStyles.text]}>Theme</Text>
         </Pressable>
 
-        <Pressable onPress={() => navigation.navigate('Settings' as never)} style={styles.linkRow} android_ripple={{ color: 'rgba(0,0,0,0.06)' }}>
+        <Pressable
+          onPress={() => navigation.navigate('Settings' as never)}
+          style={({ pressed }) => [
+            styles.linkRow,
+            pressed && { opacity: Platform.OS === 'ios' ? 0.6 : 1 }
+          ]}
+          android_ripple={isDark ? { color: 'rgba(255, 255, 255, 0.06)' } : { color: 'rgba(0,0,0, 0.06)', borderless: false }}
+        >
           <MaterialIcons name="settings" size={20} style={themeStyles.iconColor} />
           <Text style={[styles.linkText, themeStyles.text]}>Settings</Text>
         </Pressable>
