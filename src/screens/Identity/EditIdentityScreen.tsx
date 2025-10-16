@@ -37,7 +37,7 @@ const EditIdentityScreen: React.FC = () => {
   const navigation = useNavigation<any>();
   const route = useRoute<EditIdentityRouteProp>();
   const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
   const dispatch = useAppDispatch();
 
   const mode = route.params.mode;
@@ -171,10 +171,10 @@ const EditIdentityScreen: React.FC = () => {
 
   return (
     <ScrollView
-      contentContainerStyle={[styles.container, themeStyles.container]}
+      contentContainerStyle={[styles.container, theme.styles.container]}
       keyboardShouldPersistTaps="handled"
     >
-      <Text style={[styles.title, themeStyles.text]}>
+      <Text style={[styles.title, theme.styles.text]}>
         {mode === "edit" ? "Edit Identity" : "New Identity"}
       </Text>
 
@@ -182,7 +182,7 @@ const EditIdentityScreen: React.FC = () => {
       <TextInput
         style={[
           styles.input,
-          themeStyles.card,
+          theme.styles.card,
           errors.fullName ? styles.inputError : undefined,
         ]}
         placeholder="Full Name*"
@@ -198,7 +198,7 @@ const EditIdentityScreen: React.FC = () => {
       <TextInput
         style={[
           styles.input,
-          themeStyles.card,
+          theme.styles.card,
           errors.email ? styles.inputError : undefined,
         ]}
         placeholder="Email*"
@@ -214,7 +214,7 @@ const EditIdentityScreen: React.FC = () => {
 
       {/* Phone (optional) */}
       <TextInput
-        style={[styles.input, themeStyles.card]}
+        style={[styles.input, theme.styles.card]}
         placeholder="Phone"
         placeholderTextColor={isDark ? "#888" : "#666"}
         keyboardType="phone-pad"
@@ -224,7 +224,7 @@ const EditIdentityScreen: React.FC = () => {
 
       {/* Address (optional) */}
       <TextInput
-        style={[styles.input, themeStyles.card]}
+        style={[styles.input, theme.styles.card]}
         placeholder="Address"
         placeholderTextColor={isDark ? "#888" : "#666"}
         value={form.address}
@@ -233,7 +233,7 @@ const EditIdentityScreen: React.FC = () => {
 
       {/* Notes (optional) */}
       <TextInput
-        style={[styles.input, themeStyles.card]}
+        style={[styles.input, theme.styles.card]}
         placeholder="Notes"
         placeholderTextColor={isDark ? "#888" : "#666"}
         value={form.notes}
@@ -241,14 +241,14 @@ const EditIdentityScreen: React.FC = () => {
       />
 
       <TouchableOpacity
-        style={[styles.submitButton, themeStyles.button, submitting ? styles.disabledButton : null]}
+        style={[styles.submitButton, theme.styles.button, submitting ? styles.disabledButton : null]}
         onPress={handleSubmit}
         disabled={submitting}
       >
         {submitting ? (
           <ActivityIndicator color={isDark ? "#fff" : "#000"} />
         ) : (
-          <Text style={[themeStyles.buttonText, styles.buttonText]}>
+          <Text style={[theme.styles.buttonText, styles.buttonText]}>
             {mode === "edit" ? "Update" : "Create"}
           </Text>
         )}

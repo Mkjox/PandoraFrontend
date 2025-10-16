@@ -28,7 +28,7 @@ const CustomAlert: React.FC<CustomAlertProps> = ({
 }) => {
   const navigation = useNavigation();
     const { isDark } = useTheme();
-    const themeStyles = isDark ? darkTheme : lightTheme;
+    const theme = isDark ? darkTheme : lightTheme;
 
   const handleClose = () => {
     if (onClose) {
@@ -45,12 +45,12 @@ const CustomAlert: React.FC<CustomAlertProps> = ({
       visible={visible}
     >
       <View style={styles.backdrop}>
-        <View style={[styles.card, themeStyles.card]}>
-          <Text style={[styles.title, themeStyles.text]}>{title}</Text>
-          <Text style={[styles.message, themeStyles.textGray]}>{message}</Text>
+        <View style={[styles.card, theme.styles.card]}>
+          <Text style={[styles.title, theme.styles.text]}>{title}</Text>
+          <Text style={[styles.message, theme.styles.textGray]}>{message}</Text>
 
-          <TouchableOpacity style={[styles.button, themeStyles.button]} onPress={handleClose}>
-            <Text style={[styles.buttonText, themeStyles.buttonText]}>Okay</Text>
+          <TouchableOpacity style={[styles.button, theme.styles.button]} onPress={handleClose}>
+            <Text style={[styles.buttonText, theme.styles.buttonText]}>Okay</Text>
           </TouchableOpacity>
         </View>
       </View>

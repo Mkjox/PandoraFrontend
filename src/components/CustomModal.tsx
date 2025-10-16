@@ -26,7 +26,7 @@ const CustomModal: React.FC<CustomModalProps> = ({
     onCancel,
 }) => {
     const { isDark } = useTheme();
-    const themeStyles = isDark ? darkTheme : lightTheme;
+    const theme = isDark ? darkTheme : lightTheme;
 
     return (
         <Modal
@@ -36,13 +36,13 @@ const CustomModal: React.FC<CustomModalProps> = ({
             animationOut="fadeOutDown"
             backdropOpacity={0.4}
         >
-            <View style={[styles.modalContainer, themeStyles.card]}>
-                <Text style={[styles.title, themeStyles.text]}>{title}</Text>
-                <Text style={[styles.message, themeStyles.textGray]}>{message}</Text>
+            <View style={[styles.modalContainer, theme.styles.card]}>
+                <Text style={[styles.title, theme.styles.text]}>{title}</Text>
+                <Text style={[styles.message, theme.styles.textGray]}>{message}</Text>
 
                 <View style={styles.actions}>
                     <TouchableOpacity onPress={onCancel} style={styles.cancelButton}>
-                        <Text style={themeStyles.text}>{cancelText}</Text>
+                        <Text style={theme.styles.text}>{cancelText}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity

@@ -28,7 +28,7 @@ type Item = { key: string; title: string; icon: React.ReactNode; onPress?: () =>
 const SettingsScreen: React.FC = () => {
     const navigation = useNavigation<any>()
     const { isDark } = useTheme();
-    const themeStyles = isDark ? darkTheme : lightTheme;
+    const theme = isDark ? darkTheme : lightTheme;
 
     const sections: { title: string; data: Item[] }[] = [
         {
@@ -37,19 +37,19 @@ const SettingsScreen: React.FC = () => {
                 {
                     key: "suggest",
                     title: "Suggest an idea",
-                    icon: <MaterialIcons name="lightbulb" size={20} color={themeStyles.icon.color} />,
+                    icon: <MaterialIcons name="lightbulb" size={20} color={theme.styles.icon.color} />,
                     onPress: () => navigation.navigate("Suggest" as never),
                 },
                 {
                     key: "account",
                     title: "Account",
-                    icon: <MaterialIcons name="person" size={20} color={themeStyles.icon.color} />,
+                    icon: <MaterialIcons name="person" size={20} color={theme.styles.icon.color} />,
                     onPress: () => navigation.navigate("Account" as never),
                 },
                 {
                     key: "privacy",
                     title: "Privacy policy",
-                    icon: <MaterialCommunityIcons name="shield-search" size={20} color={themeStyles.icon.color} />,
+                    icon: <MaterialCommunityIcons name="shield-search" size={20} color={theme.styles.icon.color} />,
                     onPress: () => navigation.navigate("Privacy" as never),
                 },
             ],
@@ -60,25 +60,25 @@ const SettingsScreen: React.FC = () => {
                 {
                     key: "security",
                     title: "Security",
-                    icon: <MaterialIcons name="shield" size={20} color={themeStyles.icon.color} />,
+                    icon: <MaterialIcons name="shield" size={20} color={theme.styles.icon.color} />,
                     onPress: () => navigation.navigate("Security" as never),
                 },
                 {
                     key: "autofill",
                     title: "Autofill",
-                    icon: <FontAwesome name="magic" size={20} color={themeStyles.icon.color} />,
+                    icon: <FontAwesome name="magic" size={20} color={theme.styles.icon.color} />,
                     onPress: () => navigation.navigate("Autofill" as never),
                 },
                 {
                     key: "search",
                     title: "Search",
-                    icon: <MaterialCommunityIcons name="magnify" size={20} color={themeStyles.icon.color} />,
+                    icon: <MaterialCommunityIcons name="magnify" size={20} color={theme.styles.icon.color} />,
                     onPress: () => navigation.navigate("Search" as never),
                 },
                 {
                     key: "actions",
                     title: "Actions",
-                    icon: <MaterialCommunityIcons name="broom" size={20} color={themeStyles.icon.color} />,
+                    icon: <MaterialCommunityIcons name="broom" size={20} color={theme.styles.icon.color} />,
                     onPress: () => navigation.navigate("Actions" as never),
                 },
             ],
@@ -89,19 +89,19 @@ const SettingsScreen: React.FC = () => {
                 {
                     key: "advanced",
                     title: "Advanced",
-                    icon: <Ionicons name="options" size={20} color={themeStyles.icon.color} />,
+                    icon: <Ionicons name="options" size={20} color={theme.styles.icon.color} />,
                     onPress: () => navigation.navigate("Advanced" as never),
                 },
                 {
                     key: "about",
                     title: "About Pandora",
-                    icon: <FontAwesome name="info-circle" size={20} color={themeStyles.icon.color} />,
+                    icon: <FontAwesome name="info-circle" size={20} color={theme.styles.icon.color} />,
                     onPress: () => navigation.navigate("About" as never),
                 },
                 {
                     key: "help",
                     title: "Help and support",
-                    icon: <AntDesign name="questioncircle" size={20} color={themeStyles.icon.color} />,
+                    icon: <AntDesign name="questioncircle" size={20} color={theme.styles.icon.color} />,
                     onPress: () => navigation.navigate("Help" as never),
                 },
             ],
@@ -114,25 +114,25 @@ const SettingsScreen: React.FC = () => {
                 styles.row,
                 pressed && { opacity: Platform.OS === 'ios' ? 0.6 : 1 }
             ]}
-            // style={[styles.row, themeStyles.border]}
+            // style={[styles.row, theme.styles.border]}
             onPress={item.onPress}
             android_ripple={isDark ? { color: 'rgba(255, 255, 255, 0.06)' } : { color: 'rgba(0,0,0, 0.06)', borderless: false }}
         >
             <View style={styles.iconWrapper}>
                 {item.icon}
             </View>
-            <Text style={[styles.rowText, themeStyles.text]}>{item.title}</Text>
-            <Entypo name="chevron-right" size={18} color={themeStyles.icon.color} />
+            <Text style={[styles.rowText, theme.styles.text]}>{item.title}</Text>
+            <Entypo name="chevron-right" size={18} color={theme.styles.icon.color} />
         </Pressable>
     )
 
     const renderSectionHeader = ({ section }: any) =>
         section.title ? (
-            <Text style={[styles.sectionHeader, themeStyles.text]}>{section.title}</Text>
+            <Text style={[styles.sectionHeader, theme.styles.text]}>{section.title}</Text>
         ) : null
 
     return (
-        <View style={[styles.container, themeStyles.container]}>
+        <View style={[styles.container, theme.styles.container]}>
             <SectionList
                 sections={sections}
                 keyExtractor={item => item.key}

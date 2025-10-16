@@ -7,21 +7,21 @@ import { useNavigation } from '@react-navigation/native';
 export default function AddButton() {
   const navigation = useNavigation<any>();
   const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
 
 
   return (
     <Pressable
       style={({ pressed }) => [
         styles.button,
-        themeStyles.card,
-        themeStyles.border,
+        theme.styles.card,
+        theme.styles.border,
         pressed && { opacity: Platform.OS === 'ios' ? 0.6 : 1 }
       ]}
       onPress={() => navigation.navigate("AddCredentials")}
       android_ripple={isDark ? { color: 'rgba(255, 255, 255, 0.06)' } : { color: 'rgba(0,0,0, 0.06)',  borderless: false}}
     >
-      <Text style={[styles.text, themeStyles.inputText]}>+ New</Text>
+      <Text style={[styles.text, theme.styles.inputText]}>+ New</Text>
     </Pressable>
   );
 }

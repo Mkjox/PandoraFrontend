@@ -17,38 +17,38 @@ const { width, height } = Dimensions.get("window");
 
 const PremiumScreen = () => {
   const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
   const [loading, setLoading] = useState(false);
 
   return (
-    <SafeAreaView style={[styles.container, themeStyles.container]}>
+    <SafeAreaView style={[styles.container, theme.styles.container]}>
       <ScrollView contentContainerStyle={styles.scroll}>
         {/* Hero */}
         <View style={styles.hero}>
           <Ionicons
             name="diamond-outline"
             size={72}
-            color={themeStyles.button.backgroundColor}
+            color={theme.styles.button.backgroundColor}
           />
-          <Text style={[styles.heroTitle, { color: themeStyles.text.color }]}>
+          <Text style={[styles.heroTitle, { color: theme.styles.text.color }]}>
             Go Premium
           </Text>
           <Text
-            style={[styles.heroSubtitle, { color: themeStyles.textGray.color }]}
+            style={[styles.heroSubtitle, { color: theme.styles.textGray.color }]}
           >
             Unlock full potential of your passwords
           </Text>
         </View>
 
         {/* Pricing Card */}
-        <View style={[styles.pricingCard, { backgroundColor: themeStyles.card.backgroundColor }]}>
-          <Text style={[styles.priceTitle, { color: themeStyles.text.color }]}>
+        <View style={[styles.pricingCard, { backgroundColor: theme.styles.card.backgroundColor }]}>
+          <Text style={[styles.priceTitle, { color: theme.styles.text.color }]}>
             Premium Plan
           </Text>
-          <Text style={[styles.priceValue, { color: themeStyles.button.backgroundColor }]}>
+          <Text style={[styles.priceValue, { color: theme.styles.button.backgroundColor }]}>
             $4.99
           </Text>
-          <Text style={[styles.perMonth, { color: themeStyles.textGray.color }]}>
+          <Text style={[styles.perMonth, { color: theme.styles.textGray.color }]}>
             per month
           </Text>
         </View>
@@ -56,25 +56,25 @@ const PremiumScreen = () => {
         {/* Features */}
         <View style={styles.features}>
           <Feature
-            theme={themeStyles}
+            theme={theme}
             icon="lock-closed-outline"
             title="Unlimited Vaults"
             desc="Save all your passwords securely"
           />
           <Feature
-            theme={themeStyles}
+            theme={theme}
             icon="key-outline"
             title="Biometric Unlock"
             desc="Fast access with fingerprint or Face ID"
           />
           <Feature
-            theme={themeStyles}
+            theme={theme}
             icon="cloud-upload-outline"
             title="Cloud Backup"
             desc="Keep your vault always synced"
           />
           <Feature
-            theme={themeStyles}
+            theme={theme}
             icon="shield-checkmark-outline"
             title="Advanced Security"
             desc="Top-level encryption and privacy"
@@ -94,11 +94,11 @@ const PremiumScreen = () => {
 };
 
 const Feature = ({ theme, icon, title, desc }: any) => (
-  <View style={[styles.featureCard, { backgroundColor: theme.card.backgroundColor }]}>
-    <Ionicons name={icon} size={28} color={theme.icon.color} />
+  <View style={[styles.featureCard, { backgroundColor: theme.styles.card.backgroundColor }]}>
+    <Ionicons name={icon} size={28} color={theme.styles.icon.color} />
     <View style={{ flex: 1 }}>
-      <Text style={[styles.featureTitle, { color: theme.text.color }]}>{title}</Text>
-      <Text style={[styles.featureDesc, { color: theme.textGray.color }]}>{desc}</Text>
+      <Text style={[styles.featureTitle, { color: theme.styles.text.color }]}>{title}</Text>
+      <Text style={[styles.featureDesc, { color: theme.styles.textGray.color }]}>{desc}</Text>
     </View>
   </View>
 );

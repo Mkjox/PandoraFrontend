@@ -11,15 +11,15 @@ interface Props {
 
 export default function LoginButton({ onPress, loading = false }: Props) {
   const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
 
   return (
     <TouchableOpacity
-      style={[styles.button, themeStyles.buttonBorder]}
+      style={[styles.button, theme.styles.buttonBorder]}
       onPress={onPress}
       disabled={loading}>
       {loading ? (
-        <ActivityIndicator color={themeStyles.buttonText.color} />
+        <ActivityIndicator color={theme.styles.buttonText.color} />
       ) : (
         <Text style={styles.text}>Login</Text>
       )}

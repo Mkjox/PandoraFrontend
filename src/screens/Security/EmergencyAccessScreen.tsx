@@ -31,7 +31,7 @@ interface EmergencyContact {
 
 const EmergencyAccessScreen: React.FC = () => {
   const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
 
   const [contacts, setContacts] = useState<EmergencyContact[]>([])
   const [loading, setLoading] = useState(true)
@@ -132,45 +132,45 @@ const EmergencyAccessScreen: React.FC = () => {
   }
 
   const renderItem = ({ item }: { item: EmergencyContact }) => (
-    <View style={[styles.card, themeStyles.card]}>
+    <View style={[styles.card, theme.styles.card]}>
       <View style={styles.cardText}>
-        <Text style={[styles.name, themeStyles.text]}>{item.name}</Text>
-        <Text style={[styles.email, themeStyles.textGray]}>
+        <Text style={[styles.name, theme.styles.text]}>{item.name}</Text>
+        <Text style={[styles.email, theme.styles.textGray]}>
           {item.email}
         </Text>
-        <Text style={[styles.delay, themeStyles.text]}>
+        <Text style={[styles.delay, theme.styles.text]}>
           Delay: {item.delayHours} hour{item.delayHours > 1 ? 's' : ''}
         </Text>
       </View>
       <TouchableOpacity onPress={() => handleRemove(item.id)}>
-        <AntDesign name="delete" size={20} color={themeStyles.iconColor.color} />
+        <AntDesign name="delete" size={20} color={theme.styles.iconColor.color} />
       </TouchableOpacity>
     </View>
   )
 
   if (loading) {
     return (
-      <View style={[themeStyles.container, styles.center]}>
+      <View style={[theme.styles.container, styles.center]}>
         <ActivityIndicator size="large" />
       </View>
     )
   }
 
   return (
-    <View style={[styles.container, themeStyles.container]}>
+    <View style={[styles.container, theme.styles.container]}>
       <View style={styles.header}>
-        <Text style={[styles.title, themeStyles.text]}>Emergency Access</Text>
+        <Text style={[styles.title, theme.styles.text]}>Emergency Access</Text>
         <TouchableOpacity onPress={() => setModalVisible(true)}>
           <MaterialIcons
             name="add-circle-outline"
             size={28}
-            color={themeStyles.iconColor.color}
+            color={theme.styles.iconColor.color}
           />
         </TouchableOpacity>
       </View>
 
       {error ? (
-        <Text style={[styles.error, themeStyles.text]}>{error}</Text>
+        <Text style={[styles.error, theme.styles.text]}>{error}</Text>
       ) : (
         <FlatList
           data={contacts}
@@ -183,18 +183,18 @@ const EmergencyAccessScreen: React.FC = () => {
       {/* Add Contact Modal */}
       <Modal visible={modalVisible} transparent animationType="slide">
         <View style={styles.modalOverlay}>
-          <View style={[styles.modalContent, themeStyles.card]}>
-            <Text style={[styles.modalTitle, themeStyles.text]}>
+          <View style={[styles.modalContent, theme.styles.card]}>
+            <Text style={[styles.modalTitle, theme.styles.text]}>
               Add Contact
             </Text>
             <TextInput
-              style={[styles.input, themeStyles.card]}
+              style={[styles.input, theme.styles.card]}
               placeholder="Name"
               value={newName}
               onChangeText={setNewName}
             />
             <TextInput
-              style={[styles.input, themeStyles.card]}
+              style={[styles.input, theme.styles.card]}
               placeholder="Email"
               keyboardType="email-address"
               autoCapitalize="none"
@@ -202,7 +202,7 @@ const EmergencyAccessScreen: React.FC = () => {
               onChangeText={setNewEmail}
             />
             <TextInput
-              style={[styles.input, themeStyles.card]}
+              style={[styles.input, theme.styles.card]}
               placeholder="Delay hours"
               keyboardType="number-pad"
               value={newDelay}
@@ -210,16 +210,16 @@ const EmergencyAccessScreen: React.FC = () => {
             />
             <View style={styles.modalButtons}>
               <TouchableOpacity
-                style={[styles.btn, themeStyles.button]}
+                style={[styles.btn, theme.styles.button]}
                 onPress={handleAdd}
               >
-                <Text style={themeStyles.buttonText}>Add</Text>
+                <Text style={theme.styles.buttonText}>Add</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.btn, styles.cancelBtn]}
                 onPress={() => setModalVisible(false)}
               >
-                <Text style={themeStyles.text}>Cancel</Text>
+                <Text style={theme.styles.text}>Cancel</Text>
               </TouchableOpacity>
             </View>
           </View>

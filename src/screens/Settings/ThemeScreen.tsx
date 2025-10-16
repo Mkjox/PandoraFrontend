@@ -19,32 +19,32 @@ import { Ionicons } from '@expo/vector-icons';
 const { width } = Dimensions.get('window');
 
 const ThemeScreen: React.FC = () => {
-  const { themeStyles, isDark, toggleTheme } = useTheme();
+  const { theme, isDark, toggleTheme } = useTheme();
   const navigation = useNavigation<any>();
 
   return (
-    <ScrollView style={[styles.container, themeStyles.container]}>
+    <ScrollView style={[styles.container, theme.styles.container]}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.back} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color={themeStyles.icon.color} />
-          <Text style={[styles.headerText, themeStyles.text]}>Display & Theme</Text>
+          <Ionicons name="arrow-back" size={24} color={theme.styles.icon.color} />
+          <Text style={[styles.headerText, theme.styles.text]}>Display & Theme</Text>
         </TouchableOpacity>
       </View>
 
-      <View style={[styles.listWrapper, themeStyles.card, themeStyles.border]}>
+      <View style={[styles.listWrapper, theme.styles.card, theme.styles.border]}>
         <List.Section>
-          <List.Subheader style={[styles.subheader, themeStyles.text]}>Appearance</List.Subheader>
+          <List.Subheader style={[styles.subheader, theme.styles.text]}>Appearance</List.Subheader>
 
           <View style={styles.listInnerWrapper}>
             <List.Item
               title="Dark Mode"
-              titleStyle={themeStyles.text}
+              titleStyle={theme.styles.text}
               description={isDark ? 'Enabled' : 'Disabled'}
-              descriptionStyle={themeStyles.text}
+              descriptionStyle={theme.styles.text}
               left={props => (
                 <List.Icon
                   {...props}
-                  icon={() => <Icon name="dark-mode" size={24} color={themeStyles.icon.color} />}
+                  icon={() => <Icon name="dark-mode" size={24} color={theme.styles.icon.color} />}
                 />
               )}
               right={props => (
@@ -53,23 +53,23 @@ const ThemeScreen: React.FC = () => {
                   onValueChange={toggleTheme}
                 />
               )}
-              style={themeStyles.card}
+              style={theme.styles.card}
             />
 
             <List.Item
               title="Theme Color"
-              titleStyle={themeStyles.text}
+              titleStyle={theme.styles.text}
               left={props => (
                 <List.Icon
                   {...props}
-                  icon={() => <Icon name="palette" size={24} color={themeStyles.icon.color} />}
+                  icon={() => <Icon name="palette" size={24} color={theme.styles.icon.color} />}
                 />
               )}
               right={props => (
-                <List.Icon {...props} icon="chevron-right" color={themeStyles.icon.color as string} />
+                <List.Icon {...props} icon="chevron-right" color={theme.styles.icon.color as string} />
               )}
               onPress={() => navigation.navigate('ThemeColor' as never)}
-              style={themeStyles.card}
+              style={theme.styles.card}
             />
           </View>
         </List.Section>

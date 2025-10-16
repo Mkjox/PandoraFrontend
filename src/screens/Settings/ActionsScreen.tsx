@@ -16,50 +16,50 @@ const { height, width } = Dimensions.get('window');
 
 const ActionsScreen: React.FC = () => {
     const { isDark } = useTheme();
-    const themeStyles = isDark ? darkTheme : lightTheme;
+    const theme = isDark ? darkTheme : lightTheme;
 
     const [autoLock, setAutoLock] = useState(false);
     const [clearClipboard, setClearClipboard] = useState(false);
 
     return (
-        <ScrollView style={[styles.container, themeStyles.container]}>
+        <ScrollView style={[styles.container, theme.styles.container]}>
             <View style={styles.spacer} />
 
-            <Text style={[styles.title, themeStyles.text]}>Actions</Text>
+            <Text style={[styles.title, theme.styles.text]}>Actions</Text>
 
             <View style={styles.section}>
-                <Text style={[styles.sectionHeader, themeStyles.text]}>Auto-Lock</Text>
+                <Text style={[styles.sectionHeader, theme.styles.text]}>Auto-Lock</Text>
                 <View style={styles.optionRow}>
-                    <Text style={[styles.optionText, themeStyles.text]}>
+                    <Text style={[styles.optionText, theme.styles.text]}>
                         {autoLock ? 'Enabled' : 'Disabled'}
                     </Text>
                     <Switch value={autoLock} onValueChange={setAutoLock} />
                 </View>
-                <Text style={[styles.helperText, themeStyles.text]}>
+                <Text style={[styles.helperText, theme.styles.text]}>
                     Automatically lock the app after inactivity.
                 </Text>
             </View>
 
             <View style={styles.section}>
-                <Text style={[styles.sectionHeader, themeStyles.text]}>Clear Clipboard</Text>
+                <Text style={[styles.sectionHeader, theme.styles.text]}>Clear Clipboard</Text>
                 <View style={styles.optionRow}>
-                    <Text style={[styles.optionText, themeStyles.text]}>
+                    <Text style={[styles.optionText, theme.styles.text]}>
                         {clearClipboard ? 'Enabled' : 'Disabled'}
                     </Text>
                     <Switch value={clearClipboard} onValueChange={setClearClipboard} />
                 </View>
-                <Text style={[styles.helperText, themeStyles.text]}>
+                <Text style={[styles.helperText, theme.styles.text]}>
                     Clear clipboard automatically after copying credentials.
                 </Text>
             </View>
 
             <View style={styles.section}>
-                <Text style={[styles.sectionHeader, themeStyles.text]}>Manual Actions</Text>
-                <TouchableOpacity style={[styles.button, themeStyles.button]}>
-                    <Text style={[styles.buttonText, themeStyles.buttonText]}>Clear All Sessions</Text>
+                <Text style={[styles.sectionHeader, theme.styles.text]}>Manual Actions</Text>
+                <TouchableOpacity style={[styles.button, theme.styles.button]}>
+                    <Text style={[styles.buttonText, theme.styles.buttonText]}>Clear All Sessions</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.button, themeStyles.button]}>
-                    <Text style={[styles.buttonText, themeStyles.buttonText]}>Sync Now</Text>
+                <TouchableOpacity style={[styles.button, theme.styles.button]}>
+                    <Text style={[styles.buttonText, theme.styles.buttonText]}>Sync Now</Text>
                 </TouchableOpacity>
             </View>
         </ScrollView>

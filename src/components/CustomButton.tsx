@@ -31,7 +31,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   textStyle,
 }) => {
   const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
 
   const isDisabled = disabled || loading;
 
@@ -39,14 +39,14 @@ const CustomButton: React.FC<CustomButtonProps> = ({
     <>
       {loading ? (
         <ActivityIndicator
-          color={themeStyles.buttonText.color || "#fff"}
+          color={theme.styles.buttonText.color || "#fff"}
           style={{ marginVertical: 2 }}
         />
       ) : (
         <Text
           style={[
             styles.textBase,
-            themeStyles.buttonText,
+            theme.styles.buttonText,
             textStyle,
           ]}
         >
@@ -66,7 +66,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
       }}
       style={({ pressed }) => [
         styles.buttonBase,
-        themeStyles.button,
+        theme.styles.button,
         isDisabled && styles.disabledButton,
         pressed && { opacity: Platform.OS === "ios" ? 0.6 : 1 },
         style,

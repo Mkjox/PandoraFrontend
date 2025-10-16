@@ -32,7 +32,7 @@ export default function ImagePickerButton({
   const [loading, setLoading] = useState(false)
 
   const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
 
   const pickImage = async () => {
     // ask for camera-roll permission

@@ -22,7 +22,7 @@ const { width } = Dimensions.get('window');
 
 const HelpScreen: React.FC = () => {
     const { isDark } = useTheme();
-    const themeStyles = isDark ? darkTheme : lightTheme;
+    const theme = isDark ? darkTheme : lightTheme;
 
     const [openIndex, setOpenIndex] = useState<number | null>(null);
 
@@ -50,24 +50,24 @@ const HelpScreen: React.FC = () => {
     };
 
     return (
-        <ScrollView style={[styles.container, themeStyles.container]}>
+        <ScrollView style={[styles.container, theme.styles.container]}>
             <View style={styles.spacer} />
 
-            <Text style={[styles.title, themeStyles.text]}>Help & Support</Text>
+            <Text style={[styles.title, theme.styles.text]}>Help & Support</Text>
 
             <View style={styles.accordion}>
                 {faqs.map((faq, i) => {
                     const isOpen = openIndex === i;
                     return (
-                        <View key={i} style={[styles.item, themeStyles.card, themeStyles.border]}>
+                        <View key={i} style={[styles.item, theme.styles.card, theme.styles.border]}>
                             <TouchableOpacity onPress={() => toggle(i)} style={styles.questionRow}>
-                                <Text style={[styles.question, themeStyles.text]}>{faq.question}</Text>
-                                <Text style={[styles.chevron, themeStyles.text]}>
+                                <Text style={[styles.question, theme.styles.text]}>{faq.question}</Text>
+                                <Text style={[styles.chevron, theme.styles.text]}>
                                     {isOpen ? '▲' : '▼'}
                                 </Text>
                             </TouchableOpacity>
                             {isOpen && (
-                                <Text style={[styles.answer, themeStyles.text]}>
+                                <Text style={[styles.answer, theme.styles.text]}>
                                     {faq.answer}
                                 </Text>
                             )}
@@ -76,8 +76,8 @@ const HelpScreen: React.FC = () => {
                 })}
             </View>
 
-            <TouchableOpacity style={[styles.emailButton, themeStyles.button]} onPress={() => { }}>
-                <Text style={[styles.emailButtonText, themeStyles.buttonText]}>✉️ Email Support</Text>
+            <TouchableOpacity style={[styles.emailButton, theme.styles.button]} onPress={() => { }}>
+                <Text style={[styles.emailButtonText, theme.styles.buttonText]}>✉️ Email Support</Text>
             </TouchableOpacity>
         </ScrollView>
     );

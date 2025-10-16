@@ -19,7 +19,7 @@ const { height, width } = Dimensions.get('window');
 
 const AccountScreen: React.FC = () => {
     const { isDark } = useTheme();
-    const themeStyles = isDark ? darkTheme : lightTheme;
+    const theme = isDark ? darkTheme : lightTheme;
     const navigation = useNavigation<any>();
     const dispatch = useAppDispatch();
 
@@ -36,20 +36,20 @@ const AccountScreen: React.FC = () => {
 
 
     return (
-        <ScrollView style={[styles.container, themeStyles.container]}>
+        <ScrollView style={[styles.container, theme.styles.container]}>
             <View style={styles.spacer} />
 
-            <Text style={[styles.title, themeStyles.text]}>My Account</Text>
+            <Text style={[styles.title, theme.styles.text]}>My Account</Text>
 
             <View style={styles.section}>
-                <Text style={[styles.sectionHeader, themeStyles.text]}>Profile</Text>
-                <Text style={[styles.sectionBody, themeStyles.text]}>
+                <Text style={[styles.sectionHeader, theme.styles.text]}>Profile</Text>
+                <Text style={[styles.sectionBody, theme.styles.text]}>
                     {/* Replace with real data from Redux or context */}
                     Username: <Text style={styles.bold}>
                         {profile.username}
                     </Text>
                 </Text>
-                <Text style={[styles.sectionBody, themeStyles.text]}>
+                <Text style={[styles.sectionBody, theme.styles.text]}>
                     Email: <Text style={styles.bold}>
                         {profile.email}
                     </Text>
@@ -57,12 +57,12 @@ const AccountScreen: React.FC = () => {
             </View>
 
             <View style={styles.section}>
-                <Text style={[styles.sectionHeader, themeStyles.text]}>Security</Text>
-                <TouchableOpacity style={[styles.option, themeStyles.button]}>
-                    <Text style={[styles.optionText, themeStyles.buttonText]}>Change Password</Text>
+                <Text style={[styles.sectionHeader, theme.styles.text]}>Security</Text>
+                <TouchableOpacity style={[styles.option, theme.styles.button]}>
+                    <Text style={[styles.optionText, theme.styles.buttonText]}>Change Password</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.option, themeStyles.button]} onPress={() => navigation.navigate("TwoFactor" as never)}>
-                    <Text style={[styles.optionText, themeStyles.buttonText]}>Two-Factor Authentication</Text>
+                <TouchableOpacity style={[styles.option, theme.styles.button]} onPress={() => navigation.navigate("TwoFactor" as never)}>
+                    <Text style={[styles.optionText, theme.styles.buttonText]}>Two-Factor Authentication</Text>
                 </TouchableOpacity>
             </View>
         </ScrollView>

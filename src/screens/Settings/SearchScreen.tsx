@@ -18,7 +18,7 @@ const { width } = Dimensions.get('window');
 
 const SearchScreen: React.FC = () => {
     const { isDark } = useTheme();
-    const themeStyles = isDark ? darkTheme : lightTheme;
+    const theme = isDark ? darkTheme : lightTheme;
     const [searchQuery, setSearchQuery] = useState('');
     const [recent, setRecent] = useState<string[]>([]);
 
@@ -37,11 +37,11 @@ const SearchScreen: React.FC = () => {
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-            style={[styles.container, themeStyles.container]}
+            style={[styles.container, theme.styles.container]}
         >
             <View style={styles.spacer} />
 
-            <Text style={[styles.title, themeStyles.text]}>Search Vault</Text>
+            <Text style={[styles.title, theme.styles.text]}>Search Vault</Text>
 
             {/* Search Input */}
             <View style={styles.section}>
@@ -52,9 +52,9 @@ const SearchScreen: React.FC = () => {
                     value={searchQuery}
                     style={[
                         styles.searchBar,
-                        { backgroundColor: themeStyles.container.backgroundColor },
+                        { backgroundColor: theme.styles.container.backgroundColor },
                     ]}
-                    inputStyle={[themeStyles.text, { alignSelf: 'center' }]}
+                    inputStyle={[theme.styles.text, { alignSelf: 'center' }]}
                     onSubmitEditing={() => {
                         addToRecent(searchQuery);
                         setSearchQuery('');
@@ -66,18 +66,18 @@ const SearchScreen: React.FC = () => {
             {/* Recent Searches */}
             <View style={styles.section}>
                 <View style={styles.sectionHeaderRow}>
-                    <Text style={[styles.sectionHeader, themeStyles.text]}>
+                    <Text style={[styles.sectionHeader, theme.styles.text]}>
                         Recent Searches
                     </Text>
                     {recent.length > 0 && (
                         <TouchableOpacity onPress={clearRecent}>
-                            <Text style={[styles.clearText, themeStyles.text]}>Clear</Text>
+                            <Text style={[styles.clearText, theme.styles.text]}>Clear</Text>
                         </TouchableOpacity>
                     )}
                 </View>
 
                 {recent.length === 0 ? (
-                    <Text style={[styles.helperText, themeStyles.text]}>
+                    <Text style={[styles.helperText, theme.styles.text]}>
                         No recent searches
                     </Text>
                 ) : (
@@ -86,16 +86,16 @@ const SearchScreen: React.FC = () => {
                         keyExtractor={(item) => item}
                         renderItem={({ item }) => (
                             <TouchableOpacity
-                                style={[styles.recentItem, themeStyles.card, themeStyles.border]}
+                                style={[styles.recentItem, theme.styles.card, theme.styles.border]}
                                 onPress={() => setSearchQuery(item)}
                             >
-                                <Text style={[styles.recentText, themeStyles.text]}>
+                                <Text style={[styles.recentText, theme.styles.text]}>
                                     {item}
                                 </Text>
                             </TouchableOpacity>
                         )}
                         keyboardShouldPersistTaps="handled"
-                        style={{ backgroundColor: themeStyles.container.backgroundColor }}
+                        style={{ backgroundColor: theme.styles.container.backgroundColor }}
                     />
                 )}
             </View>

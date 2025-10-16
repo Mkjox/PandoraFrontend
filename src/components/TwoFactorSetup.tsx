@@ -17,7 +17,7 @@ import Toast from "react-native-toast-message";
 import CustomSpinner from "./CustomSpinner";
 
 const TwoFactorSetup: React.FC = () => {
-    const { isDark, themeStyles } = useTheme();
+    const { isDark, theme } = useTheme();
 
     const [loading, setLoading] = useState(true);
     const [isEnabled, setIsEnabled] = useState(false);
@@ -119,20 +119,20 @@ const TwoFactorSetup: React.FC = () => {
 
     if (setupData) {
         return (
-            <ScrollView contentContainerStyle={[styles.container, themeStyles.container]}>
-                <Text style={[styles.title, themeStyles.text]}>Enable Two-Factor</Text>
-                <Text style={[styles.helpText, themeStyles.text]}>
+            <ScrollView contentContainerStyle={[styles.container, theme.styles.container]}>
+                <Text style={[styles.title, theme.styles.text]}>Enable Two-Factor</Text>
+                <Text style={[styles.helpText, theme.styles.text]}>
                     Scan the QR code below or enter the key manually into your authenticator app.
                 </Text>
 
                 <Image source={{ uri: setupData.qrCodeUri }} style={styles.qrImage} />
 
-                <Text selectable style={[styles.manualKey, themeStyles.text]}>
+                <Text selectable style={[styles.manualKey, theme.styles.text]}>
                     {setupData.manualEntryKey}
                 </Text>
 
                 <TextInput
-                    style={[styles.input, themeStyles.card, themeStyles.inputText]}
+                    style={[styles.input, theme.styles.card, theme.styles.inputText]}
                     placeholder="Enter code"
                     placeholderTextColor={isDark ? "#888" : "#666"}
                     keyboardType="number-pad"
@@ -141,20 +141,20 @@ const TwoFactorSetup: React.FC = () => {
                 />
 
                 <TouchableOpacity
-                    style={[styles.button, themeStyles.button]}
+                    style={[styles.button, theme.styles.button]}
                     onPress={onVerify}
                     disabled={verifying}
                 >
                     {verifying ? (
-                        <ActivityIndicator color={themeStyles.buttonText.color} />
+                        <ActivityIndicator color={theme.styles.buttonText.color} />
                     ) : (
-                        <Text style={[styles.buttonText, themeStyles.buttonText]}>Verify & Enable</Text>
+                        <Text style={[styles.buttonText, theme.styles.buttonText]}>Verify & Enable</Text>
                     )}
                 </TouchableOpacity>
 
-                <Text style={[styles.backupHeader, themeStyles.text]}>Backup codes remaining:</Text>
+                <Text style={[styles.backupHeader, theme.styles.text]}>Backup codes remaining:</Text>
                 {setupData.backupCodes.map((c) => (
-                    <Text key={c} style={[styles.backupCode, themeStyles.text]}>
+                    <Text key={c} style={[styles.backupCode, theme.styles.text]}>
                         {c}
                     </Text>
                 ))}
@@ -163,14 +163,14 @@ const TwoFactorSetup: React.FC = () => {
     }
 
     return (
-        <View style={[styles.section, themeStyles.card]}>
+        <View style={[styles.section, theme.styles.card]}>
             <View style={styles.row}>
-                <Text style={[styles.label, themeStyles.text]}>
+                <Text style={[styles.label, theme.styles.text]}>
                     {isEnabled ? 'Enabled' : 'Disabled'}
                 </Text>
                 <Switch value={isEnabled} onValueChange={onToggle} />
             </View>
-            <Text style={[styles.helpText, themeStyles.text]}>
+            <Text style={[styles.helpText, theme.styles.text]}>
                 Add an extra layer of security by requiring a code from your authenticator app.
             </Text>
         </View>

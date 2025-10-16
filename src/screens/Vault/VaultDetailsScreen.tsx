@@ -33,7 +33,7 @@ export default function VaultDetailsScreen() {
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
   const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
 
   const [vault, setVault] = useState<PersonalVaultPayload & { id: string } | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -70,8 +70,8 @@ export default function VaultDetailsScreen() {
 
   if (error || !vault) {
     return (
-      <View style={[themeStyles.container, styles.center]}>
-        <Text style={themeStyles.text}>{error || "No details available"}</Text>
+      <View style={[theme.styles.container, styles.center]}>
+        <Text style={theme.styles.text}>{error || "No details available"}</Text>
       </View>
     );
   }
@@ -99,22 +99,22 @@ export default function VaultDetailsScreen() {
   return (
     <>
       <ScrollView
-        style={themeStyles.container}
+        style={theme.styles.container}
         contentContainerStyle={styles.scrollContent}
       >
         <View style={styles.spacer} />
 
         {/* Header */}
-        <View style={[styles.headerRow, themeStyles.card, themeStyles.border]}>
+        <View style={[styles.headerRow, theme.styles.card, theme.styles.border]}>
           <View style={[styles.badge]}>
-            <MaterialIcons name="lock" size={20} color={themeStyles.iconColor.color} />
+            <MaterialIcons name="lock" size={20} color={theme.styles.iconColor.color} />
           </View>
 
           <View style={styles.headerText}>
-            <Text numberOfLines={1} style={[styles.title, themeStyles.text]}>
+            <Text numberOfLines={1} style={[styles.title, theme.styles.text]}>
               {vault.secureTitle}
             </Text>
-            <Text numberOfLines={2} style={[styles.subtitle, themeStyles.textGray]}>
+            <Text numberOfLines={2} style={[styles.subtitle, theme.styles.textGray]}>
               {vault.secureContent}
             </Text>
           </View>
@@ -123,24 +123,24 @@ export default function VaultDetailsScreen() {
             style={styles.headerAction}
             onPress={() => setShowDeleteModal(true)}
           >
-            <Entypo name="trash" size={20} color={themeStyles.iconColor.color} />
+            <Entypo name="trash" size={20} color={theme.styles.iconColor.color} />
           </TouchableOpacity>
         </View>
 
         {vault.secureSummary ? (
-          <View style={[styles.card, themeStyles.card, styles.sectionMargin, themeStyles.border]}>
-            <Text style={[styles.label, themeStyles.text]}>Summary</Text>
-            <Text style={[styles.value, themeStyles.text]}>{vault.secureSummary}</Text>
+          <View style={[styles.card, theme.styles.card, styles.sectionMargin, theme.styles.border]}>
+            <Text style={[styles.label, theme.styles.text]}>Summary</Text>
+            <Text style={[styles.value, theme.styles.text]}>{vault.secureSummary}</Text>
           </View>
         ) : null}
 
         {vault.secureTags && vault.secureTags.length > 0 ? (
-          <View style={[styles.card, themeStyles.card, styles.sectionMargin, themeStyles.border]}>
-            <Text style={[styles.label, themeStyles.text]}>Tags</Text>
+          <View style={[styles.card, theme.styles.card, styles.sectionMargin, theme.styles.border]}>
+            <Text style={[styles.label, theme.styles.text]}>Tags</Text>
             <View style={styles.tagsWrap}>
               {vault.secureTags.map((t, i) => (
-                <View key={i} style={[styles.tag, themeStyles.card, themeStyles.border]}>
-                  <Text style={[styles.tagText, themeStyles.text]} numberOfLines={1}>{t}</Text>
+                <View key={i} style={[styles.tag, theme.styles.card, theme.styles.border]}>
+                  <Text style={[styles.tagText, theme.styles.text]} numberOfLines={1}>{t}</Text>
                 </View>
               ))}
             </View>
@@ -149,55 +149,55 @@ export default function VaultDetailsScreen() {
 
         <View style={[styles.rowCards, styles.sectionMargin]}>
           {vault.IsLocked ? (
-            <View style={[styles.smallCard, themeStyles.card, themeStyles.border]}>
-              <Text style={[styles.smallLabel, themeStyles.text]}>Locked Until</Text>
-              <Text style={[styles.smallValue, themeStyles.text]}>
+            <View style={[styles.smallCard, theme.styles.card, theme.styles.border]}>
+              <Text style={[styles.smallLabel, theme.styles.text]}>Locked Until</Text>
+              <Text style={[styles.smallValue, theme.styles.text]}>
                 {vault.unlockDate ? new Date(vault.unlockDate).toLocaleDateString() : '—'}
               </Text>
             </View>
           ) : null}
 
           {vault.expirationDate ? (
-            <View style={[styles.smallCard, themeStyles.card, themeStyles.border]}>
-              <Text style={[styles.smallLabel, themeStyles.text]}>Expires</Text>
-              <Text style={[styles.smallValue, themeStyles.text]}>
+            <View style={[styles.smallCard, theme.styles.card, theme.styles.border]}>
+              <Text style={[styles.smallLabel, theme.styles.text]}>Expires</Text>
+              <Text style={[styles.smallValue, theme.styles.text]}>
                 {new Date(vault.expirationDate).toLocaleDateString()}
               </Text>
             </View>
           ) : null}
 
           {vault.IsFavorite ? (
-            <View style={[styles.smallCard, themeStyles.card, themeStyles.border]}>
-              <Text style={[styles.smallLabel, themeStyles.text]}>Favorite</Text>
-              <Text style={[styles.smallValue, themeStyles.text]}>{vault.IsFavorite ? 'Yes' : 'No'}</Text>
+            <View style={[styles.smallCard, theme.styles.card, theme.styles.border]}>
+              <Text style={[styles.smallLabel, theme.styles.text]}>Favorite</Text>
+              <Text style={[styles.smallValue, theme.styles.text]}>{vault.IsFavorite ? 'Yes' : 'No'}</Text>
             </View>
           ) : null}
         </View>
 
         {/* {vault.IsShareable ? (
-        <View style={[styles.section, themeStyles.card]}>
-          <Text style={[styles.label, themeStyles.text]}>Is it Shareable:</Text>
-          <Text style={[styles.value, themeStyles.text]}>{vault.IsShareable}</Text>
+        <View style={[styles.section, theme.styles.card]}>
+          <Text style={[styles.label, theme.styles.text]}>Is it Shareable:</Text>
+          <Text style={[styles.value, theme.styles.text]}>{vault.IsShareable}</Text>
         </View>
       ) : null} */}
 
         {vault.categoryName ? (
-          <View style={[styles.card, themeStyles.card, styles.sectionMargin, themeStyles.border]}>
-            <Text style={[styles.label, themeStyles.text]}>Category</Text>
-            <Text style={[styles.value, themeStyles.text]}>{vault.categoryName}</Text>
+          <View style={[styles.card, theme.styles.card, styles.sectionMargin, theme.styles.border]}>
+            <Text style={[styles.label, theme.styles.text]}>Category</Text>
+            <Text style={[styles.value, theme.styles.text]}>{vault.categoryName}</Text>
           </View>
         ) : null}
 
         {vault.createdDate ? (
-          <View style={[styles.card, themeStyles.card, styles.sectionMargin, themeStyles.border]}>
-            <Text style={[styles.label, themeStyles.text]}>Created</Text>
-            <Text style={[styles.value, themeStyles.text]}>{formatDate(vault.createdDate)}</Text>
+          <View style={[styles.card, theme.styles.card, styles.sectionMargin, theme.styles.border]}>
+            <Text style={[styles.label, theme.styles.text]}>Created</Text>
+            <Text style={[styles.value, theme.styles.text]}>{formatDate(vault.createdDate)}</Text>
           </View>
         ) : null}
 
         <View style={styles.actionRow}>
           <TouchableOpacity
-            style={[styles.actionBtn, themeStyles.button]}
+            style={[styles.actionBtn, theme.styles.button]}
             onPress={() =>
               navigation.navigate("EditVault" as any, {
                 tab: "vault",
@@ -217,8 +217,8 @@ export default function VaultDetailsScreen() {
               })
             }
           >
-            <MaterialIcons name="edit" size={18} color={themeStyles.buttonText.color} />
-            <Text style={[styles.actionText, themeStyles.buttonText]}>Edit</Text>
+            <MaterialIcons name="edit" size={18} color={theme.styles.buttonText.color} />
+            <Text style={[styles.actionText, theme.styles.buttonText]}>Edit</Text>
           </TouchableOpacity>
         </View>
 

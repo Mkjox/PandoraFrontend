@@ -19,7 +19,7 @@ const { height, width } = Dimensions.get('window');
 
 const SecurityScreen: React.FC = () => {
     const { isDark } = useTheme();
-    const themeStyles = isDark ? darkTheme : lightTheme;
+    const theme = isDark ? darkTheme : lightTheme;
 
     const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
     const [biometricEnabled, setBiometricEnabled] = useState(false);
@@ -53,15 +53,15 @@ const SecurityScreen: React.FC = () => {
     };
 
     return (
-        <ScrollView style={[styles.container, themeStyles.container]}>
+        <ScrollView style={[styles.container, theme.styles.container]}>
             <View style={styles.spacer} />
 
-            <Text style={[styles.title, themeStyles.text]}>Security Settings</Text>
+            <Text style={[styles.title, theme.styles.text]}>Security Settings</Text>
 
             <View style={styles.section}>
-                <Text style={[styles.sectionHeader, themeStyles.text]}>Two-Factor Authentication</Text>
+                <Text style={[styles.sectionHeader, theme.styles.text]}>Two-Factor Authentication</Text>
                 {/* <View style={styles.optionRow}>
-                    <Text style={[styles.optionText, themeStyles.text]}>
+                    <Text style={[styles.optionText, theme.styles.text]}>
                         {twoFactorEnabled ? 'Enabled' : 'Disabled'}
                     </Text>
                     <Switch
@@ -70,15 +70,15 @@ const SecurityScreen: React.FC = () => {
                     />
                 </View> */}
                 <TwoFactorSetup />
-                {/* <Text style={[styles.helperText, themeStyles.text]}>
+                {/* <Text style={[styles.helperText, theme.styles.text]}>
                     Add an extra layer of security by requiring a code from your authenticator app when logging in.
                 </Text> */}
             </View>
 
             <View style={styles.section}>
-                <Text style={[styles.sectionHeader, themeStyles.text]}>Biometric Unlock</Text>
+                <Text style={[styles.sectionHeader, theme.styles.text]}>Biometric Unlock</Text>
                 <View style={styles.optionRow}>
-                    <Text style={[styles.optionText, themeStyles.text]}>
+                    <Text style={[styles.optionText, theme.styles.text]}>
                         {biometricEnabled ? 'Enabled' : 'Disabled'}
                     </Text>
                     <Switch
@@ -86,16 +86,16 @@ const SecurityScreen: React.FC = () => {
                         onValueChange={toggleBiometric}
                     />
                 </View>
-                <Text style={[styles.helperText, themeStyles.text]}>
+                <Text style={[styles.helperText, theme.styles.text]}>
                     Use fingerprint or face recognition to unlock the app quickly.
                 </Text>
             </View>
 
             <TouchableOpacity
-                style={[styles.resetButton, themeStyles.button]}
+                style={[styles.resetButton, theme.styles.button]}
                 onPress={resetSettings}
             >
-                <Text style={[styles.resetButtonText, themeStyles.buttonText]}>
+                <Text style={[styles.resetButtonText, theme.styles.buttonText]}>
                     Reset All Security Settings
                 </Text>
             </TouchableOpacity>

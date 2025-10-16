@@ -19,7 +19,7 @@ const { width, height } = Dimensions.get('window');
 
 const SecurityChallengeScreen: React.FC = () => {
   const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
   const dispatch = useAppDispatch();
   const navigation = useNavigation<any>();
 
@@ -75,8 +75,8 @@ const SecurityChallengeScreen: React.FC = () => {
 
   if (passwordsError) {
     return (
-      <View style={[themeStyles.container, styles.center]}>
-        <Text style={themeStyles.text}>Error: {passwordsError}</Text>
+      <View style={[theme.styles.container, styles.center]}>
+        <Text style={theme.styles.text}>Error: {passwordsError}</Text>
       </View>
     );
   }
@@ -86,33 +86,33 @@ const SecurityChallengeScreen: React.FC = () => {
   const weakPasswords = passwords.filter(pw => !isStrongPassword(pw.password));
 
   const renderItem = ({ item }: { item: typeof passwords[0] }) => (
-    <View style={[styles.itemCard, themeStyles.card]}>
-      <Text style={[styles.itemTitle, themeStyles.text]}>
+    <View style={[styles.itemCard, theme.styles.card]}>
+      <Text style={[styles.itemTitle, theme.styles.text]}>
         {item.siteName}
       </Text>
-      <Text style={[styles.itemSubtitle, themeStyles.textGray]}>
+      <Text style={[styles.itemSubtitle, theme.styles.textGray]}>
         {item.usernameOrEmail}
       </Text>
-      <Text style={[styles.itemNote, themeStyles.text]}>
+      <Text style={[styles.itemNote, theme.styles.text]}>
         {isStrongPassword(item.password) ? 'Strong' : 'Weak'}
       </Text>
     </View>
   );
 
   return (
-    <View style={[themeStyles.container, styles.container]}>
+    <View style={[theme.styles.container, styles.container]}>
       <View style={styles.headerSection}>
-        <Text style={[styles.headerText, themeStyles.text]}>
+        <Text style={[styles.headerText, theme.styles.text]}>
           Security Challenge ({percentage}%)
         </Text>
-        <Text style={[styles.subHeaderText, themeStyles.textGray]}>
+        <Text style={[styles.subHeaderText, theme.styles.textGray]}>
           {weakPasswords.length} weak / {passwords.length} total
         </Text>
       </View>
 
       {passwords.length === 0 ? (
         <View style={styles.center}>
-          <Text style={themeStyles.text}>No passwords to evaluate.</Text>
+          <Text style={theme.styles.text}>No passwords to evaluate.</Text>
         </View>
       ) : (
         <FlatList

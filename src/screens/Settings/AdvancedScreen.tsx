@@ -16,37 +16,37 @@ const { width } = Dimensions.get('window');
 
 const AdvancedScreen: React.FC = () => {
     const { isDark } = useTheme();
-    const themeStyles = isDark ? darkTheme : lightTheme;
+    const theme = isDark ? darkTheme : lightTheme;
 
     const [autoBackup, setAutoBackup] = useState(true);
 
     return (
-        <ScrollView style={[styles.container, themeStyles.container]}>
+        <ScrollView style={[styles.container, theme.styles.container]}>
             <View style={styles.spacer} />
 
-            <Text style={[styles.title, themeStyles.text]}>Advanced Settings</Text>
+            <Text style={[styles.title, theme.styles.text]}>Advanced Settings</Text>
 
-            <View style={[styles.group, themeStyles.card, themeStyles.border]}>
-                <Text style={[styles.itemHeader, themeStyles.text]}>Data Backup</Text>
+            <View style={[styles.group, theme.styles.card, theme.styles.border]}>
+                <Text style={[styles.itemHeader, theme.styles.text]}>Data Backup</Text>
                 <View style={styles.itemRow}>
-                    <Text style={[styles.itemLabel, themeStyles.text]}>Auto Backup</Text>
+                    <Text style={[styles.itemLabel, theme.styles.text]}>Auto Backup</Text>
                     <Switch value={autoBackup} onValueChange={setAutoBackup} />
                 </View>
-                <Text style={[styles.itemHelp, themeStyles.text]}>
+                <Text style={[styles.itemHelp, theme.styles.text]}>
                     When on, your vault is backed up every time you make a change.
                 </Text>
                 <TouchableOpacity style={styles.linkRow}>
-                    <Text style={[styles.linkText, themeStyles.text]}>Run Backup Now</Text>
+                    <Text style={[styles.linkText, theme.styles.text]}>Run Backup Now</Text>
                 </TouchableOpacity>
             </View>
 
-            <View style={[styles.group, themeStyles.card, themeStyles.border]}>
-                <Text style={[styles.itemHeader, themeStyles.text]}>Data Import/Export</Text>
+            <View style={[styles.group, theme.styles.card, theme.styles.border]}>
+                <Text style={[styles.itemHeader, theme.styles.text]}>Data Import/Export</Text>
                 <TouchableOpacity style={styles.linkRow}>
-                    <Text style={[styles.linkText, themeStyles.text]}>Export All Data</Text>
+                    <Text style={[styles.linkText, theme.styles.text]}>Export All Data</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.linkRow}>
-                    <Text style={[styles.linkText, themeStyles.text]}>Import Data File</Text>
+                    <Text style={[styles.linkText, theme.styles.text]}>Import Data File</Text>
                 </TouchableOpacity>
             </View>
         </ScrollView>

@@ -24,7 +24,7 @@ const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
   onConfirm,
 }) => {
   const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
 
   return (
     <Modal
@@ -34,19 +34,19 @@ const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
       onRequestClose={onCancel}
     >
       <View style={styles.overlay}>
-        <View style={[styles.container, themeStyles.card, themeStyles.border]}>
-          <Text style={[styles.title, themeStyles.text]}>Delete Entry</Text>
-          <Text style={[styles.message, themeStyles.textGray]}>
+        <View style={[styles.container, theme.styles.card, theme.styles.border]}>
+          <Text style={[styles.title, theme.styles.text]}>Delete Entry</Text>
+          <Text style={[styles.message, theme.styles.textGray]}>
             Are you sure you want to delete this entry?{"\n"}
             This action cannot be undone.
           </Text>
 
           <View style={styles.actions}>
             <TouchableOpacity
-              style={[styles.btn, styles.cancelBtn, themeStyles.border]}
+              style={[styles.btn, styles.cancelBtn, theme.styles.border]}
               onPress={onCancel}
             >
-              <Text style={[styles.btnText, themeStyles.text]}>Cancel</Text>
+              <Text style={[styles.btnText, theme.styles.text]}>Cancel</Text>
             </TouchableOpacity>
 
             <TouchableOpacity

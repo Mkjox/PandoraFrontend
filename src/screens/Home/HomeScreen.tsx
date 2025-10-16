@@ -36,7 +36,7 @@ type SectionDataItem =
 export default function HomeScreen() {
   const navigation = useNavigation<any>()
   const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
   const dispatch = useAppDispatch()
 
   const { passwords, loading: pwLoading, error: pwError } = useAppSelector(s => s.passwords)
@@ -99,7 +99,7 @@ export default function HomeScreen() {
         onPress={() => setFilterType(item.key)}
       >
         <Text style={[
-          active ? themeStyles.text : themeStyles.textGray,
+          active ? theme.styles.text : theme.styles.textGray,
           active ? styles.activeText : styles.passiveText
         ]}>
           {item.label}
@@ -110,21 +110,21 @@ export default function HomeScreen() {
 
   const renderPassword = ({ item }: { item: PasswordItem }) => (
     <CustomCard
-      style={[themeStyles.card, themeStyles.border]}
+      style={[theme.styles.card, theme.styles.border]}
       onPress={() => navigation.navigate('PassDetails', { id: item.id })}
     >
-      <Text style={[styles.cardTitle, themeStyles.text]}>{item.siteName}</Text>
-      <Text style={[styles.cardSubtitle, themeStyles.textGray]}>{item.usernameOrEmail}</Text>
+      <Text style={[styles.cardTitle, theme.styles.text]}>{item.siteName}</Text>
+      <Text style={[styles.cardSubtitle, theme.styles.textGray]}>{item.usernameOrEmail}</Text>
     </CustomCard>
   )
 
   const renderVault = ({ item }: { item: PersonalVaultPayload }) => (
     <CustomCard
-      style={[themeStyles.card, themeStyles.border]}
+      style={[theme.styles.card, theme.styles.border]}
       onPress={() => navigation.navigate('VaultDetails', { id: item.id })}
     >
-      <Text style={[styles.cardTitle, themeStyles.text]}>{item.secureTitle}</Text>
-      <Text style={[styles.cardSubtitle, themeStyles.textGray]} numberOfLines={2}>
+      <Text style={[styles.cardTitle, theme.styles.text]}>{item.secureTitle}</Text>
+      <Text style={[styles.cardSubtitle, theme.styles.textGray]} numberOfLines={2}>
         {item.secureContent}
       </Text>
     </CustomCard>
@@ -136,7 +136,7 @@ export default function HomeScreen() {
       : renderVault({ item })
 
   const renderSectionHeader = ({ section }: any) => (
-    <Text style={[styles.sectionHeader, themeStyles.text]}>{section.title}</Text>
+    <Text style={[styles.sectionHeader, theme.styles.text]}>{section.title}</Text>
   )
 
   const loading = (filterType === 'personal vault' ? vaultLoading : pwLoading)
@@ -150,11 +150,11 @@ export default function HomeScreen() {
 
   if (error) {
     return (
-      <View style={[themeStyles.container, styles.container, { padding: 25 }]}>
+      <View style={[theme.styles.container, styles.container, { padding: 25 }]}>
         <View style={styles.headerRow}>
-          <Text style={[styles.title, themeStyles.text]}>Vault</Text>
+          <Text style={[styles.title, theme.styles.text]}>Vault</Text>
         </View>
-        <View style={[themeStyles.container, styles.center]}>
+        <View style={[theme.styles.container, styles.center]}>
           <ErrorDisplay message={error} />
         </View>
       </View>
@@ -164,7 +164,7 @@ export default function HomeScreen() {
   const listHeader = (
     <View>
       <View style={styles.headerRow}>
-        <Text style={[styles.title, themeStyles.text]}>Vault</Text>
+        <Text style={[styles.title, theme.styles.text]}>Vault</Text>
         <AddButton />
       </View>
 
@@ -172,7 +172,7 @@ export default function HomeScreen() {
         placeholder="Search"
         onChangeText={setSearchQuery}
         value={searchQuery}
-        style={[styles.searchBar, themeStyles.container]}
+        style={[styles.searchBar, theme.styles.container]}
         placeholderTextColor={isDark ? '#888' : '#666'}
         iconColor={isDark ? '#888' : '#666'}
       />
@@ -195,7 +195,7 @@ export default function HomeScreen() {
 
   if (isEmpty) {
     return (
-      <View style={[themeStyles.container, styles.container]}>
+      <View style={[theme.styles.container, styles.container]}>
         <View style={styles.inner}>
           <SectionList
             sections={sections}
@@ -221,7 +221,7 @@ export default function HomeScreen() {
   }
 
   return (
-    <View style={[themeStyles.container, styles.container]}>
+    <View style={[theme.styles.container, styles.container]}>
       <View style={styles.inner}>
         {filterType === 'all' ? (
           <SectionList

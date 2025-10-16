@@ -26,7 +26,7 @@ export default function WelcomeScreen({
   const scrollRef = useRef<ScrollView>(null)
   const [page, setPage] = useState(0)
   const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
 
   const pages = [
     {
@@ -122,8 +122,8 @@ export default function WelcomeScreen({
 
       {/* “Let’s Start” on last page */}
       {page === pages.length - 1 && (
-        <TouchableOpacity style={[styles.startButton, themeStyles.buttonBorder]} onPress={handleDone}>
-          <Text style={[styles.startText, themeStyles.buttonText]}>Let’s Start</Text>
+        <TouchableOpacity style={[styles.startButton, theme.styles.buttonBorder]} onPress={handleDone}>
+          <Text style={[styles.startText, theme.styles.buttonText]}>Let’s Start</Text>
         </TouchableOpacity>
       )}
     </View>

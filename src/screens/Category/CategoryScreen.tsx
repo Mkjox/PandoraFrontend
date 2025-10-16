@@ -20,7 +20,7 @@ const { width, height } = Dimensions.get('window')
 export default function CategoryScreen() {
   const navigation = useNavigation<any>()
   const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
   const dispatch = useAppDispatch()
 
   const { categories, loading, error } = useAppSelector(s => s.category)
@@ -33,12 +33,12 @@ export default function CategoryScreen() {
   )
 
   const renderItem = ({ item }: { item: { id: string; name: string; description?: string } }) => (
-    <View style={[styles.card, themeStyles.card]}>
+    <View style={[styles.card, theme.styles.card]}>
       <View style={styles.cardText}>
         <TouchableOpacity onPress={() => navigation.navigate('CategoryDetails' as any, { id: item.id })}>
-          <Text style={[styles.cardTitle, themeStyles.text]}>{item.name}</Text>
+          <Text style={[styles.cardTitle, theme.styles.text]}>{item.name}</Text>
           {item.description ? (
-            <Text style={[styles.cardDescription, themeStyles.textGray]}>
+            <Text style={[styles.cardDescription, theme.styles.textGray]}>
               {item.description}
             </Text>
           ) : null}
@@ -48,9 +48,9 @@ export default function CategoryScreen() {
   )
 
   return (
-    <View style={[themeStyles.container, styles.container]}>
+    <View style={[theme.styles.container, styles.container]}>
       <View style={styles.topSection}>
-        <Text style={[styles.title, themeStyles.text]}>Categories</Text>
+        <Text style={[styles.title, theme.styles.text]}>Categories</Text>
       </View>
 
       {loading ? (

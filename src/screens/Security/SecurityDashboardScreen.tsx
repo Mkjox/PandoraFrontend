@@ -50,7 +50,7 @@ const { width, height } = Dimensions.get('window');
 
 const SecurityDashboardScreen: React.FC = () => {
   const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
 
@@ -143,7 +143,7 @@ const SecurityDashboardScreen: React.FC = () => {
   }
   if (pwdError || vaultError || catError) {
     return (
-      <View style={[styles.center, themeStyles.container]}>
+      <View style={[styles.center, theme.styles.container]}>
         <ErrorDisplay message={pwdError || vaultError || catError!} />
       </View>
     );
@@ -152,7 +152,7 @@ const SecurityDashboardScreen: React.FC = () => {
   // Render a single weak password item
   const renderWeakItem = ({ item }: { item: PasswordItem }) => (
     <TouchableOpacity
-      style={[styles.listItem, themeStyles.card, themeStyles.border, themeStyles.card, themeStyles.border]}
+      style={[styles.listItem, theme.styles.card, theme.styles.border, theme.styles.card, theme.styles.border]}
       onPress={() =>
         navigation.navigate('PassDetails' as never, { id: item.id } as any)
       }
@@ -161,10 +161,10 @@ const SecurityDashboardScreen: React.FC = () => {
         <Entypo name="warning" size={20} color={isDark ? '#FFC107' : '#D32F2F'} />
       </View>
       <View style={styles.listTextContainer}>
-        <Text style={[styles.listTitle, themeStyles.text]} numberOfLines={1}>
+        <Text style={[styles.listTitle, theme.styles.text]} numberOfLines={1}>
           {item.siteName}
         </Text>
-        <Text style={[styles.listSubtitle, themeStyles.textGray]} numberOfLines={1}>
+        <Text style={[styles.listSubtitle, theme.styles.textGray]} numberOfLines={1}>
           {item.usernameOrEmail}
         </Text>
       </View>
@@ -174,16 +174,16 @@ const SecurityDashboardScreen: React.FC = () => {
   // Render upcoming expiration item
   // const renderExpItem = ({ item }: { item: PasswordItem }) => (
   //   <TouchableOpacity
-  //     style={[styles.listItem, themeStyles.card, themeStyles.border]}
+  //     style={[styles.listItem, theme.styles.card, theme.styles.border]}
   //     onPress={() =>
   //       navigation.navigate('PassDetails' as never, { id: item.id } as any)
   //     }
   //   >
   //     <View style={styles.listIcon}>
-  //       <MaterialIcons name="schedule" size={20} color={themeStyles.icon.color} />
+  //       <MaterialIcons name="schedule" size={20} color={theme.styles.icon.color} />
   //     </View>
   //     <View style={styles.listTextContainer}>
-  //       <Text style={[styles.listTitle, themeStyles.text]} numberOfLines={1}>
+  //       <Text style={[styles.listTitle, theme.styles.text]} numberOfLines={1}>
   //         {item.siteName}
   //       </Text>
   //     </View>
@@ -191,75 +191,75 @@ const SecurityDashboardScreen: React.FC = () => {
   // );
 
   return (
-    <ScrollView style={[styles.container, themeStyles.container]}>
-      <Text style={[styles.header, themeStyles.text]}>Security Dashboard</Text>
+    <ScrollView style={[styles.container, theme.styles.container]}>
+      <Text style={[styles.header, theme.styles.text]}>Security Dashboard</Text>
 
       {/* Summary Stats */}
       <View style={styles.statsContainer}>
-        <View style={[styles.statCard, themeStyles.card, themeStyles.border]}>
-          <Text style={[styles.statLabel, themeStyles.text]}>Total Passwords</Text>
-          <Text style={[styles.statValue, themeStyles.text]}>{passwords.length}</Text>
+        <View style={[styles.statCard, theme.styles.card, theme.styles.border]}>
+          <Text style={[styles.statLabel, theme.styles.text]}>Total Passwords</Text>
+          <Text style={[styles.statValue, theme.styles.text]}>{passwords.length}</Text>
         </View>
-        <View style={[styles.statCard, themeStyles.card, themeStyles.border]}>
-          <Text style={[styles.statLabel, themeStyles.text]}>Strong</Text>
-          <Text style={[styles.statValue, themeStyles.text]}>
+        <View style={[styles.statCard, theme.styles.card, theme.styles.border]}>
+          <Text style={[styles.statLabel, theme.styles.text]}>Strong</Text>
+          <Text style={[styles.statValue, theme.styles.text]}>
             {strengthCounts.Strong.length}
           </Text>
         </View>
-        <View style={[styles.statCard, themeStyles.card, themeStyles.border]}>
-          <Text style={[styles.statLabel, themeStyles.text]}>Medium</Text>
-          <Text style={[styles.statValue, themeStyles.text]}>
+        <View style={[styles.statCard, theme.styles.card, theme.styles.border]}>
+          <Text style={[styles.statLabel, theme.styles.text]}>Medium</Text>
+          <Text style={[styles.statValue, theme.styles.text]}>
             {strengthCounts.Medium.length}
           </Text>
         </View>
-        <View style={[styles.statCard, themeStyles.card, themeStyles.border]}>
-          <Text style={[styles.statLabel, themeStyles.text]}>Weak</Text>
-          <Text style={[styles.statValue, themeStyles.text]}>
+        <View style={[styles.statCard, theme.styles.card, theme.styles.border]}>
+          <Text style={[styles.statLabel, theme.styles.text]}>Weak</Text>
+          <Text style={[styles.statValue, theme.styles.text]}>
             {strengthCounts.Weak.length}
           </Text>
         </View>
-        <View style={[styles.statCard, themeStyles.card, themeStyles.border]}>
-          <Text style={[styles.statLabel, themeStyles.text]}>Score (%)</Text>
-          <Text style={[styles.statValue, themeStyles.text]}>{securityScore}</Text>
+        <View style={[styles.statCard, theme.styles.card, theme.styles.border]}>
+          <Text style={[styles.statLabel, theme.styles.text]}>Score (%)</Text>
+          <Text style={[styles.statValue, theme.styles.text]}>{securityScore}</Text>
         </View>
-        <View style={[styles.statCard, themeStyles.card, themeStyles.border]}>
-          <Text style={[styles.statLabel, themeStyles.text]}>Vaults</Text>
-          <Text style={[styles.statValue, themeStyles.text]}>{vaults.length}</Text>
+        <View style={[styles.statCard, theme.styles.card, theme.styles.border]}>
+          <Text style={[styles.statLabel, theme.styles.text]}>Vaults</Text>
+          <Text style={[styles.statValue, theme.styles.text]}>{vaults.length}</Text>
         </View>
-        <View style={[styles.statCard, themeStyles.card, themeStyles.border]}>
-          <Text style={[styles.statLabel, themeStyles.text]}>Categories</Text>
-          <Text style={[styles.statValue, themeStyles.text]}>{categories.length}</Text>
+        <View style={[styles.statCard, theme.styles.card, theme.styles.border]}>
+          <Text style={[styles.statLabel, theme.styles.text]}>Categories</Text>
+          <Text style={[styles.statValue, theme.styles.text]}>{categories.length}</Text>
         </View>
       </View>
 
       {/* Recommendations / Actions */}
-      <View style={[styles.section, themeStyles.card, themeStyles.border]}>
-        <Text style={[styles.sectionTitle, themeStyles.text]}>Recommendations</Text>
+      <View style={[styles.section, theme.styles.card, theme.styles.border]}>
+        <Text style={[styles.sectionTitle, theme.styles.text]}>Recommendations</Text>
         {strengthCounts.Weak.length > 0 ? (
-          <Text style={[styles.recommendationText, themeStyles.text]}>
+          <Text style={[styles.recommendationText, theme.styles.text]}>
             You have {strengthCounts.Weak.length} weak password
             {strengthCounts.Weak.length > 1 ? 's' : ''}. Consider updating them.
           </Text>
         ) : (
-          <Text style={[styles.recommendationText, themeStyles.text]}>
+          <Text style={[styles.recommendationText, theme.styles.text]}>
             Great! No weak passwords found.
           </Text>
         )}
         {/* {upcomingExpirations.length > 0 ? (
-          <Text style={[styles.recommendationText, themeStyles.text]}>
+          <Text style={[styles.recommendationText, theme.styles.text]}>
             {upcomingExpirations.length} password
             {upcomingExpirations.length > 1 ? 's are' : ' is'} expiring soon.
           </Text>
         ) : (
-          <Text style={[styles.recommendationText, themeStyles.text]}>
+          <Text style={[styles.recommendationText, theme.styles.text]}>
             No passwords expiring within 7 days.
           </Text>
         )} */}
       </View>
 
       {/* Two-Factor Toggle */}
-      {/* <View style={[styles.section, themeStyles.card, themeStyles.border]}> */}
-      {/* <Text style={[styles.sectionTitle, themeStyles.text]}>
+      {/* <View style={[styles.section, theme.styles.card, theme.styles.border]}> */}
+      {/* <Text style={[styles.sectionTitle, theme.styles.text]}>
           Two-Factor Authentication
         </Text>
         <View style={styles.switchRow}>
@@ -268,7 +268,7 @@ const SecurityDashboardScreen: React.FC = () => {
             onValueChange={handleToggle2FA}
             disabled={toggling2FA}
           />
-          <Text style={[styles.switchText, themeStyles.text]}>
+          <Text style={[styles.switchText, theme.styles.text]}>
             {twoFAEnabled ? 'Enabled' : 'Disabled'}
           </Text>
         </View>
@@ -277,23 +277,23 @@ const SecurityDashboardScreen: React.FC = () => {
       {/* Weak Passwords List */}
       {strengthCounts.Weak.length > 0 && (
         <View style={styles.listSection}>
-          <Text style={[styles.listHeader, themeStyles.text]}>Weak Passwords</Text>
+          <Text style={[styles.listHeader, theme.styles.text]}>Weak Passwords</Text>
           <FlatList
             data={strengthCounts.Weak}
             keyExtractor={item => item.id}
             renderItem={renderWeakItem}
             horizontal={false}
             scrollEnabled={false}
-            contentContainerStyle={[styles.listContainer, themeStyles.card]}
+            contentContainerStyle={[styles.listContainer, theme.styles.card]}
           />
           <TouchableOpacity
-            style={[styles.actionButton, themeStyles.button]}
+            style={[styles.actionButton, theme.styles.button]}
             onPress={() => navigation.navigate('SecurityChallenge' as never)}
           >
-            <Text style={[styles.actionText, themeStyles.buttonText]}>
+            <Text style={[styles.actionText, theme.styles.buttonText]}>
               Review Passwords
             </Text>
-            {/* <Text style={[styles.actionText, themeStyles.buttonText]}>
+            {/* <Text style={[styles.actionText, theme.styles.buttonText]}>
               Review Weak Passwords
             </Text> */}
           </TouchableOpacity>
@@ -303,7 +303,7 @@ const SecurityDashboardScreen: React.FC = () => {
       {/* Upcoming Expirations List */}
       {/* {upcomingExpirations.length > 0 && (
         <View style={styles.listSection}>
-          <Text style={[styles.listHeader, themeStyles.text]}>
+          <Text style={[styles.listHeader, theme.styles.text]}>
             Expiring Soon
           </Text>
           <FlatList
@@ -318,21 +318,21 @@ const SecurityDashboardScreen: React.FC = () => {
       )} */}
 
       {/* Quick Actions */}
-      {/* <View style={[styles.section, themeStyles.card, themeStyles.border]}>
-        <Text style={[styles.sectionTitle, themeStyles.text]}>Quick Actions</Text>
+      {/* <View style={[styles.section, theme.styles.card, theme.styles.border]}>
+        <Text style={[styles.sectionTitle, theme.styles.text]}>Quick Actions</Text>
         <TouchableOpacity
-          style={[styles.actionButton, themeStyles.button]}
+          style={[styles.actionButton, theme.styles.button]}
           onPress={() => navigation.navigate('Settings' as never)}
         >
-          <Text style={[styles.actionText, themeStyles.buttonText]}>
+          <Text style={[styles.actionText, theme.styles.buttonText]}>
             App Settings
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.actionButton, themeStyles.button]}
+          style={[styles.actionButton, theme.styles.button]}
           onPress={() => navigation.navigate('TwoFactor' as never)}
         >
-          <Text style={[styles.actionText, themeStyles.buttonText]}>
+          <Text style={[styles.actionText, theme.styles.buttonText]}>
             Two-Factor Settings
           </Text>
         </TouchableOpacity>

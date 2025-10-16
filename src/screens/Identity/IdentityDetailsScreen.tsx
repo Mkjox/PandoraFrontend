@@ -28,7 +28,7 @@ const IdentityDetailsScreen: React.FC = () => {
     const route = useRoute<IdentityDetailsRouteProp>();
     const navigation = useNavigation<any>();
     const { isDark } = useTheme();
-    const themeStyles = isDark ? darkTheme : lightTheme;
+    const theme = isDark ? darkTheme : lightTheme;
     const [item, setItem] = useState<IdentityItem | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -77,7 +77,7 @@ const IdentityDetailsScreen: React.FC = () => {
 
     if (loading) {
         return (
-            <View style={[themeStyles.container, styles.center]}>
+            <View style={[theme.styles.container, styles.center]}>
                 <ActivityIndicator size="large" />
             </View>
         );
@@ -85,8 +85,8 @@ const IdentityDetailsScreen: React.FC = () => {
 
     if (error || !item) {
         return (
-            <View style={[themeStyles.container, styles.center]}>
-                <Text style={themeStyles.text}>
+            <View style={[theme.styles.container, styles.center]}>
+                <Text style={theme.styles.text}>
                     {error || "No details available"}
                 </Text>
             </View>
@@ -94,41 +94,41 @@ const IdentityDetailsScreen: React.FC = () => {
     }
 
     return (
-        <ScrollView style={themeStyles.container}>
+        <ScrollView style={theme.styles.container}>
             <View style={styles.spacer} />
 
-            <View style={[styles.header, themeStyles.card]}>
-                <Text style={[styles.title, themeStyles.text]}>{item.fullName}</Text>
+            <View style={[styles.header, theme.styles.card]}>
+                <Text style={[styles.title, theme.styles.text]}>{item.fullName}</Text>
             </View>
 
-            <View style={[styles.section, themeStyles.card]}>
-                <Text style={[styles.label, themeStyles.text]}>Email:</Text>
-                <Text style={[styles.value, themeStyles.text]}>{item.email}</Text>
+            <View style={[styles.section, theme.styles.card]}>
+                <Text style={[styles.label, theme.styles.text]}>Email:</Text>
+                <Text style={[styles.value, theme.styles.text]}>{item.email}</Text>
             </View>
 
             {item.phone ? (
-                <View style={[styles.section, themeStyles.card]}>
-                    <Text style={[styles.label, themeStyles.text]}>Phone:</Text>
-                    <Text style={[styles.value, themeStyles.text]}>{item.phone}</Text>
+                <View style={[styles.section, theme.styles.card]}>
+                    <Text style={[styles.label, theme.styles.text]}>Phone:</Text>
+                    <Text style={[styles.value, theme.styles.text]}>{item.phone}</Text>
                 </View>
             ) : null}
 
             {item.address ? (
-                <View style={[styles.section, themeStyles.card]}>
-                    <Text style={[styles.label, themeStyles.text]}>Address:</Text>
-                    <Text style={[styles.value, themeStyles.text]}>{item.address}</Text>
+                <View style={[styles.section, theme.styles.card]}>
+                    <Text style={[styles.label, theme.styles.text]}>Address:</Text>
+                    <Text style={[styles.value, theme.styles.text]}>{item.address}</Text>
                 </View>
             ) : null}
 
             {item.notes ? (
-                <View style={[styles.section, themeStyles.card]}>
-                    <Text style={[styles.label, themeStyles.text]}>Notes:</Text>
-                    <Text style={[styles.value, themeStyles.text]}>{item.notes}</Text>
+                <View style={[styles.section, theme.styles.card]}>
+                    <Text style={[styles.label, theme.styles.text]}>Notes:</Text>
+                    <Text style={[styles.value, theme.styles.text]}>{item.notes}</Text>
                 </View>
             ) : null}
 
             <TouchableOpacity
-                style={[styles.editButton, themeStyles.button]}
+                style={[styles.editButton, theme.styles.button]}
                 onPress={() =>
                     navigation.navigate("EditIdentity", {
                         mode: "edit",
@@ -141,12 +141,12 @@ const IdentityDetailsScreen: React.FC = () => {
                     } as any)
                 }
             >
-                <MaterialIcons name="edit" size={20} color={themeStyles.buttonText.color} />
-                <Text style={[styles.editText, themeStyles.buttonText]}>Edit</Text>
+                <MaterialIcons name="edit" size={20} color={theme.styles.buttonText.color} />
+                <Text style={[styles.editText, theme.styles.buttonText]}>Edit</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-                style={[styles.deleteButton, themeStyles.card]}
+                style={[styles.deleteButton, theme.styles.card]}
                 onPress={handleDelete}
             >
                 <Entypo name="trash" size={20} color="red" />

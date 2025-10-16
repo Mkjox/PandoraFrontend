@@ -7,28 +7,28 @@ const { width } = Dimensions.get('window');
 
 const AboutScreen: React.FC = () => {
       const { isDark } = useTheme();
-      const themeStyles = isDark ? darkTheme : lightTheme;
+      const theme = isDark ? darkTheme : lightTheme;
 
     return (
-        <ScrollView style={[styles.container, themeStyles.container]}>
+        <ScrollView style={[styles.container, theme.styles.container]}>
             <View style={styles.spacer} />
 
-            <Text style={[styles.title, themeStyles.text]}>About Pandora</Text>
+            <Text style={[styles.title, theme.styles.text]}>About Pandora</Text>
 
             <View style={styles.section}>
-                <Text style={[styles.sectionBody, themeStyles.text]}>
+                <Text style={[styles.sectionBody, theme.styles.text]}>
                     Pandora is your personal, secure vault for passwords and sensitive notes. Everything you store here is encrypted on your device.
                 </Text>
             </View>
 
             <View style={styles.section}>
-                <Text style={[styles.sectionHeader, themeStyles.text]}>Version</Text>
-                <Text style={[styles.sectionBody, themeStyles.text]}>1.0.0</Text>
+                <Text style={[styles.sectionHeader, theme.styles.text]}>Version</Text>
+                <Text style={[styles.sectionBody, theme.styles.text]}>1.0.0</Text>
             </View>
 
             <View style={styles.section}>
-                <Text style={[styles.sectionHeader, themeStyles.text]}>Built With</Text>
-                <Text style={[styles.sectionBody, themeStyles.text]}>
+                <Text style={[styles.sectionHeader, theme.styles.text]}>Built With</Text>
+                <Text style={[styles.sectionBody, theme.styles.text]}>
                     • React Native{"\n"}
                     • Redux Toolkit{"\n"}
                     • Expo{"\n"}
@@ -37,8 +37,8 @@ const AboutScreen: React.FC = () => {
             </View>
 
             <View style={styles.section}>
-                <Text style={[styles.sectionHeader, themeStyles.text]}>Contact</Text>
-                <Text style={[styles.sectionBody, themeStyles.text]}>
+                <Text style={[styles.sectionHeader, theme.styles.text]}>Contact</Text>
+                <Text style={[styles.sectionBody, theme.styles.text]}>
                     For support or feedback, email us at{"\n"}
                     <Text style={styles.link}>support@pandora.com</Text>
                 </Text>

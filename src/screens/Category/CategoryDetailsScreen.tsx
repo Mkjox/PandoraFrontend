@@ -30,7 +30,7 @@ export default function CategoryDetailsScreen() {
   const route = useRoute<CategoryDetailsRouteProp>();
   const navigation = useNavigation<any>();
   const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
   const dispatch = useAppDispatch();
   const [visible, setVisible] = useState(false);
 
@@ -50,33 +50,33 @@ export default function CategoryDetailsScreen() {
 
   if (!category) {
     return (
-      <View style={[themeStyles.container, styles.center]}>
-        <Text style={themeStyles.text}>Category not found</Text>
+      <View style={[theme.styles.container, styles.center]}>
+        <Text style={theme.styles.text}>Category not found</Text>
       </View>
     );
   }
 
   return (
-    <ScrollView style={themeStyles.container}>
+    <ScrollView style={theme.styles.container}>
       <View style={styles.spacer} />
 
-      <View style={[styles.header, themeStyles.card]}>
-        <Text style={[styles.title, themeStyles.text]}>{category.name}</Text>
+      <View style={[styles.header, theme.styles.card]}>
+        <Text style={[styles.title, theme.styles.text]}>{category.name}</Text>
         {category.description ? (
-          <Text style={[styles.subtitle, themeStyles.textGray]}>
+          <Text style={[styles.subtitle, theme.styles.textGray]}>
             {category.description}
           </Text>
         ) : null}
       </View>
 
-      <View style={[styles.section, themeStyles.card]}>
-        <Text style={[styles.label, themeStyles.text]}>ID:</Text>
-        <Text style={[styles.value, themeStyles.text]}>{category.id}</Text>
+      <View style={[styles.section, theme.styles.card]}>
+        <Text style={[styles.label, theme.styles.text]}>ID:</Text>
+        <Text style={[styles.value, theme.styles.text]}>{category.id}</Text>
       </View>
 
       <View style={styles.actions}>
         <TouchableOpacity
-          style={[styles.actionButton, themeStyles.button]}
+          style={[styles.actionButton, theme.styles.button]}
           onPress={() =>
             navigation.navigate("EditCategory", {
               categoryId: category.id
@@ -86,21 +86,21 @@ export default function CategoryDetailsScreen() {
           <AntDesign
             name="edit"
             size={20}
-            color={themeStyles.buttonText.color}
+            color={theme.styles.buttonText.color}
           />
-          <Text style={[styles.actionText, themeStyles.buttonText]}>Edit</Text>
+          <Text style={[styles.actionText, theme.styles.buttonText]}>Edit</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.actionButton, themeStyles.button]}
+          style={[styles.actionButton, theme.styles.button]}
           onPress={() => setVisible(true)}
         >
           <Entypo
             name="trash"
             size={20}
-            color={themeStyles.buttonText.color}
+            color={theme.styles.buttonText.color}
           />
-          <Text style={[styles.actionText, themeStyles.buttonText]}>
+          <Text style={[styles.actionText, theme.styles.buttonText]}>
             Delete
           </Text>
         </TouchableOpacity>

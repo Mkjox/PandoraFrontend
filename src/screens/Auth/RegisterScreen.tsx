@@ -20,7 +20,7 @@ const { height } = Dimensions.get("window")
 
 export default function RegisterScreen() {
     const { isDark } = useTheme()
-    const themeStyles = isDark ? darkTheme : lightTheme
+    const theme = isDark ? darkTheme : lightTheme
     const dispatch = useDispatch()
     const navigation = useNavigation<any>()
 
@@ -49,7 +49,7 @@ export default function RegisterScreen() {
         setErrors({})
         setServerError(null)
 
-        const newErrors: Partial<typeof form> = {}
+        const newErrors: Partial<typeof form> = {};
             (Object.keys(form) as (keyof typeof form)[]).forEach(key => {
                 if (!form[key].trim()) newErrors[key] = 'This field is required.'
             })
@@ -73,7 +73,7 @@ export default function RegisterScreen() {
     }
 
     return (
-        <ScrollView contentContainerStyle={[styles.container, themeStyles.container]}>
+        <ScrollView contentContainerStyle={[styles.container, theme.styles.container]}>
             <Image
                 source={require('../../assets/images/logo.png')}
                 style={styles.logo}
@@ -86,7 +86,7 @@ export default function RegisterScreen() {
                 error={!!errors.FirstName}
                 value={form.FirstName}
                 onChangeText={text => handleChange('FirstName', text)}
-                style={[styles.input, themeStyles.card]}
+                style={[styles.input, theme.styles.card]}
                 activeUnderlineColor='#1c6d79'
                 activeOutlineColor='#1c6d79'
                 placeholderTextColor={isDark ? '#888' : '#666'}
@@ -101,7 +101,7 @@ export default function RegisterScreen() {
                 error={!!errors.LastName}
                 value={form.LastName}
                 onChangeText={text => handleChange('LastName', text)}
-                style={[styles.input, themeStyles.card]}
+                style={[styles.input, theme.styles.card]}
                 activeUnderlineColor='#1c6d79'
                 activeOutlineColor='#1c6d79'
                 placeholderTextColor={isDark ? '#888' : '#666'}
@@ -117,7 +117,7 @@ export default function RegisterScreen() {
                 error={!!errors.PhoneNumber}
                 value={form.PhoneNumber}
                 onChangeText={text => handleChange('PhoneNumber', text)}
-                style={[styles.input, themeStyles.card]}
+                style={[styles.input, theme.styles.card]}
                 activeUnderlineColor='#1c6d79'
                 activeOutlineColor='#1c6d79'
                 placeholderTextColor={isDark ? '#888' : '#666'}
@@ -133,7 +133,7 @@ export default function RegisterScreen() {
                 error={!!errors.Username}
                 value={form.Username}
                 onChangeText={text => handleChange('Username', text)}
-                style={[styles.input, themeStyles.card]}
+                style={[styles.input, theme.styles.card]}
                 activeUnderlineColor='#1c6d79'
                 activeOutlineColor='#1c6d79'
                 placeholderTextColor={isDark ? '#888' : '#666'}
@@ -150,7 +150,7 @@ export default function RegisterScreen() {
                 error={!!errors.Email}
                 value={form.Email}
                 onChangeText={text => handleChange('Email', text)}
-                style={[styles.input, themeStyles.card]}
+                style={[styles.input, theme.styles.card]}
                 activeUnderlineColor='#1c6d79'
                 activeOutlineColor='#1c6d79'
                 placeholderTextColor={isDark ? '#888' : '#666'}
@@ -172,7 +172,7 @@ export default function RegisterScreen() {
                 error={!!errors.Password}
                 value={form.Password}
                 onChangeText={text => handleChange('Password', text)}
-                style={[styles.input, themeStyles.card]}
+                style={[styles.input, theme.styles.card]}
                 activeUnderlineColor='#1c6d79'
                 activeOutlineColor='#1c6d79'
                 placeholderTextColor={isDark ? '#888' : '#666'}
@@ -194,7 +194,7 @@ export default function RegisterScreen() {
                 error={!!errors.ConfirmPassword}
                 value={form.ConfirmPassword}
                 onChangeText={text => handleChange('ConfirmPassword', text)}
-                style={[styles.input, themeStyles.card]}
+                style={[styles.input, theme.styles.card]}
                 activeUnderlineColor='#1c6d79'
                 activeOutlineColor='#1c6d79'
                 placeholderTextColor={isDark ? '#888' : '#666'}
@@ -216,7 +216,7 @@ export default function RegisterScreen() {
             />
 
             <TouchableOpacity onPress={() => navigation.navigate('Login' as never)}>
-                <Text style={[styles.link, themeStyles.textBlue]}>
+                <Text style={[styles.link, theme.styles.textBlue]}>
                     Already have an account? <Text style={styles.innerLink}>Login here</Text>
                 </Text>
             </TouchableOpacity>

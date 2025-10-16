@@ -5,7 +5,7 @@ import { useTheme } from "@context/ThemeContext";
 
 const CustomSpinner: React.FC = () => {
     const { isDark } = useTheme();
-    const themeStyles = isDark ? darkTheme : lightTheme;
+    const theme = isDark ? darkTheme : lightTheme;
     const spinValue = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
@@ -35,9 +35,9 @@ const CustomSpinner: React.FC = () => {
     }, []);
 
     return (
-        <View style={[{ flex: 1, justifyContent: 'center', alignItems: 'center' }, themeStyles.container]}>
+        <View style={[{ flex: 1, justifyContent: 'center', alignItems: 'center' }, theme.styles.container]}>
             <Animated.View style={{ transform: [{ rotate: spin }] }}>
-                <ActivityIndicator size="large" color={themeStyles.button.backgroundColor} />
+                <ActivityIndicator size="large" color={theme.styles.button.backgroundColor} />
             </Animated.View>
         </View>
     )

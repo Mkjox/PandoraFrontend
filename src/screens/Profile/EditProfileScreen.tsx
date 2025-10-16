@@ -22,7 +22,7 @@ const { width } = Dimensions.get('window');
 
 export default function EditProfileScreen() {
   const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -124,7 +124,7 @@ export default function EditProfileScreen() {
 
   if (loadingProfile) {
     return (
-      <View style={[styles.loaderContainer, themeStyles.container]}>
+      <View style={[styles.loaderContainer, theme.styles.container]}>
         <ActivityIndicator size="large" />
       </View>
     );
@@ -132,26 +132,26 @@ export default function EditProfileScreen() {
 
   return (
     <ScrollView
-      contentContainerStyle={[styles.container, themeStyles.container]}
+      contentContainerStyle={[styles.container, theme.styles.container]}
       keyboardShouldPersistTaps="handled"
     >
       <View style={styles.spacer} />
 
-      <Text style={[styles.title, themeStyles.text]}>Edit Profile</Text>
+      <Text style={[styles.title, theme.styles.text]}>Edit Profile</Text>
 
-      <View style={[styles.avatarCard, themeStyles.card]}>
+      <View style={[styles.avatarCard, theme.styles.card]}>
         {imageUri ? (
           <Image source={{ uri: imageUri }} style={styles.avatar} />
         ) : (
-          <View style={[styles.avatarPlaceholder, themeStyles.card]}>
-            <Text style={[styles.avatarPlaceholderText, themeStyles.textGray]}>No Photo</Text>
+          <View style={[styles.avatarPlaceholder, theme.styles.card]}>
+            <Text style={[styles.avatarPlaceholderText, theme.styles.textGray]}>No Photo</Text>
           </View>
         )}
         <ImagePickerButton
           title="Change Photo"
           onImagePicked={handleImagePicked}
-          style={[styles.changePhotoButton, themeStyles.button]}
-          textStyle={[styles.changePhotoText, themeStyles.buttonText]}
+          style={[styles.changePhotoButton, theme.styles.button]}
+          textStyle={[styles.changePhotoText, theme.styles.buttonText]}
         />
       </View>
 
@@ -161,12 +161,12 @@ export default function EditProfileScreen() {
       ) : null}
 
       <View style={[styles.fieldCard]}>
-        <Text style={[styles.label, themeStyles.text]}>Username</Text>
+        <Text style={[styles.label, theme.styles.text]}>Username</Text>
         <TextInput
           style={[
             styles.input,
-            themeStyles.text,
-            themeStyles.border,
+            theme.styles.text,
+            theme.styles.border,
             usernameError ? styles.inputError : null,
           ]}
           value={username}
@@ -184,12 +184,12 @@ export default function EditProfileScreen() {
       </View>
 
       <View style={[styles.fieldCard]}>
-        <Text style={[styles.label, themeStyles.text]}>Email</Text>
+        <Text style={[styles.label, theme.styles.text]}>Email</Text>
         <TextInput
           style={[
             styles.input,
-            themeStyles.text,
-            themeStyles.border,
+            theme.styles.text,
+            theme.styles.border,
             emailError ? styles.inputError : null,
           ]}
           value={email}
@@ -214,7 +214,7 @@ export default function EditProfileScreen() {
         title='Save Changes'
         onPress={handleSave}
         loading={saving}
-        style={[styles.saveButton, themeStyles.button]}
+        style={[styles.saveButton, theme.styles.button]}
       />
       <View style={{ height: 40 }} />
     </ScrollView>

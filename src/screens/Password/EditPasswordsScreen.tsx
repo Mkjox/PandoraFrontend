@@ -37,7 +37,7 @@ const EditPasswordsScreen: React.FC = () => {
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
   const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
 
   const { passwordId } = route.params;
 
@@ -144,19 +144,19 @@ const EditPasswordsScreen: React.FC = () => {
     secure?: boolean,
     multiline?: boolean
   ) => (
-    <View style={[styles.card, themeStyles.card, themeStyles.border]}>
-      <Text style={[styles.label, themeStyles.text]}>{label}</Text>
+    <View style={[styles.card, theme.styles.card, theme.styles.border]}>
+      <Text style={[styles.label, theme.styles.text]}>{label}</Text>
       <TextInput
         style={[
           styles.input,
-          themeStyles.text,
+          theme.styles.text,
           multiline ? { height: 100, textAlignVertical: "top" } : undefined,
         ]}
         value={(form[field] as string) || ""}
         onChangeText={(t) => handleChange(field as string, t)}
         secureTextEntry={secure}
         placeholder={`Enter ${label}`}
-        placeholderTextColor={themeStyles.textGray.color}
+        placeholderTextColor={theme.styles.textGray.color}
         multiline={multiline}
       />
     </View>
@@ -164,7 +164,7 @@ const EditPasswordsScreen: React.FC = () => {
 
   if (loading) {
     return (
-      <View style={[themeStyles.container, styles.center]}>
+      <View style={[theme.styles.container, styles.center]}>
         <ActivityIndicator size="large" />
       </View>
     );
@@ -173,7 +173,7 @@ const EditPasswordsScreen: React.FC = () => {
   return (
     <>
       <ScrollView
-        style={themeStyles.container}
+        style={theme.styles.container}
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
       >
@@ -192,21 +192,21 @@ const EditPasswordsScreen: React.FC = () => {
             disabled={saving}
             style={[
               styles.actionBtn,
-              themeStyles.button,
+              theme.styles.button,
               saving && { opacity: 0.7 },
             ]}
             onPress={handleSave}
           >
             {saving ? (
-              <ActivityIndicator color={themeStyles.buttonText.color} />
+              <ActivityIndicator color={theme.styles.buttonText.color} />
             ) : (
               <>
                 <MaterialIcons
                   name="save"
                   size={18}
-                  color={themeStyles.buttonText.color}
+                  color={theme.styles.buttonText.color}
                 />
-                <Text style={[styles.actionText, themeStyles.buttonText]}>
+                <Text style={[styles.actionText, theme.styles.buttonText]}>
                   Save Changes
                 </Text>
               </>

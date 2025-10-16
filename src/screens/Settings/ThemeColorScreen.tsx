@@ -26,7 +26,7 @@ const PRESETS: Preset[] = [
 ]
 
 export default function ThemeColorScreen() {
-  const { isDark, toggleTheme, accent, setAccent, themeStyles } = useTheme()
+  const { isDark, toggleTheme, accent, setAccent, theme } = useTheme()
 
   const applyPreset = (preset: Preset) => {
     // 1) switch mode if needed
@@ -43,7 +43,7 @@ export default function ThemeColorScreen() {
       <TouchableOpacity
         style={[
           styles.card,
-          themeStyles.card,
+          theme.styles.card,
           selected && { borderColor: accent, borderWidth: 2 },
         ]}
         activeOpacity={0.7}
@@ -58,15 +58,15 @@ export default function ThemeColorScreen() {
           />
           <View style={[styles.accentSwatch, { backgroundColor: item.accent }]} />
         </View>
-        <Text style={[styles.label, themeStyles.text]}>{item.label}</Text>
+        <Text style={[styles.label, theme.styles.text]}>{item.label}</Text>
         {selected && <Text style={[styles.selected, { color: accent }]}>✓ Selected</Text>}
       </TouchableOpacity>
     )
   }
 
   return (
-    <View style={[styles.container, themeStyles.container]}>
-      <Text style={[styles.header, themeStyles.text]}>
+    <View style={[styles.container, theme.styles.container]}>
+      <Text style={[styles.header, theme.styles.text]}>
         Choose your theme preset
       </Text>
       <FlatList

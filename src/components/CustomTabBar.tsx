@@ -7,10 +7,10 @@ import { darkTheme, lightTheme } from "@assets/colors/theme";
 
 const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
       const { isDark } = useTheme();
-      const themeStyles = isDark ? darkTheme : lightTheme;
+      const theme = isDark ? darkTheme : lightTheme;
 
     return (
-        <View style={[styles.tabContainer, themeStyles.container, themeStyles.borderTop]}>
+        <View style={[styles.tabContainer, theme.styles.container, theme.styles.borderTop]}>
             {state.routes.map((route, index) => {
                 const { options } = descriptors[route.key];
 
@@ -37,19 +37,19 @@ const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => 
 
                 const iconName = getIconName(route.name);
 
-                if (route.name === 'AddCredentials') {
-                    return (
-                        <TouchableOpacity
-                            key={index}
-                            accessibilityRole="button"
-                            accessibilityLabel={options.tabBarAccessibilityLabel}
-                            onPress={onPress}
-                            style={styles.centerButton}
-                        >
-                            <MaterialIcons name="add" size={28} color="#fff" />
-                        </TouchableOpacity>
-                    );
-                }
+                // if (route.name === 'AddCredentials') {
+                //     return (
+                //         <TouchableOpacity
+                //             key={index}
+                //             accessibilityRole="button"
+                //             accessibilityLabel={options.tabBarAccessibilityLabel}
+                //             onPress={onPress}
+                //             style={styles.centerButton}
+                //         >
+                //             <MaterialIcons name="add" size={28} color="#fff" />
+                //         </TouchableOpacity>
+                //     );
+                // }
 
                 return (
                     <TouchableOpacity
@@ -109,16 +109,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    centerButton: {
-        width: 60,
-        height: 60,
-        borderRadius: 30,
-        backgroundColor: '#6E7FEC',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 10,
-        elevation: 5
-    },
+    // centerButton: {
+    //     width: 60,
+    //     height: 60,
+    //     borderRadius: 30,
+    //     backgroundColor: '#6E7FEC',
+    //     justifyContent: 'center',
+    //     alignItems: 'center',
+    //     marginBottom: 10,
+    //     elevation: 5
+    // },
     tabLabel: {
         fontSize: 12,
         color: '#a0a0a0',

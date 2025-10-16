@@ -16,44 +16,44 @@ const { width } = Dimensions.get('window');
 
 const PrivacyScreen: React.FC = () => {
     const { isDark } = useTheme();
-    const themeStyles = isDark ? darkTheme : lightTheme;
+    const theme = isDark ? darkTheme : lightTheme;
 
     const openPolicyLink = (url: string) => {
         Linking.openURL(url).catch(() => { });
     };
 
     return (
-        <ScrollView style={[styles.container, themeStyles.container]}>
+        <ScrollView style={[styles.container, theme.styles.container]}>
             <View style={styles.spacer} />
 
-            <Text style={[styles.title, themeStyles.text]}>Privacy Policy</Text>
+            <Text style={[styles.title, theme.styles.text]}>Privacy Policy</Text>
 
-            <View style={[styles.group, themeStyles.card, themeStyles.border]}>
-                <Text style={[styles.sectionHeader, themeStyles.text]}>Data Collection</Text>
-                <Text style={[styles.sectionBody, themeStyles.text]}>
+            <View style={[styles.group, theme.styles.card, theme.styles.border]}>
+                <Text style={[styles.sectionHeader, theme.styles.text]}>Data Collection</Text>
+                <Text style={[styles.sectionBody, theme.styles.text]}>
                     We collect only the data necessary to provide the core functionality:
                     your encrypted vault items and basic usage metrics to improve performance.
                 </Text>
             </View>
 
-            <View style={[styles.group, themeStyles.card, themeStyles.border]}>
-                <Text style={[styles.sectionHeader, themeStyles.text]}>Data Usage</Text>
-                <Text style={[styles.sectionBody, themeStyles.text]}>
+            <View style={[styles.group, theme.styles.card, theme.styles.border]}>
+                <Text style={[styles.sectionHeader, theme.styles.text]}>Data Usage</Text>
+                <Text style={[styles.sectionBody, theme.styles.text]}>
                     All your vault data is encrypted on your device. We do NOT share it with third parties.
                 </Text>
             </View>
 
-            <View style={[styles.group, themeStyles.card, themeStyles.border]}>
-                <Text style={[styles.sectionHeader, themeStyles.text]}>External Links</Text>
+            <View style={[styles.group, theme.styles.card, theme.styles.border]}>
+                <Text style={[styles.sectionHeader, theme.styles.text]}>External Links</Text>
                 <TouchableOpacity onPress={() => openPolicyLink('https://pandora.com/full-policy')}>
-                    <Text style={[styles.linkText, themeStyles.text]}>Read Full Policy Online</Text>
+                    <Text style={[styles.linkText, theme.styles.text]}>Read Full Policy Online</Text>
                 </TouchableOpacity>
             </View>
 
-            <View style={[styles.group, themeStyles.card, themeStyles.border]}>
-                <Text style={[styles.sectionHeader, themeStyles.text]}>Contact</Text>
+            <View style={[styles.group, theme.styles.card, theme.styles.border]}>
+                <Text style={[styles.sectionHeader, theme.styles.text]}>Contact</Text>
                 <TouchableOpacity onPress={() => openPolicyLink('mailto:privacy@pandora.com')}>
-                    <Text style={[styles.linkText, themeStyles.text]}>Email Privacy Team</Text>
+                    <Text style={[styles.linkText, theme.styles.text]}>Email Privacy Team</Text>
                 </TouchableOpacity>
             </View>
         </ScrollView>

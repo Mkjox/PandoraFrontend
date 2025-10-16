@@ -37,7 +37,7 @@ const EditCategoriesScreen: React.FC = () => {
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
   const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
 
   const { categoryId } = route.params;
 
@@ -143,18 +143,18 @@ const EditCategoriesScreen: React.FC = () => {
     field: keyof UpdateCategoryPayload,
     multiline?: boolean
   ) => (
-    <View style={[styles.card, themeStyles.card, themeStyles.border]}>
-      <Text style={[styles.label, themeStyles.text]}>{label}</Text>
+    <View style={[styles.card, theme.styles.card, theme.styles.border]}>
+      <Text style={[styles.label, theme.styles.text]}>{label}</Text>
       <TextInput
         style={[
           styles.input,
-          themeStyles.text,
+          theme.styles.text,
           multiline ? { height: 100, textAlignVertical: "top" } : undefined,
         ]}
         value={form[field] || ""}
         onChangeText={(t) => handleChange(field, t)}
         placeholder={`Enter ${label}`}
-        placeholderTextColor={themeStyles.textGray.color}
+        placeholderTextColor={theme.styles.textGray.color}
         multiline={multiline}
       />
     </View>
@@ -169,7 +169,7 @@ const EditCategoriesScreen: React.FC = () => {
   return (
     <>
       <ScrollView
-        style={themeStyles.container}
+        style={theme.styles.container}
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
       >
@@ -183,21 +183,21 @@ const EditCategoriesScreen: React.FC = () => {
             disabled={saving}
             style={[
               styles.actionBtn,
-              themeStyles.button,
+              theme.styles.button,
               saving && { opacity: 0.7 },
             ]}
             onPress={handleSave}
           >
             {saving ? (
-              <ActivityIndicator color={themeStyles.buttonText.color} />
+              <ActivityIndicator color={theme.styles.buttonText.color} />
             ) : (
               <>
                 <MaterialIcons
                   name="save"
                   size={18}
-                  color={themeStyles.buttonText.color}
+                  color={theme.styles.buttonText.color}
                 />
-                <Text style={[styles.actionText, themeStyles.buttonText]}>
+                <Text style={[styles.actionText, theme.styles.buttonText]}>
                   Save Changes
                 </Text>
               </>

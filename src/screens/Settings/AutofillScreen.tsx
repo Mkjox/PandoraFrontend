@@ -23,7 +23,7 @@ const AUTO_FILL_KEY = 'autofillEnabled';
 
 const AutofillScreen: React.FC = () => {
   const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
 
   const [autofillEnabled, setAutofillEnabled] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
@@ -91,27 +91,27 @@ const AutofillScreen: React.FC = () => {
 
   if (loading) {
     return (
-      <View style={[styles.container, themeStyles.container, styles.center]}>
-        <Text style={themeStyles.text}>Loading...</Text>
+      <View style={[styles.container, theme.styles.container, styles.center]}>
+        <Text style={theme.styles.text}>Loading...</Text>
       </View>
     );
   }
 
   return (
     <ScrollView
-      style={[styles.container, themeStyles.container]}
+      style={[styles.container, theme.styles.container]}
       contentContainerStyle={{ paddingBottom: 40 }}
     >
       <View style={styles.spacer} />
 
-      <Text style={[styles.title, themeStyles.text]}>Autofill Settings</Text>
+      <Text style={[styles.title, theme.styles.text]}>Autofill Settings</Text>
 
-      <View style={[styles.section, themeStyles.card]}>
-        <Text style={[styles.sectionHeader, themeStyles.text]}>
+      <View style={[styles.section, theme.styles.card]}>
+        <Text style={[styles.sectionHeader, theme.styles.text]}>
           Enable Autofill Service
         </Text>
         <View style={styles.optionRow}>
-          <Text style={[styles.optionText, themeStyles.text]}>
+          <Text style={[styles.optionText, theme.styles.text]}>
             {autofillEnabled ? 'On' : 'Off'}
           </Text>
           <Switch
@@ -120,14 +120,14 @@ const AutofillScreen: React.FC = () => {
             disabled
           />
         </View>
-        <Text style={[styles.helperText, themeStyles.text]}>
+        <Text style={[styles.helperText, theme.styles.text]}>
           When enabled, Pandora can offer autofill suggestions in compatible apps (Android) or via Password AutoFill extension (iOS). You will need to enable the service/extension in system settings after toggling on.
         </Text>
       </View>
 
       {/* Optionally, a button to open system settings directly */}
       <TouchableOpacity
-        style={[styles.openSettingsButton, themeStyles.button]}
+        style={[styles.openSettingsButton, theme.styles.button]}
         disabled
         onPress={() => {
           if (Platform.OS === 'android') {
@@ -138,7 +138,7 @@ const AutofillScreen: React.FC = () => {
           }
         }}
       >
-        <Text style={[styles.openSettingsText, themeStyles.buttonText]}>
+        <Text style={[styles.openSettingsText, theme.styles.buttonText]}>
           Open System Autofill Settings
         </Text>
       </TouchableOpacity>

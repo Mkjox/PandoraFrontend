@@ -34,7 +34,7 @@ const PassDetailsScreen: React.FC = () => {
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
   const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
 
   const [item, setItem] = useState<PasswordItem | null>(null);
   const [loading, setLoading] = useState(true);
@@ -66,8 +66,8 @@ const PassDetailsScreen: React.FC = () => {
 
   if (error || !item) {
     return (
-      <View style={[themeStyles.container, styles.center]}>
-        <Text style={themeStyles.text}>{error || 'No details available'}</Text>
+      <View style={[theme.styles.container, styles.center]}>
+        <Text style={theme.styles.text}>{error || 'No details available'}</Text>
       </View>
     );
   }
@@ -114,19 +114,19 @@ const PassDetailsScreen: React.FC = () => {
 
   return (
     <>
-      <ScrollView style={themeStyles.container} contentContainerStyle={styles.scrollContent}>
+      <ScrollView style={theme.styles.container} contentContainerStyle={styles.scrollContent}>
         <View style={styles.spacer} />
 
-        <View style={[styles.headerRow, themeStyles.card, themeStyles.border]}>
+        <View style={[styles.headerRow, theme.styles.card, theme.styles.border]}>
           <View style={[styles.avatar]}>
-            <Text style={[styles.avatarText, themeStyles.text]}>
+            <Text style={[styles.avatarText, theme.styles.text]}>
               {item.siteName ? item.siteName.charAt(0).toUpperCase() : 'P'}
             </Text>
           </View>
 
           <View style={styles.headerText}>
-            <Text numberOfLines={1} style={[styles.title, themeStyles.text]}>{item.siteName}</Text>
-            <Text numberOfLines={1} style={[styles.subtitle, themeStyles.textGray]}>
+            <Text numberOfLines={1} style={[styles.title, theme.styles.text]}>{item.siteName}</Text>
+            <Text numberOfLines={1} style={[styles.subtitle, theme.styles.textGray]}>
               {item.usernameOrEmail}
             </Text>
           </View>
@@ -135,26 +135,26 @@ const PassDetailsScreen: React.FC = () => {
             style={styles.headerAction}
             onPress={() => setShowDeleteModal(true)}
           >
-            <Entypo name="trash" size={20} color={themeStyles.iconColor.color} />
+            <Entypo name="trash" size={20} color={theme.styles.iconColor.color} />
           </TouchableOpacity>
         </View>
 
         {/* Password Card */}
-        <View style={[styles.card, themeStyles.card, themeStyles.border]}>
+        <View style={[styles.card, theme.styles.card, theme.styles.border]}>
           <View style={styles.row}>
-            <Text style={[styles.label, themeStyles.text]}>Password</Text>
+            <Text style={[styles.label, theme.styles.text]}>Password</Text>
             <Pressable
               onPress={() => setShowPassword(v => !v)}
               hitSlop={8}
               accessibilityRole="button"
               accessibilityLabel="Toggle password visibility"
             >
-              <Entypo name={showPassword ? 'eye' : 'eye-with-line'} size={20} color={themeStyles.iconColor.color} />
+              <Entypo name={showPassword ? 'eye' : 'eye-with-line'} size={20} color={theme.styles.iconColor.color} />
             </Pressable>
           </View>
 
           <View style={styles.valueWrap}>
-            <Text selectable style={[styles.value, themeStyles.text]}>
+            <Text selectable style={[styles.value, theme.styles.text]}>
               {showPassword ? item.password : '••••••••'}
             </Text>
             <Pressable
@@ -163,37 +163,37 @@ const PassDetailsScreen: React.FC = () => {
               accessibilityRole="button"
               accessibilityLabel="Copy the password"
             >
-              <Entypo name='copy' size={20} color={themeStyles.iconColor.color} />
+              <Entypo name='copy' size={20} color={theme.styles.iconColor.color} />
             </Pressable>
           </View>
 
           <View style={styles.metaRow}>
             <View style={styles.metaItem}>
-              <Text style={[styles.metaLabel, themeStyles.text]}>Changed At</Text>
-              <Text style={[styles.metaValue, themeStyles.text]}>{formatDate(item.lastPasswordChangeDate)}</Text>
+              <Text style={[styles.metaLabel, theme.styles.text]}>Changed At</Text>
+              <Text style={[styles.metaValue, theme.styles.text]}>{formatDate(item.lastPasswordChangeDate)}</Text>
             </View>
             <View style={styles.metaItem}>
-              <Text style={[styles.metaLabel, themeStyles.text]}>Category Id</Text>
-              <Text style={[styles.metaValue, themeStyles.text]}>{item.categoryId ?? '—'}</Text>
+              <Text style={[styles.metaLabel, theme.styles.text]}>Category Id</Text>
+              <Text style={[styles.metaValue, theme.styles.text]}>{item.categoryId ?? '—'}</Text>
             </View>
           </View>
         </View>
 
         {item.notes ? (
-          <View style={[styles.card, themeStyles.card, themeStyles.border]}>
-            <Text style={[styles.label, themeStyles.text]}>Notes</Text>
-            <Text style={[styles.value, themeStyles.text]}>{item.notes}</Text>
+          <View style={[styles.card, theme.styles.card, theme.styles.border]}>
+            <Text style={[styles.label, theme.styles.text]}>Notes</Text>
+            <Text style={[styles.value, theme.styles.text]}>{item.notes}</Text>
           </View>
         ) : null}
 
 
         <View style={styles.actionRow}>
           <TouchableOpacity
-            style={[styles.actionBtn, themeStyles.button]}
+            style={[styles.actionBtn, theme.styles.button]}
             onPress={() => navigation.navigate('EditPassword', { passwordId: item.id })}
           >
-            <MaterialIcons name="edit" size={18} color={themeStyles.buttonText.color} />
-            <Text style={[styles.actionText, themeStyles.buttonText]}>Edit</Text>
+            <MaterialIcons name="edit" size={18} color={theme.styles.buttonText.color} />
+            <Text style={[styles.actionText, theme.styles.buttonText]}>Edit</Text>
           </TouchableOpacity>
         </View>
 

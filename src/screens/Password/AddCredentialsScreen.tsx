@@ -45,7 +45,7 @@ export default function AddCredentialsScreen() {
   const route = useRoute<RouteProps>();
   const dispatch = useAppDispatch();
   const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
 
   // initial tab
   const initialTab = route.params?.tab ?? 'password';
@@ -257,21 +257,21 @@ export default function AddCredentialsScreen() {
   // loading states
   if (loadingUser || (loadingCategories && selectedTab === 'category')) {
     return (
-      <View style={[styles.loader, themeStyles.container]}>
+      <View style={[styles.loader, theme.styles.container]}>
         <ActivityIndicator size="large" />
       </View>
     );
   }
   if (categoriesError) {
     return (
-      <View style={[styles.loader, themeStyles.container]}>
-        <Text style={themeStyles.text}>{categoriesError}</Text>
+      <View style={[styles.loader, theme.styles.container]}>
+        <Text style={theme.styles.text}>{categoriesError}</Text>
       </View>
     );
   }
 
   return (
-    <ScrollView style={[themeStyles.container, styles.container]}>
+    <ScrollView style={[theme.styles.container, styles.container]}>
       {datePicker.field && (
         <DateTimePicker
           value={datePicker.date}
@@ -289,7 +289,7 @@ export default function AddCredentialsScreen() {
             onPress={() => setSelectedTab(tab)}
             style={[styles.tab, selectedTab === tab && styles.activeTab]}
           >
-            <Text style={[styles.tabText, themeStyles.text]}>
+            <Text style={[styles.tabText, theme.styles.text]}>
               {tab === 'password'
                 ? 'Password'
                 : tab === 'vault'
@@ -305,50 +305,50 @@ export default function AddCredentialsScreen() {
         {selectedTab === 'password' && (
           <>
             <TextInput
-              style={[styles.input, themeStyles.inputText, themeStyles.card]}
+              style={[styles.input, theme.styles.inputText, theme.styles.card]}
               label="Site Name*"
               value={form.SiteName}
               onChangeText={v => handleChange('SiteName', v)}
               mode='outlined'
-              textColor={themeStyles.text.color as string}
+              textColor={theme.styles.text.color as string}
             />
             <TextInput
-              style={[styles.input, themeStyles.inputText, themeStyles.card]}
+              style={[styles.input, theme.styles.inputText, theme.styles.card]}
               label="Username or Email*"
               mode='outlined'
               value={form.UsernameOrEmail}
               onChangeText={v => handleChange('UsernameOrEmail', v)}
-              textColor={themeStyles.text.color as string}
+              textColor={theme.styles.text.color as string}
             />
             <TextInput
-              style={[styles.input, themeStyles.inputText, themeStyles.card]}
+              style={[styles.input, theme.styles.inputText, theme.styles.card]}
               label="Password*"
               mode='outlined'
               secureTextEntry
               value={form.Password}
               onChangeText={v => handleChange('Password', v)}
-              textColor={themeStyles.text.color as string}
+              textColor={theme.styles.text.color as string}
             />
             <TextInput
-              style={[styles.input, themeStyles.inputText, themeStyles.card]}
+              style={[styles.input, theme.styles.inputText, theme.styles.card]}
               label="Repeat Password*"
               mode='outlined'
               secureTextEntry
               value={form.PasswordRepeat}
               onChangeText={v => handleChange('PasswordRepeat', v)}
-              textColor={themeStyles.text.color as string}
+              textColor={theme.styles.text.color as string}
             />
             <TextInput
-              style={[styles.input, themeStyles.inputText, themeStyles.card]}
+              style={[styles.input, theme.styles.inputText, theme.styles.card]}
               label="Notes"
               mode='outlined'
               value={form.Notes}
               onChangeText={v => handleChange('Notes', v)}
-              textColor={themeStyles.text.color as string}
+              textColor={theme.styles.text.color as string}
             />
 
             {/* <TouchableOpacity
-              style={[styles.input, themeStyles.inputText, themeStyles.card, {
+              style={[styles.input, theme.styles.inputText, theme.styles.card, {
                 borderWidth: 2,
                 borderColor: '#57555f',
                 borderRadius: 5,
@@ -363,15 +363,15 @@ export default function AddCredentialsScreen() {
               </Text>
             </TouchableOpacity> */}
 
-            {/* <Text style={[styles.label, themeStyles.text]}>Category*</Text> */}
-            <View style={[styles.pickerContainer, themeStyles.card]}>
+            {/* <Text style={[styles.label, theme.styles.text]}>Category*</Text> */}
+            <View style={[styles.pickerContainer, theme.styles.card]}>
               <Picker
                 selectedValue={form.CategoryId}
                 onValueChange={v => handleChange('CategoryId', v)}
               >
                 <Picker.Item label="Select category*" value="" color={isDark ? '#888' : '#49454f'} />
                 {categories.map(c => (
-                  <Picker.Item key={c.id} label={c.name} value={c.id} style={themeStyles.inputText} />
+                  <Picker.Item key={c.id} label={c.name} value={c.id} style={theme.styles.inputText} />
                 ))}
               </Picker>
             </View>
@@ -381,28 +381,28 @@ export default function AddCredentialsScreen() {
         {selectedTab === 'vault' && (
           <>
             <TextInput
-              style={[styles.input, themeStyles.inputText, themeStyles.card]}
+              style={[styles.input, theme.styles.inputText, theme.styles.card]}
               label="Title*"
               mode='outlined'
               value={form.Title}
               onChangeText={v => handleChange('Title', v)}
-              textColor={themeStyles.text.color as string}
+              textColor={theme.styles.text.color as string}
             />
             <TextInput
-              style={[styles.input, themeStyles.inputText, themeStyles.card]}
+              style={[styles.input, theme.styles.inputText, theme.styles.card]}
               label="Content*"
               mode='outlined'
               value={form.Content}
               onChangeText={v => handleChange('Content', v)}
-              textColor={themeStyles.text.color as string}
+              textColor={theme.styles.text.color as string}
             />
             {/* <TextInput
-              style={[styles.input, themeStyles.inputText, themeStyles.card]}
+              style={[styles.input, theme.styles.inputText, theme.styles.card]}
               label="URL"
               mode='outlined'
               value={form.Url}
               onChangeText={v => handleChange('Url', v)}
-              textColor={themeStyles.text.color}
+              textColor={theme.styles.text.color}
             /> */}
             {/* <ImagePickerButton
               title={form.MediaFile ? 'Change Image' : 'Upload Image'}
@@ -411,29 +411,29 @@ export default function AddCredentialsScreen() {
               textStyle={styles.uploadButtonText}
             />
             {form.MediaFile && (
-              <Text style={[styles.helpText, themeStyles.textGray]}>
+              <Text style={[styles.helpText, theme.styles.textGray]}>
                 Image selected ({form.MediaFile.length.toLocaleString()} chars)
               </Text>
             )} */}
             <TextInput
-              style={[styles.input, themeStyles.inputText, themeStyles.card]}
+              style={[styles.input, theme.styles.inputText, theme.styles.card]}
               label="Summary"
               mode='outlined'
               value={form.Summary}
               onChangeText={v => handleChange('Summary', v)}
-              textColor={themeStyles.text.color as string}
+              textColor={theme.styles.text.color as string}
             />
             <TextInput
-              style={[styles.input, themeStyles.inputText, themeStyles.card]}
+              style={[styles.input, theme.styles.inputText, theme.styles.card]}
               label="Tags (comma separated)"
               mode='outlined'
               value={form.Tags}
               onChangeText={v => handleChange('Tags', v)}
-              textColor={themeStyles.text.color as string}
+              textColor={theme.styles.text.color as string}
             />
 
             <View style={styles.switchRow}>
-              <Text style={themeStyles.text}>Lock this item?</Text>
+              <Text style={theme.styles.text}>Lock this item?</Text>
               <Switch
                 value={form.IsLocked}
                 onValueChange={v => handleChange('IsLocked', v)}
@@ -443,7 +443,7 @@ export default function AddCredentialsScreen() {
             {form.IsLocked && (
               <>
                 <TouchableOpacity
-                  style={[styles.input, themeStyles.card,
+                  style={[styles.input, theme.styles.card,
                   {
                     height: height * 0.07,
                     borderWidth: 1,
@@ -454,7 +454,7 @@ export default function AddCredentialsScreen() {
                 >
                   <Text
                     style={[
-                      themeStyles.inputText,
+                      theme.styles.inputText,
                       { color: form.UnlockDate ? '#888' : '#49454f' },
                     ]}
                   >
@@ -462,7 +462,7 @@ export default function AddCredentialsScreen() {
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={[styles.input, themeStyles.card,
+                  style={[styles.input, theme.styles.card,
                   {
                     height: height * 0.07,
                     borderWidth: 1,
@@ -473,7 +473,7 @@ export default function AddCredentialsScreen() {
                 >
                   <Text
                     style={[
-                      themeStyles.inputText,
+                      theme.styles.inputText,
                       { color: form.ExpirationDate ? '#888' : '#49454f' },
                     ]}
                   >
@@ -484,22 +484,22 @@ export default function AddCredentialsScreen() {
             )}
 
             <View style={styles.switchRow}>
-              <Text style={themeStyles.text}>Allow sharing?</Text>
+              <Text style={theme.styles.text}>Allow sharing?</Text>
               <Switch
                 value={form.IsShareable}
                 onValueChange={v => handleChange('IsShareable', v)}
               />
             </View>
             <View style={styles.switchRow}>
-              <Text style={themeStyles.text}>Mark as favorite?</Text>
+              <Text style={theme.styles.text}>Mark as favorite?</Text>
               <Switch
                 value={form.IsFavorite}
                 onValueChange={v => handleChange('IsFavorite', v)}
               />
             </View>
 
-            {/* <Text style={[styles.label, themeStyles.text]}>Category*</Text> */}
-            <View style={[styles.pickerContainer, themeStyles.card]}>
+            {/* <Text style={[styles.label, theme.styles.text]}>Category*</Text> */}
+            <View style={[styles.pickerContainer, theme.styles.card]}>
               <Picker
                 selectedValue={form.CategoryId}
                 onValueChange={v => handleChange('CategoryId', v)}
@@ -516,33 +516,33 @@ export default function AddCredentialsScreen() {
         {selectedTab === 'category' && (
           <>
             <TextInput
-              style={[styles.input, themeStyles.inputText, themeStyles.card]}
+              style={[styles.input, theme.styles.inputText, theme.styles.card]}
               label="Name*"
               mode='outlined'
               value={form.Name}
               onChangeText={v => handleChange('Name', v)}
-              textColor={themeStyles.text.color as string}
+              textColor={theme.styles.text.color as string}
             />
             <TextInput
-              style={[styles.input, themeStyles.inputText, themeStyles.card]}
+              style={[styles.input, theme.styles.inputText, theme.styles.card]}
               label="Description"
               mode='outlined'
               value={form.Description}
               onChangeText={v => handleChange('Description', v)}
-              textColor={themeStyles.text.color as string}
+              textColor={theme.styles.text.color as string}
             />
           </>
         )}
       </View>
 
       <TouchableOpacity
-        style={[styles.submitButton, themeStyles.button]}
+        style={[styles.submitButton, theme.styles.button]}
         onPress={handleSubmit}
         disabled={submitting}
       >
         {submitting
           ? <ActivityIndicator color={isDark ? '#000' : '#fff'} />
-          : <Text style={[styles.buttonText, themeStyles.buttonText]}>
+          : <Text style={[styles.buttonText, theme.styles.buttonText]}>
             {route.params?.categoryId ? 'Update' : 'Submit'}
           </Text>}
       </TouchableOpacity>

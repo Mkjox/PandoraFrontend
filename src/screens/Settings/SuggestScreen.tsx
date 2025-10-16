@@ -21,7 +21,7 @@ const COOLDOWN_MS = COOLDOWN_HOURS * 60 * 60 * 1000;
 
 const SuggestScreen: React.FC = () => {
     const { isDark } = useTheme();
-    const themeStyles = isDark ? darkTheme : lightTheme;
+    const theme = isDark ? darkTheme : lightTheme;
 
     const [suggestion, setSuggestion] = useState('');
     const [isOnCooldown, setIsOnCooldown] = useState(false);
@@ -110,22 +110,22 @@ const SuggestScreen: React.FC = () => {
     };
 
     return (
-        <ScrollView style={[styles.container, themeStyles.container]}>
+        <ScrollView style={[styles.container, theme.styles.container]}>
             <View style={styles.spacer} />
 
-            <Text style={[styles.title, themeStyles.text]}>Send Us Your Suggestions</Text>
+            <Text style={[styles.title, theme.styles.text]}>Send Us Your Suggestions</Text>
 
             <View style={styles.section}>
-                <Text style={[styles.sectionHeader, themeStyles.text]}>We’re Listening</Text>
-                <Text style={[styles.sectionBody, themeStyles.text]}>
+                <Text style={[styles.sectionHeader, theme.styles.text]}>We’re Listening</Text>
+                <Text style={[styles.sectionBody, theme.styles.text]}>
                     Got an idea or feedback? Let us know how we can improve Pandora. Your input helps shape future updates!
                 </Text>
             </View>
 
             <View style={styles.section}>
-                <Text style={[styles.sectionHeader, themeStyles.text]}>Your Suggestion</Text>
+                <Text style={[styles.sectionHeader, theme.styles.text]}>Your Suggestion</Text>
                 <TextInput
-                    style={[styles.textArea, themeStyles.card]}
+                    style={[styles.textArea, theme.styles.card]}
                     multiline
                     placeholder="Type your suggestion here..."
                     placeholderTextColor={isDark ? '#888' : '#666'}
@@ -138,13 +138,13 @@ const SuggestScreen: React.FC = () => {
             <TouchableOpacity
                 style={[
                     styles.button,
-                    themeStyles.button,
+                    theme.styles.button,
                     isOnCooldown && { opacity: 0.5 }
                 ]}
                 onPress={handleSubmit}
                 disabled={isOnCooldown}
             >
-                <Text style={[styles.buttonText, themeStyles.buttonText]}>
+                <Text style={[styles.buttonText, theme.styles.buttonText]}>
                     {isOnCooldown
                         ? `Wait ${remainingTime} min`
                         : 'Submit'}

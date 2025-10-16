@@ -25,7 +25,7 @@ const LogoutButton: React.FC = () => {
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
   const dispatch = useAppDispatch();
   const navigation = useNavigation<any>();
   const [userLabel, setUserLabel] = useState<string | null>(null);
@@ -78,7 +78,7 @@ const LogoutButton: React.FC = () => {
         onPress={() => setVisible(true)}
         style={({ pressed }) => [
           styles.linkRow,
-          themeStyles.card,
+          theme.styles.card,
           // pressed && styles.pressed,
           pressed && { opacity: Platform.OS === 'ios' ? 0.6 : 1 },
         ]}
@@ -87,8 +87,8 @@ const LogoutButton: React.FC = () => {
         accessibilityLabel="Logout"
         hitSlop={8}
       >
-        <Entypo name="log-out" size={20} style={[themeStyles.iconColor]} />
-        <Text style={[styles.linkText, themeStyles.text]}>Logout</Text>
+        <Entypo name="log-out" size={20} style={[theme.styles.iconColor]} />
+        <Text style={[styles.linkText, theme.styles.text]}>Logout</Text>
       </Pressable>
 
       {/* Confirmation Modal */}
@@ -101,19 +101,19 @@ const LogoutButton: React.FC = () => {
         useNativeDriver
         hideModalContentWhileAnimating
       >
-        <View style={[styles.modal, themeStyles.card, themeStyles.border, { width: MODAL_WIDTH }]}>
+        <View style={[styles.modal, theme.styles.card, theme.styles.border, { width: MODAL_WIDTH }]}>
           <View style={styles.header}>
-            <View style={[styles.badge, { backgroundColor: themeStyles.iconBg?.backgroundColor || '#eef6f8' }]}>
-              <Entypo name="warning" size={20} color={themeStyles.iconColor?.color || '#1c6d79'} />
+            <View style={[styles.badge, { backgroundColor: theme.styles.iconBg?.backgroundColor || '#eef6f8' }]}>
+              <Entypo name="warning" size={20} color={theme.styles.iconColor?.color || '#1c6d79'} />
             </View>
             <View style={styles.titleWrap}>
-              <Text style={[styles.title, themeStyles.text]}>Confirm logout</Text>
+              <Text style={[styles.title, theme.styles.text]}>Confirm logout</Text>
               {userLabel ? (
-                <Text style={[styles.subtitle, themeStyles.text, { opacity: 0.7 }]}>
+                <Text style={[styles.subtitle, theme.styles.text, { opacity: 0.7 }]}>
                   Signing out {userLabel}
                 </Text>
               ) : (
-                <Text style={[styles.subtitle, themeStyles.text, { opacity: 0.7 }]}>
+                <Text style={[styles.subtitle, theme.styles.text, { opacity: 0.7 }]}>
                   You will be signed out from this device.
                 </Text>
               )}
@@ -123,7 +123,7 @@ const LogoutButton: React.FC = () => {
           <View style={styles.divider} />
 
           <View style={styles.messageWrap}>
-            <Text style={[styles.message, themeStyles.text]}>
+            <Text style={[styles.message, theme.styles.text]}>
               Are you sure you want to logout? You will need to authenticate again to access Pandora.
             </Text>
           </View>
@@ -134,13 +134,13 @@ const LogoutButton: React.FC = () => {
               style={({ pressed }) => [
                 styles.btn,
                 styles.cancel,
-                { borderColor: themeStyles.border?.borderColor || '#ccc' },
+                { borderColor: theme.styles.border?.borderColor || '#ccc' },
                 pressed && styles.btnPressed,
               ]}
               accessibilityRole="button"
               accessibilityLabel="Cancel logout"
             >
-              <Text style={[styles.cancelText, themeStyles.text]}>Cancel</Text>
+              <Text style={[styles.cancelText, theme.styles.text]}>Cancel</Text>
             </Pressable>
 
             <Pressable
@@ -149,7 +149,7 @@ const LogoutButton: React.FC = () => {
               style={({ pressed }) => [
                 styles.btn,
                 styles.destructive,
-                { backgroundColor: themeStyles.dangerColor || '#D32F2F' },
+                { backgroundColor: theme.styles.dangerColor || '#D32F2F' },
                 pressed && styles.btnPressed,
               ]}
               accessibilityRole="button"
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
     color: '#555',
   },
   destructive: {
-    // backgroundColor assigned inline from themeStyles.dangerColor or fallback
+    // backgroundColor assigned inline from theme.styles.dangerColor or fallback
   },
   destructiveText: {
     fontSize: 15,

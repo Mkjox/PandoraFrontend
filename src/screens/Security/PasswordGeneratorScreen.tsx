@@ -46,7 +46,7 @@ const generatePassword = (
 
 const PasswordGeneratorScreen: React.FC = () => {
     const { isDark } = useTheme();
-    const themeStyles = isDark ? darkTheme : lightTheme;
+    const theme = isDark ? darkTheme : lightTheme;
 
     const [length, setLength] = useState(12)
     const [includeUpper, setIncludeUpper] = useState(true)
@@ -82,32 +82,32 @@ const PasswordGeneratorScreen: React.FC = () => {
     }
 
     return (
-        <View style={[styles.container, themeStyles.container]}>
-            <Text style={[styles.title, themeStyles.text]}>
+        <View style={[styles.container, theme.styles.container]}>
+            <Text style={[styles.title, theme.styles.text]}>
                 Password Generator
             </Text>
 
-            <View style={[styles.card, themeStyles.card]}>
-                <Text style={[styles.label, themeStyles.text]}>Length: {length}</Text>
+            <View style={[styles.card, theme.styles.card]}>
+                <Text style={[styles.label, theme.styles.text]}>Length: {length}</Text>
                 <Slider
                     style={styles.slider}
                     minimumValue={4}
                     maximumValue={32}
                     step={1}
                     value={length}
-                    minimumTrackTintColor={themeStyles.button.backgroundColor}
+                    minimumTrackTintColor={theme.styles.button.backgroundColor}
                     onValueChange={setLength}
                 />
 
                 <View style={styles.row}>
-                    <Text style={[styles.label, themeStyles.text]}>
+                    <Text style={[styles.label, theme.styles.text]}>
                         Include Uppercase
                     </Text>
                     <Switch
                         value={includeUpper}
                         onValueChange={setIncludeUpper}
                         trackColor={{
-                            true: themeStyles.button.backgroundColor,
+                            true: theme.styles.button.backgroundColor,
                             false: '#888',
                         }}
                         thumbColor={includeUpper ? '#fff' : '#ccc'}
@@ -115,14 +115,14 @@ const PasswordGeneratorScreen: React.FC = () => {
                 </View>
 
                 <View style={styles.row}>
-                    <Text style={[styles.label, themeStyles.text]}>
+                    <Text style={[styles.label, theme.styles.text]}>
                         Include Numbers
                     </Text>
                     <Switch
                         value={includeNumbers}
                         onValueChange={setIncludeNumbers}
                         trackColor={{
-                            true: themeStyles.button.backgroundColor,
+                            true: theme.styles.button.backgroundColor,
                             false: '#888',
                         }}
                         thumbColor={includeNumbers ? '#fff' : '#ccc'}
@@ -130,14 +130,14 @@ const PasswordGeneratorScreen: React.FC = () => {
                 </View>
 
                 <View style={styles.row}>
-                    <Text style={[styles.label, themeStyles.text]}>
+                    <Text style={[styles.label, theme.styles.text]}>
                         Include Symbols
                     </Text>
                     <Switch
                         value={includeSymbols}
                         onValueChange={setIncludeSymbols}
                         trackColor={{
-                            true: themeStyles.button.backgroundColor,
+                            true: theme.styles.button.backgroundColor,
                             false: '#888',
                         }}
                         thumbColor={includeSymbols ? '#fff' : '#ccc'}
@@ -147,20 +147,20 @@ const PasswordGeneratorScreen: React.FC = () => {
                 <CustomButton
                     onPress={onGenerate}
                     title='Generate'
-                    style={[styles.button, themeStyles.button]}
+                    style={[styles.button, theme.styles.button]}
                 />
 
             </View>
 
             {password ? (
-                <View style={[styles.resultCard, themeStyles.card]}>
-                    <Text style={[styles.passwordText, themeStyles.text]}>
+                <View style={[styles.resultCard, theme.styles.card]}>
+                    <Text style={[styles.passwordText, theme.styles.text]}>
                         {password}
                     </Text>
                     <CustomButton
                         onPress={onCopy}
                         title='Copy'
-                        style={[styles.copyButton, themeStyles.button]}
+                        style={[styles.copyButton, theme.styles.button]}
                     />
                 </View>
             ) : null}

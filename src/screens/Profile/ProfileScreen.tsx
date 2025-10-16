@@ -25,7 +25,7 @@ const { width } = Dimensions.get('window');
 
 const ProfileScreen: React.FC = () => {
   const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
   const dispatch = useAppDispatch();
   const navigation = useNavigation<any>();
 
@@ -42,52 +42,52 @@ const ProfileScreen: React.FC = () => {
 
   if (!profile) {
     return (
-      <View style={[themeStyles.container, styles.center]}>
-        <Text style={themeStyles.text}>Loading profile…</Text>
+      <View style={[theme.styles.container, styles.center]}>
+        <Text style={theme.styles.text}>Loading profile…</Text>
       </View>
     );
   }
 
   return (
-    <ScrollView style={[styles.container, themeStyles.container]}>
+    <ScrollView style={[styles.container, theme.styles.container]}>
       <View style={styles.spacer} />
 
-      <Text style={[styles.title, themeStyles.text]}>My Profile</Text>
+      <Text style={[styles.title, theme.styles.text]}>My Profile</Text>
 
-      <View style={[styles.avatarGroup, themeStyles.card]}>
+      <View style={[styles.avatarGroup, theme.styles.card]}>
         {profile.photoUrl ? (
           <Image source={{ uri: profile.photoUrl }} style={styles.avatar} />
         ) : (
-          <FontAwesome name="user-circle" size={96} color={themeStyles.iconColor.color} />
+          <FontAwesome name="user-circle" size={96} color={theme.styles.iconColor.color} />
         )}
       </View>
 
-      <View style={[styles.infoGroup, themeStyles.card, themeStyles.border]}>
-        <Text style={[styles.infoName, themeStyles.text]}>{profile.username}</Text>
-        <Text style={[styles.infoEmail, themeStyles.text]}>{profile.email}</Text>
+      <View style={[styles.infoGroup, theme.styles.card, theme.styles.border]}>
+        <Text style={[styles.infoName, theme.styles.text]}>{profile.username}</Text>
+        <Text style={[styles.infoEmail, theme.styles.text]}>{profile.email}</Text>
         {profile.lastLogin && (
-          <Text style={[styles.infoSub, themeStyles.text]}>
+          <Text style={[styles.infoSub, theme.styles.text]}>
             Last login: {new Date(profile.lastLogin).toLocaleString()}
           </Text>
         )}
       </View>
 
-      <View style={[styles.statsGroup, themeStyles.card, themeStyles.border]}>
+      <View style={[styles.statsGroup, theme.styles.card, theme.styles.border]}>
         <View style={styles.statItem}>
-          <Text style={[styles.statValue, themeStyles.text]}>{profile.passwordCount ?? 0}</Text>
-          <Text style={[styles.statLabel, themeStyles.text]}>Passwords</Text>
+          <Text style={[styles.statValue, theme.styles.text]}>{profile.passwordCount ?? 0}</Text>
+          <Text style={[styles.statLabel, theme.styles.text]}>Passwords</Text>
         </View>
         <View style={styles.statItem}>
-          <Text style={[styles.statValue, themeStyles.text]}>{profile.vaultCount ?? 0}</Text>
-          <Text style={[styles.statLabel, themeStyles.text]}>Vaults</Text>
+          <Text style={[styles.statValue, theme.styles.text]}>{profile.vaultCount ?? 0}</Text>
+          <Text style={[styles.statLabel, theme.styles.text]}>Vaults</Text>
         </View>
         <View style={styles.statItem}>
-          <Text style={[styles.statValue, themeStyles.text]}>{profile.categoryCount ?? 0}</Text>
-          <Text style={[styles.statLabel, themeStyles.text]}>Categories</Text>
+          <Text style={[styles.statValue, theme.styles.text]}>{profile.categoryCount ?? 0}</Text>
+          <Text style={[styles.statLabel, theme.styles.text]}>Categories</Text>
         </View>
       </View>
 
-      <View style={[styles.linksGroup, themeStyles.card, themeStyles.border]}>
+      <View style={[styles.linksGroup, theme.styles.card, theme.styles.border]}>
 
         <Pressable
           onPress={() => navigation.navigate('EditProfile' as never)}
@@ -97,8 +97,8 @@ const ProfileScreen: React.FC = () => {
           ]}
           android_ripple={isDark ? { color: 'rgba(255, 255, 255, 0.06)' } : { color: 'rgba(0,0,0, 0.06)', borderless: false }}
         >
-          <MaterialIcons name="edit" size={20} style={themeStyles.iconColor} />
-          <Text style={[styles.linkText, themeStyles.text]}>Edit Profile</Text>
+          <MaterialIcons name="edit" size={20} style={theme.styles.iconColor} />
+          <Text style={[styles.linkText, theme.styles.text]}>Edit Profile</Text>
         </Pressable>
 
         <Pressable
@@ -109,8 +109,8 @@ const ProfileScreen: React.FC = () => {
           ]}
           android_ripple={isDark ? { color: 'rgba(255, 255, 255, 0.06)' } : { color: 'rgba(0,0,0, 0.06)', borderless: false }}
         >
-          <MaterialIcons name="dark-mode" size={20} style={themeStyles.iconColor} />
-          <Text style={[styles.linkText, themeStyles.text]}>Theme</Text>
+          <MaterialIcons name="dark-mode" size={20} style={theme.styles.iconColor} />
+          <Text style={[styles.linkText, theme.styles.text]}>Theme</Text>
         </Pressable>
 
         <Pressable
@@ -121,15 +121,15 @@ const ProfileScreen: React.FC = () => {
           ]}
           android_ripple={isDark ? { color: 'rgba(255, 255, 255, 0.06)' } : { color: 'rgba(0,0,0, 0.06)', borderless: false }}
         >
-          <MaterialIcons name="settings" size={20} style={themeStyles.iconColor} />
-          <Text style={[styles.linkText, themeStyles.text]}>Settings</Text>
+          <MaterialIcons name="settings" size={20} style={theme.styles.iconColor} />
+          <Text style={[styles.linkText, theme.styles.text]}>Settings</Text>
         </Pressable>
 
         <LogoutButton />
 
       </View>
 
-      <Text style={[styles.versionText, themeStyles.text]}>Version 1.0.0</Text>
+      <Text style={[styles.versionText, theme.styles.text]}>Version 1.0.0</Text>
     </ScrollView>
   );
 };

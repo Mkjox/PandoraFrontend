@@ -35,7 +35,7 @@ export default function LoginScreen() {
   const dispatch = useDispatch()
   const navigation = useNavigation<any>()
   const { isDark } = useTheme()
-  const themeStyles = isDark ? darkTheme : lightTheme
+  const theme = isDark ? darkTheme : lightTheme
 
   const handleChange = (key: keyof typeof credentials, value: string) => {
     setCredentials(c => ({ ...c, [key]: value }))
@@ -98,7 +98,7 @@ export default function LoginScreen() {
   }
 
   return (
-    <View style={[styles.container, themeStyles.container]}>
+    <View style={[styles.container, theme.styles.container]}>
       <Image
         source={require('../../assets/images/logo.png')}
         style={styles.logo}
@@ -112,7 +112,7 @@ export default function LoginScreen() {
         error={!!usernameError}
         value={credentials.UsernameOrEmail}
         onChangeText={text => handleChange('UsernameOrEmail', text)}
-        style={[styles.input, themeStyles.card]}
+        style={[styles.input, theme.styles.card]}
         placeholderTextColor={isDark ? '#888' : '#666'}
         autoCapitalize="none"
         keyboardType="email-address"
@@ -136,7 +136,7 @@ export default function LoginScreen() {
         error={!!passwordError}
         value={credentials.Password}
         onChangeText={text => handleChange('Password', text)}
-        style={[styles.input, themeStyles.card]}
+        style={[styles.input, theme.styles.card]}
         placeholderTextColor={isDark ? '#888' : '#666'}
         autoCapitalize="none"
         activeUnderlineColor='#1c6d79'
@@ -159,7 +159,7 @@ export default function LoginScreen() {
       />
 
       <TouchableOpacity onPress={() => navigation.navigate('Register' as never)}>
-        <Text style={[styles.link, themeStyles.textBlue]}>
+        <Text style={[styles.link, theme.styles.textBlue]}>
           Don't have an account? <Text style={styles.innerLink}>Register here</Text>
         </Text>
       </TouchableOpacity>
@@ -208,7 +208,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     shadowOffset: { width: 0, height: 2 },
-    marginTop: height * 0.2,
   },
   link: {
     marginTop: 24,

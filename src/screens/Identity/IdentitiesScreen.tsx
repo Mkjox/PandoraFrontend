@@ -21,7 +21,7 @@ const { width, height } = Dimensions.get("window");
 
 const IdentitiesScreen: React.FC = () => {
     const { isDark } = useTheme();
-    const themeStyles = isDark ? darkTheme : lightTheme;
+    const theme = isDark ? darkTheme : lightTheme;
     const navigation = useNavigation<any>();
     const dispatch = useAppDispatch();
 
@@ -35,43 +35,43 @@ const IdentitiesScreen: React.FC = () => {
 
     const renderItem = ({ item }: { item: IdentityItem }) => (
         <TouchableOpacity
-            style={[styles.card, themeStyles.card]}
+            style={[styles.card, theme.styles.card]}
             onPress={() => navigation.navigate("IdentityDetails", { id: item.id } as any)}
         >
             <View style={styles.cardInner}>
-                <Text style={[styles.cardTitle, themeStyles.text]} numberOfLines={1}>
+                <Text style={[styles.cardTitle, theme.styles.text]} numberOfLines={1}>
                     {item.fullName}
                 </Text>
-                <Text style={[styles.cardSubtitle, themeStyles.textGray]} numberOfLines={1}>
+                <Text style={[styles.cardSubtitle, theme.styles.textGray]} numberOfLines={1}>
                     {item.email}
                 </Text>
             </View>
-            <AntDesign name="right" size={16} color={themeStyles.icon.color} />
+            <AntDesign name="right" size={16} color={theme.styles.icon.color} />
         </TouchableOpacity>
     );
 
     return (
-        <View style={[styles.container, themeStyles.container]}>
+        <View style={[styles.container, theme.styles.container]}>
             <View style={styles.topSection}>
-                <Text style={[styles.title, themeStyles.text]}>Identities</Text>
+                <Text style={[styles.title, theme.styles.text]}>Identities</Text>
                 <TouchableOpacity
-                    style={[styles.addButton, themeStyles.button]}
+                    style={[styles.addButton, theme.styles.button]}
                     onPress={() => navigation.navigate("EditIdentity", {
                         mode: "create",
                     } as any)
                     }
                 >
-                    <AntDesign name="plus" size={16} color={themeStyles.buttonText.color} />
-                    <Text style={[styles.addButtonText, themeStyles.buttonText]}>Add</Text>
+                    <AntDesign name="plus" size={16} color={theme.styles.buttonText.color} />
+                    <Text style={[styles.addButtonText, theme.styles.buttonText]}>Add</Text>
                 </TouchableOpacity>
             </View>
 
             {loading ? (
                 <ActivityIndicator style={{ marginTop: 40 }} size="large" />
             ) : error ? (
-                <Text style={[styles.errorText, themeStyles.text]}>{error}</Text>
+                <Text style={[styles.errorText, theme.styles.text]}>{error}</Text>
             ) : identities.length === 0 ? (
-                <Text style={[styles.emptyText, themeStyles.text]}>No identities found. Tap "Add" to create one.</Text>
+                <Text style={[styles.emptyText, theme.styles.text]}>No identities found. Tap "Add" to create one.</Text>
             ) : (
                 <FlatList
                     data={identities}

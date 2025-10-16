@@ -28,7 +28,7 @@ type Tool = {
 
 const SecurityToolsScreen: React.FC = () => {
   const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
   const navigation = useNavigation<any>();
 
   const { passwords } = useAppSelector(s => s.passwords);
@@ -43,35 +43,35 @@ const SecurityToolsScreen: React.FC = () => {
       id: "generator",
       title: "Password Generator",
       subtitle: "Create strong, unique passwords",
-      icon: <MaterialIcons name="vpn-key" size={24} color={themeStyles.icon.color} />,
+      icon: <MaterialIcons name="vpn-key" size={24} color={theme.styles.icon.color} />,
       onPress: () => { navigation.navigate("PasswordGenerator" as never) },
     },
     {
       id: "emergency",
       title: "Emergency Access",
       subtitle: "Peace of mind in an emergency",
-      icon: <FontAwesome5 name="ambulance" size={24} color={themeStyles.icon.color} />,
+      icon: <FontAwesome5 name="ambulance" size={24} color={theme.styles.icon.color} />,
       onPress: () => { navigation.navigate("EmergencyAccess" as never) },
     },
     {
       id: "challenge",
       title: `Security Challenge (${percentage}%)`,
       subtitle: "Put your passwords to the test",
-      icon: <MaterialIcons name="security" size={24} color={themeStyles.icon.color} />,
+      icon: <MaterialIcons name="security" size={24} color={theme.styles.icon.color} />,
       onPress: () => { navigation.navigate("SecurityChallenge" as never) },
     },
     {
       id: "dashboard",
       title: "Security Dashboard",
       subtitle: "Monitor your online security",
-      icon: <MaterialIcons name="dashboard" size={24} color={themeStyles.icon.color} />,
+      icon: <MaterialIcons name="dashboard" size={24} color={theme.styles.icon.color} />,
       onPress: () => { navigation.navigate("SecurityDashboard" as never) },
     },
     {
       id: "categories",
       title: "Categories",
       subtitle: "Manage your categories",
-      icon: <MaterialIcons name="category" size={24} color={themeStyles.icon.color} />,
+      icon: <MaterialIcons name="category" size={24} color={theme.styles.icon.color} />,
       onPress: () => { navigation.navigate("Categories" as never); },
     },
   ]
@@ -80,8 +80,8 @@ const SecurityToolsScreen: React.FC = () => {
     <Pressable
       style={({ pressed }) => [
         styles.cardInnerWrapper,
-        themeStyles.card,
-        themeStyles.border,
+        theme.styles.card,
+        theme.styles.border,
         pressed && { opacity: Platform.OS === 'ios' ? 0.6 : 1 }
       ]}
       onPress={item.onPress}
@@ -91,24 +91,24 @@ const SecurityToolsScreen: React.FC = () => {
         {item.icon}
       </View>
       <View style={styles.cardInnerAlignment}>
-        <Text style={[styles.cardTitle, themeStyles.text]}>{item.title}</Text>
-        <Text style={[styles.cardContent, themeStyles.textGray]} numberOfLines={1}>
+        <Text style={[styles.cardTitle, theme.styles.text]}>{item.title}</Text>
+        <Text style={[styles.cardContent, theme.styles.textGray]} numberOfLines={1}>
           {item.subtitle}
         </Text>
       </View>
       <Entypo
         name="chevron-right"
         size={24}
-        color={themeStyles.icon.color}
+        color={theme.styles.icon.color}
         style={styles.chevron}
       />
     </Pressable>
   )
 
   return (
-    <View style={[styles.container, themeStyles.container]}>
+    <View style={[styles.container, theme.styles.container]}>
       <View style={styles.topSection}>
-        <Text style={[styles.title, themeStyles.text]}>Security Tools</Text>
+        <Text style={[styles.title, theme.styles.text]}>Security Tools</Text>
       </View>
       <FlatList
         data={tools}

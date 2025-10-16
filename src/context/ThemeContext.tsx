@@ -36,7 +36,7 @@ interface ThemeContextType {
   accent: string;
   setAccent: (color: string) => void;
   isLoading: boolean;
-  themeStyles: ThemeStyles;
+  theme: ThemeStyles;
 }
 
 const STORAGE_KEYS = {
@@ -88,7 +88,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const base = isDark ? baseDark : baseLight;
-  const themeStyles: ThemeStyles = {
+  const theme: ThemeStyles = {
     ...base,
     button: { ...base.button, backgroundColor: accent },
     buttonBorder: { ...base.buttonBorder, borderColor: accent },
@@ -98,7 +98,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <ThemeContext.Provider
-      value={{ isDark, toggleTheme, accent, setAccent, isLoading, themeStyles }}
+      value={{ isDark, toggleTheme, accent, setAccent, isLoading, theme }}
     >
       {children}
     </ThemeContext.Provider>

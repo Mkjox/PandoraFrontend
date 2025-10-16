@@ -39,7 +39,7 @@ export default function EditVaultsScreen() {
   const route = useRoute<RouteProps>();
   const dispatch = useAppDispatch();
   const { isDark } = useTheme();
-  const themeStyles = isDark ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
   const vaultId = route.params.vaultId;
@@ -189,7 +189,7 @@ export default function EditVaultsScreen() {
 
   if (loading || catLoading) {
     return (
-      <View style={[styles.loaderContainer, themeStyles.container]}>
+      <View style={[styles.loaderContainer, theme.styles.container]}>
         <ActivityIndicator size="large" />
       </View>
     );
@@ -197,8 +197,8 @@ export default function EditVaultsScreen() {
 
   if (error) {
     return (
-      <View style={[styles.loaderContainer, themeStyles.container]}>
-        <Text style={themeStyles.text}>{error}</Text>
+      <View style={[styles.loaderContainer, theme.styles.container]}>
+        <Text style={theme.styles.text}>{error}</Text>
       </View>
     );
   }
@@ -209,13 +209,13 @@ export default function EditVaultsScreen() {
     multiline = false,
     placeholder?: string
   ) => (
-    <View style={[styles.card, themeStyles.card, themeStyles.border]}>
-      <Text style={[styles.label, themeStyles.text]}>{label}</Text>
+    <View style={[styles.card, theme.styles.card, theme.styles.border]}>
+      <Text style={[styles.label, theme.styles.text]}>{label}</Text>
       <TextInput
         style={[
           styles.input,
           multiline ? { height: 100, textAlignVertical: "top" } : undefined,
-          themeStyles.text,
+          theme.styles.text,
         ]}
         value={(form[field] as string) || ""}
         onChangeText={(t) => handleChange(field, t)}
@@ -232,7 +232,7 @@ export default function EditVaultsScreen() {
   return (
     <>
       <ScrollView
-        style={[styles.container, themeStyles.container]}
+        style={[styles.container, theme.styles.container]}
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
       >
@@ -243,8 +243,8 @@ export default function EditVaultsScreen() {
         {renderInput("Summary", "summary")}
         {renderInput("Tags (comma separated)", "tags", false, "tag1, tag2")}
 
-        <View style={[styles.switchRow, themeStyles.card, themeStyles.border]}>
-          <Text style={themeStyles.text}>Locked</Text>
+        <View style={[styles.switchRow, theme.styles.card, theme.styles.border]}>
+          <Text style={theme.styles.text}>Locked</Text>
           <Switch
             value={form.isLocked}
             onValueChange={(v) => handleChange("isLocked", v)}
@@ -253,31 +253,31 @@ export default function EditVaultsScreen() {
 
         {form.isLocked && (
           <TouchableOpacity
-            style={[styles.card, themeStyles.card, themeStyles.border]}
+            style={[styles.card, theme.styles.card, theme.styles.border]}
             onPress={() => setShowUnlockPicker(true)}
           >
-            <Text style={[styles.label, themeStyles.text]}>Unlock Date</Text>
-            <Text style={themeStyles.text}>
+            <Text style={[styles.label, theme.styles.text]}>Unlock Date</Text>
+            <Text style={theme.styles.text}>
               {form.unlockDate ? new Date(form.unlockDate).toDateString() : "Select date"}
             </Text>
           </TouchableOpacity>
         )}
 
         <TouchableOpacity
-          style={[styles.card, themeStyles.card, themeStyles.border]}
+          style={[styles.card, theme.styles.card, theme.styles.border]}
           onPress={() => setShowExpirationPicker(true)}
         >
-          <Text style={[styles.label, themeStyles.text]}>Expiration Date</Text>
-          <Text style={themeStyles.text}>
+          <Text style={[styles.label, theme.styles.text]}>Expiration Date</Text>
+          <Text style={theme.styles.text}>
             {form.expirationDate
               ? new Date(form.expirationDate).toDateString()
               : "Select date"}
           </Text>
         </TouchableOpacity>
 
-        <View style={[styles.card, themeStyles.card, themeStyles.border]}>
-          <Text style={[styles.label, themeStyles.text]}>Category*</Text>
-          <View style={[styles.pickerContainer, themeStyles.card]}>
+        <View style={[styles.card, theme.styles.card, theme.styles.border]}>
+          <Text style={[styles.label, theme.styles.text]}>Category*</Text>
+          <View style={[styles.pickerContainer, theme.styles.card]}>
             <Picker
               selectedValue={form.categoryId}
               onValueChange={(v) => handleChange("categoryId", v)}
@@ -294,7 +294,7 @@ export default function EditVaultsScreen() {
         </View>
 
         <View style={[styles.switchRow, { marginTop: 6 }]}>
-          <Text style={themeStyles.text}>Favorite</Text>
+          <Text style={theme.styles.text}>Favorite</Text>
           <Switch
             value={form.isFavorite}
             onValueChange={(v) => handleChange("isFavorite", v)}
@@ -304,13 +304,13 @@ export default function EditVaultsScreen() {
         <View style={styles.actionRow}>
           <TouchableOpacity
             disabled={saving}
-            style={[styles.saveButton, themeStyles.button, saving && { opacity: 0.7 }]}
+            style={[styles.saveButton, theme.styles.button, saving && { opacity: 0.7 }]}
             onPress={handleSave}
           >
             {saving ? (
-              <ActivityIndicator color={themeStyles.buttonText.color} />
+              <ActivityIndicator color={theme.styles.buttonText.color} />
             ) : (
-              <Text style={[styles.saveButtonText, themeStyles.buttonText]}>Save</Text>
+              <Text style={[styles.saveButtonText, theme.styles.buttonText]}>Save</Text>
             )}
           </TouchableOpacity>
         </View>
