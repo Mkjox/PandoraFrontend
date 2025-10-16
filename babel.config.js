@@ -14,7 +14,7 @@ module.exports = function (api) {
             "@screens": "./src/screens",
             "@redux": "./src/redux",
             "@services": "./src/services",
-            "@types": "./src/types",
+            "@appTypes": "./src/types",
             "@utils": "./src/utils",
             "@config": "./src/config",
             "@hooks": "./src/hooks",
