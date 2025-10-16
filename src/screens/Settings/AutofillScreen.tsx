@@ -16,6 +16,7 @@ import { useTheme } from '@context/ThemeContext';
 import { lightTheme, darkTheme } from '@assets/colors/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
+import CustomButton from '@components/CustomButton';
 
 const { height, width } = Dimensions.get('window');
 
@@ -89,6 +90,15 @@ const AutofillScreen: React.FC = () => {
     }
   };
 
+  const openAutofill = () => {
+    if (Platform.OS === 'android') {
+      Linking.openSettings();
+      // or use native module to open ACTION_AUTOFILL_SETTINGS
+    } else {
+      Linking.openURL('App-Prefs:Passwords&AutoFill');
+    }
+  };
+
   if (loading) {
     return (
       <View style={[styles.container, theme.styles.container, styles.center]}>
@@ -125,23 +135,11 @@ const AutofillScreen: React.FC = () => {
         </Text>
       </View>
 
-      {/* Optionally, a button to open system settings directly */}
-      <TouchableOpacity
-        style={[styles.openSettingsButton, theme.styles.button]}
-        disabled
-        onPress={() => {
-          if (Platform.OS === 'android') {
-            Linking.openSettings();
-            // or use native module to open ACTION_AUTOFILL_SETTINGS
-          } else {
-            Linking.openURL('App-Prefs:Passwords&AutoFill');
-          }
-        }}
-      >
-        <Text style={[styles.openSettingsText, theme.styles.buttonText]}>
-          Open System Autofill Settings
-        </Text>
-      </TouchableOpacity>
+      <CustomButton
+        style={[styles.openSettingsButton]}
+        onPress={openAutofill}
+        title='Open System Autofill Settings'
+      />
     </ScrollView>
   );
 };
@@ -187,17 +185,17 @@ const styles = StyleSheet.create({
     color: '#888',
   },
   openSettingsButton: {
-    marginHorizontal: width * 0.05,
-    borderRadius: 8,
+    height: height * 0.06,
+    borderRadius: 10,
     alignItems: 'center',
-    marginBottom: 24,
-    height: height * 0.055,
     justifyContent: 'center',
     elevation: 5,
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 4,
     shadowOffset: { width: 0, height: 2 },
+    marginHorizontal: width * 0.05,
+    marginTop: height * 0.02
   },
   openSettingsText: {
     fontSize: 16,

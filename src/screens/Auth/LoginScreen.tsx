@@ -208,6 +208,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     shadowOffset: { width: 0, height: 2 },
+    marginTop: height * 0.15,
   },
   link: {
     marginTop: 24,

@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { useTheme } from '@context/ThemeContext';
 import { lightTheme, darkTheme } from '@assets/colors/theme';
+import CustomButton from '@components/CustomButton';
 
 const { height, width } = Dimensions.get('window');
 
@@ -55,12 +56,16 @@ const ActionsScreen: React.FC = () => {
 
             <View style={styles.section}>
                 <Text style={[styles.sectionHeader, theme.styles.text]}>Manual Actions</Text>
-                <TouchableOpacity style={[styles.button, theme.styles.button]}>
-                    <Text style={[styles.buttonText, theme.styles.buttonText]}>Clear All Sessions</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.button, theme.styles.button]}>
-                    <Text style={[styles.buttonText, theme.styles.buttonText]}>Sync Now</Text>
-                </TouchableOpacity>
+                <CustomButton
+                    onPress={() => { }}
+                    title='Clear All Sessions'
+                    style={styles.button}
+                />
+                <CustomButton
+                    onPress={() => { }}
+                    title='Sync Now'
+                    style={styles.button}
+                />
             </View>
         </ScrollView>
     );
@@ -107,16 +112,16 @@ const styles = StyleSheet.create({
         color: '#888',
     },
     button: {
-        marginTop: 8,
-        height: height * 0.055,
-        borderRadius: 6,
-        alignItems: 'center',
-        justifyContent: 'center',
-        elevation: 5,
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        shadowOffset: { width: 0, height: 2 },
+    height: height * 0.06,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+    marginTop: height * 0.02
     },
     buttonText: {
         fontSize: 16,

@@ -212,7 +212,7 @@ export default function RegisterScreen() {
                 onPress={handleRegister}
                 loading={loading}
                 title="Register"
-                style={[styles.submitButton]}
+                style={[styles.button]}
             />
 
             <TouchableOpacity onPress={() => navigation.navigate('Login' as never)}>
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins_400Regular',
         fontWeight: '700',
     },
-    submitButton: {
+    button: {
     height: height * 0.06,
     borderRadius: 10,
     alignItems: 'center',
@@ -262,12 +262,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     shadowOffset: { width: 0, height: 2 },
-    marginTop: height * 0.1,
+    marginTop: height * 0.05,
     },
     link: {
-        marginTop: 12,
+        marginTop: height * 0.02,
         fontFamily: 'Poppins_400Regular',
-        textAlign: 'center'
+        textAlign: 'center',
     },
     innerLink: {
         fontWeight: '700',

@@ -14,6 +14,7 @@ import { useTheme } from '@context/ThemeContext';
 import { lightTheme, darkTheme } from '@assets/colors/theme';
 import TwoFactorSetup from '@components/TwoFactorSetup';
 import Toast from 'react-native-toast-message';
+import CustomButton from '@components/CustomButton';
 
 const { height, width } = Dimensions.get('window');
 
@@ -91,14 +92,20 @@ const SecurityScreen: React.FC = () => {
                 </Text>
             </View>
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
                 style={[styles.resetButton, theme.styles.button]}
                 onPress={resetSettings}
             >
                 <Text style={[styles.resetButtonText, theme.styles.buttonText]}>
                     Reset All Security Settings
                 </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+
+            <CustomButton
+                style={[styles.resetButton]}
+                onPress={resetSettings}
+                title='Reset All Security Settings'
+            />
         </ScrollView>
     );
 };
@@ -144,17 +151,17 @@ const styles = StyleSheet.create({
         color: '#888',
     },
     resetButton: {
-        marginHorizontal: width * 0.05,
-        height: height * 0.055,
-        marginTop: 10,
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        elevation: 5,
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        shadowOffset: { width: 0, height: 2 },
+    height: height * 0.06,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+    marginHorizontal: width * 0.05,
+    marginTop: height * 0.02
     },
     resetButtonText: {
         fontSize: 16,

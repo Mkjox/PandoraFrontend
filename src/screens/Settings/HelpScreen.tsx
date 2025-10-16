@@ -13,12 +13,13 @@ import {
 } from 'react-native';
 import { useTheme } from '@context/ThemeContext';
 import { lightTheme, darkTheme } from '@assets/colors/theme';
+import CustomButton from '@components/CustomButton';
 
 if (Platform.OS === 'android') {
     UIManager.setLayoutAnimationEnabledExperimental?.(true);
 }
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const HelpScreen: React.FC = () => {
     const { isDark } = useTheme();
@@ -76,9 +77,11 @@ const HelpScreen: React.FC = () => {
                 })}
             </View>
 
-            <TouchableOpacity style={[styles.emailButton, theme.styles.button]} onPress={() => { }}>
-                <Text style={[styles.emailButtonText, theme.styles.buttonText]}>✉️ Email Support</Text>
-            </TouchableOpacity>
+            <CustomButton
+                onPress={() => { }}
+                title='✉️ Email Support'
+                style={styles.emailButton}
+            />
         </ScrollView>
     );
 };
@@ -126,11 +129,17 @@ const styles = StyleSheet.create({
         lineHeight: 20,
     },
     emailButton: {
-        marginHorizontal: width * 0.05,
-        marginTop: 24,
-        paddingVertical: 14,
-        borderRadius: 8,
-        alignItems: 'center',
+    height: height * 0.06,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+    marginHorizontal: width * 0.05,
+    marginTop: height * 0.02
     },
     emailButtonText: {
         fontSize: 16,

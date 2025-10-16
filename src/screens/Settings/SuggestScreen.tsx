@@ -14,6 +14,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '@context/ThemeContext';
 import { lightTheme, darkTheme } from '@assets/colors/theme';
 import Toast from 'react-native-toast-message';
+import CustomButton from '@components/CustomButton';
+import CustomSpinner from '@components/CustomSpinner';
 
 const { height, width } = Dimensions.get('window');
 const COOLDOWN_HOURS = 6; // lock period after a suggestion
@@ -135,7 +137,7 @@ const SuggestScreen: React.FC = () => {
                 />
             </View>
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
                 style={[
                     styles.button,
                     theme.styles.button,
@@ -149,7 +151,18 @@ const SuggestScreen: React.FC = () => {
                         ? `Wait ${remainingTime} min`
                         : 'Submit'}
                 </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+
+            <CustomButton
+                onPress={handleSubmit}
+                disabled={isOnCooldown}
+                title={isOnCooldown ? `Wait ${remainingTime} min` : 'Submit'}
+                style={[
+                    styles.button,
+                ]}
+            />
+
+
         </ScrollView>
     );
 };
@@ -193,18 +206,16 @@ const styles = StyleSheet.create({
         elevation: 2,
     },
     button: {
-        marginHorizontal: width * 0.05,
-        marginTop: 8,
-        height: height * 0.055,
-        borderRadius: 6,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#FFFFFF',
-        elevation: 5,
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        shadowOffset: { width: 0, height: 2 },
+    height: height * 0.06,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+    marginHorizontal: width * 0.05,
     },
     buttonText: {
         fontSize: 16,
