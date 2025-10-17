@@ -21,12 +21,12 @@ import AuthService from '@services/AuthService';
 import PasswordService from '@services/PasswordService';
 import CategoryService from '@services/CategoryService';
 import PersonalVaultService from '@services/PersonalVaultService';
-import ImagePickerButton from '@components/ImagePickerButton';
 import { CreateCategoryPayload } from '@appTypes/category.types';
-import { PersonalVaultAddPayload, PersonalVaultPayload } from '@appTypes/personalVault.types';
+import { PersonalVaultAddPayload } from '@appTypes/personalVault.types';
 import { ServiceResult } from '@appTypes/service.types';
 import { Switch, TextInput } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
+import CustomButton from '@components/CustomButton';
 
 type AddCredParams = {
   AddCredentials: {
@@ -46,6 +46,7 @@ export default function AddCredentialsScreen() {
   const dispatch = useAppDispatch();
   const { isDark } = useTheme();
   const theme = isDark ? darkTheme : lightTheme;
+  const [loading, setLoading] = useState(false)
 
   // initial tab
   const initialTab = route.params?.tab ?? 'password';
@@ -150,6 +151,7 @@ export default function AddCredentialsScreen() {
 
   const handleSubmit = useCallback(async () => {
     if (!userId) return;
+    setLoading(true);
     setSubmitting(true);
     try {
       if (selectedTab === 'password') {
@@ -250,6 +252,7 @@ export default function AddCredentialsScreen() {
         text2: err.message || 'Something went wrong.',
       });
     } finally {
+      setLoading(false);
       setSubmitting(false);
     }
   }, [dispatch, form, navigation, route.params, selectedTab, userId]);
@@ -312,6 +315,7 @@ export default function AddCredentialsScreen() {
               mode='outlined'
               textColor={theme.styles.text.color as string}
             />
+
             <TextInput
               style={[styles.input, theme.styles.inputText, theme.styles.card]}
               label="Username or Email*"
@@ -320,6 +324,7 @@ export default function AddCredentialsScreen() {
               onChangeText={v => handleChange('UsernameOrEmail', v)}
               textColor={theme.styles.text.color as string}
             />
+
             <TextInput
               style={[styles.input, theme.styles.inputText, theme.styles.card]}
               label="Password*"
@@ -329,6 +334,7 @@ export default function AddCredentialsScreen() {
               onChangeText={v => handleChange('Password', v)}
               textColor={theme.styles.text.color as string}
             />
+
             <TextInput
               style={[styles.input, theme.styles.inputText, theme.styles.card]}
               label="Repeat Password*"
@@ -338,6 +344,7 @@ export default function AddCredentialsScreen() {
               onChangeText={v => handleChange('PasswordRepeat', v)}
               textColor={theme.styles.text.color as string}
             />
+
             <TextInput
               style={[styles.input, theme.styles.inputText, theme.styles.card]}
               label="Notes"
@@ -347,23 +354,6 @@ export default function AddCredentialsScreen() {
               textColor={theme.styles.text.color as string}
             />
 
-            {/* <TouchableOpacity
-              style={[styles.input, theme.styles.inputText, theme.styles.card, {
-                borderWidth: 2,
-                borderColor: '#57555f',
-                borderRadius: 5,
-                marginBottom: 12,
-                overflow: 'hidden',
-                height: height * 0.065
-              }]}
-              onPress={() => showPicker('PasswordExpirationDate')}
-            >
-              <Text style={{ color: form.PasswordExpirationDate ? '#888' : '#666' }}>
-                {form.PasswordExpirationDate || 'Select Expiration Date'}
-              </Text>
-            </TouchableOpacity> */}
-
-            {/* <Text style={[styles.label, theme.styles.text]}>Category*</Text> */}
             <View style={[styles.pickerContainer, theme.styles.card]}>
               <Picker
                 selectedValue={form.CategoryId}
@@ -388,6 +378,7 @@ export default function AddCredentialsScreen() {
               onChangeText={v => handleChange('Title', v)}
               textColor={theme.styles.text.color as string}
             />
+
             <TextInput
               style={[styles.input, theme.styles.inputText, theme.styles.card]}
               label="Content*"
@@ -396,25 +387,7 @@ export default function AddCredentialsScreen() {
               onChangeText={v => handleChange('Content', v)}
               textColor={theme.styles.text.color as string}
             />
-            {/* <TextInput
-              style={[styles.input, theme.styles.inputText, theme.styles.card]}
-              label="URL"
-              mode='outlined'
-              value={form.Url}
-              onChangeText={v => handleChange('Url', v)}
-              textColor={theme.styles.text.color}
-            /> */}
-            {/* <ImagePickerButton
-              title={form.MediaFile ? 'Change Image' : 'Upload Image'}
-              onImagePicked={b => handleChange('MediaFile', b)}
-              style={styles.uploadButton}
-              textStyle={styles.uploadButtonText}
-            />
-            {form.MediaFile && (
-              <Text style={[styles.helpText, theme.styles.textGray]}>
-                Image selected ({form.MediaFile.length.toLocaleString()} chars)
-              </Text>
-            )} */}
+
             <TextInput
               style={[styles.input, theme.styles.inputText, theme.styles.card]}
               label="Summary"
@@ -423,6 +396,7 @@ export default function AddCredentialsScreen() {
               onChangeText={v => handleChange('Summary', v)}
               textColor={theme.styles.text.color as string}
             />
+
             <TextInput
               style={[styles.input, theme.styles.inputText, theme.styles.card]}
               label="Tags (comma separated)"
@@ -461,6 +435,7 @@ export default function AddCredentialsScreen() {
                     {form.UnlockDate || 'Select Unlock Date'}
                   </Text>
                 </TouchableOpacity>
+
                 <TouchableOpacity
                   style={[styles.input, theme.styles.card,
                   {
@@ -490,6 +465,7 @@ export default function AddCredentialsScreen() {
                 onValueChange={v => handleChange('IsShareable', v)}
               />
             </View>
+
             <View style={styles.switchRow}>
               <Text style={theme.styles.text}>Mark as favorite?</Text>
               <Switch
@@ -523,6 +499,7 @@ export default function AddCredentialsScreen() {
               onChangeText={v => handleChange('Name', v)}
               textColor={theme.styles.text.color as string}
             />
+
             <TextInput
               style={[styles.input, theme.styles.inputText, theme.styles.card]}
               label="Description"
@@ -535,17 +512,14 @@ export default function AddCredentialsScreen() {
         )}
       </View>
 
-      <TouchableOpacity
-        style={[styles.submitButton, theme.styles.button]}
+      <CustomButton
+        title='Submit'
         onPress={handleSubmit}
         disabled={submitting}
-      >
-        {submitting
-          ? <ActivityIndicator color={isDark ? '#000' : '#fff'} />
-          : <Text style={[styles.buttonText, theme.styles.buttonText]}>
-            {route.params?.categoryId ? 'Update' : 'Submit'}
-          </Text>}
-      </TouchableOpacity>
+        style={styles.submitButton}
+        loading={loading}
+      />
+
     </ScrollView>
   );
 }
@@ -624,11 +598,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FFFFFF',
-    // elevation: 5,
-    // shadowColor: '#000',
-    // shadowOpacity: 0.1,
-    // shadowRadius: 4,
-    // shadowOffset: { width: 0, height: 2 },
   },
   buttonText: {
     textAlign: 'center',

@@ -103,7 +103,7 @@ const LogoutButton: React.FC = () => {
       >
         <View style={[styles.modal, theme.styles.card, theme.styles.border, { width: MODAL_WIDTH }]}>
           <View style={styles.header}>
-            <View style={[styles.badge, { backgroundColor: theme.styles.iconBg?.backgroundColor || '#eef6f8' }]}>
+            <View style={[styles.badge, { backgroundColor: theme.styles.iconBackground.backgroundColor || '#eef6f8' }]}>
               <Entypo name="warning" size={20} color={theme.styles.iconColor?.color || '#1c6d79'} />
             </View>
             <View style={styles.titleWrap}>
@@ -149,7 +149,7 @@ const LogoutButton: React.FC = () => {
               style={({ pressed }) => [
                 styles.btn,
                 styles.destructive,
-                { backgroundColor: theme.styles.dangerColor || '#D32F2F' },
+                { backgroundColor: theme.styles.dangerBackgroundColor.backgroundColor || '#D32F2F' },
                 pressed && styles.btnPressed,
               ]}
               accessibilityRole="button"

@@ -5,7 +5,6 @@ import {
   Dimensions,
   StyleSheet,
   StatusBar,
-  TouchableOpacity,
   FlatList,
 } from 'react-native'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
@@ -14,6 +13,7 @@ import { darkTheme, lightTheme } from '../../assets/colors/theme'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import CategoryService from '../../services/CategoryService'
 import CustomSpinner from '@components/CustomSpinner'
+import CustomCard from '@components/CustomCard'
 
 const { width, height } = Dimensions.get('window')
 
@@ -33,18 +33,18 @@ export default function CategoryScreen() {
   )
 
   const renderItem = ({ item }: { item: { id: string; name: string; description?: string } }) => (
-    <View style={[styles.card, theme.styles.card]}>
-      <View style={styles.cardText}>
-        <TouchableOpacity onPress={() => navigation.navigate('CategoryDetails' as any, { id: item.id })}>
-          <Text style={[styles.cardTitle, theme.styles.text]}>{item.name}</Text>
-          {item.description ? (
-            <Text style={[styles.cardDescription, theme.styles.textGray]}>
-              {item.description}
-            </Text>
-          ) : null}
-        </TouchableOpacity>
-      </View>
-    </View>
+    <CustomCard
+      style={[theme.styles.card, theme.styles.border]}
+      onPress={() => navigation.navigate('CategoryDetails' as any, { id: item.id })}
+    >
+
+      <Text style={[styles.cardTitle, theme.styles.text]}>{item.name}</Text>
+      {item.description ? (
+        <Text style={[styles.cardDescription, theme.styles.textGray]}>
+          {item.description}
+        </Text>
+      ) : null}
+    </CustomCard>
   )
 
   return (
@@ -62,7 +62,6 @@ export default function CategoryScreen() {
           data={categories}
           keyExtractor={item => item.id}
           renderItem={renderItem}
-          contentContainerStyle={styles.listContent}
         />
       )}
     </View>
