@@ -12,8 +12,6 @@ import { API_URL } from '@config/apiConfig'
 import axios from 'axios'
 
 const AuthService = {
-    // --- Auth ---
-
     register: async (payload: RegisterPayload): Promise<ServiceResult<void>> => {
         try {
             const res = await api.post<{
@@ -114,7 +112,7 @@ const AuthService = {
 
     updateProfile: async (
         // payload: { username: string; email: string; photoBase64?: string }
-    // ): Promise<ServiceResult<{ username: string; email: string; photoUrl?: string }>> => {
+        // ): Promise<ServiceResult<{ username: string; email: string; photoUrl?: string }>> => {
         payload: { username: string; email: string }
     ): Promise<ServiceResult<{ username: string; email: string }>> => {
         try {
@@ -263,13 +261,42 @@ const AuthService = {
             try {
                 await tokenStorage.clear()
             }
-            catch {}
+            catch { }
             return {
                 success: false,
                 message: err?.response?.data?.message || err.message || 'Refresh failed'
             }
         }
-    }
+    },
+
+    getSessions: async (): Promise<ServiceResult<any>> => {
+        try {
+            const currentRefreshToken = await tokenStorage.getRefreshToken();
+            if (!currentRefreshToken) {
+                return { success: false, message: 'No refresh token found.' };
+            }
+
+            // Backend expects "currentRefreshToken"
+            const res = await api.get(`/auth/sessions?currentRefreshToken=${currentRefreshToken}`);
+
+            const data = res.data?.data || [];
+            if (res.data.resultStatus !== 0) {
+                return { success: false, message: res.data.message };
+            }
+
+            return {
+                success: true,
+                data,
+                message: res.data.message,
+            };
+        } catch (err: any) {
+            console.log('ERROR:', err.response?.data || err.message);
+            return {
+                success: false,
+                message: err.response?.data?.message || 'Failed to retrieve sessions.',
+            };
+        }
+    },
 }
 
 export default AuthService

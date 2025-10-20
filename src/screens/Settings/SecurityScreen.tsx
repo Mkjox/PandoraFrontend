@@ -61,19 +61,7 @@ const SecurityScreen: React.FC = () => {
 
             <View style={styles.section}>
                 <Text style={[styles.sectionHeader, theme.styles.text]}>Two-Factor Authentication</Text>
-                {/* <View style={styles.optionRow}>
-                    <Text style={[styles.optionText, theme.styles.text]}>
-                        {twoFactorEnabled ? 'Enabled' : 'Disabled'}
-                    </Text>
-                    <Switch
-                        value={twoFactorEnabled}
-                        onValueChange={toggleTwoFactor}
-                    />
-                </View> */}
                 <TwoFactorSetup />
-                {/* <Text style={[styles.helperText, theme.styles.text]}>
-                    Add an extra layer of security by requiring a code from your authenticator app when logging in.
-                </Text> */}
             </View>
 
             <View style={styles.section}>
@@ -151,17 +139,17 @@ const styles = StyleSheet.create({
         color: '#888',
     },
     resetButton: {
-    height: height * 0.06,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
-    marginHorizontal: width * 0.05,
-    marginTop: height * 0.02
+        height: height * 0.06,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 2 },
+        marginHorizontal: width * 0.05,
+        marginTop: height * 0.02
     },
     resetButtonText: {
         fontSize: 16,

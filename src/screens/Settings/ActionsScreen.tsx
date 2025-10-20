@@ -7,17 +7,18 @@ import {
     ScrollView,
     Dimensions,
     Switch,
-    TouchableOpacity,
 } from 'react-native';
 import { useTheme } from '@context/ThemeContext';
 import { lightTheme, darkTheme } from '@assets/colors/theme';
 import CustomButton from '@components/CustomButton';
+import { useNavigation } from '@react-navigation/native';
 
 const { height, width } = Dimensions.get('window');
 
 const ActionsScreen: React.FC = () => {
     const { isDark } = useTheme();
     const theme = isDark ? darkTheme : lightTheme;
+    const navigation = useNavigation<any>()
 
     const [autoLock, setAutoLock] = useState(false);
     const [clearClipboard, setClearClipboard] = useState(false);
@@ -57,13 +58,13 @@ const ActionsScreen: React.FC = () => {
             <View style={styles.section}>
                 <Text style={[styles.sectionHeader, theme.styles.text]}>Manual Actions</Text>
                 <CustomButton
-                    onPress={() => { }}
-                    title='Clear All Sessions'
+                    onPress={() => navigation.navigate('Sessions') }
+                    title='List Sessions'
                     style={styles.button}
                 />
                 <CustomButton
                     onPress={() => { }}
-                    title='Sync Now'
+                    title='Clear Sessions'
                     style={styles.button}
                 />
             </View>

@@ -16,17 +16,17 @@ type ThemeStyles = {
   container: ViewStyle;
   card: ViewStyle;
   button: ViewStyle;
-  buttonBorder: ViewStyle;
-  buttonText: TextStyle;
-  customButtonText: TextStyle;
+  buttonBorder?: ViewStyle;
+  buttonText?: TextStyle;
+  customButtonText?: TextStyle;
   text: TextStyle;
-  textBlue: TextStyle;
-  textGray: TextStyle;
-  icon: TextStyle;
-  iconColor: TextStyle;
+  textBlue?: TextStyle;
+  textGray?: TextStyle;
+  icon?: TextStyle;
+  iconColor?: TextStyle;
   inputText: TextStyle;
-  border: ViewStyle;
-  borderTop: ViewStyle;
+  border?: ViewStyle;
+  borderTop?: ViewStyle;
   [key: string]: any;
 };
 
@@ -90,10 +90,20 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const base = isDark ? baseDark : baseLight;
   const theme: ThemeStyles = {
     ...base,
-    button: { ...base.button, backgroundColor: accent },
-    buttonBorder: { ...base.buttonBorder, borderColor: accent },
-    customButtonText: { ...base.customButtonText, color: accent },
-    textBlue: { ...base.textBlue, color: accent },
+    container: { ...base.styles.container, backgroundColor: accent },
+    card: { ...base.styles.card, backgroundColor: accent },
+    button: { ...base.styles.button, backgroundColor: accent },
+    text: { ...base.styles.text, color: accent },
+    textGray: { ...base.styles.textGray, color: accent },
+    inputText: { ...base.styles.inputText, color: accent },
+    // buttonBorder: { ...base.styles.buttonBorder, borderColor: accent },
+    // customButtonText: { ...base.styles.customButtonText, color: accent },
+    // textBlue: { ...base.styles.textBlue, color: accent },
+    // buttonText: { ...base.styles.buttonText, color: accent },
+    // icon: { ...base.styles.icon, color: accent },
+    // iconColor: { ...base.styles.iconColor, color: accent },
+    // border: { ...base.styles.border, borderColor: accent },
+    // borderTop: { ...base.styles.borderTop, borderTopColor: accent },
   };
 
   return (

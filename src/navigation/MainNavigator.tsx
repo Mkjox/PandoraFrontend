@@ -36,6 +36,7 @@ import IdentitiesScreen from '@screens/Identity/IdentitiesScreen';
 import IdentityDetailsScreen from '@screens/Identity/IdentityDetailsScreen';
 import EditIdentityScreen from '@screens/Identity/EditIdentityScreen';
 import ThemeColorScreen from '@screens/Settings/ThemeColorScreen';
+import SessionsScreen from '@screens/Settings/SessionsScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -44,7 +45,7 @@ function TabNavigator() {
     return (
         <Tab.Navigator initialRouteName='Home' tabBar={(props) => <CustomTabBar {...props} />} screenOptions={{ headerShown: false }}>
             <Tab.Screen name='Home' component={HomeScreen} />
-            <Tab.Screen name='Premium' component={PremiumScreen} />
+            {/* <Tab.Screen name='Premium' component={PremiumScreen} /> */}
             <Tab.Screen name='Security Tools' component={SecurityToolsScreen} />
             <Tab.Screen name='Profile' component={ProfileScreen} />
         </Tab.Navigator>
@@ -84,6 +85,7 @@ export default function MainNavigator() {
             <Stack.Screen name="IdentityDetails" component={IdentityDetailsScreen} />
             <Stack.Screen name="EditIdentity" component={EditIdentityScreen} />
             <Stack.Screen name="ThemeColor" component={ThemeColorScreen} />
+            <Stack.Screen name='Sessions' component={SessionsScreen} />
         </Stack.Navigator>
     );
 }
