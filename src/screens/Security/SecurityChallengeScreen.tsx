@@ -86,7 +86,7 @@ const SecurityChallengeScreen: React.FC = () => {
   const weakPasswords = passwords.filter(pw => !isStrongPassword(pw.password));
 
   const renderItem = ({ item }: { item: typeof passwords[0] }) => (
-    <View style={[styles.itemCard, theme.styles.card]}>
+    <View style={[styles.itemCard, theme.styles.card, theme.styles.border]}>
       <Text style={[styles.itemTitle, theme.styles.text]}>
         {item.siteName}
       </Text>

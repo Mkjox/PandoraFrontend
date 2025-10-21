@@ -132,7 +132,7 @@ const EmergencyAccessScreen: React.FC = () => {
   }
 
   const renderItem = ({ item }: { item: EmergencyContact }) => (
-    <View style={[styles.card, theme.styles.card]}>
+    <View style={[styles.card, theme.styles.card, theme.styles.border]}>
       <View style={styles.cardText}>
         <Text style={[styles.name, theme.styles.text]}>{item.name}</Text>
         <Text style={[styles.email, theme.styles.textGray]}>

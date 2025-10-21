@@ -313,7 +313,7 @@ export default function AddCredentialsScreen() {
               value={form.SiteName}
               onChangeText={v => handleChange('SiteName', v)}
               mode='outlined'
-              textColor={theme.styles.text.color as string}
+              textColor={theme.colors.inputTextColor}
             />
 
             <TextInput
@@ -322,7 +322,7 @@ export default function AddCredentialsScreen() {
               mode='outlined'
               value={form.UsernameOrEmail}
               onChangeText={v => handleChange('UsernameOrEmail', v)}
-              textColor={theme.styles.text.color as string}
+              textColor={theme.colors.inputTextColor}
             />
 
             <TextInput
@@ -332,7 +332,7 @@ export default function AddCredentialsScreen() {
               secureTextEntry
               value={form.Password}
               onChangeText={v => handleChange('Password', v)}
-              textColor={theme.styles.text.color as string}
+              textColor={theme.colors.inputTextColor}
             />
 
             <TextInput
@@ -342,7 +342,7 @@ export default function AddCredentialsScreen() {
               secureTextEntry
               value={form.PasswordRepeat}
               onChangeText={v => handleChange('PasswordRepeat', v)}
-              textColor={theme.styles.text.color as string}
+              textColor={theme.colors.inputTextColor}
             />
 
             <TextInput
@@ -351,7 +351,7 @@ export default function AddCredentialsScreen() {
               mode='outlined'
               value={form.Notes}
               onChangeText={v => handleChange('Notes', v)}
-              textColor={theme.styles.text.color as string}
+              textColor={theme.colors.inputTextColor}
             />
 
             <View style={[styles.pickerContainer, theme.styles.card]}>
@@ -376,7 +376,7 @@ export default function AddCredentialsScreen() {
               mode='outlined'
               value={form.Title}
               onChangeText={v => handleChange('Title', v)}
-              textColor={theme.styles.text.color as string}
+              textColor={theme.colors.inputTextColor}
             />
 
             <TextInput
@@ -385,7 +385,7 @@ export default function AddCredentialsScreen() {
               mode='outlined'
               value={form.Content}
               onChangeText={v => handleChange('Content', v)}
-              textColor={theme.styles.text.color as string}
+              textColor={theme.colors.inputTextColor}
             />
 
             <TextInput
@@ -394,7 +394,7 @@ export default function AddCredentialsScreen() {
               mode='outlined'
               value={form.Summary}
               onChangeText={v => handleChange('Summary', v)}
-              textColor={theme.styles.text.color as string}
+              textColor={theme.colors.inputTextColor}
             />
 
             <TextInput
@@ -403,7 +403,7 @@ export default function AddCredentialsScreen() {
               mode='outlined'
               value={form.Tags}
               onChangeText={v => handleChange('Tags', v)}
-              textColor={theme.styles.text.color as string}
+              textColor={theme.colors.inputTextColor}
             />
 
             <View style={styles.switchRow}>
@@ -497,7 +497,7 @@ export default function AddCredentialsScreen() {
               mode='outlined'
               value={form.Name}
               onChangeText={v => handleChange('Name', v)}
-              textColor={theme.styles.text.color as string}
+              textColor={theme.colors.inputTextColor}
             />
 
             <TextInput
@@ -506,7 +506,7 @@ export default function AddCredentialsScreen() {
               mode='outlined'
               value={form.Description}
               onChangeText={v => handleChange('Description', v)}
-              textColor={theme.styles.text.color as string}
+              textColor={theme.colors.inputTextColor}
             />
           </>
         )}

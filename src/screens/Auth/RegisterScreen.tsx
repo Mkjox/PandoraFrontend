@@ -87,10 +87,10 @@ export default function RegisterScreen() {
                 value={form.FirstName}
                 onChangeText={text => handleChange('FirstName', text)}
                 style={[styles.input, theme.styles.card]}
-                activeUnderlineColor='#1c6d79'
-                activeOutlineColor='#1c6d79'
-                placeholderTextColor={isDark ? '#888' : '#666'}
-                textColor={isDark ? '#FFF' : '#000'}
+                activeUnderlineColor={theme.colors.activeOutlineColor}
+                activeOutlineColor={theme.colors.activeOutlineColor}
+                placeholderTextColor={theme.colors.inputPlaceholderTextColor}
+                textColor={theme.colors.inputTextColor}
             />
             {errors.FirstName && <Text style={styles.errorText}>{errors.FirstName}</Text>}
 
@@ -102,10 +102,10 @@ export default function RegisterScreen() {
                 value={form.LastName}
                 onChangeText={text => handleChange('LastName', text)}
                 style={[styles.input, theme.styles.card]}
-                activeUnderlineColor='#1c6d79'
-                activeOutlineColor='#1c6d79'
-                placeholderTextColor={isDark ? '#888' : '#666'}
-                textColor={isDark ? '#FFF' : '#000'}
+                activeUnderlineColor={theme.colors.activeOutlineColor}
+                activeOutlineColor={theme.colors.activeOutlineColor}
+                placeholderTextColor={theme.colors.inputPlaceholderTextColor}
+                textColor={theme.colors.inputTextColor}
             />
             {errors.LastName && <Text style={styles.errorText}>{errors.LastName}</Text>}
 
@@ -118,10 +118,10 @@ export default function RegisterScreen() {
                 value={form.PhoneNumber}
                 onChangeText={text => handleChange('PhoneNumber', text)}
                 style={[styles.input, theme.styles.card]}
-                activeUnderlineColor='#1c6d79'
-                activeOutlineColor='#1c6d79'
-                placeholderTextColor={isDark ? '#888' : '#666'}
-                textColor={isDark ? '#FFF' : '#000'}
+                activeUnderlineColor={theme.colors.activeOutlineColor}
+                activeOutlineColor={theme.colors.activeOutlineColor}
+                placeholderTextColor={theme.colors.inputPlaceholderTextColor}
+                textColor={theme.colors.inputTextColor}
             />
             {errors.PhoneNumber && <Text style={styles.errorText}>{errors.PhoneNumber}</Text>}
 
@@ -134,10 +134,10 @@ export default function RegisterScreen() {
                 value={form.Username}
                 onChangeText={text => handleChange('Username', text)}
                 style={[styles.input, theme.styles.card]}
-                activeUnderlineColor='#1c6d79'
-                activeOutlineColor='#1c6d79'
-                placeholderTextColor={isDark ? '#888' : '#666'}
-                textColor={isDark ? '#FFF' : '#000'}
+                activeUnderlineColor={theme.colors.activeOutlineColor}
+                activeOutlineColor={theme.colors.activeOutlineColor}
+                placeholderTextColor={theme.colors.inputPlaceholderTextColor}
+                textColor={theme.colors.inputTextColor}
             />
             {errors.Username && <Text style={styles.errorText}>{errors.Username}</Text>}
 
@@ -151,10 +151,10 @@ export default function RegisterScreen() {
                 value={form.Email}
                 onChangeText={text => handleChange('Email', text)}
                 style={[styles.input, theme.styles.card]}
-                activeUnderlineColor='#1c6d79'
-                activeOutlineColor='#1c6d79'
-                placeholderTextColor={isDark ? '#888' : '#666'}
-                textColor={isDark ? '#FFF' : '#000'}
+                activeUnderlineColor={theme.colors.activeOutlineColor}
+                activeOutlineColor={theme.colors.activeOutlineColor}
+                placeholderTextColor={theme.colors.inputPlaceholderTextColor}
+                textColor={theme.colors.inputTextColor}
             />
             {errors.Email && <Text style={styles.errorText}>{errors.Email}</Text>}
 
@@ -173,10 +173,10 @@ export default function RegisterScreen() {
                 value={form.Password}
                 onChangeText={text => handleChange('Password', text)}
                 style={[styles.input, theme.styles.card]}
-                activeUnderlineColor='#1c6d79'
-                activeOutlineColor='#1c6d79'
-                placeholderTextColor={isDark ? '#888' : '#666'}
-                textColor={isDark ? '#FFF' : '#000'}
+                activeUnderlineColor={theme.colors.activeOutlineColor}
+                activeOutlineColor={theme.colors.activeOutlineColor}
+                placeholderTextColor={theme.colors.inputPlaceholderTextColor}
+                textColor={theme.colors.inputTextColor}
             />
             {errors.Password && <Text style={styles.errorText}>{errors.Password}</Text>}
 
@@ -195,10 +195,10 @@ export default function RegisterScreen() {
                 value={form.ConfirmPassword}
                 onChangeText={text => handleChange('ConfirmPassword', text)}
                 style={[styles.input, theme.styles.card]}
-                activeUnderlineColor='#1c6d79'
-                activeOutlineColor='#1c6d79'
-                placeholderTextColor={isDark ? '#888' : '#666'}
-                textColor={isDark ? '#FFF' : '#000'}
+                activeUnderlineColor={theme.colors.activeOutlineColor}
+                activeOutlineColor={theme.colors.activeOutlineColor}
+                placeholderTextColor={theme.colors.inputPlaceholderTextColor}
+                textColor={theme.colors.inputTextColor}
             />
             {errors.ConfirmPassword && <Text style={styles.errorText}>{errors.ConfirmPassword}</Text>}
 

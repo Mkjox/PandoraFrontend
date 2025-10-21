@@ -14,12 +14,16 @@ export const lightTheme = {
         textGray: '#505050',
         inputText: '#000000',
         borderColor: '#ccc',
-        dangerBackgroundColor: '#D32F2F'
+        dangerBackgroundColor: '#D32F2F',
+        activeOutlineColor: '#1c6d79',
+        inputTextColor: '#000',
+        inputPlaceholderTextColor: '#666',
     },
 
     gradients: {
         button: ['#1c6d79', '#3ba7a3'],
         background: ['#FFFFFF', '#F7FAFB'],
+        // splash: ['#1c6d79', '#86A8E7', '#5FFBF1'],
     },
 
     styles: StyleSheet.create({
@@ -39,6 +43,7 @@ export const lightTheme = {
         border: { borderColor: '#ccc', borderWidth: 1 },
         borderTop: { borderColor: '#ccc', borderWidth: 1 },
         dangerBackgroundColor: { backgroundColor: '#D32F2F' },
+        activeOutlineColor: {color: '#1c6d79'}
     }),
 };
 
@@ -56,12 +61,16 @@ export const darkTheme = {
         textGray: '#B0B0B0',
         inputText: '#FFFFFF',
         borderColor: '#57555f',
-        dangerBackgroundColor: '#D32F2F'
+        dangerBackgroundColor: '#D32F2F',
+        activeOutlineColor: '#1c6d79',
+        inputTextColor: '#FFF',
+        inputPlaceholderTextColor: '#888',
     },
 
     gradients: {
         button: ['#3580FF', '#2B6DDE'],
         background: ['#12141D', '#161821'],
+        // splash: ['#1c6d79', '#86A8E7', '#5FFBF1'],
     },
 
     styles: StyleSheet.create({
@@ -81,5 +90,6 @@ export const darkTheme = {
         border: { borderColor: '#57555f', borderWidth: 2 },
         borderTop: { borderColor: '#343434', borderWidth: 1 },
         dangerBackgroundColor: { backgroundColor: '#D32F2F' },
+        activeOutlineColor: {color: '#1c6d79'}
     })
 };

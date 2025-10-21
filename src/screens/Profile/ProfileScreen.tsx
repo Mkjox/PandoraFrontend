@@ -15,7 +15,6 @@ import { lightTheme, darkTheme } from '@assets/colors/theme';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import AuthService from '@services/AuthService';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
-import { useAppDispatch } from '@redux/hooks';
 import LogoutButton from '@components/LogoutButton';
 
 const { width } = Dimensions.get('window');
@@ -59,7 +58,7 @@ const ProfileScreen: React.FC = () => {
       </View>
 
       <View style={[styles.infoGroup, theme.styles.card, theme.styles.border]}>
-        <Text style={[styles.infoName, theme.styles.text]}>{profile.username}</Text>
+        <Text style={[styles.infoName, theme.styles.text]}>{profile.firstName} {profile.lastName}</Text>
         <Text style={[styles.infoEmail, theme.styles.text]}>{profile.email}</Text>
         {profile.lastLogin && (
           <Text style={[styles.infoSub, theme.styles.text]}>

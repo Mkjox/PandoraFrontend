@@ -5,6 +5,8 @@ import { useTheme } from '@context/ThemeContext';
 import { darkTheme, lightTheme } from '@assets/colors/theme';
 import CustomCard from '@components/CustomCard';
 
+const { width, height } = Dimensions.get("window");
+
 const SessionsScreen = () => {
     const { isDark } = useTheme();
     const theme = isDark ? darkTheme : lightTheme;
@@ -30,13 +32,13 @@ const SessionsScreen = () => {
 
             {sessions.length > 0 ? (
                 sessions.map((session, index) => (
-                    <CustomCard key={index} style={[styles.sessionCard, theme.styles.card]}>
-                        <Text>Id: {session.id}</Text>
-                        <Text>IP: {session.ipAddress}</Text>
-                        <Text>User Agent: {session.userAgent}</Text>
-                        <Text>Created: {session.createdAt}</Text>
-                        <Text>Expires: {session.expiresAt}</Text>
-                        <Text>Current: {session.isCurrentSession ? 'Yes' : 'No'}</Text>
+                    <CustomCard key={index} style={[styles.sessionCard, theme.styles.card]} onPress={() => {}}>
+                        <Text style={styles.dataText}>Id: {session.id}</Text>
+                        <Text style={styles.dataText}>IP: {session.ipAddress}</Text>
+                        <Text style={styles.dataText}>User Agent: {session.userAgent}</Text>
+                        <Text style={styles.dataText}>Created: {new Date(session.createdAt).toLocaleString()}</Text>
+                        <Text style={styles.dataText}>Expires: {new Date(session.expiresAt).toLocaleString()}</Text>
+                        <Text style={styles.dataText}>Current: {session.isCurrentSession ? 'Yes' : 'No'}</Text>
                     </CustomCard>
                 ))
             ) : (
@@ -72,6 +74,11 @@ const styles = StyleSheet.create({
         marginTop: 20,
         textAlign: 'center',
     },
+    dataText: {
+        marginVertical: height * 0.0001,
+        fontFamily: 'Poppins_500Medium',
+        // fontWeight: '700'
+    }
 });
 
 export default SessionsScreen;

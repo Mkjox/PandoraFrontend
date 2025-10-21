@@ -113,12 +113,12 @@ export default function LoginScreen() {
         value={credentials.UsernameOrEmail}
         onChangeText={text => handleChange('UsernameOrEmail', text)}
         style={[styles.input, theme.styles.card]}
-        placeholderTextColor={isDark ? '#888' : '#666'}
+        placeholderTextColor={theme.colors.inputPlaceholderTextColor}
         autoCapitalize="none"
         keyboardType="email-address"
-        activeUnderlineColor='#1c6d79'
-        activeOutlineColor='#1c6d79'
-        textColor={isDark ? '#FFF' : '#000'}
+        activeUnderlineColor={theme.colors.activeOutlineColor}
+        activeOutlineColor={theme.colors.activeOutlineColor}
+        textColor={theme.colors.inputTextColor}
       />
       {usernameError && <Text style={styles.errorText}>{usernameError}</Text>}
 
@@ -137,11 +137,11 @@ export default function LoginScreen() {
         value={credentials.Password}
         onChangeText={text => handleChange('Password', text)}
         style={[styles.input, theme.styles.card]}
-        placeholderTextColor={isDark ? '#888' : '#666'}
+        placeholderTextColor={theme.colors.inputPlaceholderTextColor}
         autoCapitalize="none"
-        activeUnderlineColor='#1c6d79'
-        activeOutlineColor='#1c6d79'
-        textColor={isDark ? '#FFF' : '#000'}
+        activeUnderlineColor={theme.colors.activeOutlineColor}
+        activeOutlineColor={theme.colors.activeOutlineColor}
+        textColor={theme.colors.inputTextColor}
       />
       {passwordError && <Text style={styles.errorText}>{passwordError}</Text>}
 
