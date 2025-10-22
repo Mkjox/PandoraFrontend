@@ -32,7 +32,13 @@ const AccountScreen: React.FC = () => {
         }
     }, []);
 
-    useFocusEffect(useCallback(() => { loadProfile(); }, [loadProfile]));
+    useFocusEffect(
+        useCallback(() => {
+            loadProfile();
+            return () => { };
+        },
+            [loadProfile])
+    );
 
 
     return (
@@ -46,12 +52,12 @@ const AccountScreen: React.FC = () => {
                 <Text style={[styles.sectionBody, theme.styles.text]}>
                     {/* Replace with real data from Redux or context */}
                     Username: <Text style={styles.bold}>
-                        {profile.username}
+                        {profile?.username || "-"}
                     </Text>
                 </Text>
                 <Text style={[styles.sectionBody, theme.styles.text]}>
                     Email: <Text style={styles.bold}>
-                        {profile.email}
+                        {profile?.email || "-"}
                     </Text>
                 </Text>
             </View>

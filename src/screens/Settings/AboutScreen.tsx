@@ -17,23 +17,13 @@ const AboutScreen: React.FC = () => {
 
             <View style={styles.section}>
                 <Text style={[styles.sectionBody, theme.styles.text]}>
-                    Pandora is your personal, secure vault for passwords and sensitive notes. Everything you store here is encrypted on your device.
+                    Pandora is your personal, secure vault for passwords and sensitive notes. Everything you store here is encrypted on our backend.
                 </Text>
             </View>
 
             <View style={styles.section}>
                 <Text style={[styles.sectionHeader, theme.styles.text]}>Version</Text>
                 <Text style={[styles.sectionBody, theme.styles.text]}>1.0.0</Text>
-            </View>
-
-            <View style={styles.section}>
-                <Text style={[styles.sectionHeader, theme.styles.text]}>Built With</Text>
-                <Text style={[styles.sectionBody, theme.styles.text]}>
-                    • React Native{"\n"}
-                    • Redux Toolkit{"\n"}
-                    • Expo{"\n"}
-                    • PostgreSQL backend
-                </Text>
             </View>
 
             <View style={styles.section}>

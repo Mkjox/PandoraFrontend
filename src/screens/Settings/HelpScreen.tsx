@@ -14,6 +14,8 @@ import {
 import { useTheme } from '@context/ThemeContext';
 import { lightTheme, darkTheme } from '@assets/colors/theme';
 import CustomButton from '@components/CustomButton';
+import Toast from 'react-native-toast-message';
+import * as MailComposer from 'expo-mail-composer';
 
 if (Platform.OS === 'android') {
     UIManager.setLayoutAnimationEnabledExperimental?.(true);
@@ -44,6 +46,26 @@ const HelpScreen: React.FC = () => {
                 'For security, we cannot recover your master password. You must reset the app, which will erase existing data.',
         },
     ];
+
+    const sendEmail = async () => {
+        const isAvailable = await MailComposer.isAvailableAsync();
+
+        if (!isAvailable) {
+            Toast.show({
+                type: 'error',
+                text1: 'Error',
+                text2: 'Mail services are not available or not installed on this device.'
+            });
+            return;
+        }
+
+        await MailComposer.composeAsync({
+            recipients: ['test_email@example.com'],
+            subject: 'I need help about Pandora App',
+            body: "Hey! I'm currently having a problem about X right now."
+        });
+    };
+
 
     const toggle = (i: number) => {
         LayoutAnimation.easeInEaseOut();
@@ -78,7 +100,7 @@ const HelpScreen: React.FC = () => {
             </View>
 
             <CustomButton
-                onPress={() => { }}
+                onPress={sendEmail}
                 title='✉️ Email Support'
                 style={styles.emailButton}
             />
@@ -129,17 +151,17 @@ const styles = StyleSheet.create({
         lineHeight: 20,
     },
     emailButton: {
-    height: height * 0.06,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
-    marginHorizontal: width * 0.05,
-    marginTop: height * 0.02
+        height: height * 0.06,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 2 },
+        marginHorizontal: width * 0.05,
+        marginTop: height * 0.02
     },
     emailButtonText: {
         fontSize: 16,
