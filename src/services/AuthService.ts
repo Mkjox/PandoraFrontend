@@ -297,6 +297,39 @@ const AuthService = {
             };
         }
     },
+
+    clearSessions: async (): Promise<ServiceResult<void>> => {
+        try {
+            const currentRefreshToken = await tokenStorage.getRefreshToken();
+
+            if (!currentRefreshToken) {
+                return {
+                    success: false,
+                    message: 'No refresh token found.'
+                };
+            }
+
+            const res = await api.post<{ resultStatus: number; message: string }>('/auth/logout-others',  currentRefreshToken,{
+                headers: { 'Content-Type': 'application/json' }
+            } )
+
+            if (res.data.resultStatus !== 0) {
+                return {
+                    success: false,
+                    message: res.data.message
+                }
+            }
+            return {
+                success: true
+            }
+        }
+        catch (err: any) {
+            return {
+                success: false,
+                message: err.message
+            }
+        }
+    },
 }
 
 export default AuthService

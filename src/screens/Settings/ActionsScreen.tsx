@@ -7,11 +7,15 @@ import {
     ScrollView,
     Dimensions,
     Switch,
+    Alert,
 } from 'react-native';
 import { useTheme } from '@context/ThemeContext';
 import { lightTheme, darkTheme } from '@assets/colors/theme';
 import CustomButton from '@components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
+import AuthService from '@services/AuthService';
+import Toast from 'react-native-toast-message';
+import CustomSpinner from '@components/CustomSpinner';
 
 const { height, width } = Dimensions.get('window');
 
@@ -22,6 +26,48 @@ const ActionsScreen: React.FC = () => {
 
     const [autoLock, setAutoLock] = useState(false);
     const [clearClipboard, setClearClipboard] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const handleClearSessions = async () => {
+        Alert.alert(
+            "Clear Other Sessions",
+            "This will log out all other devices except this one.\nProceed?",
+            [
+                { text: "Cancel", style: "cancel" },
+                {
+                    text: "Confirm",
+                    style: "destructive",
+                    onPress: async () => {
+                        setLoading(true);
+                        const result = await AuthService.clearSessions();
+                        setLoading(false);
+
+                        if (!result.success) {
+                            Toast.show({
+                                type: 'error',
+                                text1: 'Error',
+                                text2: result.message,
+                            });
+                            return;
+                        }
+
+                        Toast.show({
+                            type: 'success',
+                            text1: 'Sessions Cleared',
+                            text2: 'All other active sessions were terminated.',
+                        });
+                    }
+                }
+            ]
+        );
+    };
+
+    if (loading) {
+        return (
+            <CustomSpinner />
+        );
+    }
+
 
     return (
         <ScrollView style={[styles.container, theme.styles.container]}>
@@ -58,12 +104,12 @@ const ActionsScreen: React.FC = () => {
             <View style={styles.section}>
                 <Text style={[styles.sectionHeader, theme.styles.text]}>Manual Actions</Text>
                 <CustomButton
-                    onPress={() => navigation.navigate('Sessions') }
+                    onPress={() => navigation.navigate('Sessions')}
                     title='List Sessions'
                     style={styles.button}
                 />
                 <CustomButton
-                    onPress={() => { }}
+                    onPress={handleClearSessions}
                     title='Clear Sessions'
                     style={styles.button}
                 />
@@ -113,16 +159,16 @@ const styles = StyleSheet.create({
         color: '#888',
     },
     button: {
-    height: height * 0.06,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
-    marginTop: height * 0.02
+        height: height * 0.06,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 2 },
+        marginTop: height * 0.02
     },
     buttonText: {
         fontSize: 16,
