@@ -41,5 +41,5 @@ src/config/apiConfig.ts
 %ProgramData%/
 roadmap/
 android/
-app.json
-eas.json
+!app.json
+!eas.json

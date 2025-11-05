@@ -13,7 +13,9 @@ import { login as loginAction } from '@redux/store/slices/authSlice';
 import { NavigationContainer } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import { toastConfig } from '@components/ToastConfig';
-import CustomSpinner from '@components/CustomSpinner';
+import { enableScreens } from 'react-native-screens';
+
+enableScreens();
 
 import {
   useFonts,
