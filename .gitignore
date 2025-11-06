@@ -35,7 +35,7 @@ yarn-error.*
 *.tsbuildinfo
 
 # Api Url
-src/config/apiConfig.ts
+!src/config/apiConfig.ts
 
 # Adds these files for some reason
 %ProgramData%/
@@ -43,3 +43,4 @@ roadmap/
 android/
 !app.json
 !eas.json
+.env
