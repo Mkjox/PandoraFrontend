@@ -36,6 +36,7 @@ import {
 } from '@expo-google-fonts/jost';
 import { YesevaOne_400Regular } from '@expo-google-fonts/yeseva-one';
 import AnimatedSplash from '@components/AnimatedSplash';
+import ThemedStatusBar from '@components/ThemedStatusBar';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -121,6 +122,7 @@ const AppContent = () => {
 
   return (
     <NavigationContainer>
+      <ThemedStatusBar />
       <AppNavigator />
       {/* {hasLaunched ? ( <AppNavigator /> ) : ( <WelcomeScreen onDone={() => setHasLaunched(true)} /> )} */}
     </NavigationContainer>
