@@ -37,6 +37,7 @@ import {
 import { YesevaOne_400Regular } from '@expo-google-fonts/yeseva-one';
 import AnimatedSplash from '@components/AnimatedSplash';
 import ThemedStatusBar from '@components/ThemedStatusBar';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -157,8 +158,10 @@ export default function App() {
   return (
     <Provider store={store}>
       <ThemeProvider>
-        <AppContent />
-        <Toast config={toastConfig} position="bottom" />
+        <SafeAreaProvider>
+          <AppContent />
+          <Toast config={toastConfig} position="bottom" />
+        </SafeAreaProvider>
       </ThemeProvider>
     </Provider>
   );
