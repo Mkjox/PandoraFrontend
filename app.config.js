@@ -5,7 +5,7 @@ export default ({ config }) => ({
   expo: {
     name: "Pandora",
     slug: "pandora",
-    version: "1.0.0",
+    version: "1.0.1",
     orientation: "portrait",
     icon: "./src/assets/icons/icon.png",
     userInterfaceStyle: "automatic",
