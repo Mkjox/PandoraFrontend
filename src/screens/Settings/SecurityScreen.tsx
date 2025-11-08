@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     View,
     Text,
@@ -15,6 +15,7 @@ import { lightTheme, darkTheme } from '@assets/colors/theme';
 import TwoFactorSetup from '@components/TwoFactorSetup';
 import Toast from 'react-native-toast-message';
 import CustomButton from '@components/CustomButton';
+import { tokenStorage } from '@services/tokenStorage';
 
 const { height, width } = Dimensions.get('window');
 
@@ -34,18 +35,28 @@ const SecurityScreen: React.FC = () => {
         });
     };
 
-    const toggleBiometric = () => {
-        setBiometricEnabled(!biometricEnabled);
+    useEffect(() => {
+        const loadBiometricStatus = async () => {
+            const enabled = await tokenStorage.isBiometricEnabled()
+            setBiometricEnabled(enabled)
+        }
+        loadBiometricStatus()
+    }, [])
+    
+    const toggleBiometric = async (value: boolean) => {
+        setBiometricEnabled(value);
+        await tokenStorage.setBiometricEnabled(value)
+
         Toast.show({
             type: 'info',
-            text1: biometricEnabled ? 'Biometric Unlock Disabled' : 'Biometric Unlock Enabled',
-            text2: `Biometric Unlock has been ${biometricEnabled ? 'disabled' : 'enabled'}.`
+            text1: value ? 'Biometric Unlock Enabled' : 'Biometric Unlock Disabled',
+            text2: `Biometric Unlock has been ${value ? 'enabled' : 'disabled'}.`
         });
     };
 
     const resetSettings = () => {
         setTwoFactorEnabled(false);
-        setBiometricEnabled(false);
+        toggleBiometric(false);
         Toast.show({
             type: 'info',
             text1: 'Reset Security',
