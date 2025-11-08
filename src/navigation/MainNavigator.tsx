@@ -14,7 +14,7 @@ import SettingsScreen from '@screens/Settings/SettingsScreen';
 import SuggestScreen from '@screens/Settings/SuggestScreen';
 import AccountScreen from '@screens/Settings/AccountScreen';
 import SecurityScreen from '@screens/Settings/SecurityScreen';
-import AutofillScreen from '@screens/Settings/AutofillScreen';
+// import AutofillScreen from '@screens/Settings/AutofillScreen';
 import SearchScreen from '@screens/Settings/SearchScreen';
 import ActionsScreen from '@screens/Settings/ActionsScreen';
 import HelpScreen from '@screens/Settings/HelpScreen';
@@ -31,7 +31,7 @@ import EditPasswordsScreen from '@screens/Password/EditPasswordsScreen';
 import EditVaultScreen from '@screens/Vault/EditVaultsScreen';
 import CategoryDetailsScreen from '@screens/Category/CategoryDetailsScreen';
 import VaultDetailsScreen from '@screens/Vault/VaultDetailsScreen';
-import PremiumScreen from '@screens/Premium/PremiumScreen';
+// import PremiumScreen from '@screens/Premium/PremiumScreen';
 import IdentitiesScreen from '@screens/Identity/IdentitiesScreen';
 import IdentityDetailsScreen from '@screens/Identity/IdentityDetailsScreen';
 import EditIdentityScreen from '@screens/Identity/EditIdentityScreen';
@@ -66,7 +66,7 @@ export default function MainNavigator() {
             <Stack.Screen name='Suggest' component={SuggestScreen} />
             <Stack.Screen name='Account' component={AccountScreen} />
             <Stack.Screen name='Security' component={SecurityScreen} />
-            <Stack.Screen name='Autofill' component={AutofillScreen} />
+            {/* <Stack.Screen name='Autofill' component={AutofillScreen} /> */}
             <Stack.Screen name='Search' component={SearchScreen} />
             <Stack.Screen name='Actions' component={ActionsScreen} />
             <Stack.Screen name='Help' component={HelpScreen} />

@@ -63,12 +63,12 @@ const SettingsScreen: React.FC = () => {
                     icon: <MaterialIcons name="shield" size={20} color={theme.styles.icon.color} />,
                     onPress: () => navigation.navigate("Security" as never),
                 },
-                {
-                    key: "autofill",
-                    title: "Autofill",
-                    icon: <FontAwesome name="magic" size={20} color={theme.styles.icon.color} />,
-                    onPress: () => navigation.navigate("Autofill" as never),
-                },
+                // {
+                //     key: "autofill",
+                //     title: "Autofill",
+                //     icon: <FontAwesome name="magic" size={20} color={theme.styles.icon.color} />,
+                //     onPress: () => navigation.navigate("Autofill" as never),
+                // },
                 {
                     key: "search",
                     title: "Search",

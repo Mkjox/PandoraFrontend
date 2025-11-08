@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 import { useTheme } from '@context/ThemeContext';
 import { lightTheme, darkTheme } from '@assets/colors/theme';
+import * as MailComposer from 'expo-mail-composer';
+import Toast from 'react-native-toast-message';
 
 const { width } = Dimensions.get('window');
 
@@ -20,6 +22,25 @@ const PrivacyScreen: React.FC = () => {
 
     const openPolicyLink = (url: string) => {
         Linking.openURL(url).catch(() => { });
+    };
+
+    const sendEmail = async () => {
+        const isAvailable = await MailComposer.isAvailableAsync();
+
+        if (!isAvailable) {
+            Toast.show({
+                type: 'error',
+                text1: 'Error',
+                text2: 'Mail services are not available or not installed on this device.'
+            });
+            return;
+        }
+
+        await MailComposer.composeAsync({
+            recipients: ['test_email@example.com'],
+            subject: 'About the Privacy section of Pandora App',
+            body: 'I have a question about the privacy.'
+        });
     };
 
     return (
@@ -52,7 +73,7 @@ const PrivacyScreen: React.FC = () => {
 
             <View style={[styles.group, theme.styles.card, theme.styles.border]}>
                 <Text style={[styles.sectionHeader, theme.styles.text]}>Contact</Text>
-                <TouchableOpacity onPress={() => openPolicyLink('mailto:privacy@pandora.com')}>
+                <TouchableOpacity onPress={sendEmail}>
                     <Text style={[styles.linkText, theme.styles.text]}>Email Privacy Team</Text>
                 </TouchableOpacity>
             </View>
