@@ -26,7 +26,10 @@ const AuthService = {
 
             const { accessToken, refreshToken } = res.data.data
             await tokenStorage.setTokens(accessToken, refreshToken)
-            return { success: true }
+            return {
+                success: true,
+                message: res.data.message || 'Email sent successfully'
+            }
         } catch (err: any) {
             return {
                 success: false,
@@ -309,9 +312,9 @@ const AuthService = {
                 };
             }
 
-            const res = await api.post<{ resultStatus: number; message: string }>('/auth/logout-others',  currentRefreshToken,{
+            const res = await api.post<{ resultStatus: number; message: string }>('/auth/logout-others', currentRefreshToken, {
                 headers: { 'Content-Type': 'application/json' }
-            } )
+            })
 
             if (res.data.resultStatus !== 0) {
                 return {
@@ -327,6 +330,42 @@ const AuthService = {
             return {
                 success: false,
                 message: err.message
+            }
+        }
+    },
+
+    verifyEmail: async (token: string): Promise<ServiceResult<any>> => {
+        try {
+            if (!token) {
+                return {
+                    success: false,
+                    message: 'Verification token is missing.'
+                }
+            }
+
+            const res = await api.post<{
+                data?: any
+                resultStatus: number
+                message: string
+            }>('/auth/verify-email', { token })
+
+            if (res.data.resultStatus !== 0) {
+                return {
+                    success: false,
+                    message: res.data.message || 'Email verification failed.'
+                }
+            }
+
+            return {
+                success: true,
+                data: res.data.data,
+                message: res.data.message || 'Email verified successfully.'
+            }
+        }
+        catch (err: any) {
+            return {
+                success: false,
+                message: err?.response?.data?.message || err.message || 'Verification request failed.'
             }
         }
     },

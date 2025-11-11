@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Provider, useDispatch } from 'react-redux';
 import { store } from '@redux/store';
 import { ThemeProvider, useTheme } from '@context/ThemeContext';
-import AppNavigator from '@navigation/AppNavigator';
 import * as SplashScreen from 'expo-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { tokenStorage } from '@services/tokenStorage';
@@ -14,6 +13,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import { toastConfig } from '@components/ToastConfig';
 import { enableScreens } from 'react-native-screens';
+import AnimatedSplash from '@components/AnimatedSplash';
+import ThemedStatusBar from '@components/ThemedStatusBar';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import * as Linking from "expo-linking";
+import AppNavigator from '@navigation/AppNavigator';
 
 enableScreens();
 
@@ -35,11 +39,19 @@ import {
   Jost_700Bold_Italic,
 } from '@expo-google-fonts/jost';
 import { YesevaOne_400Regular } from '@expo-google-fonts/yeseva-one';
-import AnimatedSplash from '@components/AnimatedSplash';
-import ThemedStatusBar from '@components/ThemedStatusBar';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 SplashScreen.preventAutoHideAsync();
+
+const prefix = Linking.createURL("/");
+
+const linking = {
+    prefixes: [prefix, "pandoraapp://"],
+    config: {
+        screens: {
+            VerifyEmail: "verify",
+        },
+    },
+};
 
 const AppContent = () => {
   const { isLoading } = useTheme();
@@ -122,7 +134,7 @@ const AppContent = () => {
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer  linking={linking}>
       <ThemedStatusBar />
       <AppNavigator />
       {/* {hasLaunched ? ( <AppNavigator /> ) : ( <WelcomeScreen onDone={() => setHasLaunched(true)} /> )} */}

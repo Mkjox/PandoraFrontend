@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import {
-    View,
     Text,
     ScrollView,
     StyleSheet,
@@ -21,7 +20,6 @@ const { height } = Dimensions.get("window")
 export default function RegisterScreen() {
     const { isDark } = useTheme()
     const theme = isDark ? darkTheme : lightTheme
-    const dispatch = useDispatch()
     const navigation = useNavigation<any>()
 
     const [form, setForm] = useState({
@@ -35,6 +33,7 @@ export default function RegisterScreen() {
     })
     const [errors, setErrors] = useState<Partial<typeof form>>({})
     const [serverError, setServerError] = useState<string | null>(null)
+    const [serverMessage, setServerMessage] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirm, setShowConfirm] = useState(false)
@@ -50,9 +49,9 @@ export default function RegisterScreen() {
         setServerError(null)
 
         const newErrors: Partial<typeof form> = {};
-            (Object.keys(form) as (keyof typeof form)[]).forEach(key => {
-                if (!form[key].trim()) newErrors[key] = 'This field is required.'
-            })
+        (Object.keys(form) as (keyof typeof form)[]).forEach(key => {
+            if (!form[key].trim()) newErrors[key] = 'This field is required.'
+        })
         if (!newErrors.Password && form.Password !== form.ConfirmPassword) {
             newErrors.ConfirmPassword = 'Passwords do not match.'
         }
@@ -66,7 +65,9 @@ export default function RegisterScreen() {
         setLoading(false)
 
         if (result.success) {
-            navigation.navigate('Login' as never)
+            // navigation.navigate('Login' as never)
+            setServerMessage(result.message || 'Email sent successfully! Please check your inbox.')
+            setTimeout(() => navigation.navigate('Login' as never), 1500)
         } else {
             setServerError(result.message || 'Registration failed.')
         }
@@ -207,6 +208,11 @@ export default function RegisterScreen() {
                     {serverError}
                 </Text>
             )}
+            {serverMessage && (
+                <Text style={[styles.successText, { textAlign: 'center' }]}>
+                    {serverMessage}
+                </Text>
+            )}
 
             <CustomButton
                 onPress={handleRegister}
@@ -251,18 +257,26 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins_400Regular',
         fontWeight: '700',
     },
+    successText: {
+        color: '#2E7D32',
+        fontSize: 13,
+        marginBottom: 8,
+        marginLeft: 4,
+        fontFamily: 'Poppins_400Regular',
+        fontWeight: '700',
+    },
     button: {
-    height: height * 0.06,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#1c6d79',
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
-    marginTop: height * 0.05,
+        height: height * 0.06,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#1c6d79',
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 2 },
+        marginTop: height * 0.05,
     },
     link: {
         marginTop: height * 0.02,

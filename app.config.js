@@ -35,6 +35,7 @@ export default ({ config }) => ({
       favicon: "./src/assets/icons/favicon.png",
     },
     plugins: ["expo-font", "expo-secure-store"],
+    "scheme": "pandoraapp",
     extra: {
       eas: {
         projectId: "85f3dbb4-697b-4f8c-9405-9ed04b1123d1",
