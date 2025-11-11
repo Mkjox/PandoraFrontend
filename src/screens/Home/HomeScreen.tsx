@@ -211,7 +211,7 @@ export default function HomeScreen() {
               height={height * 0.4}
               preserveAspectRatio="xMidYMid meet"
             />
-            <Text style={styles.emptyRecordText}>
+            <Text style={[styles.emptyRecordText, theme.styles.text]}>
               Nothing to see here yet{'\n'}Click on New button to add a Password
             </Text>
           </View>

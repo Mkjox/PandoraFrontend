@@ -18,6 +18,7 @@ import { TextInput as PaperInput } from 'react-native-paper'
 import CustomButton from '@components/CustomButton'
 import { isBiometricAvailable, promptBiometric } from '@services/biometric'
 import { tokenStorage } from '@services/tokenStorage'
+import Toast from 'react-native-toast-message'
 
 const { height } = Dimensions.get("window")
 
@@ -91,8 +92,12 @@ export default function LoginScreen() {
             ]
           )
         }
-      } catch (e) {
-        // ignore non-critical errors
+      } catch (error: any) {
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: error
+        })
       }
     }
   }
