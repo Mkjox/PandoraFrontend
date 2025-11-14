@@ -43,7 +43,8 @@ export const lightTheme = {
         border: { borderColor: '#ccc', borderWidth: 1 },
         borderTop: { borderColor: '#ccc', borderWidth: 1 },
         dangerBackgroundColor: { backgroundColor: '#D32F2F' },
-        activeOutlineColor: {color: '#1c6d79'}
+        activeOutlineColor: { color: '#1c6d79' },
+        pickerPlaceholderColor: { color: '#49454f' }
     }),
 };
 
@@ -72,7 +73,7 @@ export const darkTheme = {
         background: ['#12141D', '#161821'],
         // splash: ['#1c6d79', '#86A8E7', '#5FFBF1'],
     },
-
+    
     styles: StyleSheet.create({
         container: { backgroundColor: '#12141D' },
         button: { backgroundColor: '#3580FF', },
@@ -90,6 +91,7 @@ export const darkTheme = {
         border: { borderColor: '#57555f', borderWidth: 2 },
         borderTop: { borderColor: '#343434', borderWidth: 1 },
         dangerBackgroundColor: { backgroundColor: '#D32F2F' },
-        activeOutlineColor: {color: '#1c6d79'}
+        activeOutlineColor: { color: '#1c6d79' },
+        pickerPlaceholderColor: { color: '#49454f' }
     })
 };

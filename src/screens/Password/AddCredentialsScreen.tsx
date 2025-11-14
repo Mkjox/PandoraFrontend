@@ -27,6 +27,7 @@ import { ServiceResult } from '@appTypes/service.types';
 import { Switch, TextInput } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import CustomButton from '@components/CustomButton';
+import CustomPicker from '@components/CustomPicker';
 
 type AddCredParams = {
   AddCredentials: {
@@ -355,15 +356,16 @@ export default function AddCredentialsScreen() {
             />
 
             <View style={[styles.pickerContainer, theme.styles.card]}>
-              <Picker
-                selectedValue={form.CategoryId}
-                onValueChange={v => handleChange('CategoryId', v)}
-              >
-                <Picker.Item label="Select category*" value="" color={isDark ? '#888' : '#49454f'} />
-                {categories.map(c => (
-                  <Picker.Item key={c.id} label={c.name} value={c.id} style={theme.styles.inputText} />
-                ))}
-              </Picker>
+              <CustomPicker
+                value={form.CategoryId}
+                onChange={(v) => handleChange('CategoryId', v)}
+                items={categories.map(c => ({
+                  label: c.name,
+                  value: c.id
+                }))}
+                placeholder="Select category*"
+                style={{ color: theme.styles.pickerPlaceholderColor.color }}
+              />
             </View>
           </>
         )}
@@ -476,15 +478,16 @@ export default function AddCredentialsScreen() {
 
             {/* <Text style={[styles.label, theme.styles.text]}>Category*</Text> */}
             <View style={[styles.pickerContainer, theme.styles.card]}>
-              <Picker
-                selectedValue={form.CategoryId}
-                onValueChange={v => handleChange('CategoryId', v)}
-              >
-                <Picker.Item label="Select category*" value="" color={isDark ? '#888' : '#49454f'} />
-                {categories.map(c => (
-                  <Picker.Item key={c.id} label={c.name} value={c.id} color={isDark ? '#888' : '#49454f'} />
-                ))}
-              </Picker>
+              <CustomPicker
+                value={form.CategoryId}
+                onChange={(v) => handleChange('CategoryId', v)}
+                items={categories.map(c => ({
+                  label: c.name,
+                  value: c.id
+                }))}
+                placeholder="Select category*"
+                style={{ color: theme.styles.pickerPlaceholderColor.color}}
+              />
             </View>
           </>
         )}
