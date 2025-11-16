@@ -11,7 +11,6 @@ import {
   Platform,
   Dimensions,
 } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { useTheme } from '@context/ThemeContext';

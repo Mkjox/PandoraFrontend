@@ -19,12 +19,11 @@ import { useAppDispatch, useAppSelector } from "@redux/hooks";
 import PersonalVaultService from "@services/PersonalVaultService";
 import CategoryService from "@services/CategoryService";
 import { ServiceResult } from "@appTypes/service.types";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Picker } from "@react-native-picker/picker";
 import CustomAlert from "@components/CustomAlert";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { darkTheme, lightTheme } from "@assets/colors/theme";
 import Toast from "react-native-toast-message";
+import CustomPicker from "@components/CustomPicker";
 
 type EditVaultParams = {
   EditVault: { vaultId: string };
@@ -278,15 +277,14 @@ export default function EditVaultsScreen() {
         <View style={[styles.card, theme.styles.card, theme.styles.border]}>
           <Text style={[styles.label, theme.styles.text]}>Category*</Text>
           <View style={[styles.pickerContainer, theme.styles.card]}>
-            <Picker
-              selectedValue={form.categoryId}
-              onValueChange={(v) => handleChange("categoryId", v)}
-            >
-              <Picker.Item label="Select category..." value="" />
-              {categories.map((c: any) => (
-                <Picker.Item key={c.id} label={c.name} value={c.id} />
-              ))}
-            </Picker>
+            <CustomPicker
+              value={form.categoryId}
+              onChange={(v) => handleChange('categoryId', v)}
+              items={categories.map(c => ({
+                label: c.name,
+                value: c.id
+              }))}
+            />
           </View>
           {form.fieldErrors.categoryId ? (
             <Text style={styles.errorText}>{form.fieldErrors.categoryId}</Text>
