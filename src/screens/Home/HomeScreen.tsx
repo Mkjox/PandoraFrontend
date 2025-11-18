@@ -112,6 +112,7 @@ export default function HomeScreen() {
     <CustomCard
       style={[theme.styles.card, theme.styles.border]}
       onPress={() => navigation.navigate('PassDetails', { id: item.id })}
+      iconLabel={item.siteName}
     >
       <Text style={[styles.cardTitle, theme.styles.text]}>{item.siteName}</Text>
       <Text style={[styles.cardSubtitle, theme.styles.textGray]}>{item.usernameOrEmail}</Text>
@@ -122,6 +123,7 @@ export default function HomeScreen() {
     <CustomCard
       style={[theme.styles.card, theme.styles.border]}
       onPress={() => navigation.navigate('VaultDetails', { id: item.id })}
+      iconLabel={item.secureTitle}
     >
       <Text style={[styles.cardTitle, theme.styles.text]}>{item.secureTitle}</Text>
       <Text style={[styles.cardSubtitle, theme.styles.textGray]} numberOfLines={2}>

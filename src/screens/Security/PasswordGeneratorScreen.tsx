@@ -15,6 +15,7 @@ import { darkTheme, lightTheme } from '@assets/colors/theme'
 import CustomButton from '@components/CustomButton'
 import * as Clipboard from 'expo-clipboard'
 import Toast from 'react-native-toast-message'
+import CustomCard from '@components/CustomCard'
 
 const { height, width } = Dimensions.get('window')
 
@@ -77,8 +78,13 @@ const PasswordGeneratorScreen: React.FC = () => {
         Clipboard.setStringAsync(password)
         Toast.show({
             type: 'info',
-            text1: 'Copied to clipboard.'
+            text1: 'Copied to clipboard.',
+            text2: 'Clipboard will get cleared after 15 seconds'
         });
+
+        setTimeout(() => {
+            Clipboard.setStringAsync(' ');
+        }, 15000);
     }
 
     return (
@@ -153,16 +159,20 @@ const PasswordGeneratorScreen: React.FC = () => {
             </View>
 
             {password ? (
-                <View style={[styles.resultCard, theme.styles.card]}>
-                    <Text style={[styles.passwordText, theme.styles.text]}>
-                        {password}
-                    </Text>
+                <>
+                    <CustomCard style={[styles.resultCard, theme.styles.card, theme.styles.border]}>
+                        <Text style={[styles.passwordText, theme.styles.text]}>
+                            {password}
+                        </Text>
+                    </CustomCard>
+                    <View style={{padding: 16}}>
                     <CustomButton
                         onPress={onCopy}
                         title='Copy'
                         style={[styles.copyButton, theme.styles.button]}
                     />
-                </View>
+                    </View>
+                </>
             ) : null}
         </View>
     )
@@ -218,11 +228,11 @@ const styles = StyleSheet.create({
     resultCard: {
         padding: 16,
         borderRadius: 8,
+        marginBottom: 16
     },
     passwordText: {
         fontSize: 18,
         fontFamily: 'Poppins_500Medium',
-        marginBottom: 12,
     },
     copyButton: {
         height: height * 0.06,
