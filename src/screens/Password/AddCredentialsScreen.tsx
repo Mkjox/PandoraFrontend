@@ -592,7 +592,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 12,
     overflow: 'hidden',
-    paddingLeft: 10
+    paddingLeft: 10,
+    marginTop: 4
   },
   submitButton: {
     height: height * 0.055,

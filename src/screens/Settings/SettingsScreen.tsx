@@ -86,12 +86,12 @@ const SettingsScreen: React.FC = () => {
         {
             title: "ADVANCED",
             data: [
-                {
-                    key: "advanced",
-                    title: "Advanced",
-                    icon: <Ionicons name="options" size={20} color={theme.styles.icon.color} />,
-                    onPress: () => navigation.navigate("Advanced" as never),
-                },
+                // {
+                //     key: "advanced",
+                //     title: "Advanced",
+                //     icon: <Ionicons name="options" size={20} color={theme.styles.icon.color} />,
+                //     onPress: () => navigation.navigate("Advanced" as never),
+                // },
                 {
                     key: "about",
                     title: "About Pandora",

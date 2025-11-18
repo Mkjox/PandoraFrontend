@@ -79,7 +79,7 @@ const PasswordGeneratorScreen: React.FC = () => {
         Toast.show({
             type: 'info',
             text1: 'Copied to clipboard.',
-            text2: 'Clipboard will get cleared after 15 seconds'
+            text2: 'Clipboard will be cleaned in 15 seconds'
         });
 
         setTimeout(() => {

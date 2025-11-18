@@ -70,7 +70,7 @@ export default function MainNavigator() {
             <Stack.Screen name='Search' component={SearchScreen} />
             <Stack.Screen name='Actions' component={ActionsScreen} />
             <Stack.Screen name='Help' component={HelpScreen} />
-            <Stack.Screen name='Advanced' component={AdvancedScreen} />
+            {/* <Stack.Screen name='Advanced' component={AdvancedScreen} /> */}
             <Stack.Screen name='About' component={AboutScreen} />
             <Stack.Screen name='Privacy' component={PrivacyScreen} />
             <Stack.Screen name='ThemeScreen' component={ThemeScreen} />

@@ -90,7 +90,13 @@ const CustomPicker: React.FC<CustomPickerProps> = ({
                                     onChange(item.value);
                                     setOpen(false);
                                 }}
-                                style={styles.item}
+                                style={[styles.item,
+                                item !== items[items.length - 1] && {
+                                    borderBottomWidth: 1,
+                                    borderBottomColor: theme.styles.border.borderColor,
+                                    marginVertical: 4
+                                },
+                                ]}
                             >
                                 <Text
                                     style={{
