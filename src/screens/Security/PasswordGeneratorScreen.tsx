@@ -165,12 +165,12 @@ const PasswordGeneratorScreen: React.FC = () => {
                             {password}
                         </Text>
                     </CustomCard>
-                    <View style={{padding: 16}}>
-                    <CustomButton
-                        onPress={onCopy}
-                        title='Copy'
-                        style={[styles.copyButton, theme.styles.button]}
-                    />
+                    <View style={{ padding: 16 }}>
+                        <CustomButton
+                            onPress={onCopy}
+                            title='Copy'
+                            style={[styles.copyButton, theme.styles.button]}
+                        />
                     </View>
                 </>
             ) : null}
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: StatusBar.currentHeight,
-        paddingHorizontal: width * 0.06,
+        paddingHorizontal: width * 0.04,
     },
     title: {
         fontSize: 22,
@@ -228,7 +228,8 @@ const styles = StyleSheet.create({
     resultCard: {
         padding: 16,
         borderRadius: 8,
-        marginBottom: 16
+        marginBottom: 16,
+        marginHorizontal: width * 0.04,
     },
     passwordText: {
         fontSize: 18,

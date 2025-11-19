@@ -48,11 +48,21 @@ export default function LoginScreen() {
   const handleLogin = async () => {
     let hasError = false
     if (!credentials.UsernameOrEmail.trim()) {
-      setUsernameError('Username or email is required.')
+      setUsernameError('Username or Email is required.')
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Username or Email is required.'
+      })
       hasError = true
     }
     if (!credentials.Password) {
       setPasswordError('Password is required.')
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Password is required.'
+      })
       hasError = true
     }
     if (hasError) return
@@ -125,7 +135,6 @@ export default function LoginScreen() {
         activeOutlineColor={theme.colors.activeOutlineColor}
         textColor={theme.colors.inputTextColor}
       />
-      {usernameError && <Text style={styles.errorText}>{usernameError}</Text>}
 
       <PaperInput
         mode="outlined"
@@ -148,7 +157,6 @@ export default function LoginScreen() {
         activeOutlineColor={theme.colors.activeOutlineColor}
         textColor={theme.colors.inputTextColor}
       />
-      {passwordError && <Text style={styles.errorText}>{passwordError}</Text>}
 
       {serverError && (
         <Text style={[styles.errorText, { textAlign: 'center' }]}>

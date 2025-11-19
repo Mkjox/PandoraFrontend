@@ -10,6 +10,7 @@ export const toastConfig = {
             contentContainerStyle={{ paddingHorizontal: 15 }}
             text1Style={styles.text1}
             text2Style={styles.text2}
+            text2NumberOfLines={2}
         />
     ),
     info: (props: any) => (
@@ -18,6 +19,7 @@ export const toastConfig = {
             style={[styles.toast, { borderLeftColor: '#88cefa' }]}
             text1Style={styles.text1}
             text2Style={styles.text2}
+            text2NumberOfLines={2}
         />
     ),
     error: (props: any) => (
@@ -26,6 +28,7 @@ export const toastConfig = {
             style={[styles.toast, { borderLeftColor: '#F44336' }]}
             text1Style={styles.text1}
             text2Style={styles.text2}
+            text2NumberOfLines={2}
         />
     ),
 };
