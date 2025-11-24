@@ -148,7 +148,7 @@ export default function VaultDetailsScreen() {
         ) : null}
 
         <View style={[styles.rowCards, styles.sectionMargin]}>
-          {vault.IsLocked ? (
+          {vault.isLocked ? (
             <View style={[styles.smallCard, theme.styles.card, theme.styles.border]}>
               <Text style={[styles.smallLabel, theme.styles.text]}>Locked Until</Text>
               <Text style={[styles.smallValue, theme.styles.text]}>
@@ -166,20 +166,20 @@ export default function VaultDetailsScreen() {
             </View>
           ) : null}
 
-          {vault.IsFavorite ? (
+          {vault.isFavorite ? (
             <View style={[styles.smallCard, theme.styles.card, theme.styles.border]}>
               <Text style={[styles.smallLabel, theme.styles.text]}>Favorite</Text>
-              <Text style={[styles.smallValue, theme.styles.text]}>{vault.IsFavorite ? 'Yes' : 'No'}</Text>
+              <Text style={[styles.smallValue, theme.styles.text]}>{vault.isFavorite ? 'Yes' : 'No'}</Text>
             </View>
           ) : null}
         </View>
 
-        {/* {vault.IsShareable ? (
-        <View style={[styles.section, theme.styles.card]}>
-          <Text style={[styles.label, theme.styles.text]}>Is it Shareable:</Text>
-          <Text style={[styles.value, theme.styles.text]}>{vault.IsShareable}</Text>
-        </View>
-      ) : null} */}
+        {vault.isShareable ? (
+          <View style={[styles.card, theme.styles.card, theme.styles.border]}>
+            <Text style={[styles.label, theme.styles.text]}>Is it Shareable:</Text>
+            <Text style={[styles.value, theme.styles.text]}>{vault.isShareable ? 'Yes' : 'No'}</Text>
+          </View>
+        ) : null}
 
         {vault.categoryName ? (
           <View style={[styles.card, theme.styles.card, styles.sectionMargin, theme.styles.border]}>
@@ -205,15 +205,14 @@ export default function VaultDetailsScreen() {
                 userId: vault.userId,
                 title: vault.secureTitle,
                 content: vault.secureContent,
-                // url: vault.Url,
-                // mediaFile: vault.MediaFile,
                 summary: vault.secureSummary,
                 tags: vault.secureTags?.join(","),
-                isLocked: vault.IsLocked,
+                isLocked: vault.isLocked,
                 unlockDate: vault.unlockDate,
                 expirationDate: vault.expirationDate,
                 categoryId: vault.categoryId,
-                isFavorite: vault.IsFavorite,
+                isFavorite: vault.isFavorite,
+                isShareable: vault.isShareable
               })
             }
           >

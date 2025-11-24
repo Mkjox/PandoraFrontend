@@ -85,19 +85,41 @@ const PersonalVaultService = {
   updateVault: (vaultId: string, payload: PersonalVaultUpdatePayload) => async (dispatch: AppDispatch): Promise<ServiceResult<VaultItem>> => {
     try {
       // Map frontend payload to backend DTO (PascalCase). Use null for missing values (backend may require presence)
-      const dto: any = {
-        Id: vaultId,
-        Title: (payload.secureTitle ?? payload.title ?? null),
-        Content: (payload.secureContent ?? payload.content ?? null),
-        Summary: (payload.secureSummary ?? payload.summary ?? null),
-        Tags: Array.isArray(payload.secureTags ?? payload.tags) ? (payload.secureTags ?? payload.tags) : (payload.secureTags ? payload.secureTags : (payload.tags ? payload.tags : [])),
-        IsLocked: typeof payload.IsLocked !== 'undefined' ? payload.IsLocked : (typeof payload.isLocked !== 'undefined' ? payload.isLocked : false),
-        UnlockDate: payload.unlockDate ?? payload.UnlockDate ?? null,
-        CategoryId: payload.categoryId ?? payload.CategoryId ?? null,
-        ExpirationDate: payload.expirationDate ?? payload.ExpirationDate ?? null,
-        IsFavorite: typeof payload.IsFavorite !== 'undefined' ? payload.IsFavorite : (typeof payload.isFavorite !== 'undefined' ? payload.isFavorite : false),
-        LastModifiedDate: new Date().toISOString()
+
+      const normalized = {
+        title: payload.secureTitle ?? payload.title ?? null,
+        content: payload.secureContent ?? payload.content ?? null,
+        summary: payload.secureSummary ?? payload.summary ?? null,
+        tags: Array.isArray(payload.secureTags ?? payload.tags)
+          ? (payload.secureTags ?? payload.tags)
+          : payload.secureTags
+            ? [payload.secureTags]
+            : payload.tags
+              ? [payload.tags]
+              : [],
+
+        isLocked: payload.isLocked ?? payload.IsLocked ?? false,
+        unlockDate: payload.unlockDate ?? payload.UnlockDate ?? null,
+
+        categoryId: payload.categoryId ?? payload.CategoryId ?? null,
+        expirationDate: payload.expirationDate ?? payload.ExpirationDate ?? null,
+        isFavorite: payload.isFavorite ?? payload.IsFavorite ?? false,
       };
+
+      const dto = {
+        Id: vaultId,
+        Title: normalized.title,
+        Content: normalized.content,
+        Summary: normalized.summary,
+        Tags: normalized.tags,
+        IsLocked: normalized.isLocked,
+        UnlockDate: normalized.unlockDate,
+        CategoryId: normalized.categoryId,
+        ExpirationDate: normalized.expirationDate,
+        IsFavorite: normalized.isFavorite,
+        LastModifiedDate: new Date().toISOString(),
+      };
+
 
       // ensure tags is at least an empty array (backend expects array or null)
       if (!Array.isArray(dto.Tags)) dto.Tags = [];

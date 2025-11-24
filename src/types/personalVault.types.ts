@@ -4,9 +4,9 @@ export interface PersonalVaultPayload {
   secureTitle: string;
   secureContent: string;
   secureSummary: string;
-  IsLocked: boolean;
+  isLocked: boolean;
   unlockDate?: string; // ISO format
-  IsShareable: boolean;
+  isShareable: boolean;
   shareToken?: string;
   sharedAt?: string; // ISO FORMAT
   shareViewCount?: string;
@@ -14,7 +14,7 @@ export interface PersonalVaultPayload {
   lastModifiedDate?: string; // ISO FORMAT
   expirationDate?: string; // ISO FORMAT
   secureTags: string[];
-  IsFavorite: boolean;
+  isFavorite: boolean;
   categoryId: string;
   categoryName: string;
 }
