@@ -46,13 +46,13 @@ const SecurityToolsScreen: React.FC = () => {
       icon: <MaterialIcons name="vpn-key" size={24} color={theme.styles.icon.color} />,
       onPress: () => { navigation.navigate("PasswordGenerator" as never) },
     },
-    {
-      id: "emergency",
-      title: "Emergency Access",
-      subtitle: "Peace of mind in an emergency",
-      icon: <FontAwesome5 name="ambulance" size={24} color={theme.styles.icon.color} />,
-      onPress: () => { navigation.navigate("EmergencyAccess" as never) },
-    },
+    // {
+    //   id: "emergency",
+    //   title: "Emergency Access",
+    //   subtitle: "Peace of mind in an emergency",
+    //   icon: <FontAwesome5 name="ambulance" size={24} color={theme.styles.icon.color} />,
+    //   onPress: () => { navigation.navigate("EmergencyAccess" as never) },
+    // },
     {
       id: "challenge",
       title: `Security Challenge (${percentage}%)`,

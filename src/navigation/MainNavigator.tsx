@@ -75,7 +75,7 @@ export default function MainNavigator() {
             <Stack.Screen name='Privacy' component={PrivacyScreen} />
             <Stack.Screen name='ThemeScreen' component={ThemeScreen} />
             <Stack.Screen name='PasswordGenerator' component={PasswordGeneratorScreen} />
-            <Stack.Screen name='EmergencyAccess' component={EmergencyAccessScreen} />
+            {/* <Stack.Screen name='EmergencyAccess' component={EmergencyAccessScreen} /> */}
             <Stack.Screen name='SecurityChallenge' component={SecurityChallengeScreen} />
             <Stack.Screen name='SecurityDashboard' component={SecurityDashboardScreen} />
             <Stack.Screen name='EditCategory' component={EditCategoriesScreen} />
