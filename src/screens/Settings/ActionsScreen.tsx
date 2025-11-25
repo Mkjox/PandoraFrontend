@@ -15,7 +15,7 @@ import CustomButton from '@components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import AuthService from '@services/AuthService';
 import Toast from 'react-native-toast-message';
-import CustomSpinner from '@components/CustomSpinner';
+import CustomModal from '@components/CustomModal';
 
 const { height, width } = Dimensions.get('window');
 
@@ -26,48 +26,27 @@ const ActionsScreen: React.FC = () => {
 
     const [autoLock, setAutoLock] = useState(false);
     const [clearClipboard, setClearClipboard] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [visible, setVisible] = useState(false);
 
-    const handleClearSessions = async () => {
-        Alert.alert(
-            "Clear Other Sessions",
-            "This will log out all other devices except this one.\nProceed?",
-            [
-                { text: "Cancel", style: "cancel" },
-                {
-                    text: "Confirm",
-                    style: "destructive",
-                    onPress: async () => {
-                        setLoading(true);
-                        const result = await AuthService.clearSessions();
-                        setLoading(false);
+    const handleClear = async () => {
+        const result = await AuthService.clearSessions();
+        setVisible(false);
 
-                        if (!result.success) {
-                            Toast.show({
-                                type: 'error',
-                                text1: 'Error',
-                                text2: result.message,
-                            });
-                            return;
-                        }
+        if (!result.success) {
+            Toast.show({
+                type: 'error',
+                text1: 'Error',
+                text2: result.message,
+            });
+            return;
+        }
 
-                        Toast.show({
-                            type: 'success',
-                            text1: 'Sessions Cleared',
-                            text2: 'All other active sessions were terminated.',
-                        });
-                    }
-                }
-            ]
-        );
-    };
-
-    if (loading) {
-        return (
-            <CustomSpinner />
-        );
+        Toast.show({
+            type: 'success',
+            text1: 'Sessions Cleared',
+            text2: 'All other active sessions were terminated.',
+        });
     }
-
 
     return (
         <ScrollView style={[styles.container, theme.styles.container]}>
@@ -109,9 +88,20 @@ const ActionsScreen: React.FC = () => {
                     style={styles.button}
                 />
                 <CustomButton
-                    onPress={handleClearSessions}
+                    onPress={() => setVisible(true)}
                     title='Clear Sessions'
                     style={styles.button}
+                />
+
+                <CustomModal
+                    visible={visible}
+                    title='Clear Other Sessions'
+                    message='This will log out all other devices except this one. Proceed?'
+                    confirmText='Clear'
+                    cancelText='Cancel'
+                    destructive
+                    onConfirm={handleClear}
+                    onCancel={() => setVisible(false)}
                 />
             </View>
         </ScrollView>

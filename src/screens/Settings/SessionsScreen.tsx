@@ -27,27 +27,29 @@ const SessionsScreen = () => {
     }, []);
 
     return (
-        <ScrollView contentContainerStyle={[styles.container, theme.styles.container, StyleSheet.absoluteFill]}>
-            <Text style={[styles.title, theme.styles.text]}>Active Sessions</Text>
+        <View style={[theme.styles.container, StyleSheet.absoluteFill]}>
+            <ScrollView contentContainerStyle={styles.container}>
+                <Text style={[styles.title, theme.styles.text]}>Active Sessions</Text>
 
-            {sessions.length > 0 ? (
-                sessions.map((session, index) => (
-                    <CustomCard key={index} style={[styles.sessionCard, theme.styles.card]} onPress={() => {}}>
-                        <Text style={styles.dataText}>Id: {session.id}</Text>
-                        <Text style={styles.dataText}>IP: {session.ipAddress}</Text>
-                        <Text style={styles.dataText}>User Agent: {session.userAgent}</Text>
-                        <Text style={styles.dataText}>Created: {new Date(session.createdAt).toLocaleString()}</Text>
-                        <Text style={styles.dataText}>Expires: {new Date(session.expiresAt).toLocaleString()}</Text>
-                        <Text style={styles.dataText}>Current: {session.isCurrentSession ? 'Yes' : 'No'}</Text>
-                    </CustomCard>
-                ))
-            ) : (
-                <View>
-                    <Text style={[styles.message, theme.styles.textGray]}>{message}</Text>
-                    <Text style={styles.empty}>No active sessions found.</Text>
-                </View>
-            )}
-        </ScrollView>
+                {sessions.length > 0 ? (
+                    sessions.map((session, index) => (
+                        <CustomCard key={index} style={[styles.sessionCard, theme.styles.card]} onPress={() => { }}>
+                            <Text style={styles.dataText}>Id: {session.id}</Text>
+                            <Text style={styles.dataText}>IP: {session.ipAddress}</Text>
+                            <Text style={styles.dataText}>User Agent: {session.userAgent}</Text>
+                            <Text style={styles.dataText}>Created: {new Date(session.createdAt).toLocaleString()}</Text>
+                            <Text style={styles.dataText}>Expires: {new Date(session.expiresAt).toLocaleString()}</Text>
+                            <Text style={styles.dataText}>Current: {session.isCurrentSession ? 'Yes' : 'No'}</Text>
+                        </CustomCard>
+                    ))
+                ) : (
+                    <View>
+                        <Text style={[styles.message, theme.styles.textGray]}>{message}</Text>
+                        <Text style={styles.empty}>No active sessions found.</Text>
+                    </View>
+                )}
+            </ScrollView>
+        </View>
     );
 };
 

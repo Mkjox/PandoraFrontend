@@ -1,100 +1,143 @@
-import { darkTheme, lightTheme } from "@assets/colors/theme";
-import { useTheme } from "@context/ThemeContext";
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import Modal from 'react-native-modal';
+import {
+  Modal,
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+} from "react-native";
+import { useTheme } from "@context/ThemeContext";
+import { darkTheme, lightTheme } from "@assets/colors/theme";
+
+const { width } = Dimensions.get("window");
 
 interface CustomModalProps {
-    visible: boolean;
-    title?: string;
-    message?: string;
-    confirmText?: string;
-    cancelText?: string;
-    destructive?: boolean;
-    onConfirm: () => void;
-    onCancel: () => void;
+  visible: boolean;
+  title?: string;
+  message?: string;
+  confirmText?: string;
+  cancelText?: string;
+  destructive?: boolean;
+  onConfirm: () => void;
+  onCancel: () => void;
 }
 
 const CustomModal: React.FC<CustomModalProps> = ({
-    visible,
-    title = 'Confirm Action',
-    message = 'Are you sure?',
-    confirmText = 'Confirm',
-    cancelText = 'Cancel',
-    destructive = false,
-    onConfirm,
-    onCancel,
+  visible,
+  title = "Confirm Action",
+  message = "Are you sure?",
+  confirmText = "Confirm",
+  cancelText = "Cancel",
+  destructive = false,
+  onConfirm,
+  onCancel,
 }) => {
-    const { isDark } = useTheme();
-    const theme = isDark ? darkTheme : lightTheme;
+  const { isDark } = useTheme();
+  const theme = isDark ? darkTheme : lightTheme;
 
-    return (
-        <Modal
-            isVisible={visible}
-            onBackdropPress={onCancel}
-            animationIn="fadeInUp"
-            animationOut="fadeOutDown"
-            backdropOpacity={0.4}
-        >
-            <View style={[styles.modalContainer, theme.styles.card]}>
-                <Text style={[styles.title, theme.styles.text]}>{title}</Text>
-                <Text style={[styles.message, theme.styles.textGray]}>{message}</Text>
+  return (
+    <Modal
+      transparent
+      visible={visible}
+      animationType="fade"
+      onRequestClose={onCancel}
+    >
+      <View style={styles.overlay}>
+        <View style={[styles.container, theme.styles.card, theme.styles.border]}>
+          <Text style={[styles.title, theme.styles.text]}>{title}</Text>
 
-                <View style={styles.actions}>
-                    <TouchableOpacity onPress={onCancel} style={styles.cancelButton}>
-                        <Text style={theme.styles.text}>{cancelText}</Text>
-                    </TouchableOpacity>
+          <Text style={[styles.message, theme.styles.textGray]}>
+            {message}
+          </Text>
 
-                    <TouchableOpacity
-                        onPress={onConfirm}
-                        style={[
-                            styles.confirmButton,
-                            destructive && { backgroundColor: '#e53935' }
-                        ]}
-                    >
-                        <Text style={[
-                            styles.confirmText,
-                            destructive && { color: 'white', fontWeight: '600' }
-                        ]}>
-                            {confirmText}
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        </Modal>
-    )
-}
+          <View style={styles.actions}>
+            <TouchableOpacity
+              style={[styles.btn, styles.cancelBtn, theme.styles.border]}
+              onPress={onCancel}
+            >
+              <Text style={[styles.btnText, theme.styles.text]}>
+                {cancelText}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.btn,
+                destructive ? styles.destructiveBtn : styles.confirmBtn,
+              ]}
+              onPress={onConfirm}
+            >
+              <Text
+                style={[
+                  styles.btnText,
+                  destructive ? styles.destructiveText : styles.confirmText,
+                ]}
+              >
+                {confirmText}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
+};
 
 const styles = StyleSheet.create({
-    modalContainer: {
-        borderRadius: 14,
-        padding: 20,
-    },
-    title: {
-        fontSize: 18,
-        fontWeight: '600',
-        marginBottom: 10,
-    },
-    message: {
-        marginBottom: 25,
-    },
-    actions: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-    },
-    cancelButton: {
-        marginRight: 16,
-    },
-    confirmButton: {
-        paddingHorizontal: 12,
-        paddingVertical: 6,
-        borderRadius: 6,
-        backgroundColor: '#1976d2',
-    },
-    confirmText: {
-        color: 'white',
-        fontWeight: '500',
-    },
+  overlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 24,
+  },
+  container: {
+    width: width * 0.85,
+    borderRadius: 14,
+    padding: 20,
+  },
+  title: {
+    fontSize: 18,
+    fontFamily: "Poppins_700Bold",
+    marginBottom: 10,
+  },
+  message: {
+    fontSize: 14,
+    fontFamily: "Poppins_400Regular",
+    marginBottom: 20,
+    lineHeight: 20,
+  },
+  actions: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    marginTop: 10,
+  },
+  btn: {
+    paddingVertical: 10,
+    paddingHorizontal: 18,
+    borderRadius: 8,
+    marginLeft: 10,
+  },
+  cancelBtn: {
+    backgroundColor: "transparent",
+  },
+  confirmBtn: {
+    backgroundColor: "#1976d2",
+  },
+  destructiveBtn: {
+    backgroundColor: "#e53935",
+  },
+  btnText: {
+    fontSize: 14,
+    fontFamily: "Poppins_600SemiBold",
+  },
+  confirmText: {
+    color: "#fff",
+  },
+  destructiveText: {
+    color: "#fff",
+  },
 });
 
 export default CustomModal;

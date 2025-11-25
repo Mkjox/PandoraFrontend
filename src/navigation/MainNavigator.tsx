@@ -18,12 +18,12 @@ import SecurityScreen from '@screens/Settings/SecurityScreen';
 import SearchScreen from '@screens/Settings/SearchScreen';
 import ActionsScreen from '@screens/Settings/ActionsScreen';
 import HelpScreen from '@screens/Settings/HelpScreen';
-import AdvancedScreen from '@screens/Settings/AdvancedScreen';
+// import AdvancedScreen from '@screens/Settings/AdvancedScreen';
 import AboutScreen from '@screens/Settings/AboutScreen';
 import PrivacyScreen from '@screens/Settings/PrivacyScreen';
 import ThemeScreen from '@screens/Settings/ThemeScreen';
 import PasswordGeneratorScreen from '@screens/Security/PasswordGeneratorScreen';
-import EmergencyAccessScreen from '@screens/Security/EmergencyAccessScreen';
+// import EmergencyAccessScreen from '@screens/Security/EmergencyAccessScreen';
 import SecurityChallengeScreen from '@screens/Security/SecurityChallengeScreen';
 import SecurityDashboardScreen from '@screens/Security/SecurityDashboardScreen';
 import EditCategoriesScreen from '@screens/Category/EditCategoriesScreen';
@@ -37,6 +37,7 @@ import IdentityDetailsScreen from '@screens/Identity/IdentityDetailsScreen';
 import EditIdentityScreen from '@screens/Identity/EditIdentityScreen';
 import ThemeColorScreen from '@screens/Settings/ThemeColorScreen';
 import SessionsScreen from '@screens/Settings/SessionsScreen';
+import TwoFactorScreen from '@screens/Settings/TwoFactorScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -86,6 +87,7 @@ export default function MainNavigator() {
             <Stack.Screen name="EditIdentity" component={EditIdentityScreen} />
             <Stack.Screen name="ThemeColor" component={ThemeColorScreen} />
             <Stack.Screen name='Sessions' component={SessionsScreen} />
+            <Stack.Screen name='TwoFactor' component={TwoFactorScreen} />
         </Stack.Navigator>
     );
 }
