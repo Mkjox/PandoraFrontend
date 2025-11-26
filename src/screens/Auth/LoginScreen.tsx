@@ -115,7 +115,7 @@ export default function LoginScreen() {
   return (
     <View style={[styles.container, theme.styles.container]}>
       <Image
-        source={require('../../assets/images/logo.png')}
+        source={theme.images.logo}
         style={styles.logo}
       />
 

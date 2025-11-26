@@ -76,7 +76,7 @@ export default function RegisterScreen() {
     return (
         <ScrollView contentContainerStyle={[styles.container, theme.styles.container]}>
             <Image
-                source={require('../../assets/images/logo.png')}
+                source={theme.images.logo}
                 style={styles.logo}
             />
 

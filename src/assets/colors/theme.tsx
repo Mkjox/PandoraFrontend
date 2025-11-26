@@ -26,6 +26,10 @@ export const lightTheme = {
         // splash: ['#1c6d79', '#86A8E7', '#5FFBF1'],
     },
 
+    images: {
+        logo: require('@assets/images/logo-light.png')
+    },
+
     styles: StyleSheet.create({
         container: { backgroundColor: '#FFFFFF', },
         button: { backgroundColor: '#1c6d79', },
@@ -72,6 +76,10 @@ export const darkTheme = {
         button: ['#3580FF', '#2B6DDE'],
         background: ['#12141D', '#161821'],
         // splash: ['#1c6d79', '#86A8E7', '#5FFBF1'],
+    },
+
+    images: {
+        logo: require('@assets/images/logo-dark.png')
     },
     
     styles: StyleSheet.create({
