@@ -314,6 +314,8 @@ export default function AddCredentialsScreen() {
               onChangeText={v => handleChange('SiteName', v)}
               mode='outlined'
               textColor={theme.colors.inputTextColor}
+              activeUnderlineColor={theme.colors.activeOutlineColor}
+        activeOutlineColor={theme.colors.activeOutlineColor}
             />
 
             <TextInput
@@ -323,6 +325,8 @@ export default function AddCredentialsScreen() {
               value={form.UsernameOrEmail}
               onChangeText={v => handleChange('UsernameOrEmail', v)}
               textColor={theme.colors.inputTextColor}
+              activeUnderlineColor={theme.colors.activeOutlineColor}
+        activeOutlineColor={theme.colors.activeOutlineColor}
             />
 
             <TextInput
@@ -333,6 +337,8 @@ export default function AddCredentialsScreen() {
               value={form.Password}
               onChangeText={v => handleChange('Password', v)}
               textColor={theme.colors.inputTextColor}
+              activeUnderlineColor={theme.colors.activeOutlineColor}
+        activeOutlineColor={theme.colors.activeOutlineColor}
             />
 
             <TextInput
@@ -343,6 +349,8 @@ export default function AddCredentialsScreen() {
               value={form.PasswordRepeat}
               onChangeText={v => handleChange('PasswordRepeat', v)}
               textColor={theme.colors.inputTextColor}
+              activeUnderlineColor={theme.colors.activeOutlineColor}
+        activeOutlineColor={theme.colors.activeOutlineColor}
             />
 
             <TextInput
@@ -352,6 +360,8 @@ export default function AddCredentialsScreen() {
               value={form.Notes}
               onChangeText={v => handleChange('Notes', v)}
               textColor={theme.colors.inputTextColor}
+              activeUnderlineColor={theme.colors.activeOutlineColor}
+        activeOutlineColor={theme.colors.activeOutlineColor}
             />
 
             <View style={[styles.pickerContainer, theme.styles.card]}>
@@ -378,6 +388,8 @@ export default function AddCredentialsScreen() {
               value={form.Title}
               onChangeText={v => handleChange('Title', v)}
               textColor={theme.colors.inputTextColor}
+              activeUnderlineColor={theme.colors.activeOutlineColor}
+        activeOutlineColor={theme.colors.activeOutlineColor}
             />
 
             <TextInput
@@ -387,6 +399,8 @@ export default function AddCredentialsScreen() {
               value={form.Content}
               onChangeText={v => handleChange('Content', v)}
               textColor={theme.colors.inputTextColor}
+              activeUnderlineColor={theme.colors.activeOutlineColor}
+        activeOutlineColor={theme.colors.activeOutlineColor}
             />
 
             <TextInput
@@ -396,6 +410,8 @@ export default function AddCredentialsScreen() {
               value={form.Summary}
               onChangeText={v => handleChange('Summary', v)}
               textColor={theme.colors.inputTextColor}
+              activeUnderlineColor={theme.colors.activeOutlineColor}
+        activeOutlineColor={theme.colors.activeOutlineColor}
             />
 
             <TextInput
@@ -405,6 +421,8 @@ export default function AddCredentialsScreen() {
               value={form.Tags}
               onChangeText={v => handleChange('Tags', v)}
               textColor={theme.colors.inputTextColor}
+              activeUnderlineColor={theme.colors.activeOutlineColor}
+        activeOutlineColor={theme.colors.activeOutlineColor}
             />
 
             <View style={styles.switchRow}>
@@ -500,6 +518,8 @@ export default function AddCredentialsScreen() {
               value={form.Name}
               onChangeText={v => handleChange('Name', v)}
               textColor={theme.colors.inputTextColor}
+              activeUnderlineColor={theme.colors.activeOutlineColor}
+        activeOutlineColor={theme.colors.activeOutlineColor}
             />
 
             <TextInput
@@ -509,6 +529,8 @@ export default function AddCredentialsScreen() {
               value={form.Description}
               onChangeText={v => handleChange('Description', v)}
               textColor={theme.colors.inputTextColor}
+              activeUnderlineColor={theme.colors.activeOutlineColor}
+        activeOutlineColor={theme.colors.activeOutlineColor}
             />
           </>
         )}

@@ -243,7 +243,7 @@ export default function EditVaultsScreen() {
         {renderInput("Tags (comma separated)", "tags", false, "tag1, tag2")}
 
         <View style={[styles.switchRow, theme.styles.card, theme.styles.border]}>
-          <Text style={theme.styles.text}>Locked</Text>
+          <Text style={theme.styles.text}>Locked?</Text>
           <Switch
             value={form.isLocked}
             onValueChange={(v) => handleChange("isLocked", v)}
@@ -262,17 +262,19 @@ export default function EditVaultsScreen() {
           </TouchableOpacity>
         )}
 
-        <TouchableOpacity
-          style={[styles.card, theme.styles.card, theme.styles.border]}
-          onPress={() => setShowExpirationPicker(true)}
-        >
-          <Text style={[styles.label, theme.styles.text]}>Expiration Date</Text>
-          <Text style={theme.styles.text}>
-            {form.expirationDate
-              ? new Date(form.expirationDate).toDateString()
-              : "Select date"}
-          </Text>
-        </TouchableOpacity>
+        {form.expirationDate ?
+          <TouchableOpacity
+            style={[styles.card, theme.styles.card, theme.styles.border]}
+            onPress={() => setShowExpirationPicker(true)}
+          >
+            <Text style={[styles.label, theme.styles.text]}>Expiration Date</Text>
+            <Text style={theme.styles.text}>
+              {form.expirationDate
+                ? new Date(form.expirationDate).toDateString()
+                : "Select date"}
+            </Text>
+          </TouchableOpacity>
+          : null}
 
         <View style={[styles.card, theme.styles.card, theme.styles.border]}>
           <Text style={[styles.label, theme.styles.text]}>Category*</Text>
