@@ -124,7 +124,7 @@ const ProfileScreen: React.FC = () => {
 
       </View>
 
-      <Text style={[styles.versionText, theme.styles.text]}>Version 1.0.0</Text>
+      <Text style={[styles.versionText, theme.styles.text]}>Version 1.0.1</Text>
     </ScrollView>
   );
 };

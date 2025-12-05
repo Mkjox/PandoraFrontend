@@ -64,7 +64,7 @@ const AccountScreen: React.FC = () => {
 
             <View style={styles.section}>
                 <Text style={[styles.sectionHeader, theme.styles.text]}>Security</Text>
-                <TouchableOpacity style={[styles.option, theme.styles.button]}>
+                <TouchableOpacity style={[styles.option, theme.styles.button]} onPress={() => navigation.navigate("ChangePassword" as never)}>
                     <Text style={[styles.optionText, theme.styles.buttonText]}>Change Password</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.option, theme.styles.button]} onPress={() => navigation.navigate("TwoFactor" as never)}>

@@ -38,6 +38,7 @@ import EditIdentityScreen from '@screens/Identity/EditIdentityScreen';
 import ThemeColorScreen from '@screens/Settings/ThemeColorScreen';
 import SessionsScreen from '@screens/Settings/SessionsScreen';
 import TwoFactorScreen from '@screens/Settings/TwoFactorScreen';
+import ChangePasswordScreen from '@screens/Settings/ChangePasswordScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -88,6 +89,7 @@ export default function MainNavigator() {
             <Stack.Screen name="ThemeColor" component={ThemeColorScreen} />
             <Stack.Screen name='Sessions' component={SessionsScreen} />
             <Stack.Screen name='TwoFactor' component={TwoFactorScreen} />
+            <Stack.Screen name='ChangePassword' component={ChangePasswordScreen} />
         </Stack.Navigator>
     );
 }

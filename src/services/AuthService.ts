@@ -142,8 +142,6 @@ const AuthService = {
         }
     },
 
-    // --- Two-Factor (aligned to /auth/2fa/* routes) ---
-
     getTwoFactorStatus: async (): Promise<
         ServiceResult<{
             isEnabled: boolean
@@ -367,6 +365,46 @@ const AuthService = {
                 success: false,
                 message: err?.response?.data?.message || err.message || 'Verification request failed.'
             }
+        }
+    },
+
+    changePassword: async (currentPassword: string, newPassword: string, confirmNewPassword: string): Promise<ServiceResult<any>> => {
+        try {
+            const decoded = await AuthService.decodeToken()
+            const userId = decoded?.nameid
+            // Could've used id instead of userId but i wanted it to be more clear
+            const payload = {
+                id: userId,
+                currentPassword,
+                newPassword,
+                confirmNewPassword,
+                lastPasswordChangeDate: new Date().toISOString()
+            };
+
+            const res = await api.post<{
+                data?: any;
+                resultStatus: number;
+                message: string;
+            }>('/auth/change-password', payload);
+
+            if (res.data.resultStatus !== 0) {
+                return {
+                    success: false,
+                    message: res.data.message || 'Password change failed.'
+                };
+            }
+
+            return {
+                success: true,
+                data: res.data.data,
+                message: res.data.message || 'Password changed successfully.'
+            };
+        }
+        catch (err: any) {
+            return {
+                success: false,
+                message: err?.response?.data?.message || err.message || 'Password change request failed.'
+            };
         }
     },
 }
