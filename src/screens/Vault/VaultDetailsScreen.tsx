@@ -96,6 +96,11 @@ export default function VaultDetailsScreen() {
     setShowDeleteModal(false);
   };
 
+  const showAny =
+    vault.isLocked ||
+    vault.expirationDate ||
+    vault.isFavorite;
+
   return (
     <>
       <ScrollView
@@ -147,32 +152,34 @@ export default function VaultDetailsScreen() {
           </View>
         ) : null}
 
-        <View style={[styles.rowCards, styles.sectionMargin]}>
-          {vault.isLocked ? (
-            <View style={[styles.smallCard, theme.styles.card, theme.styles.border]}>
-              <Text style={[styles.smallLabel, theme.styles.text]}>Locked Until</Text>
-              <Text style={[styles.smallValue, theme.styles.text]}>
-                {vault.unlockDate ? new Date(vault.unlockDate).toLocaleDateString() : '—'}
-              </Text>
-            </View>
-          ) : null}
+        {showAny ?
+          <View style={[styles.rowCards, styles.sectionMargin]}>
+            {vault.isLocked ? (
+              <View style={[styles.smallCard, theme.styles.card, theme.styles.border]}>
+                <Text style={[styles.smallLabel, theme.styles.text]}>Locked Until</Text>
+                <Text style={[styles.smallValue, theme.styles.text]}>
+                  {vault.unlockDate ? new Date(vault.unlockDate).toLocaleDateString() : '—'}
+                </Text>
+              </View>
+            ) : null}
 
-          {vault.expirationDate ? (
-            <View style={[styles.smallCard, theme.styles.card, theme.styles.border]}>
-              <Text style={[styles.smallLabel, theme.styles.text]}>Expires</Text>
-              <Text style={[styles.smallValue, theme.styles.text]}>
-                {new Date(vault.expirationDate).toLocaleDateString()}
-              </Text>
-            </View>
-          ) : null}
+            {vault.expirationDate ? (
+              <View style={[styles.smallCard, theme.styles.card, theme.styles.border]}>
+                <Text style={[styles.smallLabel, theme.styles.text]}>Expires</Text>
+                <Text style={[styles.smallValue, theme.styles.text]}>
+                  {new Date(vault.expirationDate).toLocaleDateString()}
+                </Text>
+              </View>
+            ) : null}
 
-          {vault.isFavorite ? (
-            <View style={[styles.smallCard, theme.styles.card, theme.styles.border]}>
-              <Text style={[styles.smallLabel, theme.styles.text]}>Favorite</Text>
-              <Text style={[styles.smallValue, theme.styles.text]}>{vault.isFavorite ? 'Yes' : 'No'}</Text>
-            </View>
-          ) : null}
-        </View>
+            {vault.isFavorite ? (
+              <View style={[styles.smallCard, theme.styles.card, theme.styles.border]}>
+                <Text style={[styles.smallLabel, theme.styles.text]}>Favorite</Text>
+                <Text style={[styles.smallValue, theme.styles.text]}>{vault.isFavorite ? 'Yes' : 'No'}</Text>
+              </View>
+            ) : null}
+          </View>
+          : null}
 
         {vault.isShareable ? (
           <View style={[styles.card, theme.styles.card, theme.styles.border]}>

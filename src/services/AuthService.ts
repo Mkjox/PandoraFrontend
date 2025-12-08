@@ -113,31 +113,44 @@ const AuthService = {
         }
     },
 
-    updateProfile: async (
-        // payload: { username: string; email: string; photoBase64?: string }
-        // ): Promise<ServiceResult<{ username: string; email: string; photoUrl?: string }>> => {
-        payload: { username: string; email: string }
-    ): Promise<ServiceResult<{ username: string; email: string }>> => {
+    updateProfile: async (payload: {
+        username: string
+        email: string
+        phoneNumber?: string
+        firstName?: string
+        lastName?: string
+    }): Promise<ServiceResult<any>> => {
         try {
             const decoded = await AuthService.decodeToken()
             const userId = decoded?.nameid
+
             if (!userId) {
                 return { success: false, message: 'No valid token / user ID.' }
             }
 
-            const payloadWithId = { ...payload, id: userId }
+            const existing = await api.get(`/users/${userId}`)
+            const user = existing.data
 
-            const response = await api.put<{
-                username: string
-                email: string
-                // photoUrl?: string
-            }>(`/users/${userId}`, payloadWithId)
+            const updatePayload = {
+                id: userId,
+                username: payload.username ?? user.username,
+                email: payload.email ?? user.email,
+                phoneNumber: payload.phoneNumber ?? user.phoneNumber,
+                firstName: payload.firstName ?? user.firstName,
+                lastName: payload.lastName ?? user.lastName,
+                lastLoginDate: user?.lastLoginDate ?? new Date().toISOString(),
+            }
 
-            return { success: true, data: response.data }
+            const response = await api.put(`/users/${userId}`, updatePayload)
+
+            return {
+                success: true,
+                data: response.data
+            }
         } catch (err: any) {
             return {
                 success: false,
-                message: err.response?.data?.message || 'Failed to update profile',
+                message: err.response?.data?.message || 'Failed to update profile'
             }
         }
     },

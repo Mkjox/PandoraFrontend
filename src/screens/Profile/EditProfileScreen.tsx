@@ -7,18 +7,14 @@ import {
   ScrollView,
   Dimensions,
   TextInput,
-  TouchableOpacity,
-  Image,
   ActivityIndicator,
 } from 'react-native';
 import { useTheme } from '@context/ThemeContext';
 import { lightTheme, darkTheme } from '@assets/colors/theme';
 import AuthService from '@services/AuthService';
-import ImagePickerButton from '@components/ImagePickerButton';
-import { ServiceResult } from '@appTypes/service.types';
 import CustomButton from '@components/CustomButton';
 
-const { width } = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 
 export default function EditProfileScreen() {
   const { isDark } = useTheme();
@@ -26,8 +22,10 @@ export default function EditProfileScreen() {
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
-  const [imageUri, setImageUri] = useState<string | null>(null);
-  const [imageBase64, setImageBase64] = useState<string | null>(null);
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [lastLoginDate, setLastLoginDate] = useState('');
 
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -35,19 +33,20 @@ export default function EditProfileScreen() {
   const [usernameError, setUsernameError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [serverMessage, setServerMessage] = useState<string | null>(null);
-  // serverMessage used for both success and error; we differentiate via prefix or usage
-
+  
   useEffect(() => {
     (async () => {
       setLoadingProfile(true);
       try {
         const res = await AuthService.fetchUserProfile();
         if (res.success && res.userData) {
-          setUsername(res.userData.username || '');
-          setEmail(res.userData.email || '');
-          if (res.userData.photoUrl) {
-            setImageUri(res.userData.photoUrl);
-          }
+          const u = res.userData;
+          setUsername(u.username || '');
+          setEmail(u.email || '');
+          setPhoneNumber(u.phoneNumber || '');
+          setFirstName(u.firstName || '');
+          setLastName(u.lastName || '');
+          setLastLoginDate(u.lastLoginDate || new Date().toISOString());
         } else {
           setServerMessage(res.message || 'Failed to load profile');
         }
@@ -59,21 +58,16 @@ export default function EditProfileScreen() {
     })();
   }, []);
 
-  const handleImagePicked = (base64: string) => {
-    setImageBase64(base64);
-    // preview: data URI
-    setImageUri(`data:image/jpeg;base64,${base64}`);
-    setServerMessage(null);
-  };
-
   const validateFields = (): boolean => {
     let valid = true;
+
     if (!username.trim()) {
       setUsernameError('Username is required.');
       valid = false;
     } else {
       setUsernameError(null);
     }
+
     if (!email.trim()) {
       setEmailError('Email is required.');
       valid = false;
@@ -83,38 +77,34 @@ export default function EditProfileScreen() {
     } else {
       setEmailError(null);
     }
+
     return valid;
   };
 
   const handleSave = async () => {
-    if (!validateFields()) {
-      return;
-    }
+    if (!validateFields()) return;
+
     setSaving(true);
     setServerMessage(null);
+
     try {
-      const payload: any = {
+      const payload = {
         username: username.trim(),
         email: email.trim(),
+
+        phoneNumber: phoneNumber,
+        firstName: firstName,
+        lastName: lastName,
+        lastLoginDate: lastLoginDate
       };
-      // if (imageBase64) {
-      //   payload.photoBase64 = imageBase64;
-      // }
-      // const res: ServiceResult<{ username: string; email: string; photoUrl?: string; }> =
-      const res: ServiceResult<{ username: string; email: string; }> =
-        await AuthService.updateProfile(payload);
-      if (res.success && res.data) {
-        setUsername(res.data.username);
-        setEmail(res.data.email);
-        // if (res.data.photoUrl) {
-        //   setImageUri(res.data.photoUrl);
-        //   setImageBase64(null);
-        // }
+
+      const res = await AuthService.updateProfile(payload);
+
+      if (res.success) {
         setServerMessage('Profile updated successfully.');
+      } else {
+        setServerMessage(res.message || 'Failed to update profile.');
       }
-      // else {
-      //   setServerMessage(res.message || 'Failed to update photo.');
-      // }
     } catch (err: any) {
       setServerMessage(err.message || 'Failed to update profile.');
     } finally {
@@ -136,26 +126,8 @@ export default function EditProfileScreen() {
       keyboardShouldPersistTaps="handled"
     >
       <View style={styles.spacer} />
-
       <Text style={[styles.title, theme.styles.text]}>Edit Profile</Text>
 
-      <View style={[styles.avatarCard, theme.styles.card]}>
-        {imageUri ? (
-          <Image source={{ uri: imageUri }} style={styles.avatar} />
-        ) : (
-          <View style={[styles.avatarPlaceholder, theme.styles.card]}>
-            <Text style={[styles.avatarPlaceholderText, theme.styles.textGray]}>No Photo</Text>
-          </View>
-        )}
-        <ImagePickerButton
-          title="Change Photo"
-          onImagePicked={handleImagePicked}
-          style={[styles.changePhotoButton, theme.styles.button]}
-          textStyle={[styles.changePhotoText, theme.styles.buttonText]}
-        />
-      </View>
-
-      {/* Show serverMessage if success */}
       {serverMessage && serverMessage.startsWith('Profile updated') ? (
         <Text style={styles.successText}>{serverMessage}</Text>
       ) : null}
@@ -172,15 +144,11 @@ export default function EditProfileScreen() {
           value={username}
           onChangeText={text => {
             setUsername(text);
-            if (usernameError) setUsernameError(null);
-            if (serverMessage) setServerMessage(null);
+            setUsernameError(null);
+            setServerMessage(null);
           }}
-          placeholder="Username"
-          placeholderTextColor={isDark ? '#888' : '#666'}
         />
-        {usernameError ? (
-          <Text style={styles.errorText}>{usernameError}</Text>
-        ) : null}
+        {usernameError && <Text style={styles.errorText}>{usernameError}</Text>}
       </View>
 
       <View style={[styles.fieldCard]}>
@@ -195,27 +163,86 @@ export default function EditProfileScreen() {
           value={email}
           onChangeText={text => {
             setEmail(text);
-            if (emailError) setEmailError(null);
-            if (serverMessage) setServerMessage(null);
+            setEmailError(null);
+            setServerMessage(null);
           }}
-          placeholder="Email"
           keyboardType="email-address"
-          placeholderTextColor={isDark ? '#888' : '#666'}
         />
-        {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+        {emailError && <Text style={styles.errorText}>{emailError}</Text>}
       </View>
 
-      {/* Show serverMessage if error */}
+      <View style={[styles.fieldCard]}>
+        <Text style={[styles.label, theme.styles.text]}>First Name</Text>
+        <TextInput
+          style={[
+            styles.input,
+            theme.styles.text,
+            theme.styles.border,
+          ]}
+          value={firstName}
+          onChangeText={text => {
+            setFirstName(text);
+            setServerMessage(null);
+          }}
+          placeholder="First Name"
+          placeholderTextColor={isDark ? '#888' : '#666'}
+        />
+      </View>
+
+      <View style={[styles.fieldCard]}>
+        <Text style={[styles.label, theme.styles.text]}>Last Name</Text>
+        <TextInput
+          style={[
+            styles.input,
+            theme.styles.text,
+            theme.styles.border,
+          ]}
+          value={lastName}
+          onChangeText={text => {
+            setLastName(text);
+            setServerMessage(null);
+          }}
+          placeholder="Last Name"
+          placeholderTextColor={isDark ? '#888' : '#666'}
+        />
+      </View>
+
+      <View style={[styles.fieldCard]}>
+        <Text style={[styles.label, theme.styles.text]}>Phone Number</Text>
+        <TextInput
+          style={[
+            styles.input,
+            theme.styles.text,
+            theme.styles.border,
+          ]}
+          value={phoneNumber}
+          onChangeText={text => {
+            setPhoneNumber(text);
+            setServerMessage(null);
+          }}
+          placeholder="Phone Number"
+          keyboardType="phone-pad"
+          placeholderTextColor={isDark ? '#888' : '#666'}
+        />
+      </View>
+
       {serverMessage && !serverMessage.startsWith('Profile updated') ? (
         <Text style={[styles.errorText, { textAlign: 'center' }]}>{serverMessage}</Text>
       ) : null}
 
+      <View style={styles.fieldCard}>
+        <Text style={[theme.styles.textGray, {marginBottom: 12}]}>
+          Note: These informations are only visible to you
+        </Text>
+      </View>
+
       <CustomButton
-        title='Save Changes'
+        title="Save Changes"
         onPress={handleSave}
         loading={saving}
         style={[styles.saveButton, theme.styles.button]}
       />
+
       <View style={{ height: 40 }} />
     </ScrollView>
   );
@@ -240,47 +267,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins_700Bold',
     marginVertical: 16,
   },
-  avatarCard: {
-    alignSelf: 'center',
-    marginBottom: 24,
-    padding: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-  },
-  avatar: {
-    width: 96,
-    height: 96,
-    borderRadius: 48,
-    marginBottom: 12,
-  },
-  avatarPlaceholder: {
-    width: 96,
-    height: 96,
-    borderRadius: 48,
-    backgroundColor: '#ccc',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  avatarPlaceholderText: {
-    fontSize: 14,
-  },
-  changePhotoButton: {
-    borderRadius: 6,
-    paddingVertical: 6,
-    marginTop: 8,
-    justifyContent: 'center',
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
-  },
-  changePhotoText: {
-    fontSize: 14,
-  },
   fieldCard: {
-    marginBottom: 16,
     padding: 12,
     borderRadius: 8,
   },
@@ -313,15 +300,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins_500Medium',
   },
   saveButton: {
-    height: 40,
+    height: height * 0.06,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
-    marginHorizontal: width * 0.03
   },
 });
