@@ -23,7 +23,7 @@ const AboutScreen: React.FC = () => {
 
             <View style={styles.section}>
                 <Text style={[styles.sectionHeader, theme.styles.text]}>Version</Text>
-                <Text style={[styles.sectionBody, theme.styles.text]}>1.0.0</Text>
+                <Text style={[styles.sectionBody, theme.styles.text]}>1.0.2</Text>
             </View>
 
             <View style={styles.section}>

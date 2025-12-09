@@ -33,13 +33,13 @@ const SessionsScreen = () => {
 
                 {sessions.length > 0 ? (
                     sessions.map((session, index) => (
-                        <CustomCard key={index} style={[styles.sessionCard, theme.styles.card]} onPress={() => { }}>
-                            <Text style={styles.dataText}>Id: {session.id}</Text>
-                            <Text style={styles.dataText}>IP: {session.ipAddress}</Text>
-                            <Text style={styles.dataText}>User Agent: {session.userAgent}</Text>
-                            <Text style={styles.dataText}>Created: {new Date(session.createdAt).toLocaleString()}</Text>
-                            <Text style={styles.dataText}>Expires: {new Date(session.expiresAt).toLocaleString()}</Text>
-                            <Text style={styles.dataText}>Current: {session.isCurrentSession ? 'Yes' : 'No'}</Text>
+                        <CustomCard key={index} style={[styles.sessionCard, theme.styles.card, theme.styles.border]} onPress={() => { }}>
+                            <Text style={[styles.dataText, theme.styles.text]}>Id: {session.id}</Text>
+                            <Text style={[styles.dataText, theme.styles.text]}>IP: {session.ipAddress}</Text>
+                            <Text style={[styles.dataText, theme.styles.text]}>User Agent: {session.userAgent}</Text>
+                            <Text style={[styles.dataText, theme.styles.text]}>Created: {new Date(session.createdAt).toLocaleString()}</Text>
+                            <Text style={[styles.dataText, theme.styles.text]}>Expires: {new Date(session.expiresAt).toLocaleString()}</Text>
+                            <Text style={[styles.dataText, theme.styles.text]}>Current: {session.isCurrentSession ? 'Yes' : 'No'}</Text>
                         </CustomCard>
                     ))
                 ) : (
@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 22,
         fontFamily: 'Poppins_700Bold',
+        marginBottom: 12
     },
     message: {
         color: '#666',
