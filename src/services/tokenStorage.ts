@@ -16,12 +16,24 @@ const isNative = Platform.OS !== 'web'
  */
 
 export const tokenStorage = {
-  setTokens: async (accessToken: string | null, refreshToken: string | null, p0?: { secure: boolean }) => {
+  setTokens: async (
+    accessToken: string | null,
+    refreshToken: string | null,
+    options?: { secure?: boolean }
+  ) => {
     try {
+      const secure = options?.secure === true
+
       if (accessToken != null) {
-        await AsyncStorage.setItem(ACCESS_KEY, accessToken)
+        if (secure && isNative) {
+          await SecureStore.setItemAsync(ACCESS_KEY, accessToken)
+        } else {
+          await AsyncStorage.setItem(ACCESS_KEY, accessToken)
+        }
       }
+
       if (refreshToken != null) {
+        // refresh tokens are preferred in SecureStore on native devices
         if (isNative) {
           await SecureStore.setItemAsync(REFRESH_KEY, refreshToken)
         } else {
@@ -33,15 +45,20 @@ export const tokenStorage = {
     }
   },
 
-  getAccessToken: async (): Promise<string | null> => {
+  getAccessToken: async (securePreferred = false): Promise<string | null> => {
     try {
+      if (securePreferred && isNative) {
+        const v = await SecureStore.getItemAsync(ACCESS_KEY)
+        if (v) return v
+        return await AsyncStorage.getItem(ACCESS_KEY)
+      }
       return await AsyncStorage.getItem(ACCESS_KEY)
     } catch {
       return null
     }
   },
 
-  getRefreshToken: async (): Promise<string | null> => {
+  getRefreshToken: async (securePreferred = false): Promise<string | null> => {
     try {
       if (isNative) {
         // read from SecureStore first
@@ -65,6 +82,7 @@ export const tokenStorage = {
       await AsyncStorage.removeItem(ACCESS_KEY)
       await AsyncStorage.removeItem(REFRESH_KEY)
       if (isNative) {
+        await SecureStore.deleteItemAsync(ACCESS_KEY)
         await SecureStore.deleteItemAsync(REFRESH_KEY)
         await SecureStore.deleteItemAsync(BIOMETRIC_FLAG)
       } else {

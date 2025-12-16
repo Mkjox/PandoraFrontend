@@ -117,14 +117,12 @@ const AppContent = () => {
     }
 
     if (refresh && typeof (AuthService as any).refreshToken === 'function') {
-      const refreshRes = await (AuthService as any).refreshToken({ refreshToken: refresh });
-      if (refreshRes?.success && refreshRes.accessToken) {
-        await tokenStorage.setTokens(
-          refreshRes.accessToken,
-          refreshRes.refreshToken ?? refresh,
-          { secure: true }
-        );
-        dispatch(loginAction());
+      const refreshRes = await AuthService.refreshToken()
+      if (refreshRes?.success && refreshRes.data?.accessToken) {
+        const newAccess = refreshRes.data.accessToken
+        const newRefresh = refreshRes.data.refreshToken ?? refresh
+        await tokenStorage.setTokens(newAccess, newRefresh, { secure: true })
+        dispatch(loginAction())
       }
     }
   };
