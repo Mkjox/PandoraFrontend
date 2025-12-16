@@ -13,6 +13,7 @@ import { useTheme } from '@context/ThemeContext';
 import { lightTheme, darkTheme } from '@assets/colors/theme';
 import AuthService from '@services/AuthService';
 import CustomButton from '@components/CustomButton';
+import Toast from 'react-native-toast-message';
 
 const { height, width } = Dimensions.get('window');
 
@@ -33,7 +34,7 @@ export default function EditProfileScreen() {
   const [usernameError, setUsernameError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [serverMessage, setServerMessage] = useState<string | null>(null);
-  
+
   useEffect(() => {
     (async () => {
       setLoadingProfile(true);
@@ -101,12 +102,23 @@ export default function EditProfileScreen() {
       const res = await AuthService.updateProfile(payload);
 
       if (res.success) {
-        setServerMessage('Profile updated successfully.');
+        Toast.show({
+          type: 'success',
+          text1: 'Profile updated successfully',
+        })
       } else {
-        setServerMessage(res.message || 'Failed to update profile.');
+        Toast.show({
+          type: 'error',
+          text1: 'Update failed',
+          text2: res.message || 'Failed to update profile.'
+        })
       }
     } catch (err: any) {
-      setServerMessage(err.message || 'Failed to update profile.');
+      Toast.show({
+        type: 'error',
+        text1: 'Update failed',
+        text2: err.message || 'Failed to update profile.'
+      })
     } finally {
       setSaving(false);
     }
@@ -127,10 +139,6 @@ export default function EditProfileScreen() {
     >
       <View style={styles.spacer} />
       <Text style={[styles.title, theme.styles.text]}>Edit Profile</Text>
-
-      {serverMessage && serverMessage.startsWith('Profile updated') ? (
-        <Text style={styles.successText}>{serverMessage}</Text>
-      ) : null}
 
       <View style={[styles.fieldCard]}>
         <Text style={[styles.label, theme.styles.text]}>Username</Text>
@@ -231,7 +239,7 @@ export default function EditProfileScreen() {
       ) : null}
 
       <View style={styles.fieldCard}>
-        <Text style={[theme.styles.textGray, {marginBottom: 12}]}>
+        <Text style={[theme.styles.textGray, { marginBottom: 12 }]}>
           Note: These informations are only visible to you
         </Text>
       </View>

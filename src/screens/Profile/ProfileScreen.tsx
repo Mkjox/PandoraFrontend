@@ -26,6 +26,8 @@ const ProfileScreen: React.FC = () => {
 
   const [profile, setProfile] = useState<any>(null);
 
+  const avatarSize = 96;
+
   const loadProfile = useCallback(async () => {
     const res = await AuthService.fetchUserProfile();
     if (res.success) {
@@ -51,9 +53,22 @@ const ProfileScreen: React.FC = () => {
 
       <View style={[styles.avatarGroup, theme.styles.card]}>
         {profile.photoUrl ? (
-          <Image source={{ uri: profile.photoUrl }} style={styles.avatar} />
+          <Image source={{ uri: profile.photoUrl }} style={[styles.avatar, { width: avatarSize, height: avatarSize, borderRadius: avatarSize / 2 }]} />
         ) : (
-          <FontAwesome name="user-circle" size={96} color={theme.styles.iconColor.color} />
+          (() => {
+            const iconColor = (theme.styles.iconColor && (theme.styles.iconColor as any).color) || '#777';
+            const bg = (theme.styles.card && (theme.styles.card as any).backgroundColor) || (isDark ? '#111' : '#f3f4f6');
+            const initials = `${profile.firstName?.[0] ?? ''}${profile.lastName?.[0] ?? ''}`.toUpperCase();
+            return (
+              <View style={[styles.placeholder, { backgroundColor: bg, width: avatarSize, height: avatarSize, borderRadius: avatarSize / 2 }]}> 
+                {initials.trim().length > 0 ? (
+                  <Text style={[styles.initials, { color: theme.styles.text?.color || '#222' }]}>{initials}</Text>
+                ) : (
+                  <FontAwesome name="user" size={48} color={iconColor} />
+                )}
+              </View>
+            );
+          })()
         )}
       </View>
 
@@ -227,6 +242,14 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins_400Regular',
     color: '#888',
     marginBottom: 20,
+  },
+  placeholder: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  initials: {
+    fontSize: 28,
+    fontFamily: 'Poppins_600SemiBold',
   },
 });
 

@@ -7,10 +7,10 @@ type CardProps = {
   children: React.ReactNode;
   onPress?: () => void;
   style?: object | object[];
-  iconLabel?: string; // optional
+  icon?: React.ReactNode; /// optional
 };
 
-const CustomCard: React.FC<CardProps> = ({ children, onPress, style, iconLabel }) => {
+const CustomCard: React.FC<CardProps> = ({ children, onPress, style, icon }) => {
   const { isDark } = useTheme();
   const theme = isDark ? darkTheme : lightTheme;
 
@@ -30,9 +30,9 @@ const CustomCard: React.FC<CardProps> = ({ children, onPress, style, iconLabel }
     >
       <View style={styles.row}>
 
-        {iconLabel && (
-          <View style={[styles.iconBox, theme.styles.iconBackground]}>
-            <Text style={[theme.styles.icon, styles.iconText]}>{iconLabel.charAt(0).toUpperCase()}</Text>
+        {icon && (
+          <View style={[styles.iconBox, ]}>
+            {icon}
           </View>
         )}
 

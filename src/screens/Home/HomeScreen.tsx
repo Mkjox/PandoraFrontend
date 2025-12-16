@@ -24,6 +24,7 @@ import { darkTheme, lightTheme } from '@assets/colors/theme'
 import CustomCard from '@components/CustomCard'
 import Notes from '@assets/images/notes.svg';
 import CustomSpinner from '@components/CustomSpinner'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 const { width, height } = Dimensions.get('window')
 
@@ -112,7 +113,13 @@ export default function HomeScreen() {
     <CustomCard
       style={[theme.styles.card, theme.styles.border]}
       onPress={() => navigation.navigate('PassDetails', { id: item.id })}
-      iconLabel={item.siteName}
+      icon={
+        <MaterialCommunityIcons
+          name='lock'
+          size={18}
+          color={theme.styles.icon.color}
+        />
+      }
     >
       <Text style={[styles.cardTitle, theme.styles.text]}>{item.siteName}</Text>
       <Text style={[styles.cardSubtitle, theme.styles.textGray]}>{item.usernameOrEmail}</Text>
@@ -123,7 +130,13 @@ export default function HomeScreen() {
     <CustomCard
       style={[theme.styles.card, theme.styles.border]}
       onPress={() => navigation.navigate('VaultDetails', { id: item.id })}
-      iconLabel={item.secureTitle}
+      icon={
+        <MaterialCommunityIcons
+          name='safe-square'
+          size={18}
+          color={theme.styles.icon.color}
+        />
+      }
     >
       <Text style={[styles.cardTitle, theme.styles.text]}>{item.secureTitle}</Text>
       <Text style={[styles.cardSubtitle, theme.styles.textGray]} numberOfLines={2}>
