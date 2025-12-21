@@ -51,7 +51,7 @@ const ProfileScreen: React.FC = () => {
 
       <Text style={[styles.title, theme.styles.text]}>My Profile</Text>
 
-      <View style={[styles.avatarGroup, theme.styles.card]}>
+      <View style={[styles.avatarGroup]}>
         {profile.photoUrl ? (
           <Image source={{ uri: profile.photoUrl }} style={[styles.avatar, { width: avatarSize, height: avatarSize, borderRadius: avatarSize / 2 }]} />
         ) : (
@@ -60,7 +60,7 @@ const ProfileScreen: React.FC = () => {
             const bg = (theme.styles.card && (theme.styles.card as any).backgroundColor) || (isDark ? '#111' : '#f3f4f6');
             const initials = `${profile.firstName?.[0] ?? ''}${profile.lastName?.[0] ?? ''}`.toUpperCase();
             return (
-              <View style={[styles.placeholder, { backgroundColor: bg, width: avatarSize, height: avatarSize, borderRadius: avatarSize / 2 }]}> 
+              <View style={[styles.placeholder, { backgroundColor: bg, width: avatarSize, height: avatarSize, borderRadius: avatarSize / 2 }, theme.styles.border]}> 
                 {initials.trim().length > 0 ? (
                   <Text style={[styles.initials, { color: theme.styles.text?.color || '#222' }]}>{initials}</Text>
                 ) : (
